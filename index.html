@@ -361,6 +361,28 @@ mark{background:#aca6e455;color:inherit;border-radius:3px;padding:0 1px}
 .mom-acts{display:flex;align-items:center;gap:18px;margin-top:8px}
 .mom-ic{border:0;background:transparent;padding:2px;font-size:20px;line-height:1;color:var(--soft);cursor:pointer;display:grid;place-items:center;min-width:26px;height:28px}.mom-ic svg{width:21px;height:21px}
 .mom-ic.lk{color:#e5484d}.mom-ic.fv{color:#f0b429}
+
+.tile.art{position:relative;container-type:inline-size}
+.per-txt{position:absolute;left:19%;top:31%;width:64%;height:44%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#8c6a86;pointer-events:none;line-height:1.3;text-shadow:none}
+.per-txt small{font-size:5.4cqw;opacity:.85}.per-txt b{font-size:12.5cqw;font-weight:500;letter-spacing:.02em}
+.per-empty{text-align:center;font-size:13px;line-height:1.9;color:var(--soft);padding:6px 0}
+.per-now{text-align:center;font-size:13px;color:#fff;background:linear-gradient(180deg,#eebfca,var(--pk));border-radius:999px;padding:5px 12px;margin:0 auto 6px;width:max-content;max-width:100%}
+.per-r{display:flex;align-items:baseline;gap:8px;font-size:13px;padding:8px 0;border-bottom:1px dashed var(--line)}.per-r:last-child{border-bottom:0}
+.per-r span{color:var(--soft);flex:none}.per-r b{font-weight:500;margin-left:auto}.per-r small{color:var(--soft);font-size:11.5px;min-width:64px;text-align:right}
+.pc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}.pc-head b{font-weight:500;letter-spacing:.08em;font-size:14px}
+.pc-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.pc-w{font-size:11px;color:var(--soft);text-align:center;padding:2px 0}
+.pc-d{aspect-ratio:1;display:grid;place-items:center;font:inherit;font-size:13px;line-height:1;border-radius:50%;border:1.5px solid transparent;background:none;color:var(--ink);padding:0;min-width:0}
+.pc-d.out{visibility:hidden}
+.pc-grid.ed .pc-d{cursor:pointer;border:1.5px dashed var(--line)}
+.pc-fw{background:#aca6e42e}
+.pc-ov{background:var(--lav);color:#fff}
+.pc-pp,.pc-grid.ed .pc-d.pc-pp{border:1.5px dashed var(--pk);background:#e6b1bd22}
+.pc-a,.pc-grid.ed .pc-d.pc-a{background:var(--pk);border-color:var(--pk);color:#fff}
+.pc-t{outline:1.5px solid var(--ink);outline-offset:1px;font-weight:600}
+.pc-lg{display:flex;flex-wrap:wrap;gap:6px 12px;justify-content:center;margin-top:10px;font-size:11.5px;color:var(--soft)}
+.pc-lg span{display:flex;align-items:center;gap:4px}.pc-lg i{width:12px;height:12px;border-radius:50%;display:inline-block;border:1.5px solid transparent}
+.pc-lg i.pc-a{border-color:var(--pk)}.pc-lg i.pc-pp{border:1.5px dashed var(--pk);background:#e6b1bd22}.pc-lg i.pc-fw{background:#aca6e455}.pc-lg i.pc-ov{border-color:var(--lav)}
 </style>
 </head>
 <body>
@@ -455,13 +477,13 @@ function dailyPick(cid){cid=cid||S.cur;const s=S.set||{},cards=cardPool(cid).fil
 function dly(cid){S.dailies=S.dailies||{};return S.dailies[cid]||(S.dailies[cid]={day:'',base:0,next:0,done:false,items:[]})}
 function dailyTick(){if(!S||!S.set||!S.set.dailyOn)return;const now=Date.now(),day=localDayKey(new Date(now));let ch=0;(S.contacts||[]).forEach(c=>{const D=dly(c.id);if(D.day!==day){Object.assign(D,{day,base:now,next:0,done:false,items:[]});ch=1}if(D.done)return;const win=Math.max(1,+S.set.dailyWindow||1)*1000;if(D.next&&now<D.next)return;ch=1;if(rnd()*100<Math.max(0,Math.min(100,+S.set.dailyProb||0))){const items=dailyPick(c.id);if(items.length){D.items=items;D.done=true;D.next=0;if(S.set.dailyMoodOn!==0&&S.set.dailyMoodOn!==false)pickTodayMood(day,c.id);return}}D.next=now+win});if(ch)save()}
 /* ── 視圖 ── */
-const vHome=()=>{if(inspOpen)return vInspHome();if(dataOpen)return vData();if(grpRoom)return vGrpRoom();if(grpOpen)return vGrpList();if(momOpen)return vMom();if(pomoOpen)return vPomo();if(abOpen)return vAb();if(mhOpen)return vMh();if(mailOpen)return vMail();if(recOpen)return vRec();const c=cur();return `<div class="pager"><section class="pgp"><div class="brand">✦ PEARLA ✦</div>
+const vHome=()=>{if(inspOpen)return vInspHome();if(dataOpen)return vData();if(grpRoom)return vGrpRoom();if(grpOpen)return vGrpList();if(momOpen)return vMom();if(pomoOpen)return vPomo();if(perOpen)return vPer();if(abOpen)return vAb();if(mhOpen)return vMh();if(mailOpen)return vMail();if(recOpen)return vRec();const c=cur();return `<div class="pager"><section class="pgp"><div class="brand">✦ PEARLA ✦</div>
 <div class="card couple"><div class="p">${avh(c,'big')}<span class="en" contenteditable="true" spellcheck="false" data-n="c">${esc(c.name)}</span></div><span style="color:var(--pk)">✦</span><div class="p">${avh({av:S.meAv,name:S.me},'big')}<span class="en" contenteditable="true" spellcheck="false" data-n="m">${esc(S.me)}</span></div></div>
 
 <div class="dm-row"><button class="daily-message-trigger" type="button" aria-label="每日留言" onclick="openDaily();return false"><img class="daily-message-label" src="daily_message_label.webp" alt="每日留言"></button><button class="tile" data-a="insphome"><img class="ti" src="assets/inspiration.webp" alt="靈感拾取">靈感拾取</button><button class="tile" data-a="data"><img class="ti" src="assets/data.webp" alt="數據">數據</button></div>
 <div class="grid"><button class="tile" data-a="mom"><img class="ti" src="assets/friends.webp" alt="朋友圈">朋友圈</button><button class="tile" data-a="grp"><img class="ti" src="assets/group-chat.webp" alt="群聊">群聊</button><button class="tile" data-a="mail">${mailBadge()}<img class="ti" src="assets/mailbox.webp" alt="信箱">信箱</button><button class="tile off" data-a="soon"><img class="ti" src="assets/anniversary.webp" alt="紀念日">紀念日</button><button class="tile" data-a="soon"><img class="ti" src="assets/status-awareness.webp" alt="狀態感知">狀態感知</button><button class="tile" data-a="rec"><img class="ti" src="assets/records.webp" alt="紀錄">紀錄</button><button class="tile" data-a="soon"><img class="ti" src="assets/study-progress.webp" alt="學習進度">學習進度</button><button class="tile" data-a="soon"><img class="ti" src="assets/files.webp" alt="檔案">檔案</button></div>
 <button class="memo-card" type="button" data-a="memo" aria-label="備忘錄"><img src="assets/memo-card.webp" alt="備忘錄"><div class="memo-txt">${memoSlots()}</div></button>
-</section><section class="pgp"><div class="music-card"><img src="music_player.webp" alt="音樂播放器"></div><div class="grid"><button class="tile" data-a="pomo"><img class="ti" src="assets/tomato-timer.webp" alt="番茄鐘">番茄鐘</button><button class="tile" data-a="mh"><img class="ti" src="assets/plum-divination.webp" alt="梅花易數">梅花易數</button><button class="tile" data-a="ab"><img class="ti" src="assets/answer-book.webp" alt="答案之書">答案之書</button><button class="tile" data-a="soon"><img class="ti" src="assets/kitchen.webp" alt="小廚房">小廚房</button><button class="tile" data-a="soon"><img class="ti" src="assets/doodle.webp" alt="塗鴉">塗鴉</button><button class="tile" data-a="soon"><img class="ti" src="assets/tracking.webp" alt="尋蹤">尋蹤</button><button class="tile" data-a="soon"><img class="ti" src="assets/diary.webp" alt="日記">日記</button><button class="tile" data-a="soon"><img class="ti" src="assets/mall.webp" alt="商城">商城</button><button class="tile art" data-a="soon"><img src="assets/period.webp" alt="經期"></button><button class="tile" data-a="soon"><img class="ti" src="assets/gift-cabinet.webp" alt="禮物櫃">禮物櫃</button></div> </section><section class="pgp"><button class="cal-big" type="button" data-a="soon" aria-label="日曆"><img src="assets/calendar.webp" alt="日曆"></button></section></div><div class="dots"><i class="on"></i><i></i><i></i></div>`};
+</section><section class="pgp"><div class="music-card"><img src="music_player.webp" alt="音樂播放器"></div><div class="grid"><button class="tile" data-a="pomo"><img class="ti" src="assets/tomato-timer.webp" alt="番茄鐘">番茄鐘</button><button class="tile" data-a="mh"><img class="ti" src="assets/plum-divination.webp" alt="梅花易數">梅花易數</button><button class="tile" data-a="ab"><img class="ti" src="assets/answer-book.webp" alt="答案之書">答案之書</button><button class="tile" data-a="soon"><img class="ti" src="assets/kitchen.webp" alt="小廚房">小廚房</button><button class="tile" data-a="soon"><img class="ti" src="assets/doodle.webp" alt="塗鴉">塗鴉</button><button class="tile" data-a="soon"><img class="ti" src="assets/tracking.webp" alt="尋蹤">尋蹤</button><button class="tile" data-a="soon"><img class="ti" src="assets/diary.webp" alt="日記">日記</button><button class="tile" data-a="soon"><img class="ti" src="assets/mall.webp" alt="商城">商城</button><button class="tile art" data-a="per"><img src="assets/period.webp" alt="經期"><div class="per-txt">${perCardTxt()}</div></button><button class="tile" data-a="soon"><img class="ti" src="assets/gift-cabinet.webp" alt="禮物櫃">禮物櫃</button></div> </section><section class="pgp"><button class="cal-big" type="button" data-a="soon" aria-label="日曆"><img src="assets/calendar.webp" alt="日曆"></button></section></div><div class="dots"><i class="on"></i><i></i><i></i></div>`};
 
 const vContacts=()=>`<h1>聯絡人</h1>`+S.contacts.map(c=>`<div class="row ${c.id===S.cur?'on':''}" data-c="${c.id}"><button class="cstar${c.star?' on':''}" data-a="cstar" data-i="${c.id}" aria-label="標記為重要聯絡人">${c.star?'★':'☆'}</button>${c.id!==S.cur&&S.un[c.id]?`<b class="cb">${S.un[c.id]}</b>`:''}${avh(c,'')}<div class="grow"><span class="nm" data-a="ren" data-n="r" contenteditable="true" spellcheck="false">${esc(c.name)}</span><small>${ms(c.id).length} 則訊息${c.id===S.cur?' · 目前聯絡人':''}</small></div><button class="ib mv" data-a="mv" aria-label="長按 1 秒後上下拖曳排序">⇅</button><button class="ib" data-a="del">✕</button></div>`).join('')+(`<button class="btn s" style="width:100%" data-a="addc">＋ 新增聯絡人</button>`)+`<p class="hint">點卡片切換目前聯絡人，點名稱可改名；各聯絡人的資料與聊天紀錄互相獨立。</p>`;
 
@@ -656,7 +678,7 @@ function patMsg(cid,me,tx){const c=S.contacts.find(x=>x.id===cid),p=pool('pat',c
 function mig(o){o=o||{};o.contacts=Array.isArray(o.contacts)?o.contacts:[];o.contacts.forEach(c=>{if(c.status==null)c.status=''});o.cats=Array.isArray(o.cats)?o.cats:[];o.cards=Array.isArray(o.cards)?o.cards:[];if(o.tags){[['mood','情緒'],['heart','心意'],['intent','交流意圖']].forEach(([k,n])=>{const id=uid();o.cats.push({id,sc:'s',kind:k,name:n,on:1,as:[]});(o.tags[k]||[]).forEach(t=>o.cards.push({id:uid(),cat:id,text:t,on:1}))});delete o.tags}o.pend=o.pend||[];if(!o.m3){if(o.set){if(o.set.rmax!=null)o.set.rmax*=60;if(o.set.armax!=null)o.set.armax*=60;if(o.set.lwmax!=null)o.set.lwmax=240;o.set.pat=30;o.set.emoji=30}o.m3=1}
   o.kon=o.kon||{};o.next=o.next||{};o.apend=o.apend||{};o.cats.forEach(c=>{c.as=Array.isArray(c.as)?c.as:[];c.on=c.on===0?0:1});o.cards.forEach(k=>{k.on=k.on===0?0:1});o.bgs=o.bgs||{};o.bgColors=o.bgColors||{};o.bgColors.all=o.bgColors.all||'#f6f2ff';o.line=o.line||'#cbc7ee';if(o.bg&&!o.bgs.home)o.bgs.home=o.bg;o.cats.forEach(c=>{if(c.sc==='e'&&!c.own)c.own=(c.as&&c.as[0])||o.cur});
   if(!o.m4){if(o.set)['lwmin','lwmax','lrmin','lrmax'].forEach(k=>{if(o.set[k]!=null)o.set[k]*=60});o.m4=1}if(!o.m5){if(o.set)o.set.aon=1;o.m5=1}if(!o.m6){o.next={};o.apend={};o.m6=1}if(!o.m7){let g=o.cats.find(c=>c&&kc(c)==='emj');if(!g){const id=uid();g={id,sc:'s',kind:'emj',name:'emoji',on:1,as:[]};o.cats.push(g);['😊','🥺','💗','✨','🌙','😳'].forEach(text=>o.cards.push({id:uid(),cat:id,text,on:1}))}o.m7=1}if(!o.m8){let g=o.cats.find(c=>c&&kc(c)==='kao'&&c.sc==='s'&&c.un);if(!g){g={id:uid(),sc:'s',kind:'kao',name:'未分類',on:1,as:[],un:1};o.cats.push(g)}['(๑•́ ⃃ •̀๑)','(*´∀`)','(｡•́︿•̀｡)','(≧▽≦)','(˘▾˘)~♪'].forEach(text=>{if(!o.cards.some(k=>k.cat===g.id&&k.text===text))o.cards.push({id:uid(),cat:g.id,text,on:1})});o.m8=1}
-  o.rounds=o.rounds||{};o.ipend=Array.isArray(o.ipend)?o.ipend:[];o.plum=Array.isArray(o.plum)?o.plum:[];o.book=Array.isArray(o.book)?o.book:[];o.moments=Array.isArray(o.moments)?o.moments:[];o.moments.forEach(p=>{if(!p.id)p.id=uid()});o.mst=o.mst&&typeof o.mst==='object'?o.mst:{};o.mrep=Array.isArray(o.mrep)?o.mrep:[];o.mcm=Array.isArray(o.mcm)?o.mcm:[];o.pomo=Object.assign({foc:25,brk:5,lng:15,cyc:4,auto:1,snd:1,ph:'foc',run:0,end:0,left:0,idx:0,day:'',n:0},o.pomo&&typeof o.pomo==='object'?o.pomo:{});if(!o.pomo.left)o.pomo.left=o.pomo.foc*60000;if(o.momStk==null)o.momStk=1;o.contacts.forEach(c=>cmo(c));if(o.set)['fpost','flike','fcmt'].forEach(k=>delete o.set[k]);o.momCover=o.momCover||'';o.momSig=o.momSig||'';o.groups=Array.isArray(o.groups)?o.groups:[];o.gdef=o.gdef||'';o.insp=o.insp||{};['mem','ext','ev'].forEach(k=>{o.insp[k]=Array.isArray(o.insp[k])?o.insp[k]:[]});o.un=o.un||{};o.statusClock=o.statusClock||{};o.dailies=o.dailies||{};o.todayMoodBy=o.todayMoodBy||{};if(!o.m8&&o.set){if(o.set.armin===600&&o.set.armax===3600){o.set.armin=1200;o.set.armax=28800}if(o.set.fmax===1)o.set.fmax=2;if(o.set.afmax===1)o.set.afmax=2;o.m8=1}if(o.set&&o.set.acancel==null&&o.set.aghost!=null)o.set.acancel=o.set.aghost;if(!o.m16){if(o.set)o.set.acancel=0;o.m16=1}o.set=Object.assign({ntMeOn:0,ntMeSnd:'tap',ntTaOn:0,ntTaSnd:'bubble',ntCurOn:1,ntCurSnd:'ding',ntOthOn:0,ntOthSnd:'ding',ntStarOn:1,ntStarSnd:'chime',star:10,dailyMoodOn:1,dailyOn:0,dailyProb:70,dailyWindow:21600,dailyMin:1,dailyMax:5,dailyKao:20,dailyEmoji:20,statusOn:0,statusWindow:7200,statusProb:70,avatarSend:6,penSnd:1,penVol:50,crabMail:1,cmOn:1,cmProb:50,cmTmin:3,cmTmax:180,cmNmin:1,cmNmax:2,cmFmin:1,cmFmax:2,cmEp:20,cmEmj:20,cmEmjT:10,cmKao:20,cmKaoT:10,crOn:1,crSame:1,crProb:50,crTmin:3,crTmax:180,crNmin:1,crNmax:2,crFmin:1,crFmax:2,crEp:20,crEmj:20,crEmjT:10,crKao:20,crKaoT:10,mpcmin:3,mpcmax:180,mpnmin:5,mpnmax:10,mpemj:20,mpemjT:15,mpkao:20,mpkaoT:15,mwEp:50,mwEmin:3,mwEmax:50,mwNmin:1,mwNmax:6,mwSp:50,mwSmin:3,mwSmax:50,mwKmin:1,mwKmax:3,mwPlace:10,srOn:1,srJudge:3,srProb:100,srMin:.5,srMax:12,srNmin:1,srNmax:2,srPlace:5,emjT:10,kaoT:10,aemjT:10,akaoT:10,lwrite:50,lreply:50,rmin:3,rmax:30,cmin:1,cmax:2,ghost:10,emj:20,kao:20,quote:20,fmin:1,fmax:1,armin:1200,armax:28800,acmin:1,acmax:2,afmin:1,afmax:2,acancel:0,apat:30,aemoji:30,aemj:20,akao:20,aquote:0,qmOn:1,qmProb:30,favProb:10,mood:15,heart:15,intent:15,tagMin:1.3,tagMax:10,imgc:0,memOn:1,memJmin:5,memJmax:10800,memProb:10,memPmin:3,memPmax:15,memWord:10,memPhrase:10,memSent:10,extOn:1,extWmin:3,extWmax:180,extProb:10,extDelay:20,extWord:10,extPhrase:10,extSent:10,extSave:20,letterNotify:1,letterBadge:1,lcmin:3,lcmax:15,lemo:20,lemj:20,lkao:20,lemomax:2,rwaterT:3600,rmealT:10800,rsportT:10800,lday:3,lwmin:600,lwmax:14400,lrmin:60,lrmax:1800,rwater:20,rmeal:20,rsport:20,aon:1},o.set);if(!o.m19){
+  o.rounds=o.rounds||{};o.ipend=Array.isArray(o.ipend)?o.ipend:[];o.plum=Array.isArray(o.plum)?o.plum:[];o.book=Array.isArray(o.book)?o.book:[];o.moments=Array.isArray(o.moments)?o.moments:[];o.moments.forEach(p=>{if(!p.id)p.id=uid()});o.mst=o.mst&&typeof o.mst==='object'?o.mst:{};o.mrep=Array.isArray(o.mrep)?o.mrep:[];o.mcm=Array.isArray(o.mcm)?o.mcm:[];o.pomo=Object.assign({foc:25,brk:5,lng:15,cyc:4,auto:1,snd:1,ph:'foc',run:0,end:0,left:0,idx:0,day:'',n:0},o.pomo&&typeof o.pomo==='object'?o.pomo:{});if(!o.pomo.left)o.pomo.left=o.pomo.foc*60000;o.per=Object.assign({cycle:28,len:5,days:[]},o.per&&typeof o.per==='object'?o.per:{});if(!Array.isArray(o.per.days))o.per.days=[];if(o.momStk==null)o.momStk=1;o.contacts.forEach(c=>cmo(c));if(o.set)['fpost','flike','fcmt'].forEach(k=>delete o.set[k]);o.momCover=o.momCover||'';o.momSig=o.momSig||'';o.groups=Array.isArray(o.groups)?o.groups:[];o.gdef=o.gdef||'';o.insp=o.insp||{};['mem','ext','ev'].forEach(k=>{o.insp[k]=Array.isArray(o.insp[k])?o.insp[k]:[]});o.un=o.un||{};o.statusClock=o.statusClock||{};o.dailies=o.dailies||{};o.todayMoodBy=o.todayMoodBy||{};if(!o.m8&&o.set){if(o.set.armin===600&&o.set.armax===3600){o.set.armin=1200;o.set.armax=28800}if(o.set.fmax===1)o.set.fmax=2;if(o.set.afmax===1)o.set.afmax=2;o.m8=1}if(o.set&&o.set.acancel==null&&o.set.aghost!=null)o.set.acancel=o.set.aghost;if(!o.m16){if(o.set)o.set.acancel=0;o.m16=1}o.set=Object.assign({ntMeOn:0,ntMeSnd:'tap',ntTaOn:0,ntTaSnd:'bubble',ntCurOn:1,ntCurSnd:'ding',ntOthOn:0,ntOthSnd:'ding',ntStarOn:1,ntStarSnd:'chime',star:10,dailyMoodOn:1,dailyOn:0,dailyProb:70,dailyWindow:21600,dailyMin:1,dailyMax:5,dailyKao:20,dailyEmoji:20,statusOn:0,statusWindow:7200,statusProb:70,avatarSend:6,penSnd:1,penVol:50,crabMail:1,cmOn:1,cmProb:50,cmTmin:3,cmTmax:180,cmNmin:1,cmNmax:2,cmFmin:1,cmFmax:2,cmEp:20,cmEmj:20,cmEmjT:10,cmKao:20,cmKaoT:10,crOn:1,crSame:1,crProb:50,crTmin:3,crTmax:180,crNmin:1,crNmax:2,crFmin:1,crFmax:2,crEp:20,crEmj:20,crEmjT:10,crKao:20,crKaoT:10,mpcmin:3,mpcmax:180,mpnmin:5,mpnmax:10,mpemj:20,mpemjT:15,mpkao:20,mpkaoT:15,mwEp:50,mwEmin:3,mwEmax:50,mwNmin:1,mwNmax:6,mwSp:50,mwSmin:3,mwSmax:50,mwKmin:1,mwKmax:3,mwPlace:10,srOn:1,srJudge:3,srProb:100,srMin:.5,srMax:12,srNmin:1,srNmax:2,srPlace:5,emjT:10,kaoT:10,aemjT:10,akaoT:10,lwrite:50,lreply:50,rmin:3,rmax:30,cmin:1,cmax:2,ghost:10,emj:20,kao:20,quote:20,fmin:1,fmax:1,armin:1200,armax:28800,acmin:1,acmax:2,afmin:1,afmax:2,acancel:0,apat:30,aemoji:30,aemj:20,akao:20,aquote:0,qmOn:1,qmProb:30,favProb:10,mood:15,heart:15,intent:15,tagMin:1.3,tagMax:10,imgc:0,memOn:1,memJmin:5,memJmax:10800,memProb:10,memPmin:3,memPmax:15,memWord:10,memPhrase:10,memSent:10,extOn:1,extWmin:3,extWmax:180,extProb:10,extDelay:20,extWord:10,extPhrase:10,extSent:10,extSave:20,letterNotify:1,letterBadge:1,lcmin:3,lcmax:15,lemo:20,lemj:20,lkao:20,lemomax:2,rwaterT:3600,rmealT:10800,rsportT:10800,lday:3,lwmin:600,lwmax:14400,lrmin:60,lrmax:1800,rwater:20,rmeal:20,rsport:20,aon:1},o.set);if(!o.m19){
   if(o.set){if(o.set.favProb===30)o.set.favProb=10;['mood','heart','intent'].forEach(k=>{if(o.set[k]===50)o.set[k]=15})}
   const has=k=>o.cards.some(c=>{const g=o.cats.find(x=>x&&x.id===c.cat);return g&&kc(g)===k});
   if(!has('kao')){let g=o.cats.find(c=>c&&kc(c)==='kao'&&c.sc==='s'&&c.un);if(!g){g={id:uid(),sc:'s',kind:'kao',name:'未分類',on:1,as:[],un:1};o.cats.push(g)}KAO.forEach(text=>o.cards.push({id:uid(),cat:g.id,text,on:1}))}
@@ -1347,6 +1369,68 @@ function vPomo(){const p=S.pomo;pmToday();const R=96,C=2*Math.PI*R,tot=pmDur(p)|
 document.addEventListener('input',e=>{const t=e.target;if(!t||!t.dataset||!t.dataset.pm||!S||!S.pomo)return;const p=S.pomo,k=t.dataset.pm,v=Math.max(1,Math.min(+t.max||999,Math.round(+t.value)||0));if(!v)return;const full=!p.run&&p.left===pmDur(p);p[k]=v;if(full)p.left=pmDur(p);pmPaint();saveSoon()});
 document.addEventListener('change',e=>{const t=e.target;if(t&&t.dataset&&t.dataset.pm&&S&&S.pomo){t.value=S.pomo[t.dataset.pm]}});
 
+/* ── 經期 ── */
+let perOpen=false,perEdit=false,perY=0,perM=0;
+const PER_WK=['日','一','二','三','四','五','六'];
+const pD=k=>{const a=k.split('-');return new Date(+a[0],+a[1]-1,+a[2])};
+const pAdd=(k,n)=>{const d=pD(k);d.setDate(d.getDate()+n);return localDayKey(d)};
+const pDiff=(a,b)=>Math.round((pD(a)-pD(b))/864e5);
+const pFmt=k=>{const d=pD(k);return (d.getMonth()+1)+'/'+d.getDate()};
+const pTodayK=()=>localDayKey(new Date());
+function perInitMonth(){const d=new Date();perY=d.getFullYear();perM=d.getMonth()}
+function perToPage2(){const pg=document.querySelector('.pager');if(!pg)return;pg.style.scrollBehavior='auto';pg.scrollLeft=pg.clientWidth;pg.style.scrollBehavior='';document.querySelectorAll('.dots i').forEach((d,k)=>d.classList.toggle('on',k===1))}
+function perGroups(){const ds=Array.from(new Set(S.per.days)).sort(),g=[];ds.forEach(k=>{const l=g[g.length-1];if(l&&pDiff(k,l.e)===1){l.e=k;l.n++}else g.push({s:k,e:k,n:1})});return g}
+function perStat(){const g=perGroups(),d=[];for(let i=1;i<g.length;i++){const x=pDiff(g[i].s,g[i-1].s);if(x>=15&&x<=60)d.push(x)}const ls=g.map(x=>x.n).filter(n=>n<=15);if(!d.length||!ls.length)return{};return{cyc:Math.round(d.reduce((a,b)=>a+b,0)/d.length),len:Math.round(ls.reduce((a,b)=>a+b,0)/ls.length)}}
+function perCalc(){const p=S.per,g=perGroups(),map={},R={fw:1,ov:2,pp:3,p:4};
+  const cyc=Math.max(15,Math.min(60,+p.cycle||28)),len=Math.max(1,Math.min(15,+p.len||5));
+  const mark=(k,t)=>{if(!map[k]||R[t]>R[map[k]])map[k]=t};
+  const fert=ov=>{for(let j=-5;j<=1;j++)mark(pAdd(ov,j),'fw');mark(ov,'ov')};
+  p.days.forEach(k=>mark(k,'p'));
+  g.forEach(x=>fert(pAdd(x.s,-14)));
+  const out={g,map,cyc,len};
+  if(g.length){const last=g[g.length-1];for(let k=1;k<=6;k++){const st=pAdd(last.s,cyc*k);for(let j=0;j<len;j++)mark(pAdd(st,j),'pp');fert(pAdd(st,-14))}out.next=pAdd(last.s,cyc);out.ov=pAdd(out.next,-14)}
+  return out}
+function perCardTxt(){const c=perCalc(),g=c.g;if(!g.length)return '<small>點此設定經期</small>';
+  const t=pTodayK(),last=g[g.length-1];
+  if(t>=last.s&&t<=last.e)return '<small>經期第</small><b>'+(pDiff(t,last.s)+1)+' 天</b><small>下次 '+pFmt(c.next)+'</small>';
+  const dd=pDiff(c.next,t),od=pDiff(c.ov,t);
+  return '<small>'+(dd>=0?'距下次經期':'經期已延後')+'</small><b>'+(dd>0?dd+' 天':dd===0?'今天':(-dd)+' 天')+'</b><small>'+(od>=0?'排卵日 '+pFmt(c.ov):'預計 '+pFmt(c.next))+'</small>'}
+function perSumHtml(){const c=perCalc(),g=c.g;
+  if(!g.length)return '<div class="per-empty">還沒有經期紀錄<br>按下方「編輯經期」，在日曆上點選經期來的日子，<br>就能計算下一次經期與排卵期。</div>';
+  const t=pTodayK(),last=g[g.length-1];
+  const row=(l,v,s)=>'<div class="per-r"><span>'+l+'</span><b>'+v+'</b>'+(s?'<small>'+s+'</small>':'')+'</div>';
+  const dd=pDiff(c.next,t),od=pDiff(c.ov,t),f1=pAdd(c.ov,-5),f2=pAdd(c.ov,1);
+  const nd=pD(c.next);
+  let cur='';if(t>=last.s&&t<=last.e)cur='目前是經期第 '+(pDiff(t,last.s)+1)+' 天';else if(t>=f1&&t<=f2)cur=(t===c.ov?'今天是排卵日':'目前在易孕期');
+  return (cur?'<div class="per-now">'+cur+'</div>':'')
+   +row('上次經期',pFmt(last.s)+(last.n>1?' – '+pFmt(last.e):''),last.n+' 天')
+   +row('預計下次經期',pFmt(c.next)+'（週'+PER_WK[nd.getDay()]+'）',dd>0?'還有 '+dd+' 天':dd===0?'就是今天':'已延後 '+(-dd)+' 天')
+   +row('預計排卵日',pFmt(c.ov),od>0?'還有 '+od+' 天':od===0?'就是今天':'已過 '+(-od)+' 天')
+   +row('易孕期',pFmt(f1)+' – '+pFmt(f2),'')}
+function perCalHtml(){const c=perCalc(),t=pTodayK(),y=perY,m=perM,first=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate(),CL={p:'pc-a',pp:'pc-pp',ov:'pc-ov',fw:'pc-fw'};
+  let cells='';for(let i=0;i<first;i++)cells+='<span class="pc-d out"></span>';
+  for(let d=1;d<=dim;d++){const k=localDayKey(new Date(y,m,d)),ty=c.map[k],cls='pc-d'+(ty?' '+CL[ty]:'')+(k===t?' pc-t':'');
+    cells+=perEdit?'<button type="button" class="'+cls+'" data-a="perday" data-i="'+k+'">'+d+'</button>':'<span class="'+cls+'">'+d+'</span>'}
+  return '<div class="pc-head"><button class="ib" data-a="permo" data-i="-1" aria-label="上個月">‹</button><b>'+y+' 年 '+(m+1)+' 月</b><button class="ib" data-a="permo" data-i="1" aria-label="下個月">›</button></div>'
+   +'<div class="pc-grid">'+PER_WK.map(w=>'<span class="pc-w">'+w+'</span>').join('')+'</div><div class="pc-grid'+(perEdit?' ed':'')+'">'+cells+'</div>'
+   +'<div class="pc-lg"><span><i class="pc-a"></i>經期</span><span><i class="pc-pp"></i>預測經期</span><span><i class="pc-fw"></i>易孕期</span><span><i class="pc-ov"></i>排卵日</span></div>'
+   +(perEdit?'<p class="hint" style="margin:8px 2px 0">編輯中：點日曆上經期來的日子標記，再點一次取消，可切換月份補登。</p>':'')
+   +'<div style="display:flex;gap:8px;margin-top:12px"><button class="btn" data-a="pertoday" style="flex:1;margin:0">回到今天</button><button class="btn s" data-a="peredit" style="flex:2;margin:0">'+(perEdit?'完成':'編輯經期')+'</button></div>'}
+function perAvgHtml(){const s=perStat();if(!s.cyc||(s.cyc===S.per.cycle&&s.len===S.per.len))return '';
+  return '<div class="sr" style="align-items:center"><span style="color:var(--soft);font-size:12px">依紀錄：平均週期 '+s.cyc+' 天、經期 '+s.len+' 天</span><button class="btn" data-a="perapply" style="margin:0;padding:5px 10px;font-size:12px">套用</button></div>'}
+function perPaint(){const a=$('#perSum'),b=$('#perCal'),c=$('#perAvg');if(a)a.innerHTML=perSumHtml();if(b)b.innerHTML=perCalHtml();if(c)c.innerHTML=perAvgHtml()}
+function vPer(){const p=S.per;
+  const NI=(k,l2,u,mn,mx)=>'<div class="sr" style="align-items:center"><span>'+l2+'</span><span><input type="number" inputmode="numeric" data-per="'+k+'" min="'+mn+'" max="'+mx+'" value="'+p[k]+'" style="width:56px;text-align:right;padding:6px 4px"> '+u+'</span></div>';
+  return '<div class="ph2"><button class="ib" data-a="perback">‹</button><h1>經期</h1></div>'
+  +'<div class="card" id="perSum">'+perSumHtml()+'</div>'
+  +'<div class="card" id="perCal" style="margin-top:12px">'+perCalHtml()+'</div>'
+  +'<div class="card set" style="margin-top:12px"><h3>經期設置</h3>'+NI('cycle','幾天來一次經期（週期）','天',15,60)+NI('len','經期持續天數（預測用）','天',1,15)+'<div id="perAvg" style="margin-top:8px">'+perAvgHtml()+'</div>'
+  +'<div class="sr" style="align-items:center;margin-top:12px"><span style="color:var(--soft);font-size:12px">排卵日以「下次經期前 14 天」推算，易孕期為排卵日前 5 天到後 1 天。</span></div>'
+  +'<button class="btn" data-a="perclear" style="width:100%;margin:12px 0 0">清除所有經期紀錄</button></div>'
+  +'<p class="hint">預測只依你填的週期推算，每個人的週期會有變動，僅供參考，不能當作避孕或醫療依據。</p>'}
+document.addEventListener('input',e=>{const t=e.target;if(!t||!t.dataset||!t.dataset.per||!S||!S.per)return;const v=Math.round(+t.value);if(!(v>=+t.min&&v<=+t.max))return;S.per[t.dataset.per]=v;perPaint();saveSoon()});
+document.addEventListener('change',e=>{const t=e.target;if(t&&t.dataset&&t.dataset.per&&S&&S.per)t.value=S.per[t.dataset.per]});
+
 /* ── 朋友圈 ── */
 let momOpen=false;
 const MOM_PEN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>';
@@ -1567,7 +1651,7 @@ async function icScan(){const st=icState;st.busy=true;st.res=null;icSheet();cons
 /* ── 事件 ── */
 document.addEventListener('click',e=>{
   const T=e.target.closest('[data-t]');
-  if(T&&!e.target.closest('[data-a]')){const nt=T.dataset.t,pt=tab;if(pt==='set'&&nt!=='set')keepSet=(sTab===1&&sPage)?{sTab:1,sPage:sPage}:null;tab=nt;inspOpen=false;dataOpen=false;grpOpen=false;grpRoom=null;mhOpen=false;mhClear();abOpen=false;momOpen=false;pomoOpen=false;mailOpen=false;mailEdit=false;mailSel=[];mailReplyId=null;mailKeep={};recOpen=false;recEdit=false;recSel=[];recPage=null;recSeen={};sPage=null;oPage=null;delMode=false;selC=[];if(nt==='set'){if(pt==='set'){sTab=0;keepSet=null}else if(keepSet){sTab=keepSet.sTab;sPage=keepSet.sPage;keepSet=null}else sTab=0}closeSheet();render();return}
+  if(T&&!e.target.closest('[data-a]')){const nt=T.dataset.t,pt=tab;if(pt==='set'&&nt!=='set')keepSet=(sTab===1&&sPage)?{sTab:1,sPage:sPage}:null;tab=nt;inspOpen=false;dataOpen=false;grpOpen=false;grpRoom=null;mhOpen=false;mhClear();abOpen=false;momOpen=false;pomoOpen=false;perOpen=false;perEdit=false;mailOpen=false;mailEdit=false;mailSel=[];mailReplyId=null;mailKeep={};recOpen=false;recEdit=false;recSel=[];recPage=null;recSeen={};sPage=null;oPage=null;delMode=false;selC=[];if(nt==='set'){if(pt==='set'){sTab=0;keepSet=null}else if(keepSet){sTab=keepSet.sTab;sPage=keepSet.sPage;keepSet=null}else sTab=0}closeSheet();render();return}
   if(e.target.id==='cfov'){qaConfirm=null;askSheet(1);return}if(e.target.id==='addov'){qaAdd=null;askSheet(1);return}if(e.target.id==='sh'){closeSheet();return}if($('#sh')?.classList.contains('chat-pop')&&$('#sh').classList.contains('show')&&!e.target.closest('#sh .box')&&!e.target.closest('[data-a=emo]')&&!e.target.closest('[data-a=more]')){closeSheet()}if(e.target.id==='daily-pop'){closeDaily();return}
   const A=e.target.closest('[data-a]');
   const R=e.target.closest('[data-c]');
@@ -1753,6 +1837,14 @@ document.addEventListener('click',e=>{
     case 'pomoreset':{const p=S.pomo;p.run=0;p.end=0;p.left=pmDur(p);save();render();break}
     case 'pomoskip':{const p=S.pomo;if(p.ph==='foc'){p.idx++;p.ph=(p.idx%Math.max(1,p.cyc)===0)?'lng':'brk'}else p.ph='foc';p.run=0;p.end=0;p.left=pmDur(p);save();render();break}
     case 'pomosw':{S.pomo[i]=S.pomo[i]?0:1;save();render();break}
+    case 'per':perOpen=true;perEdit=false;perInitMonth();render();$('#v').scrollTop=0;break;
+    case 'perback':perOpen=false;perEdit=false;render();perToPage2();break;
+    case 'peredit':perEdit=!perEdit;perPaint();break;
+    case 'permo':{perM+=+i;if(perM<0){perM=11;perY--}else if(perM>11){perM=0;perY++}perPaint();break}
+    case 'pertoday':perInitMonth();perPaint();break;
+    case 'perday':{const d=S.per.days,x=d.indexOf(i);if(x>=0)d.splice(x,1);else d.push(i);save();perPaint();break}
+    case 'perapply':{const st=perStat();if(st.cyc){S.per.cycle=st.cyc;S.per.len=st.len;save();const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y;toast('已套用平均週期與經期天數')}break}
+    case 'perclear':{if(S.per.days.length&&confirm('確定要清除所有經期紀錄嗎？')){S.per.days=[];perEdit=false;save();const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y;toast('已清除經期紀錄')}break}
     case 'mom':momOpen=true;render();$('#v').scrollTop=0;break;
     case 'momback':momOpen=false;momPlacing=null;render();break;
     case 'momcover':{if(!S.momCover){pick(f=>rd(f,1000,u=>{S.momCover=u;save();render()}));break}sheet('朋友圈封面','<button class="btn s" style="width:100%;margin:0 0 8px" data-a="momcpick">更換圖片</button><button class="btn d" style="width:100%;margin:0 0 8px" data-a="momcdel">移除封面</button><button class="btn" style="width:100%;margin:0" data-a="close">取消</button>',1);break}
