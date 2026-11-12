@@ -326,7 +326,41 @@ mark{background:#aca6e455;color:inherit;border-radius:3px;padding:0 1px}
 .dbar{height:6px;border-radius:4px;background:rgba(160,150,210,.16);overflow:hidden}
 .dbar i{display:block;height:100%;background:#8f86d4;border-radius:4px}
 .ab-pg{position:relative;text-align:center;padding:26px 18px 22px;border:1.6px solid var(--line);border-radius:6px 18px 18px 6px;background:var(--card);box-shadow:inset 8px 0 10px -8px #3c366a22;animation:abflip .55s ease both;transform-origin:left center}.ab-no{font-size:12.5px;letter-spacing:.22em;color:var(--soft)}.ab-tx{font-size:20px;line-height:1.75;color:var(--ink);margin:16px 4px 14px;font-weight:500;word-break:break-word}.ab-sub{font-size:12px;color:var(--soft)}.ab-pg:after{content:"✦";display:block;margin-top:10px;color:var(--lav);font-size:13px}.ab-dice{display:block;width:100%;text-align:center;padding:18px 10px;font-size:15px}@keyframes abflip{from{opacity:0;transform:perspective(700px) rotateY(-28deg)}to{opacity:1;transform:none}}@media (prefers-reduced-motion:reduce){.ab-pg{animation:none}}
-.mom-cover{position:relative;height:215px;border-radius:18px;border:1.6px dashed var(--line);background:var(--card) center/cover no-repeat;cursor:pointer;margin:0 0 14px}.mom-hint{position:absolute;inset:0;display:grid;place-content:center;gap:4px;text-align:center;color:var(--soft);font-size:13px;pointer-events:none}.mom-hint b{font-size:30px;font-weight:300;color:var(--lav);line-height:1}.mom-cover .av.big{position:absolute;left:14px;bottom:14px;border:3px solid #fff;box-shadow:0 2px 10px #3c366a2e}.mom-sig{position:absolute;right:12px;bottom:14px;max-width:calc(100% - 120px);display:flex;align-items:center;gap:7px;padding:6px 8px 6px 12px;border-radius:14px;background:var(--card);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1.2px solid var(--line);font-size:13px;color:var(--ink);cursor:pointer}.mom-sig span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}.mom-sig span.ph{color:var(--soft)}.mom-sig svg{flex:none;width:14px;height:14px;color:var(--lav)}.mom-post{display:flex;gap:10px;padding:12px 0;border-top:1.5px dashed var(--line)}.mom-post:first-child{border-top:0}.mom-post .av{width:42px;height:42px;font-size:15px}.mom-bd{flex:1;min-width:0}.mom-nm{font-size:14px;color:var(--ink);font-weight:500}.mom-tx{font-size:14.5px;line-height:1.6;margin:3px 0 6px;white-space:pre-wrap;word-break:break-word}.mom-imgs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;max-width:260px}.mom-imgs.one{grid-template-columns:1fr;max-width:200px}.mom-imgs img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;display:block}.mom-meta{font-size:11.5px;color:var(--soft);margin-top:6px}.mom-re{margin-top:6px;padding:6px 8px;border-radius:10px;background:var(--bub);font-size:12.5px;line-height:1.7;color:var(--soft)}
+.mom-cover{position:relative;height:215px;border-radius:18px;border:1.6px dashed var(--line);background:var(--card) center/cover no-repeat;cursor:pointer;margin:0 0 14px}.mom-hint{position:absolute;inset:0;display:grid;place-content:center;gap:4px;text-align:center;color:var(--soft);font-size:13px;pointer-events:none}.mom-hint b{font-size:30px;font-weight:300;color:var(--lav);line-height:1}.mom-cover .av.big{position:absolute;left:14px;bottom:14px;border:3px solid #fff;box-shadow:0 2px 10px #3c366a2e}.mom-sig{position:absolute;right:12px;bottom:14px;max-width:calc(100% - 120px);display:flex;align-items:center;gap:7px;padding:6px 8px 6px 12px;border-radius:14px;background:var(--card);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1.2px solid var(--line);font-size:13px;color:var(--ink);cursor:pointer}.mom-sig span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}.mom-sig span.ph{color:var(--soft)}.mom-sig svg{flex:none;width:14px;height:14px;color:var(--lav)}.mom-post{display:flex;gap:10px;padding:12px 0;border-top:1.5px dashed var(--line)}.mom-post:first-child{border-top:0}.mom-post .av{width:42px;height:42px;font-size:15px}.mom-bd{flex:1;min-width:0}.mom-nm{font-size:14px;color:var(--ink);font-weight:500}.mom-tx{font-size:14.5px;line-height:1.6;margin:3px 0 6px;white-space:pre-wrap;word-break:break-word}.mom-imgs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;max-width:260px}.mom-imgs.one{grid-template-columns:1fr;max-width:200px}.mom-imgs img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;display:block}.mom-meta{font-size:11.5px;color:var(--soft);margin-top:6px}.mom-rp{cursor:pointer}.pm-wrap{position:relative;width:220px;height:220px;margin:0 auto}.pm-wrap svg{display:block}.pm-t{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:300;letter-spacing:.04em;font-variant-numeric:tabular-nums}.pm-dots{display:flex;gap:8px;justify-content:center;margin:12px 0 6px}.pm-dot{width:10px;height:10px;border-radius:50%;background:var(--bub)}.pm-dot.on{background:var(--lav)}.mom-cimg{display:block;max-width:96px;max-height:80px;margin-top:3px;border-radius:6px}.mom-re{margin-top:6px;padding:6px 8px;border-radius:10px;background:var(--bub);font-size:12.5px;line-height:1.7;color:var(--soft)}
+.mom-stksw{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--soft)}
+.mom-head{position:relative;margin:0 0 54px}.mom-head .mom-cover{margin:0}
+.mom-head>.av.big{position:absolute;left:14px;bottom:-38px;width:76px!important;height:76px!important;border:3px solid #fff;box-shadow:0 2px 10px #3c366a2e;z-index:2}
+.mom-head .mom-sig{position:absolute;left:100px;right:12px;bottom:-38px;max-width:none;display:flex;align-items:flex-end;gap:6px;padding:0;border:0;border-radius:0;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;color:var(--ink);cursor:text}
+.mom-head .mom-sig svg{width:16px;height:16px;flex:none;color:var(--lav)}
+.mom-head .mom-sig input{flex:1;min-width:0;width:100%;border:0!important;outline:0!important;background:transparent!important;box-shadow:none!important;font:inherit;font-size:13.5px;color:var(--ink);padding:0;margin:0;height:22px;line-height:22px;border-radius:0}
+.mom-head .mom-sig input::placeholder{color:var(--soft)}
+.mom-meta{display:flex;align-items:center}.mom-act{border:1.2px solid var(--line);background:var(--card);border-radius:10px;padding:3px 9px;font-size:11.5px;color:var(--ink);margin-left:6px;cursor:pointer}
+.mom-wall{container-type:inline-size;max-width:300px;margin:6px 0 4px;padding:6px;border-radius:12px;background:var(--bub);border:1.2px dashed var(--line)}
+.mw-in{--g:6px;--c:min(26vw,86px);position:relative;display:flex;flex-direction:column;gap:var(--g)}
+@supports (width:1cqw){.mw-in{--c:calc((100cqw - 2*var(--g))/3)}}
+.mw-g{display:grid;grid-template-columns:repeat(3,var(--c));gap:var(--g)}
+.mw-c{width:var(--c);height:var(--c);display:grid;place-items:center;overflow:hidden;font-size:calc(var(--c)*.6);line-height:1;border-radius:8px}
+.mw-c img{width:100%;height:100%;object-fit:contain;display:block}
+.mw-i{height:calc(var(--c)*2);display:flex}.mw-i img{height:100%;width:auto;max-width:100%;object-fit:contain;border-radius:8px;display:block}
+.mom-stk{position:absolute;width:calc(var(--c)*.46);height:calc(var(--c)*.46);transform:translate(-50%,-50%);display:grid;place-items:center;font-size:calc(var(--c)*.36);line-height:1;z-index:3;pointer-events:none;filter:drop-shadow(0 1px 2px #3c366a40)}
+.mom-stk img{width:100%;height:100%;object-fit:contain;display:block}
+.mom-stk.mine{pointer-events:auto;cursor:pointer}
+.mom-wall.nostk .mom-stk{display:none}
+.mom-wall.placing .mw-in{outline:2px dashed var(--lav);outline-offset:3px;cursor:crosshair}
+.mom-bar{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:8px;justify-content:space-between;padding:8px 12px;margin:0 0 10px;border-radius:12px;background:var(--card);border:1.2px dashed var(--lav);font-size:12.5px;color:var(--ink)}.mom-bar .btn{width:auto;margin:0;padding:5px 10px}
+.mom-tools{display:flex;gap:8px;margin:8px 0}.mom-tools .btn{width:auto;margin:0;flex:1}
+.mom-dr{display:flex;flex-wrap:wrap;gap:6px}.mom-dc{position:relative;width:54px;height:54px;border:1.2px solid var(--line);border-radius:10px;display:grid;place-items:center;font-size:26px;overflow:hidden;cursor:pointer;background:var(--card)}.mom-dc img{width:100%;height:100%;object-fit:contain}.mom-dc b{position:absolute;top:0;right:3px;font-size:12px;color:var(--soft)}
+.mom-pg{display:grid;gap:8px;margin:8px 0;grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}.mom-pg.t-emj{grid-template-columns:repeat(6,1fr)}.mom-pg.t-emoji{grid-template-columns:repeat(4,1fr)}
+.mom-pg button{min-width:0;padding:6px;border:1.2px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:14px;cursor:pointer;overflow:hidden;display:grid;place-items:center}.mom-pg.t-emj button{font-size:26px}.mom-pg.t-emoji button{aspect-ratio:1;padding:3px}.mom-pg img{width:100%;height:100%;object-fit:contain}
+.mom-post{display:block;position:relative;padding:12px 0}
+.mom-hd{display:flex;align-items:center;gap:10px;padding-right:36px}.mom-hd .mom-nm{line-height:1.3}
+.mom-time{font-size:11.5px;color:var(--soft);margin-top:1px}
+.mom-post .mom-bd{margin-top:8px}.mom-post .mom-tx{margin:0 0 6px}
+.mom-wall{max-width:none}
+.mom-top{position:absolute;top:10px;right:-4px;width:34px;height:34px;display:grid;place-items:center;border:0;background:transparent;color:var(--soft);cursor:pointer;padding:0}.mom-top svg{width:18px;height:18px}
+.mom-acts{display:flex;align-items:center;gap:18px;margin-top:8px}
+.mom-ic{border:0;background:transparent;padding:2px;font-size:20px;line-height:1;color:var(--soft);cursor:pointer;display:grid;place-items:center;min-width:26px;height:28px}.mom-ic svg{width:21px;height:21px}
+.mom-ic.lk{color:#e5484d}.mom-ic.fv{color:#f0b429}
 </style>
 </head>
 <body>
@@ -370,6 +404,10 @@ function def(){
     pend:[],dailies:{},todayMoodBy:{},locked:true};
 }
 const cur=()=>S.contacts.find(c=>c.id===S.cur)||S.contacts[0];
+const CMD={on:0,prob:50,wall:1,tmin:1200,tmax:10800};
+const cmo=c=>(c.ms=Object.assign({},CMD,c.ms||{}));
+const sget=k=>k.startsWith('cm.')?cmo(cur())[k.slice(3)]:S.set[k];
+const sput=(k,v)=>{if(k.startsWith('cm.')){cmo(cur())[k.slice(3)]=v;if(k==='cm.tmin'||k==='cm.tmax')delete S.mst[cur().id]}else S.set[k]=v};
 const ms=id=>S.msgs[id]||(S.msgs[id]=[]);
 const kc=c=>c.kind||'card';
 const INS=k=>k==='mem'||k==='ext';
@@ -417,13 +455,13 @@ function dailyPick(cid){cid=cid||S.cur;const s=S.set||{},cards=cardPool(cid).fil
 function dly(cid){S.dailies=S.dailies||{};return S.dailies[cid]||(S.dailies[cid]={day:'',base:0,next:0,done:false,items:[]})}
 function dailyTick(){if(!S||!S.set||!S.set.dailyOn)return;const now=Date.now(),day=localDayKey(new Date(now));let ch=0;(S.contacts||[]).forEach(c=>{const D=dly(c.id);if(D.day!==day){Object.assign(D,{day,base:now,next:0,done:false,items:[]});ch=1}if(D.done)return;const win=Math.max(1,+S.set.dailyWindow||1)*1000;if(D.next&&now<D.next)return;ch=1;if(rnd()*100<Math.max(0,Math.min(100,+S.set.dailyProb||0))){const items=dailyPick(c.id);if(items.length){D.items=items;D.done=true;D.next=0;if(S.set.dailyMoodOn!==0&&S.set.dailyMoodOn!==false)pickTodayMood(day,c.id);return}}D.next=now+win});if(ch)save()}
 /* ── 視圖 ── */
-const vHome=()=>{if(inspOpen)return vInspHome();if(dataOpen)return vData();if(grpRoom)return vGrpRoom();if(grpOpen)return vGrpList();if(momOpen)return vMom();if(abOpen)return vAb();if(mhOpen)return vMh();if(mailOpen)return vMail();if(recOpen)return vRec();const c=cur();return `<div class="pager"><section class="pgp"><div class="brand">✦ PEARLA ✦</div>
+const vHome=()=>{if(inspOpen)return vInspHome();if(dataOpen)return vData();if(grpRoom)return vGrpRoom();if(grpOpen)return vGrpList();if(momOpen)return vMom();if(pomoOpen)return vPomo();if(abOpen)return vAb();if(mhOpen)return vMh();if(mailOpen)return vMail();if(recOpen)return vRec();const c=cur();return `<div class="pager"><section class="pgp"><div class="brand">✦ PEARLA ✦</div>
 <div class="card couple"><div class="p">${avh(c,'big')}<span class="en" contenteditable="true" spellcheck="false" data-n="c">${esc(c.name)}</span></div><span style="color:var(--pk)">✦</span><div class="p">${avh({av:S.meAv,name:S.me},'big')}<span class="en" contenteditable="true" spellcheck="false" data-n="m">${esc(S.me)}</span></div></div>
 
 <div class="dm-row"><button class="daily-message-trigger" type="button" aria-label="每日留言" onclick="openDaily();return false"><img class="daily-message-label" src="daily_message_label.webp" alt="每日留言"></button><button class="tile" data-a="insphome"><img class="ti" src="assets/inspiration.webp" alt="靈感拾取">靈感拾取</button><button class="tile" data-a="data"><img class="ti" src="assets/data.webp" alt="數據">數據</button></div>
 <div class="grid"><button class="tile" data-a="mom"><img class="ti" src="assets/friends.webp" alt="朋友圈">朋友圈</button><button class="tile" data-a="grp"><img class="ti" src="assets/group-chat.webp" alt="群聊">群聊</button><button class="tile" data-a="mail">${mailBadge()}<img class="ti" src="assets/mailbox.webp" alt="信箱">信箱</button><button class="tile off" data-a="soon"><img class="ti" src="assets/anniversary.webp" alt="紀念日">紀念日</button><button class="tile" data-a="soon"><img class="ti" src="assets/status-awareness.webp" alt="狀態感知">狀態感知</button><button class="tile" data-a="rec"><img class="ti" src="assets/records.webp" alt="紀錄">紀錄</button><button class="tile" data-a="soon"><img class="ti" src="assets/study-progress.webp" alt="學習進度">學習進度</button><button class="tile" data-a="soon"><img class="ti" src="assets/files.webp" alt="檔案">檔案</button></div>
 <button class="memo-card" type="button" data-a="memo" aria-label="備忘錄"><img src="assets/memo-card.webp" alt="備忘錄"><div class="memo-txt">${memoSlots()}</div></button>
-</section><section class="pgp"><div class="music-card"><img src="music_player.webp" alt="音樂播放器"></div><div class="grid"><button class="tile" data-a="soon"><img class="ti" src="assets/tomato-timer.webp" alt="番茄鐘">番茄鐘</button><button class="tile" data-a="mh"><img class="ti" src="assets/plum-divination.webp" alt="梅花易數">梅花易數</button><button class="tile" data-a="ab"><img class="ti" src="assets/answer-book.webp" alt="答案之書">答案之書</button><button class="tile" data-a="soon"><img class="ti" src="assets/kitchen.webp" alt="小廚房">小廚房</button><button class="tile" data-a="soon"><img class="ti" src="assets/doodle.webp" alt="塗鴉">塗鴉</button><button class="tile" data-a="soon"><img class="ti" src="assets/tracking.webp" alt="尋蹤">尋蹤</button><button class="tile" data-a="soon"><img class="ti" src="assets/diary.webp" alt="日記">日記</button><button class="tile" data-a="soon"><img class="ti" src="assets/mall.webp" alt="商城">商城</button><button class="tile art" data-a="soon"><img src="assets/period.webp" alt="經期"></button><button class="tile" data-a="soon"><img class="ti" src="assets/gift-cabinet.webp" alt="禮物櫃">禮物櫃</button></div> </section><section class="pgp"><button class="cal-big" type="button" data-a="soon" aria-label="日曆"><img src="assets/calendar.webp" alt="日曆"></button></section></div><div class="dots"><i class="on"></i><i></i><i></i></div>`};
+</section><section class="pgp"><div class="music-card"><img src="music_player.webp" alt="音樂播放器"></div><div class="grid"><button class="tile" data-a="pomo"><img class="ti" src="assets/tomato-timer.webp" alt="番茄鐘">番茄鐘</button><button class="tile" data-a="mh"><img class="ti" src="assets/plum-divination.webp" alt="梅花易數">梅花易數</button><button class="tile" data-a="ab"><img class="ti" src="assets/answer-book.webp" alt="答案之書">答案之書</button><button class="tile" data-a="soon"><img class="ti" src="assets/kitchen.webp" alt="小廚房">小廚房</button><button class="tile" data-a="soon"><img class="ti" src="assets/doodle.webp" alt="塗鴉">塗鴉</button><button class="tile" data-a="soon"><img class="ti" src="assets/tracking.webp" alt="尋蹤">尋蹤</button><button class="tile" data-a="soon"><img class="ti" src="assets/diary.webp" alt="日記">日記</button><button class="tile" data-a="soon"><img class="ti" src="assets/mall.webp" alt="商城">商城</button><button class="tile art" data-a="soon"><img src="assets/period.webp" alt="經期"></button><button class="tile" data-a="soon"><img class="ti" src="assets/gift-cabinet.webp" alt="禮物櫃">禮物櫃</button></div> </section><section class="pgp"><button class="cal-big" type="button" data-a="soon" aria-label="日曆"><img src="assets/calendar.webp" alt="日曆"></button></section></div><div class="dots"><i class="on"></i><i></i><i></i></div>`};
 
 const vContacts=()=>`<h1>聯絡人</h1>`+S.contacts.map(c=>`<div class="row ${c.id===S.cur?'on':''}" data-c="${c.id}"><button class="cstar${c.star?' on':''}" data-a="cstar" data-i="${c.id}" aria-label="標記為重要聯絡人">${c.star?'★':'☆'}</button>${c.id!==S.cur&&S.un[c.id]?`<b class="cb">${S.un[c.id]}</b>`:''}${avh(c,'')}<div class="grow"><span class="nm" data-a="ren" data-n="r" contenteditable="true" spellcheck="false">${esc(c.name)}</span><small>${ms(c.id).length} 則訊息${c.id===S.cur?' · 目前聯絡人':''}</small></div><button class="ib mv" data-a="mv" aria-label="長按 1 秒後上下拖曳排序">⇅</button><button class="ib" data-a="del">✕</button></div>`).join('')+(`<button class="btn s" style="width:100%" data-a="addc">＋ 新增聯絡人</button>`)+`<p class="hint">點卡片切換目前聯絡人，點名稱可改名；各聯絡人的資料與聊天紀錄互相獨立。</p>`;
 
@@ -515,7 +553,7 @@ const vCards=()=>{
 
 let mailOpen=false,mailTab='w',mailRep={},pokeBusy={};let rQ='',typingQ={},mailKeep={},keepSet=null,pendingChange=null,cpk=null,mailEdit=false,mailSel=[],mailReplyId=null,mailDraft={},recOpen=false,recEdit=false,recSel=[],recPage=null,recFav='h',recSeen={},qaTab='single',qaAdd=null,qaEditMode=false,qcSel=null,qd={q:'',o:'',aq:'',ao:'',sv:''},qcSels=[],qaConfirm=null,qtDraft=null;let sTab=0,sQ='',sPage=null,delMode=false,cq='',catsOpen=true,actsOpen=true,selC=[],oPage=null,addContact=false,moodEditMode=false,moodDraft=null;
 const SETS=[
- ['一般',[['聊天室回覆設置','被動回覆的時間、條數與各類型機率','r1'],['聊天室其他設置','通話與狀態設定','chatother'],['靈感拾取','記憶字卡與提取字卡的功能設置','inspset'],['朋友圈設置','主動發文、按讚、留言的機率，功能完成後生效','f'],['信箱設置','主動寫信與信件回覆的機率、信件內容','l'],['每日留言與今日心情','每日留言抽取與今日心情設定','daily'],['通知設置','聊天室通知的開關與提示音效','nt'],['互動設置','更多互動設定（之後增加）','r3']]],
+ ['一般',[['聊天室回覆設置','被動回覆的時間、條數與各類型機率','r1'],['聊天室其他設置','通話與狀態設定','chatother'],['靈感拾取','記憶字卡與提取字卡的功能設置','inspset'],['朋友圈設置','當前聯絡人發文、貼圖牆、貼圖回覆與留言設置','f'],['信箱設置','主動寫信與信件回覆的機率、信件內容','l'],['每日留言與今日心情','每日留言抽取與今日心情設定','daily'],['通知設置','聊天室通知的開關與提示音效','nt'],['互動設置','更多互動設定（之後增加）','r3']]],
  ['美化',[['統一更改','','bgall'],['主頁','','bghome'],['聯絡人介面','','bgcontacts'],['聊天室介面','','bgchat'],['字卡介面','','bgcards'],['設定介面','','bgset']]],
  ['數據',[['備份與還原','複製備份文字，或貼上還原','bk'],['圖片自動壓縮','開啟後，新上傳的圖片會壓縮儲存','imgc'],['重設全部資料','清除本機所有 Pearla 資料','rs']]],
  ['關於',[['聲明','使用聲明（之後增加）','dc'],['Nova 式回覆說明','了解字卡如何排隊與回覆','nv'],['系統抽取規則','隨機系統遵守的規則','rl'],['靈感提取說明與規則','靈感拾取的說明與運作規則','insprule']]]
@@ -542,17 +580,18 @@ const SICON={
 const settingIcon=id=>`<span class="si" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round">${SICON[id]||SICON.r3}</svg></span>`;
 const prr=(k,n)=>`<div class="sr"><span>${n}</span><b id="o-${k}">${S.set[k]}%</b></div><input type="range" min="0" max="100" step="5" value="${S.set[k]}" data-k="${k}">`;
 const sList=()=>{const q=sQ.trim();const rows=q?SETS.flatMap(t=>t[1]).filter(r=>(r[0]+r[1]).includes(q)):SETS[sTab][1];return rows.length?'<div class="card" style="padding:0">'+rows.map(r=>r[2].startsWith('bg')?`<div class="srow" data-a="srow" data-i="${r[2]}">${settingIcon(r[2])}<b style="font-weight:400;font-size:16px">${r[0]}</b><span class="grow"></span><span style="color:var(--soft)">›</span></div>`:r[2]==='tc'?`<div class="srow">${settingIcon(r[2])}<b style="font-weight:400;font-size:16px">${r[0]}</b><span class="grow"></span><input type="color" class="color-input" id="tc" value="${S.ink||'#5f5b8d'}" style="width:48px;padding:2px"><button class="btn color-reset" data-a="tcx" style="padding:6px 12px;font-size:12px">還原</button></div>`:`<div class="srow" data-a="srow" data-i="${r[2]}">${settingIcon(r[2])}<b style="font-weight:400;font-size:16px">${r[0]}</b><span class="pill" data-a="shelp" data-i="${r[2]}">功能說明</span><span class="grow"></span><span style="color:var(--soft)">›</span></div>`).join('')+'</div>':'<div class="empty">'+(q?'沒有符合的設置項。':'這裡還沒有項目，之後會增加。')+'</div>'};
-const RULES='<div style="font-size:14px;line-height:1.9"><p style="margin:0 0 8px"><b>Pearla 的隨機系統遵守以下規則：</b></p><p>① 每次字卡抽取都獨立進行。</p><p>② 所有符合條件的字卡，被抽中的機會完全相同。</p><p>③ 不排除重複結果，同一張字卡可以連續被抽到。</p><p>④ 不因連續抽到相同結果而調整機率。</p><p>⑤ 不設置保底或補償機制。</p><p>⑥ 不刻意平均分配結果。</p><p>⑦ 每一種互動的機率各自獨立判定。</p><p>⑧ 每項設定的數值只影響它所對應的那項互動。</p><p>⑨ 不根據你輸入的文字做語意分析。</p><p>⑩ 不根據之前的互動結果改變後續機率。</p><p>⑪ 被動回覆在發送訊息後先等 6 秒，6 秒過後才開始判定是否已讀不回；主動發送則先到達主動發送判定點，再判定發送取消機率，未取消才隨機計算下一個發送時間。</p><p>⑫ 等待回覆期間不會預先選字卡，等待時間結束後才抽取並立即傳送；一旦抽出就一定會傳送，不會再做第二次「要不要傳」的判定。</p><p>⑬ 同一次回覆有多條時，所有字卡在同一時間抽好，但每隔 3 秒（暫定）才發送下一條。</p><p>⑭ 每條字卡的情緒、心意等判定各算各的，不受同一輪其他字卡影響。</p><p>⑮ emoji和顏文字的抽取判定是：每次回覆、主動發送都會依照設定機率，隨機抽取是否添加emoji與顏文字；抽中則會隨機出現在當次回覆的開頭或結尾，開頭與結尾的機率各一半。</p><p>⑯ 各類提醒、他的問題、他的吐槽都是額外發送的訊息，不佔用主動發送的字卡機率與次數。</p><p>⑰ 每日留言會在每日 0 點開始抽取；若抽取失敗，會在設定的抽取時間結束後再次抽取。若當時未開啟網頁，則於開啟網頁後立刻開始抽取；同一天重複開啟網頁不會重置或重新判定，必須等到已儲存的抽取時間結束。每天 0 點會重新建立當天的抽取時間段，不沿用前一天的時間段；抽取成功後，當天不再繼續抽取。</p><p>⑱ 狀態會在程式開啟後開始計時，每到設定的抽取時間才判定一次是否更改狀態；重複開啟程式不會重置計時，必須等到設定時間結束後才會再次判定。若判定成功，會從狀態字卡中隨機抽取並顯示在聊天室名稱下方。</p><p>⑲ 所有計時以目前選定的聊天對象為單位，每個對象各自保存下一次狀態判定時間。</p><p>⑳ 引用消息：每一輪回覆都會依照設定的機率判定一次是否引用消息。判定成功時，會從你發出的最後 10 條訊息中隨機挑選一條來引用；無論判定成功與否，每一輪回覆都只會進行這一次引用判定。</p><p>㉑ 表情包：每一輪回覆都會依照設定的機率判定一次是否發送表情包；判定成功時，會從可抽取的表情包中隨機抽取一個，隨機插在本輪任一則回覆的前面或後面，所有可插入位置的機率完全相同（例如只有一則回覆時，插在它前面或後面的機率各一半）。</p></div>';
-const NOVA='<div style="font-size:14px;line-height:1.9"><p style="margin:0 0 10px"><b>Nova 式回覆</b>是「連著說的話併成一輪再回」的回覆方式，讓對方看起來像真的在讀你的話、想一想再回。</p><p>① 一輪只排一次隊：你連著發的幾句話併成同一輪，每位聯絡人各自只排一次隊。</p><p>② 骰子只擲一次：已讀不回、拍一拍、回幾條，在這一輪開始時擲定，之後補的句子不會重擲；引用消息同樣每一輪只判定一次。</p><p>③ 到點時間：發送後先等 6 秒，沒有已讀不回，才從「回覆最短時間」到「回覆最長時間」之間隨機抽一個等待時間。</p><p>④ 補一句往後推：你每多補一句，到點時間往後推 1.5 秒，一輪最多替你多等 8 秒。</p><p>⑤ 各排各的：每位聯絡人各有自己的一輪，切去別的聯絡人發訊息，不會頂掉原本那一輪的計時。</p><p>⑥ 已讀不回：發送 6 秒後才開始判定；若擲到，小字當下就出現、這一輪不再回覆；沒擲到才開始抽等待時間與字卡。</p><p>⑦ 回覆內容：每一條都從字卡抽取，並依 emoji、顏文字的機率決定要不要添加；表情包則是每一輪判定一次，成功就額外發送一個，並隨機插在任一則回覆的前面或後面；每次抽取獨立、機會均等。</p></div>';
+const RULES='<div style="font-size:14px;line-height:1.9"><p style="margin:0 0 8px"><b>Pearla 的隨機系統遵守以下規則：</b></p><p>① 每次字卡抽取都獨立進行。</p><p>② 所有符合條件的字卡，被抽中的機會完全相同。</p><p>③ 不排除重複結果，同一張字卡可以連續被抽到。</p><p>④ 不因連續抽到相同結果而調整機率。</p><p>⑤ 不設置保底或補償機制。</p><p>⑥ 不刻意平均分配結果。</p><p>⑦ 每一種互動的機率各自獨立判定。</p><p>⑧ 每項設定的數值只影響它所對應的那項互動。</p><p>⑨ 不根據你輸入的文字做語意分析。</p><p>⑩ 不根據之前的互動結果改變後續機率。</p><p>⑪ 被動回覆在發送訊息後先等 6 秒，6 秒過後才開始判定是否已讀不回；主動發送則先到達主動發送判定點，再判定發送取消機率，未取消才隨機計算下一個發送時間。</p><p>⑫ 等待回覆期間不會預先選字卡，等待時間結束後才抽取並立即傳送；一旦抽出就一定會傳送，不會再做第二次「要不要傳」的判定。</p><p>⑬ 同一次回覆有多條時，所有字卡在同一時間抽好，但每隔 3 秒（暫定）才發送下一條。</p><p>⑭ 每條字卡的情緒、心意等判定各算各的，不受同一輪其他字卡影響。</p><p>⑮ emoji與顏文字：每選擇一條字卡後，會先等待設置的「選擇emoji時間」或「選擇顏文字時間」，時間結束才依各自的機率判定要不要加入。兩者的等待時間分開計算，先等emoji或先等顏文字完全隨機；抽中的emoji或顏文字會隨機出現在該條字卡的開頭或結尾，機率各一半。聊天室被動回覆、主動發送與聯絡人發布朋友圈都依照此規則。</p><p>⑯ 各類提醒、他的問題、他的吐槽都是額外發送的訊息，不佔用主動發送的字卡機率與次數。</p><p>⑰ 每日留言會在每日 0 點開始抽取；若抽取失敗，會在設定的抽取時間結束後再次抽取。若當時未開啟網頁，則於開啟網頁後立刻開始抽取；同一天重複開啟網頁不會重置或重新判定，必須等到已儲存的抽取時間結束。每天 0 點會重新建立當天的抽取時間段，不沿用前一天的時間段；抽取成功後，當天不再繼續抽取。</p><p>⑱ 狀態會在程式開啟後開始計時，每到設定的抽取時間才判定一次是否更改狀態；重複開啟程式不會重置計時，必須等到設定時間結束後才會再次判定。若判定成功，會從狀態字卡中隨機抽取並顯示在聊天室名稱下方。</p><p>⑲ 所有計時以目前選定的聊天對象為單位，每個對象各自保存下一次狀態判定時間。</p><p>⑳ 引用消息：每一輪回覆都會依照設定的機率判定一次是否引用消息。判定成功時，會從你發出的最後 10 條訊息中隨機挑選一條來引用；無論判定成功與否，每一輪回覆都只會進行這一次引用判定。</p><p>㉑ 表情包：每一輪回覆都會依照設定的機率判定一次是否發送表情包；判定成功時，會從可抽取的表情包中隨機抽取一個，隨機插在本輪任一則回覆的前面或後面，所有可插入位置的機率完全相同（例如只有一則回覆時，插在它前面或後面的機率各一半）。</p><p>㉒ 聯絡人發布朋友圈：聯絡人會在「發布朋友圈時間」的最短與最長範圍內隨機選一個時間，時間到了才判定要不要發文。判定成功後，先依「選擇字卡時間」隨機等待一段時間，結束才開始抽取字卡；字卡抽取完畢，才依「選擇表情包時間」隨機等待，結束後依機率判定是否抽取表情包，判定成功才開始隨機抽取；表情包抽取完畢，再依「選擇貼紙時間」隨機等待，結束後依機率判定是否抽取貼紙，判定成功才開始隨機抽取，並在「放置貼紙時間」結束後，把貼紙放到貼圖牆上的隨機位置。全部選擇完成後才會一起發布到朋友圈。</p><p>㉓ 字卡、表情包、貼紙的數量不會事先決定，而是各自開始抽取時才決定，抽完才知道各有幾個。若聯絡人沒有任何表情包與貼紙可用，就不會發布貼圖牆。</p><p>㉔ 貼圖回覆：你在貼圖牆上貼了貼紙後，聯絡人會先等「判定是否回覆貼紙時間」，時間到再依機率判定要不要回覆；判定成功後，會在「選擇貼紙時間」的範圍內隨機等待一段時間才抽取貼紙；抽取完畢再等「放置貼紙時間」，貼紙會依序（每貼完一個隔 1 秒再貼下一個）出現在貼圖牆上的任意位置，也可能蓋在表情包或你的貼紙上。貼在聯絡人的貼文上，由該聯絡人回覆；貼在自己空間的貼圖牆上，由目前選定的聊天對象回覆。</p></div>';
+const NOVA='<div style="font-size:14px;line-height:1.9"><p style="margin:0 0 10px"><b>Nova 式回覆</b>是「連著說的話併成一輪再回」的回覆方式，讓對方看起來像真的在讀你的話、想一想再回。</p><p>① 一輪只排一次隊：你連著發的幾句話併成同一輪，每位聯絡人各自只排一次隊。</p><p>② 骰子只擲一次：已讀不回、拍一拍、回幾條，在這一輪開始時擲定，之後補的句子不會重擲；引用消息同樣每一輪只判定一次。</p><p>③ 到點時間：發送後先等 6 秒，沒有已讀不回，才從「回覆最短時間」到「回覆最長時間」之間隨機抽一個等待時間。</p><p>④ 補一句往後推：你每多補一句，到點時間往後推 1.5 秒，一輪最多替你多等 8 秒。</p><p>⑤ 各排各的：每位聯絡人各有自己的一輪，切去別的聯絡人發訊息，不會頂掉原本那一輪的計時。</p><p>⑥ 已讀不回：發送 6 秒後才開始判定；若擲到，小字當下就出現、這一輪不再回覆；沒擲到才開始抽等待時間與字卡。</p><p>⑦ 回覆內容：每一條都從字卡抽取，並在每條字卡抽取後，各自等待選擇時間再依 emoji、顏文字的機率決定要不要添加；表情包則是每一輪判定一次，成功就額外發送一個，並隨機插在任一則回覆的前面或後面；每次抽取獨立、機會均等。</p></div>';
 function rulesHtml(q){q=(q||'').trim();if(!q)return RULES;const ps=RULES.match(/<p[^>]*>[\s\S]*?<\/p>/g)||[],ql=q.toLowerCase(),re=new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'),hit=ps.filter(x=>x.replace(/<[^>]+>/g,'').toLowerCase().includes(ql));if(!hit.length)return '<div class="empty">沒有符合的內容。</div>';return '<div style="font-size:14px;line-height:1.9">'+hit.map(x=>x.replace(/(<[^>]+>)|([^<]+)/g,(m,t,y)=>t||y.replace(re,'<mark>$&</mark>'))).join('')+'</div>'}
 const rCard=q=>'<div class="card set">'+rulesHtml(q)+'</div>';
 function sPg(){const r=SETS.flatMap(t=>t[1]).find(x=>x[2]===sPage);return '<div class="ph2"><button class="ib" data-a="sback">‹</button><h1>'+(r?r[0]:'')+'</h1>'+(sPage==='r1'?'<button class="ib hp" data-a="help">?</button>':'')+'</div>'+sBody(sPage)}
 function sBody(id){
-  const N3=(k,l)=>{const t=Math.round(S.set[k]||0),a=[Math.floor(t/3600),Math.floor(t%3600/60),t%60],I=(q,v)=>`<input type="number" inputmode="numeric" data-t3="${k}" data-p="${q}" value="${v}" style="width:42px;text-align:right;padding:6px 4px">`;return `<div class="sr" style="align-items:center"><span>${l}</span><span>${I('h',a[0])} 時 ${I('m',a[1])} 分 ${I('s',a[2])} 秒</span></div>`};
-  const N=(k,l,u)=>(id==='r1'||id==='l'||id==='daily'||id==='chatother')&&u==='%'?prr(k,l):`<div class="sr" style="align-items:center"><span>${l}</span><span><input type="number" inputmode="decimal" data-n2="${k}" data-u="${u}" value="${S.set[k]}" style="width:${u==='秒'?'42px':'84px'};text-align:right;padding:${u==='秒'?'6px 4px':'6px 10px'}"> ${u}</span></div>`;
+  const N3=(k,l)=>{const t=Math.round(sget(k)||0),a=[Math.floor(t/3600),Math.floor(t%3600/60),t%60],I=(q,v)=>`<input type="number" inputmode="numeric" data-t3="${k}" data-p="${q}" value="${v}" style="width:42px;text-align:right;padding:6px 4px">`;return `<div class="sr" style="align-items:center"><span>${l}</span><span>${I('h',a[0])} 時 ${I('m',a[1])} 分 ${I('s',a[2])} 秒</span></div>`};
+  const N=(k,l,u)=>(id==='r1'||id==='l'||id==='daily'||id==='chatother')&&u==='%'?prr(k,l):`<div class="sr" style="align-items:center"><span>${l}</span><span><input type="number" inputmode="decimal" data-n2="${k}" data-u="${u}" value="${sget(k)}" style="width:${u==='秒'?'42px':'84px'};text-align:right;padding:${u==='秒'?'6px 4px':'6px 10px'}"> ${u}</span></div>`;
   const C=h=>'<div class="card set">'+h+'</div>';
+  const M2=(k,l)=>{const t=Math.round(sget(k)||0),a=[Math.floor(t/60),t%60],I=(q,v)=>`<input type="number" inputmode="numeric" data-t3="${k}" data-p="${q}" value="${v}" style="width:42px;text-align:right;padding:6px 4px">`;return `<div class="sr" style="align-items:center"><span>${l}</span><span>${I('m',a[0])} 分 ${I('s',a[1])} 秒</span></div>`};
   if(id==='r1'){const TM=(p,k,l)=>p==='a'?N3(k,l):N(k,l,'秒');
-    const B=(t,p,w)=>{const ck=p==='a'?'acancel':'ghost',cn=p==='a'?'發送取消機率':'已讀不回機率';return C('<h3>'+t+'</h3>'+(p==='a'?`<div class="sr" style="align-items:center"><span>開啟主動發送</span><button class="sw ${S.set.aon?'on':''}" data-a="sw" data-i="aon"></button></div>`:'')+TM(p,p+'rmin',w+'最短時間')+TM(p,p+'rmax',w+'最長時間')+N(p+'cmin',w+'條數最少','條')+N(p+'cmax',w+'條數最多','條')+N(p+'fmin','一條回覆裡最少字卡','條')+N(p+'fmax','一條回覆裡最多字卡','條')+N(ck,cn,'%')+N(p+'pat','拍一拍機率','%')+N(p+'emoji','表情包機率','%')+N(p+'emj','emoji機率','%')+N(p+'kao','顏文字機率','%'))};
+    const B=(t,p,w)=>{const ck=p==='a'?'acancel':'ghost',cn=p==='a'?'發送取消機率':'已讀不回機率';return C('<h3>'+t+'</h3>'+(p==='a'?`<div class="sr" style="align-items:center"><span>開啟主動發送</span><button class="sw ${S.set.aon?'on':''}" data-a="sw" data-i="aon"></button></div>`:'')+TM(p,p+'rmin',w+'最短時間')+TM(p,p+'rmax',w+'最長時間')+N(p+'cmin',w+'條數最少','條')+N(p+'cmax',w+'條數最多','條')+N(p+'fmin','一條回覆裡最少字卡','條')+N(p+'fmax','一條回覆裡最多字卡','條')+N(ck,cn,'%')+N(p+'pat','拍一拍機率','%')+N(p+'emoji','表情包機率','%')+N(p+'emj','emoji機率','%')+N(p+'emjT','emoji選擇時間','秒')+N(p+'kao','顏文字機率','%')+N(p+'kaoT','顏文字選擇時間','秒'))};
     return B('被動回覆','','回覆')+B('主動發送','a','發送')+C('<h3>點擊頭像發送消息</h3>'+N('avatarSend','點擊後發送消息時間','秒')+'<p class="hint">點擊頭像發送消息除了時間設置，其他設置皆與主動發送設置一致。</p>')+C('<h3>標籤設置</h3>'+N('mood','情緒出現機率','%')+N('heart','心意出現機率','%')+N('intent','交流意圖出現機率','%')+N('tagMin','標籤抽取時間最短','秒')+N('tagMax','標籤抽取時間最長','秒')+'<p class="hint">情緒、心意、交流意圖標籤判定成功後，會在設置時間內隨機一段時間抽出標籤；抽出標籤後，聯絡人的回覆才會一起發出來。</p>')+C('<h3>引用消息</h3><div class="sr" style="align-items:center"><span>使用引用消息</span><button class="sw '+(S.set.qmOn?'on':'')+'" data-a="sw" data-i="qmOn"></button></div>'+N('qmProb','引用消息機率','%'))+C('<h3>提醒設置</h3>'+N('rwater','喝水提醒機率','%')+N3('rwaterT','喝水提醒時間')+N('rmeal','吃飯提醒機率','%')+N3('rmealT','吃飯提醒時間')+N('rsport','運動提醒機率','%')+N3('rsportT','運動提醒時間')+'<p class="hint">每到設定時間就判定一次要不要發送提醒，成功就從該提醒的字卡抽一張；喝水、吃飯、運動各自計時、互不影響。</p>')+C('<h3>標記</h3><div class="sr"><span>重要訊息標記圖形</span></div><div class="mkp">'+Object.keys(MK).map(k=>`<button class="mkb ${(S.set.mk||'star')===k?'on':''}" data-a="mk" data-i="${k}">${MK[k]}<small>${MKN[k]}</small></button>`).join('')+'</div><div class="sr" style="align-items:center"><span>重要訊息標記顏色</span><span class="color-field"><input type="color" class="color-input" id="markColor" value="'+(S.set.starColor||S.ink||'#5f5b8d')+'"><button class="btn color-reset" data-a="markColorReset">還原</button></span></div>'+N('star','重要訊息標記機率','%'))+'<p class="hint">機率皆為 0% 到 100%。標題旁的 ? 有說明。</p>'}
   if(id==='r2')return C(N('star','重要訊息標記機率','%')+N('mood','情緒出現機率','%')+N('heart','心意出現機率','%')+N('intent','交流意圖出現機率','%'));
   if(id==='chatother')return C('<h3>通話</h3><div class="empty">通話功能之後再設計。</div>')+C('<h3>狀態</h3><div class="sr" style="align-items:center"><span>狀態開關</span><button class="sw '+(S.set.statusOn?'on':'')+'" data-a="sw" data-i="statusOn"></button></div>'+N3('statusWindow','抽取狀態時間')+N('statusProb','抽取成功機率','%'))+C('<h3>收藏</h3>'+N('favProb','消息被收藏機率','%')+'<p class="hint" style="margin:8px 0 0">聯絡人不會收藏他自己的消息</p>');
@@ -562,9 +601,10 @@ function sBody(id){
     G=h=>'<div style="padding:12px 0;border-top:1.5px dashed var(--line)">'+h+'</div>';
     return C('<h3>聊天室通知</h3>'+G(SW('ntMeOn','使用者發送訊息音效')+SS('ntMeSnd')).replace('border-top:1.5px dashed var(--line)','border-top:0')+G(SW('ntTaOn','聯絡人發送訊息音效')+SS('ntTaSnd'))+G(SW('ntCurOn','當前聯絡人消息通知','開啟後在聊天室以外的頁面收到消息時會跳出通知')+SS('ntCurSnd',1))+G(SW('ntOthOn','非當前聯絡人消息通知','開啟後，在聊天室以外的頁面、非當前聯絡人聊天室也能收到通知')+SS('ntOthSnd',1))+G(SW('ntStarOn','☆重要聯絡人消息通知','開啟後，非當前聯絡人消息通知關閉也可收到重要聯絡人消息通知')+SS('ntStarSnd',1)))+'<p class="hint">音效由手機即時合成；若沒有聲音，請確認手機未開靜音，並先點一下畫面。</p>'}
   if(id==='r3')return '<div class="empty">互動設置之後會加入更多項目。</div>';
-  if(id==='f')return C(N('fpost','主動發文機率','%')+N('flike','按讚機率','%')+N('fcmt','留言機率','%'))+'<p class="hint">朋友圈功能完成後生效。</p>';
+  if(id==='f'){const c=cur(),m=cmo(c),MCM=p=>N(p+'Prob',p==='cr'?'留言回覆機率':'主動留言機率','%')+N(p+'Tmin','留言最短時間','秒')+N(p+'Tmax','留言最長時間','秒')+N(p+'Nmin','留言條數最少','條')+N(p+'Nmax','留言條數最多','條')+N(p+'Fmin','一條留言裡最少字卡','條')+N(p+'Fmax','一條留言裡最多字卡','條')+N(p+'Ep','表情包機率','%')+N(p+'Emj','emoji機率','%')+N(p+'EmjT','emoji選擇時間','秒')+N(p+'Kao','顏文字機率','%')+N(p+'KaoT','顏文字選擇時間','秒'),SW=(i,l,h)=>'<div class="sr" style="align-items:center"><span>'+l+'</span><button class="sw '+(m[i]?'on':'')+'" data-a="cmsw" data-i="'+i+'"></button></div>'+(h?'<p class="hint" style="margin:4px 0 6px">'+h+'</p>':''),SWG=(k,l)=>'<div class="sr" style="align-items:center"><span>'+l+'</span><button class="sw '+(S.set[k]?'on':'')+'" data-a="sw" data-i="'+k+'"></button></div>';
+    return C('<h3>當前聯絡人發布朋友圈設置</h3><p class="hint" style="margin:-4px 0 8px">目前設置的是「'+esc(c.name)+'」；在聊天室切換聯絡人後，這裡會顯示該聯絡人自己的設置。</p>'+SW('on','發文')+N('cm.prob','發文機率','%')+SW('wall','發布貼圖牆','當聯絡人沒有選擇任何表情包和貼紙就不會發布貼圖牆')+N3('cm.tmin','發布朋友圈時間最短')+N3('cm.tmax','發布朋友圈時間最長'))+C('<h3>聯絡人發文設置</h3>'+N('mpcmin','選擇字卡時間最短','秒')+N('mpcmax','選擇字卡時間最長','秒')+N('mpnmin','內容字卡數最少','條')+N('mpnmax','內容字卡數最多','條')+N('mpemj','emoji機率','%')+N('mpemjT','選擇emoji時間','秒')+N('mpkao','顏文字機率','%')+N('mpkaoT','選擇顏文字時間','秒')+'<p class="hint">每選擇一條字卡後，會先等待選擇時間，時間結束才判定要不要加入emoji或顏文字；兩者的等待時間分開計算，先後順序隨機。</p>')+C('<h3>聯絡人發布貼圖牆內容</h3>'+N('mwEp','貼圖牆表情包機率','%')+M2('mwEmin','選擇表情包最短時間')+M2('mwEmax','選擇表情包最長時間')+N('mwNmin','貼圖牆內表情包最少張數','張')+N('mwNmax','貼圖牆內表情包最多張數','張')+N('mwSp','貼圖牆貼紙使用機率','%')+M2('mwSmin','選擇貼紙時間最短時間')+M2('mwSmax','選擇貼紙時間最長時間')+N('mwKmin','貼圖牆貼紙最少','張')+N('mwKmax','貼圖牆貼紙最多','張')+N('mwPlace','放置貼紙時間','秒'))+C('<h3>貼圖回覆</h3>'+SWG('srOn','貼圖回覆')+N('srJudge','判定是否回覆貼紙時間','秒')+N('srProb','回覆貼紙機率','%')+N('srMin','選擇貼紙最短時間','秒')+M2('srMax','選擇貼紙最長時間')+N('srNmin','回覆貼紙最少','張')+N('srNmax','回覆貼紙最多','張')+N('srPlace','放置貼紙時間','秒'))+C('<h3>聯絡人主動留言</h3>'+SWG('cmOn','留言其他聯絡人朋友圈內容')+MCM('cm')+'<p class="hint">聯絡人發布朋友圈後，其他聯絡人各自判定是否留言；判定成功後，會在最短～最長時間內隨機一段時間才送出留言。留言條數、每條留言的字卡數、emoji／顏文字的選擇方式與聊天室相同；表情包機率每輪只判定一次，抽中會用一張表情包當作一條留言。</p>')+C('<h3>回覆留言</h3>'+SWG('crOn','回覆其他聯絡人留言')+SWG('crSame','其他設置皆與主動留言相同')+'<p class="hint" style="margin:4px 0 6px">聯絡人也會回覆你的留言：點聯絡人的留言可以回覆，被回覆的聯絡人依下方機率判定是否回覆你，你再回覆就再判定一次，判定失敗或你不再回覆就停止。</p>'+(S.set.crSame?'<p class="hint" style="margin:4px 0 0">回覆留言的機率、時間、條數與字卡設置，都使用上方「聯絡人主動留言」的設置。</p>':MCM('cr')))}
   if(id==='l'){const SW=(k,l)=>`<div class="sr" style="align-items:center"><span>${l}</span><button class="sw ${S.set[k]?'on':''}" data-a="sw" data-i="${k}"></button></div>`;
-    return C('<h3>信件通知</h3><div class="sr" style="align-items:center"><span>收到信件時收到通知</span><button class="sw '+(S.set.letterNotify?'on':'')+'" data-a="sw" data-i="letterNotify"></button></div><p class="hint" style="margin:4px 0 10px">收到信件時，在螢幕上方顯示 6 秒的浮窗通知。</p><div class="sr" style="align-items:center"><span>主頁信件圖標通知</span><button class="sw '+(S.set.letterBadge?'on':'')+'" data-a="sw" data-i="letterBadge"></button></div><p class="hint" style="margin:4px 0 0">開啟後，主頁信箱圖示右上角會顯示收到的信件數，超過 9 封顯示 9+。</p>')+C('<h3>信件內容</h3>'+N('lcmin','最少字卡條數','條')+N('lcmax','最多字卡條數','條')+N('lemo','使用表情包機率','%')+N('lemomax','表情包限制最多','張')+N('lemj','使用emoji機率','%')+N('lkao','使用顏文字機率','%')+'<p class="hint">每一個字卡都會各判定一次是否加上 emoji、顏文字，抽中會放在字卡前面或後面（各 50%）。表情包是圖片，一封信最多放設定的張數。</p>')+C('<h3>主動寫信</h3>'+N('lwrite','主動寫信機率','%')+N('lday','每天最多寫信','封')+N3('lwmin','最短寫信時間')+N3('lwmax','最長寫信時間')+'<p class="hint">在設定時間內隨機選擇時間發送信件。</p>')+C('<h3>聯絡人信件回覆</h3>'+N('lreply','回覆寫信機率','%')+N3('lrmin','最短回信時間')+N3('lrmax','最長回信時間'))+'<p class="hint">信件在主頁的「信箱」查看。</p>'}
+    return C('<h3>信件通知</h3><div class="sr" style="align-items:center"><span>收到信件時收到通知</span><button class="sw '+(S.set.letterNotify?'on':'')+'" data-a="sw" data-i="letterNotify"></button></div><p class="hint" style="margin:4px 0 10px">收到信件時，在螢幕上方顯示 6 秒的浮窗通知。</p><div class="sr" style="align-items:center"><span>主頁信件圖標通知</span><button class="sw '+(S.set.letterBadge?'on':'')+'" data-a="sw" data-i="letterBadge"></button></div><p class="hint" style="margin:4px 0 0">開啟後，主頁信箱圖示右上角會顯示收到的信件數，超過 9 封顯示 9+。</p>')+C('<h3>效果</h3><div class="sr" style="align-items:center"><span>寫信音效</span><button class="sw '+(S.set.penSnd?'on':'')+'" data-a="sw" data-i="penSnd"></button></div><div class="sr" style="align-items:center"><span>音量大小</span><span style="display:flex;align-items:center;gap:8px"><input type="range" min="0" max="100" step="1" data-pvol value="'+(S.set.penVol==null?50:Math.round(+S.set.penVol||0))+'" style="width:130px;accent-color:var(--lav);padding:0"><b id="pvl" style="font-weight:500;min-width:38px;text-align:right">'+(S.set.penVol==null?50:Math.round(+S.set.penVol||0))+'%</b></span></div><div class="sr" style="align-items:center"><span>重要聯繫人來信動畫</span><button class="sw '+(S.set.crabMail?'on':'')+'" data-a="sw" data-i="crabMail"></button></div><p class="hint" style="margin:4px 0 0">開啟後，重要聯絡人寄來的信，點主頁信箱時會有螃蟹送信動畫，打開後按「保存信件」才會關閉。</p>')+C('<h3>信件內容</h3>'+N('lcmin','最少字卡條數','條')+N('lcmax','最多字卡條數','條')+N('lemo','使用表情包機率','%')+N('lemomax','表情包限制最多','張')+N('lemj','使用emoji機率','%')+N('lkao','使用顏文字機率','%')+'<p class="hint">每一個字卡都會各判定一次是否加上 emoji、顏文字，抽中會放在字卡前面或後面（各 50%）。表情包是圖片，一封信最多放設定的張數。</p>')+C('<h3>主動寫信</h3>'+N('lwrite','主動寫信機率','%')+N('lday','每天最多寫信','封')+N3('lwmin','最短寫信時間')+N3('lwmax','最長寫信時間')+'<p class="hint">在設定時間內隨機選擇時間發送信件。</p>')+C('<h3>聯絡人信件回覆</h3>'+N('lreply','回覆寫信機率','%')+N3('lrmin','最短回信時間')+N3('lrmax','最長回信時間'))+'<p class="hint">信件在主頁的「信箱」查看。</p>'}
   if(id==='imgc')return C('<div class="sr" style="align-items:center"><span>圖片自動壓縮</span><button class="sw '+(S.set.imgc?'on':'')+'" data-a="sw" data-i="imgc"></button></div><p class="hint" style="margin:8px 0 0">開啟後，之後上傳的圖片（背景、表情包）會用較小的尺寸與較低的畫質儲存，省空間。已經上傳的圖片，請到主頁「數據」使用「壓縮現有圖片」。</p>');if(id==='inspset')return C('<h3>記憶字卡</h3><div class="sr" style="align-items:center"><span>記憶字卡功能開關</span><button class="sw '+(S.set.memOn?'on':'')+'" data-a="sw" data-i="memOn"></button></div>'+N3('memJmin','每條回覆記憶判定最短時間')+N3('memJmax','每條回覆記憶判定最長時間')+N('memProb','每條使用者訊息記憶判定成功機率','%')+N('memPmin','判定成功後選取詞語最短時間','秒')+N('memPmax','判定成功後選取詞語最長時間','秒')+N('memWord','單字判定成功機率','%')+'<p class="hint" style="margin:-4px 0 8px">具有獨立意義的完整詞語</p>'+N('memPhrase','連續詞組判定成功機率','%')+'<p class="hint" style="margin:-4px 0 8px">原始訊息中連續出現的詞語組合</p>'+N('memSent','完整句子判定成功機率','%')+'<p class="hint" style="margin:-4px 0 8px">原始訊息中的完整句子</p>')+C('<h3>提取字卡</h3><div class="sr" style="align-items:center"><span>提取字卡功能開關</span><button class="sw '+(S.set.extOn?'on':'')+'" data-a="sw" data-i="extOn"></button></div>'+N('extWmin','提取判定最短等待時間','秒')+N('extWmax','提取判定最長等待時間','秒')+N('extProb','提取觸發機率','%')+N('extDelay','判定成功後的提取延遲','秒')+N('extWord','單字判定成功機率','%')+'<p class="hint" style="margin:-4px 0 8px">具有獨立意義的完整詞語</p>'+N('extPhrase','連續詞組判定成功機率','%')+'<p class="hint" style="margin:-4px 0 8px">原始訊息中連續出現的詞語組合</p>'+N('extSent','完整句子判定成功機率','%')+'<p class="hint" style="margin:-4px 0 8px">原始訊息中的完整句子</p>'+N('extSave','提取字卡發送後保存機率','%'));if(id==='insprule')return INSPRULE;if(id==='dc')return '<div class="empty">聲明內容之後再加入。</div>';
   if(id==='rl')return '<input id="rq" placeholder="搜索本頁內容" autocomplete="off" value="'+esc(rQ)+'" style="margin-bottom:12px"><div id="rbody">'+rCard(rQ)+'</div>';
   if(id&&id.startsWith('bg')){const key=id.slice(2),bc=(S.bgColors&&S.bgColors[key])||'#f6f2ff',ttl=key==='all'?'統一更改':(PN[key]||key)+'背景',CB=(c,t)=>'<button type="button" class="clr-btn" data-a="pickc" data-i="'+t+'" style="background:'+c+'" aria-label="選擇顏色"></button>',ROW=(l,ctl)=>'<div class="brow"><span>'+l+'</span><span class="bctl">'+ctl+'</span></div>';
@@ -578,7 +618,6 @@ function sDetailOld(id){const r=SETS.flatMap(t=>t[1]).find(x=>x[2]===id);let b='
   if(id==='r1')b=`<div class="sr"><span>回覆等待上限</span><b id="o-wi">${WL(WAITS[S.set.wi])}</b></div><input type="range" min="0" max="8" step="1" value="${S.set.wi}" data-k="wi">`+prr('star','重要訊息標記機率');
   if(id==='r2')b=prr('mood','情緒出現機率')+prr('heart','心意出現機率')+prr('intent','交流意圖出現機率');
   if(id==='r3')b=prr('emoji','表情包出現機率')+prr('pat','拍一拍觸發機率');
-  if(id==='f')b=prr('fpost','主動發文機率')+prr('flike','按讚機率')+prr('fcmt','留言機率');
   if(id==='l')b=prr('lwrite','主動寫信機率')+prr('lreply','信件回覆機率');
   if(id==='bg')b='<button class="btn s" data-a="bg">選擇照片</button><button class="btn" data-a="bgx">還原</button>';
   if(id==='tc')b=`<input type="color" class="color-input" id="tc" value="${S.ink||'#5f5b8d'}" style="height:48px;padding:4px"><button class="btn color-reset" data-a="tcx">還原</button>`;
@@ -593,7 +632,6 @@ const vSetOld=()=>{const s=S.set;
 ${pr('star','重要訊息標記機率')}${pr('mood','情緒出現機率')}${pr('heart','心意出現機率')}${pr('intent','交流意圖出現機率')}${pr('emoji','表情包出現機率')}${pr('pat','拍一拍觸發機率')}
 </div>
 
-<div class="card set"><h3>朋友圈設定</h3>${pr('fpost','主動發文機率')}${pr('flike','按讚機率')}${pr('fcmt','留言機率')}<p class="hint">朋友圈功能完成後生效。</p></div>
 <div class="card set"><h3>信箱設定</h3>${pr('lwrite','主動寫信機率')}${pr('lreply','信件回覆機率')}<p class="hint">信箱功能完成後生效。</p></div>
 <div class="card set"><h3>美化</h3><div class="sr"><span>主頁背景</span><span><button class="btn" data-a="bg">選擇照片</button> <button class="btn" data-a="bgx">還原</button></span></div><div class="sr"><span>全部字體顏色</span><span><input type="color" class="color-input" id="tc" value="${S.ink||'#5f5b8d'}" style="width:48px;padding:2px"> <button class="btn color-reset" data-a="tcx">還原</button></span></div><p class="hint">美化的其他功能之後會再增加。</p></div>
 <div class="card set"><h3>資料</h3><button class="btn" style="width:100%" data-a="bak">備份與還原</button><button class="btn d" style="width:100%;margin-top:8px" data-a="reset">重設全部資料</button></div>`};
@@ -618,7 +656,7 @@ function patMsg(cid,me,tx){const c=S.contacts.find(x=>x.id===cid),p=pool('pat',c
 function mig(o){o=o||{};o.contacts=Array.isArray(o.contacts)?o.contacts:[];o.contacts.forEach(c=>{if(c.status==null)c.status=''});o.cats=Array.isArray(o.cats)?o.cats:[];o.cards=Array.isArray(o.cards)?o.cards:[];if(o.tags){[['mood','情緒'],['heart','心意'],['intent','交流意圖']].forEach(([k,n])=>{const id=uid();o.cats.push({id,sc:'s',kind:k,name:n,on:1,as:[]});(o.tags[k]||[]).forEach(t=>o.cards.push({id:uid(),cat:id,text:t,on:1}))});delete o.tags}o.pend=o.pend||[];if(!o.m3){if(o.set){if(o.set.rmax!=null)o.set.rmax*=60;if(o.set.armax!=null)o.set.armax*=60;if(o.set.lwmax!=null)o.set.lwmax=240;o.set.pat=30;o.set.emoji=30}o.m3=1}
   o.kon=o.kon||{};o.next=o.next||{};o.apend=o.apend||{};o.cats.forEach(c=>{c.as=Array.isArray(c.as)?c.as:[];c.on=c.on===0?0:1});o.cards.forEach(k=>{k.on=k.on===0?0:1});o.bgs=o.bgs||{};o.bgColors=o.bgColors||{};o.bgColors.all=o.bgColors.all||'#f6f2ff';o.line=o.line||'#cbc7ee';if(o.bg&&!o.bgs.home)o.bgs.home=o.bg;o.cats.forEach(c=>{if(c.sc==='e'&&!c.own)c.own=(c.as&&c.as[0])||o.cur});
   if(!o.m4){if(o.set)['lwmin','lwmax','lrmin','lrmax'].forEach(k=>{if(o.set[k]!=null)o.set[k]*=60});o.m4=1}if(!o.m5){if(o.set)o.set.aon=1;o.m5=1}if(!o.m6){o.next={};o.apend={};o.m6=1}if(!o.m7){let g=o.cats.find(c=>c&&kc(c)==='emj');if(!g){const id=uid();g={id,sc:'s',kind:'emj',name:'emoji',on:1,as:[]};o.cats.push(g);['😊','🥺','💗','✨','🌙','😳'].forEach(text=>o.cards.push({id:uid(),cat:id,text,on:1}))}o.m7=1}if(!o.m8){let g=o.cats.find(c=>c&&kc(c)==='kao'&&c.sc==='s'&&c.un);if(!g){g={id:uid(),sc:'s',kind:'kao',name:'未分類',on:1,as:[],un:1};o.cats.push(g)}['(๑•́ ⃃ •̀๑)','(*´∀`)','(｡•́︿•̀｡)','(≧▽≦)','(˘▾˘)~♪'].forEach(text=>{if(!o.cards.some(k=>k.cat===g.id&&k.text===text))o.cards.push({id:uid(),cat:g.id,text,on:1})});o.m8=1}
-  o.rounds=o.rounds||{};o.ipend=Array.isArray(o.ipend)?o.ipend:[];o.plum=Array.isArray(o.plum)?o.plum:[];o.book=Array.isArray(o.book)?o.book:[];o.moments=Array.isArray(o.moments)?o.moments:[];o.momCover=o.momCover||'';o.momSig=o.momSig||'';o.groups=Array.isArray(o.groups)?o.groups:[];o.gdef=o.gdef||'';o.insp=o.insp||{};['mem','ext','ev'].forEach(k=>{o.insp[k]=Array.isArray(o.insp[k])?o.insp[k]:[]});o.un=o.un||{};o.statusClock=o.statusClock||{};o.dailies=o.dailies||{};o.todayMoodBy=o.todayMoodBy||{};if(!o.m8&&o.set){if(o.set.armin===600&&o.set.armax===3600){o.set.armin=1200;o.set.armax=28800}if(o.set.fmax===1)o.set.fmax=2;if(o.set.afmax===1)o.set.afmax=2;o.m8=1}if(o.set&&o.set.acancel==null&&o.set.aghost!=null)o.set.acancel=o.set.aghost;if(!o.m16){if(o.set)o.set.acancel=0;o.m16=1}o.set=Object.assign({ntMeOn:0,ntMeSnd:'tap',ntTaOn:0,ntTaSnd:'bubble',ntCurOn:1,ntCurSnd:'ding',ntOthOn:0,ntOthSnd:'ding',ntStarOn:1,ntStarSnd:'chime',star:10,dailyMoodOn:1,dailyOn:0,dailyProb:70,dailyWindow:21600,dailyMin:1,dailyMax:5,dailyKao:20,dailyEmoji:20,statusOn:0,statusWindow:7200,statusProb:70,avatarSend:6,fpost:50,flike:50,fcmt:50,lwrite:50,lreply:50,rmin:3,rmax:30,cmin:1,cmax:2,ghost:10,emj:20,kao:20,quote:20,fmin:1,fmax:1,armin:1200,armax:28800,acmin:1,acmax:2,afmin:1,afmax:2,acancel:0,apat:30,aemoji:30,aemj:20,akao:20,aquote:0,qmOn:1,qmProb:30,favProb:10,mood:15,heart:15,intent:15,tagMin:1.3,tagMax:10,imgc:0,memOn:1,memJmin:5,memJmax:10800,memProb:10,memPmin:3,memPmax:15,memWord:10,memPhrase:10,memSent:10,extOn:1,extWmin:3,extWmax:180,extProb:10,extDelay:20,extWord:10,extPhrase:10,extSent:10,extSave:20,letterNotify:1,letterBadge:1,lcmin:3,lcmax:15,lemo:20,lemj:20,lkao:20,lemomax:2,rwaterT:3600,rmealT:10800,rsportT:10800,lday:3,lwmin:600,lwmax:14400,lrmin:60,lrmax:1800,rwater:20,rmeal:20,rsport:20,aon:1},o.set);if(!o.m19){
+  o.rounds=o.rounds||{};o.ipend=Array.isArray(o.ipend)?o.ipend:[];o.plum=Array.isArray(o.plum)?o.plum:[];o.book=Array.isArray(o.book)?o.book:[];o.moments=Array.isArray(o.moments)?o.moments:[];o.moments.forEach(p=>{if(!p.id)p.id=uid()});o.mst=o.mst&&typeof o.mst==='object'?o.mst:{};o.mrep=Array.isArray(o.mrep)?o.mrep:[];o.mcm=Array.isArray(o.mcm)?o.mcm:[];o.pomo=Object.assign({foc:25,brk:5,lng:15,cyc:4,auto:1,snd:1,ph:'foc',run:0,end:0,left:0,idx:0,day:'',n:0},o.pomo&&typeof o.pomo==='object'?o.pomo:{});if(!o.pomo.left)o.pomo.left=o.pomo.foc*60000;if(o.momStk==null)o.momStk=1;o.contacts.forEach(c=>cmo(c));if(o.set)['fpost','flike','fcmt'].forEach(k=>delete o.set[k]);o.momCover=o.momCover||'';o.momSig=o.momSig||'';o.groups=Array.isArray(o.groups)?o.groups:[];o.gdef=o.gdef||'';o.insp=o.insp||{};['mem','ext','ev'].forEach(k=>{o.insp[k]=Array.isArray(o.insp[k])?o.insp[k]:[]});o.un=o.un||{};o.statusClock=o.statusClock||{};o.dailies=o.dailies||{};o.todayMoodBy=o.todayMoodBy||{};if(!o.m8&&o.set){if(o.set.armin===600&&o.set.armax===3600){o.set.armin=1200;o.set.armax=28800}if(o.set.fmax===1)o.set.fmax=2;if(o.set.afmax===1)o.set.afmax=2;o.m8=1}if(o.set&&o.set.acancel==null&&o.set.aghost!=null)o.set.acancel=o.set.aghost;if(!o.m16){if(o.set)o.set.acancel=0;o.m16=1}o.set=Object.assign({ntMeOn:0,ntMeSnd:'tap',ntTaOn:0,ntTaSnd:'bubble',ntCurOn:1,ntCurSnd:'ding',ntOthOn:0,ntOthSnd:'ding',ntStarOn:1,ntStarSnd:'chime',star:10,dailyMoodOn:1,dailyOn:0,dailyProb:70,dailyWindow:21600,dailyMin:1,dailyMax:5,dailyKao:20,dailyEmoji:20,statusOn:0,statusWindow:7200,statusProb:70,avatarSend:6,penSnd:1,penVol:50,crabMail:1,cmOn:1,cmProb:50,cmTmin:3,cmTmax:180,cmNmin:1,cmNmax:2,cmFmin:1,cmFmax:2,cmEp:20,cmEmj:20,cmEmjT:10,cmKao:20,cmKaoT:10,crOn:1,crSame:1,crProb:50,crTmin:3,crTmax:180,crNmin:1,crNmax:2,crFmin:1,crFmax:2,crEp:20,crEmj:20,crEmjT:10,crKao:20,crKaoT:10,mpcmin:3,mpcmax:180,mpnmin:5,mpnmax:10,mpemj:20,mpemjT:15,mpkao:20,mpkaoT:15,mwEp:50,mwEmin:3,mwEmax:50,mwNmin:1,mwNmax:6,mwSp:50,mwSmin:3,mwSmax:50,mwKmin:1,mwKmax:3,mwPlace:10,srOn:1,srJudge:3,srProb:100,srMin:.5,srMax:12,srNmin:1,srNmax:2,srPlace:5,emjT:10,kaoT:10,aemjT:10,akaoT:10,lwrite:50,lreply:50,rmin:3,rmax:30,cmin:1,cmax:2,ghost:10,emj:20,kao:20,quote:20,fmin:1,fmax:1,armin:1200,armax:28800,acmin:1,acmax:2,afmin:1,afmax:2,acancel:0,apat:30,aemoji:30,aemj:20,akao:20,aquote:0,qmOn:1,qmProb:30,favProb:10,mood:15,heart:15,intent:15,tagMin:1.3,tagMax:10,imgc:0,memOn:1,memJmin:5,memJmax:10800,memProb:10,memPmin:3,memPmax:15,memWord:10,memPhrase:10,memSent:10,extOn:1,extWmin:3,extWmax:180,extProb:10,extDelay:20,extWord:10,extPhrase:10,extSent:10,extSave:20,letterNotify:1,letterBadge:1,lcmin:3,lcmax:15,lemo:20,lemj:20,lkao:20,lemomax:2,rwaterT:3600,rmealT:10800,rsportT:10800,lday:3,lwmin:600,lwmax:14400,lrmin:60,lrmax:1800,rwater:20,rmeal:20,rsport:20,aon:1},o.set);if(!o.m19){
   if(o.set){if(o.set.favProb===30)o.set.favProb=10;['mood','heart','intent'].forEach(k=>{if(o.set[k]===50)o.set[k]=15})}
   const has=k=>o.cards.some(c=>{const g=o.cats.find(x=>x&&x.id===c.cat);return g&&kc(g)===k});
   if(!has('kao')){let g=o.cats.find(c=>c&&kc(c)==='kao'&&c.sc==='s'&&c.un);if(!g){g={id:uid(),sc:'s',kind:'kao',name:'未分類',on:1,as:[],un:1};o.cats.push(g)}KAO.forEach(text=>o.cards.push({id:uid(),cat:g.id,text,on:1}))}
@@ -630,14 +668,13 @@ function reply(cid){const b=ms(cid).length,q=[gen(cid)];qmApply(cid,q);stkApply(
 function stkApply(cid,q,pr){if(!(rnd()*100<(+S.set[(pr||'')+'emoji']||0)))return;const em=pool('emoji',cid);if(!em.length)return;const e=pk(em),sm={id:uid(),f:'ta',x:e.text,img:e.img,t:Date.now()},idx=[];q.forEach((m,i)=>{if(m.f==='ta')idx.push(i)});if(!idx.length){q.push(sm);return}const k=ri(idx.length+1);q.splice(k===0?idx[0]:idx[k-1]+1,0,sm)}
 /* 引用消息：每輪只判定一次；成功則從我發出的最後 10 條訊息中隨機選一條，掛在本輪第一則回覆上 */
 function qmApply(cid,q){const s=S.set;if(!s.qmOn||!(rnd()*100<(+s.qmProb||0)))return;const mine=ms(cid).filter(m=>m.f==='me').slice(-10);if(!mine.length)return;const t=q.find(m=>m.f==='ta');if(!t)return;const p=mine[ri(mine.length)];t.q=p.x||'[表情包]'}
-function gen(cid,pr){pr=pr||'';const s=S.set,nc=()=>{const a=Math.round(Math.min(s[pr+'fmin'],s[pr+'fmax'])),b=Math.round(Math.max(s[pr+'fmin'],s[pr+'fmax']));return Math.max(1,a+ri(b-a+1))},hit=p=>rnd()*100<p,t=Date.now(),em=pool('emoji',cid);
+function gen(cid,pr,off){pr=pr||'';const s=S.set,nc=()=>{const a=Math.round(Math.min(s[pr+'fmin'],s[pr+'fmax'])),b=Math.round(Math.max(s[pr+'fmin'],s[pr+'fmax']));return Math.max(1,a+ri(b-a+1))},hit=p=>rnd()*100<p,t=Date.now();
   const pl=cardPool(cid);if(!pl.length)return{id:uid(),f:'sys',x:'目前沒有可抽取的字卡',t};
-  let x=Array.from({length:nc()},()=>pk(pl).text).join('  ');
-  const add=items=>{if(!items.length)return;const z=pk(items.map(k=>k.text));x=Math.random()<.5?z+' '+x:x+' '+z};
-  if(hit(s[pr+'emj']))add(pool('emj',cid));
-  if(hit(s[pr+'kao']))add(pool('kao',cid));
+  const timed=typeof off==='number';let w=timed?off:0;const EJ=pool('emj',cid),KA=pool('kao',cid);
+  /* 每選擇一條字卡後，emoji、顏文字各自等待選擇時間再判定（先後隨機），抽中放在該條字卡開頭或結尾 */
+  const x=Array.from({length:nc()},()=>{let c=pk(pl).text;[['emj',EJ],['kao',KA]].sort(()=>rnd()-.5).forEach(([k,items])=>{const p=+s[pr+k]||0;if(p<=0)return;if(timed)w+=Math.max(0,+s[pr+k+'T']||0)*1000;if(items.length&&hit(p)){const z=pk(items).text;c=rnd()<.5?z+' '+c:c+' '+z}});return c}).join('  ');
   const tags=[];[['mood','情緒'],['heart','心意'],['intent','交流意圖']].forEach(([k,n])=>{const p=pool(k,cid);if(p.length&&S.kon[k]!==0&&hit(s[k]))tags.push(n+'·'+pk(p).text)});
-  return{id:uid(),f:'ta',x,t,tags,star:hit(s.star)}}
+  const m={id:uid(),f:'ta',x,t,tags,star:hit(s.star)};if(timed)m._rd=w;return m}
 function schedule(cid,text){const s=S.set,R=S.rounds[cid],now=Date.now();
   S.ghostUntil=S.ghostUntil||{};const lk=(S.ghostUntil[cid]||0)>now;
   const rt=R?(R.readAt!=null?R.readAt:now):now+1000,lm=ms(cid)[ms(cid).length-1];if(lm&&lm.f==='me'&&!lm.qa&&lm.rt==null)lm.rt=rt;
@@ -646,18 +683,18 @@ function schedule(cid,text){const s=S.set,R=S.rounds[cid],now=Date.now();
 function fire(cid,R){if(!S.contacts.some(c=>c.id===cid))return;
   const s=S.set,hit=p=>rnd()*100<p,q=[];
   if(R.pat){const pm=patMsg(cid,false);if(pm)q.push(pm)}
-  for(let k=0;k<R.n;k++)q.push(gen(cid));qmApply(cid,q);stkApply(cid,q,'');
+  {let off=0;for(let k=0;k<R.n;k++){const m=gen(cid,'',off);if(m._rd!=null)off=m._rd;q.push(m)}}qmApply(cid,q);stkApply(cid,q,'');
   sendQT(cid,q);extStart(cid)}
 function resetA(){if(!S)return;S.next={};S.apend={};save()}
 function activeSetting(k){return ['armin','armax','acancel','acmin','acmax','afmin','afmax'].includes(k)}
 function fireA(cid){if(!S.contacts.some(c=>c.id===cid))return;
   const s=S.set,hit=p=>rnd()*100<p,q=[],a=Math.round(Math.min(s.acmin,s.acmax)),b=Math.round(Math.max(s.acmin,s.acmax)),n=a+ri(b-a+1),last=[...ms(cid)].reverse().find(m=>m.f==='me');
   if(hit(s.apat)){const pm=patMsg(cid,false);if(pm)q.push(pm)}
-  for(let k=0;k<n;k++){const m=gen(cid,'a');if(m.f!=='ta')continue;q.push(m)}qmApply(cid,q);stkApply(cid,q,'a');
+  let off=0;for(let k=0;k<n;k++){const m=gen(cid,'a',off);if(m.f!=='ta')continue;off=m._rd;q.push(m)}qmApply(cid,q);stkApply(cid,q,'a');
   sendQT(cid,q);extStart(cid)}
 function remind(cid,q){const s=S.set;[['water','rwater'],['meal','rmeal'],['sport','rsport']].forEach(([kd,ky])=>{const p=pool(kd,cid);if(p.length&&S.kon[kd]!==0&&rnd()*100<s[ky])q.push({id:uid(),f:'ta',x:pk(p).text,t:Date.now()})})}
-function sendQ(cid,q){if(q.findIndex(m=>m.f==='ta')>0)typingQ[cid]=1;const send=m=>{if(!S.contacts.some(c=>c.id===cid))return;if(m.f==='ta')delete typingQ[cid];m.t=Date.now();const b=ms(cid).length;ms(cid).push(m);notify(cid,b);save();if(tab==='chat')paint();else if(tab==='contacts'&&!document.activeElement.isContentEditable)render();badge()};
-  q.forEach((m,i)=>i?setTimeout(()=>send(m),GAP*i):send(m))}
+function sendQ(cid,q,base){base=base||0;if(q.findIndex(m=>m.f==='ta')>0)typingQ[cid]=1;const send=m=>{if(!S.contacts.some(c=>c.id===cid))return;if(m.f==='ta')delete typingQ[cid];delete m._rd;m.t=Date.now();const b=ms(cid).length;ms(cid).push(m);notify(cid,b);save();if(tab==='chat')paint();else if(tab==='contacts'&&!document.activeElement.isContentEditable)render();badge()};
+  let d=0;q.forEach((m,i)=>{const rd=Math.max(0,(m._rd||0)-base);d=i?Math.max(d+GAP,rd):rd;d?setTimeout(()=>send(m),d):send(m)})}
 function notify(cid,b){const a=ms(cid),n=a.length-b;if(n<1)return;if(tab==='chat'&&S.cur===cid){if(S.set.ntTaOn)playSnd(S.set.ntTaSnd);return}S.un[cid]=(S.un[cid]||0)+n;const c=S.contacts.find(x=>x.id===cid);let snd=null;if(cid===S.cur){if(S.set.ntCurOn)snd=S.set.ntCurSnd||'none'}else if(c&&c.star&&S.set.ntStarOn)snd=S.set.ntStarSnd||'none';else if(S.set.ntOthOn)snd=S.set.ntOthSnd||'none';if(snd!==null&&c){banner(cid===S.cur?c.name+'：'+(a[b].x||'[表情包]'):c.name+'：發送一條消息');playSnd(snd)}badge();if(tab==='contacts'&&!document.activeElement.isContentEditable)render()}
 function banner(t,d){const e=$('#bn');e.textContent=t;e.classList.add('show');clearTimeout(banner.t);banner.t=setTimeout(()=>e.classList.remove('show'),d||2000)}
 function badge(){const n=tab==='chat'?0:(S.un[S.cur]||0),e=$('#nb');if(!e)return;e.textContent=n;e.style.display=n?'block':'none'}
@@ -699,7 +736,7 @@ const inspLog=(kd,r)=>{const a=S.insp[kd];a.push(r);if(a.length>1000)a.splice(0,
 const inspRand=(a,b)=>{a=Math.max(0,+a||0);b=Math.max(a,+b||0);return(a+rnd()*(b-a))*1000};
 function memSchedule(cid,m){if(!S.set||!S.set.memOn||m.img||m.qa||!m.x||[...String(m.x).trim()].length<2)return;S.ipend.push({id:uid(),k:'m1',cid,mid:m.id,x:m.x,mt:m.t||Date.now(),due:Date.now()+inspRand(S.set.memJmin,S.set.memJmax)})}
 function extStart(cid){if(!S.set.extOn)return;S.ipend.push({id:uid(),k:'e1',cid,due:Date.now()+inspRand(S.set.extWmin,S.set.extWmax)})}
-function sendQT(cid,q){if(!q.some(m=>m.tags&&m.tags.length)){sendQ(cid,q);return}setTimeout(()=>sendQ(cid,q),inspRand(S.set.tagMin,S.set.tagMax))}
+function sendQT(cid,q){if(!q.some(m=>m.tags&&m.tags.length)){sendQ(cid,q);return}const d=inspRand(S.set.tagMin,S.set.tagMax);setTimeout(()=>sendQ(cid,q,d),d)}
 function inspStep(p){const s=S.set,n=Date.now(),hit=x=>rnd()*100<x;
   if(p.k==='m1'){if(s.memOn&&hit(+s.memProb||0))S.ipend.push({...p,k:'m2',id:uid(),due:n+inspRand(s.memPmin,s.memPmax)})}
   else if(p.k==='m2'){memPicks(p.x).forEach(t=>{inspAdd(p.cid,'mem',t,{id:p.mid,x:p.x,mt:p.mt,t:n});inspLog('mem',{id:uid(),cid:p.cid,text:t,src:p.x,sid:p.mid,mt:p.mt,t:n})})}
@@ -1194,13 +1231,14 @@ function castHexagram(num1, num2, options = {}) {
 
 return{castHexagram,TRIGRAMS}})();
 const MH_TXT=["元亨利貞。|初九：潛龍，勿用。|九二：見龍在田，利見大人。|九三：君子終日乾乾，夕惕若，厲，無咎。|九四：或躍在淵，無咎。|九五：飛龍在天，利見大人。|上九：亢龍有悔。|用九：見群龍無首，吉。|剛健自強|大吉亨通之象，像龍一步步成長：先潛伏、再出現、再奮進、再騰飛，到頂點要防過頭。凡事宜自強不息、循序而進，位高時更要謙退。", "元，亨，利牝馬之貞。君子有攸往，先迷後得主，利。西南得朋，東北喪朋。安貞，吉。|初六：履霜，堅冰至。|六二：直、方、大，不習無不利。|六三：含章可貞，或從王事，無成有終。|六四：括囊，無咎無譽。|六五：黃裳，元吉。|上六：龍戰于野，其血玄黃。|用六：利永貞。|柔順承載|以柔順厚德承載萬物，宜跟隨、配合而不爭先，先觀察、後行動，安守本分可得吉；到了極處，柔也會引發衝突，要知道收斂。", "元亨利貞，勿用有攸往，利建侯。|初九：磐桓，利居貞，利建侯。|六二：屯如邅如，乘馬班如。匪寇婚媾，女子貞不字，十年乃字。|六三：即鹿無虞，惟入于林中，君子幾不如舍，往吝。|六四：乘馬班如，求婚媾，往吉，無不利。|九五：屯其膏，小貞吉，大貞凶。|上六：乘馬班如，泣血漣如。||起步維艱|萬事開頭難，像草木剛破土，充滿阻礙卻也蘊含生機。不宜急著大動作，先穩住根基、尋找盟友與幫手，慢慢累積就能打開局面。", "亨。匪我求童蒙，童蒙求我。初筮告，再三瀆，瀆則不告。利貞。|初六：發蒙，利用刑人，用說桎梏，以往吝。|九二：包蒙吉；納婦吉；子克家。|六三：勿用取女，見金夫，不有躬，無攸利。|六四：困蒙，吝。|六五：童蒙，吉。|上九：擊蒙，不利為寇，利禦寇。||啟蒙求教|眼前還處在懵懂不明的階段，需要虛心求教、接受引導。態度要誠懇，不能反覆質疑；學習和釐清之後，方向自然明朗。", "有孚，光亨，貞吉。利涉大川。|初九：需于郊，利用恆，無咎。|九二：需于沙，小有言，終吉。|九三：需于泥，致寇至。|六四：需于血，出自穴。|九五：需于酒食，貞吉。|上六：入于穴，有不速之客三人來，敬之終吉。||耐心等待|時機未到，需要等待。保持誠信與耐心、做好準備，不要躁進；越接近目標越要謹慎，等到條件成熟自然順利。", "有孚，窒。惕中吉，終凶。利見大人，不利涉大川。|初六：不永所事，小有言，終吉。|九二：不克訟，歸而逋，其邑人三百戶，無眚。|六三：食舊德，貞厲，終吉。或從王事，無成。|九四：不克訟，復即命渝，安貞吉。|九五：訟元吉。|上九：或錫之鞶帶，終朝三褫之。||爭訟糾紛|有爭執、矛盾或官司之象。即使有理也要戒慎，爭到底往往兩敗，適度退讓、請公正的人居中調解才是上策。", "貞，丈人，吉，無咎。|初六：師出以律，否臧凶。|九二：在師中，吉，無咎，王三錫命。|六三：師或輿尸，凶。|六四：師左次，無咎。|六五：田有禽，利執言，無咎。長子帥師，弟子輿尸，貞凶。|上六：大君有命，開國承家，小人勿用。||統帥出師|像帶領隊伍作戰，重在紀律與正確的領導人。出動前要名正言順、行事有規矩、用對的人；若指揮不當或用人不當就會吃虧。", "吉。原筮元永貞，無咎。不寧方來，後夫凶。|初六：有孚比之，無咎。有孚盈缶，終來有它吉。|六二：比之自內，貞吉。|六三：比之匪人。|六四：外比之，貞吉。|九五：顯比，王用三驅，失前禽，邑人不誡，吉。|上六：比之無首，凶。||親近依附|彼此親附、團結合作之象。要以誠信選擇可靠的人相親相輔，及早靠攏較吉，猶豫拖延或所託非人就不好。", "亨。密雲不雨，自我西郊。|初九：復自道，何其咎？吉。|九二：牽復，吉。|九三：輿說輻，夫妻反目。|六四：有孚，血去惕出，無咎。|九五：有孚攣如，富以其鄰。|上九：既雨既處，尚德載，婦貞厲。月幾望，君子征凶。||小有積蓄|力量還小，只能小幅度累積與牽制，像烏雲密佈卻還沒下雨。宜以柔克剛、耐心積蓄，不宜強行躁進，到下雨時自會水到渠成。", "履虎尾，不咥人，亨。|初九：素履，往無咎。|九二：履道坦坦，幽人貞吉。|六三：眇能視，跛能履，履虎尾，咥人，凶。武人為于大君。|九四：履虎尾，愬愬，終吉。|九五：夬履，貞厲。|上九：視履考祥，其旋元吉。||謹慎行事|像踩在老虎尾巴後面行走，處境有風險，但只要守禮、小心、態度謙和，反而能平安通過。切忌逞強冒進。", "小往大來，吉，亨。|初九：拔茅茹，以其彙，征吉。|九二：包荒，用馮河，不遐遺，朋亡，得尚于中行。|九三：無平不陂，無往不復，艱貞無咎。勿恤其孚，于食有福。|六四：翩翩，不富以其鄰，不戒以孚。|六五：帝乙歸妹，以祉元吉。|上六：城復于隍，勿用師，自邑告命，貞吝。||天地交泰|上下相通、陰陽調和，是順利亨通的好時機。但「泰極否來」，順境中要居安思危、不能鬆懈，否則局面會逆轉。", "否之匪人，不利君子貞，大往小來。|初六：拔茅茹，以其彙，貞吉亨。|六二：包承，小人吉，大人否亨。|六三：包羞。|九四：有命無咎，疇離祉。|九五：休否，大人吉。其亡其亡，繫于苞桑。|上九：傾否，先否後喜。||閉塞不通|上下不通、小人當道的閉塞時期，不宜強出頭。守住正道、低調自保、保持警惕，等到轉機出現，閉塞終會被打開。", "同人于野，亨。利涉大川，利君子貞。|初九：同人于門，無咎。|六二：同人于宗，吝。|九三：伏戎于莽，升其高陵，三歲不興。|九四：乘其墉，弗克攻，吉。|九五：同人，先號咷而後笑，大師克相遇。|上九：同人于郊，無悔。||志同道合|與人和同、公開合作之象。要胸懷開闊、不拘私圈子，才能凝聚人心共同成事；若只結小團體或暗中猜忌就會受阻。", "元亨。|初九：無交害，匪咎，艱則無咎。|九二：大車以載，有攸往，無咎。|九三：公用亨于天子，小人弗克。|九四：匪其彭，無咎。|六五：厥孚交如，威如，吉。|上九：自天祐之，吉無不利。||大有收穫|擁有豐盛、成果盛大之象，是順遂富足的時候。越富有越要謙虛、守誠信、不炫耀，把資源用在正道，才能長保吉祥。", "亨，君子有終。|初六：謙謙君子，用涉大川，吉。|六二：鳴謙，貞吉。|九三：勞謙君子，有終吉。|六四：無不利，撝謙。|六五：不富以其鄰，利用侵伐，無不利。|上六：鳴謙，利用行師，征邑國。||謙虛受益|謙遜低調反而得人心、得助力，是少有的各爻皆吉的卦。多做事少誇耀，保持謙虛，事情會順利並有好結果。", "利建侯行師。|初六：鳴豫，凶。|六二：介于石，不終日，貞吉。|六三：盱豫，悔；遲有悔。|九四：由豫，大有得；勿疑，朋盍簪。|六五：貞疾，恆不死。|上六：冥豫，成有渝，無咎。||安樂預備|和樂愉悅、順應時勢之象，適合行動與籌劃。但不可沉溺享樂、得意忘形，要有所準備與節制，才能長久。", "元亨利貞，無咎。|初九：官有渝，貞吉。出門交有功。|六二：係小子，失丈夫。|六三：係丈夫，失小子。隨有求得，利居貞。|九四：隨有獲，貞凶。有孚在道，以明，何咎？|九五：孚于嘉，吉。|上六：拘係之，乃從維之，王用亨于西山。||順隨時勢|懂得順應時勢、跟隨正確的人與方向。要擇善而從、不盲從；能隨機應變又守住原則，就能得到助力與成果。", "元亨，利涉大川。先甲三日，後甲三日。|初六：幹父之蠱，有子，考無咎，厲終吉。|九二：幹母之蠱，不可貞。|九三：幹父之蠱，小有悔，無大咎。|六四：裕父之蠱，往見吝。|六五：幹父之蠱，用譽。|上九：不事王侯，高尚其事。||整治積弊|事情因長久敷衍而出現弊端，需要整頓革新。要先查明原因再動手處理，行動前後都要謹慎安排，整頓後會重新亨通。", "元亨利貞。至于八月有凶。|初九：咸臨，貞吉。|九二：咸臨，吉，無不利。|六三：甘臨，無攸利。既憂之，無咎。|六四：至臨，無咎。|六五：知臨，大君之宜，吉。|上六：敦臨，吉，無咎。||親臨督導|事業走向上升，有機會接近與領導。以誠懇關懷的態度處理才長久；要居安思危，盛勢之後會有轉弱的時候。", "盥而不薦，有孚顒若。|初六：童觀，小人無咎，君子吝。|六二：闚觀，利女貞。|六三：觀我生，進退。|六四：觀國之光，利用賓于王。|九五：觀我生，君子無咎。|上九：觀其生，君子無咎。||觀察省思|重在觀察與反省：看清環境，也看清自己。不宜急著行動，先以誠敬的態度審視、學習，做出示範讓人信服。", "亨。利用獄。|初九：屨校滅趾，無咎。|六二：噬膚滅鼻，無咎。|六三：噬臘肉，遇毒；小吝，無咎。|九四：噬乾胏，得金矢，利艱貞，吉。|六五：噬乾肉，得黃金，貞厲，無咎。|上九：何校滅耳，凶。||排除阻隔|口中有東西卡住，要咬碎才能合攏，比喻要果斷處理障礙或違規之事。處理問題要公正有力，從小事就矯正，免得惡習累積成大禍。", "亨。小利有攸往。|初九：賁其趾，舍車而徒。|六二：賁其須。|九三：賁如濡如，永貞吉。|六四：賁如皤如，白馬翰如，匪寇婚媾。|六五：賁于丘園，束帛戔戔，吝，終吉。|上九：白賁，無咎。||文飾裝點|重在修飾外表與禮儀，帶來美好與亨通，但只是小有利。外在的美要配合內在實質，最終回歸樸素真誠才是最好。", "不利有攸往。|初六：剝床以足，蔑貞凶。|六二：剝床以辨，蔑貞凶。|六三：剝之，無咎。|六四：剝床以膚，凶。|六五：貫魚，以宮人寵，無不利。|上九：碩果不食，君子得輿，小人剝廬。||剝落衰退|小人勢力增長、局面逐漸被侵蝕，不宜主動出擊。宜安靜等待、保住根本，像留下的大果實不吃掉，待時機自能重新生長。", "亨。出入無疾，朋來無咎。反復其道，七日來復，利有攸往。|初九：不遠復，無祗悔，元吉。|六二：休復，吉。|六三：頻復，厲，無咎。|六四：中行獨復。|六五：敦復，無悔。|上六：迷復，凶，有災眚。用行師，終有大敗，以其國君凶，至于十年不克征。||一陽來復|低谷之後轉機重現，好比冬至一陽初生。及時回到正道、不要走太遠，重新開始會逐漸好轉；執迷不悟、遲遲不改則有災禍。", "元亨利貞。其匪正有眚，不利有攸往。|初九：無妄，往吉。|六二：不耕穫，不菑畬，則利有攸往。|六三：無妄之災，或繫之牛，行人之得，邑人之災。|九四：可貞，無咎。|九五：無妄之疾，勿藥有喜。|上九：無妄，行有眚，無攸利。||守真不妄|不虛妄、不投機，順著自然本分行事就亨通；若懷有不正的心思或強求，反而招災。偶遇意外也要平心處理，不亂用藥亂動作。", "利貞，不家食，吉，利涉大川。|初九：有厲，利已。|九二：輿說輹。|九三：良馬逐，利艱貞。曰閑輿衛，利有攸往。|六四：童牛之牿，元吉。|六五：豶豕之牙，吉。|上九：何天之衢，亨。||大量蓄積|積蓄能力、學識與德行，到一定程度再出來做事。目前宜蓄勢待發、控制衝動，等到暢通無阻時，就會有大的作為。", "貞吉。觀頤，自求口實。|初九：舍爾靈龜，觀我朵頤，凶。|六二：顛頤，拂經于丘頤，征凶。|六三：拂頤，貞凶，十年勿用，無攸利。|六四：顛頤，吉。虎視眈眈，其欲逐逐，無咎。|六五：拂經，居貞吉，不可涉大川。|上九：由頤，厲吉，利涉大川。||頤養自守|與「養」有關：要養身、養德，也要養人。慎言語、節飲食，靠自己正當努力獲取所需，不羨慕他人所有，才能健康吉祥。", "棟橈，利有攸往，亨。|初六：藉用白茅，無咎。|九二：枯楊生稊，老夫得其女妻，無不利。|九三：棟橈，凶。|九四：棟隆，吉；有它吝。|九五：枯楊生華，老婦得其士夫，無咎無譽。|上六：過涉滅頂，凶，無咎。||負擔過重|像樑柱承重過度而彎曲，局面中間過重、兩端太弱。需要非常手段與果斷處置，但要謹慎小心；若硬撐到底可能「滅頂」，要量力而為。", "習坎，有孚，維心亨，行有尚。|初六：習坎，入于坎窞，凶。|九二：坎有險，求小得。|六三：來之坎坎，險且枕，入于坎窞，勿用。|六四：樽酒簋貳，用缶，納約自牖，終無咎。|九五：坎不盈，祗既平，無咎。|上六：係用徽纆，寘于叢棘，三歲不得，凶。||重重險陷|一重又一重的險難，處境艱險。但只要保持誠信、內心堅定，就能在險中前行；不要冒進，一步步小心脫困，求小得而不求大。", "利貞，亨。畜牝牛，吉。|初九：履錯然，敬之，無咎。|六二：黃離，元吉。|九三：日昃之離，不鼓缶而歌，則大耋之嗟，凶。|九四：突如其來如，焚如，死如，棄如。|六五：出涕沱若，戚嗟若，吉。|上九：王用出征，有嘉折首，獲匪其醜，無咎。||光明附麗|如火光明亮、依附正道而發光。要像飼養溫順的牛一樣柔順守正，才能吉祥；火燃得太猛會自焚，行事要節制、珍惜當下。", "亨，利貞，取女吉。|初六：咸其拇。|六二：咸其腓，凶，居吉。|九三：咸其股，執其隨，往吝。|九四：貞吉，悔亡。憧憧往來，朋從爾思。|九五：咸其脢，無悔。|上六：咸其輔頰舌。||真心感應|兩情或人心之間的感應與交流。以真誠無私的心相感才亨通，婚戀事尤其吉；只靠花言巧語或心思亂動，感應就不深。", "亨，無咎，利貞，利有攸往。|初六：浚恆，貞凶，無攸利。|九二：悔亡。|九三：不恆其德，或承之羞，貞吝。|九四：田無禽。|六五：恆其德，貞，婦人吉，夫子凶。|上六：振恆，凶。||持之以恆|貴在長久堅持正道，不輕易改變方向。但「恆」不是死守不變，要能隨時調整；急求深入、搖擺不定、或動輒更張都不利。", "亨，小利貞。|初六：遯尾，厲，勿用有攸往。|六二：執之用黃牛之革，莫之勝說。|九三：係遯，有疾厲，畜臣妾吉。|九四：好遯，君子吉，小人否。|九五：嘉遯，貞吉。|上九：肥遯，無不利。||退避保身|小人漸盛的時候，君子宜適時退讓避開、保存實力。及早從容退出能平安；拖延不走或糾纏其中會有危險，退得好反而有利。", "利貞。|初九：壯于趾，征凶，有孚。|九二：貞吉。|九三：小人用壯，君子用罔，貞厲。羝羊觸藩，羸其角。|九四：貞吉，悔亡。藩決不羸，壯于大輿之輹。|六五：喪羊于易，無悔。|上六：羝羊觸藩，不能退，不能遂，無攸利，艱則吉。||強盛需正|力量強大、氣勢旺盛，但越強越要守正道、有節制。蠻幹像公羊衝撞籬笆會卡住角，靠實力同時守禮守規矩才得吉。", "康侯用錫馬蕃庶，晝日三接。|初六：晉如摧如，貞吉。罔孚，裕無咎。|六二：晉如愁如，貞吉。受茲介福，于其王母。|六三：眾允，悔亡。|九四：晉如鼫鼠，貞厲。|六五：悔亡，失得勿恤，往吉，無不利。|上九：晉其角，維用伐邑，厲吉無咎，貞吝。||上進晉升|像太陽升起，事業、地位逐步上升，得到肯定。要守正、虛心、不貪心；中途受挫也不要急，保持誠信就會有福。", "利艱貞。|初九：明夷于飛，垂其翼。君子于行，三日不食，有攸往，主人有言。|六二：明夷，夷于左股，用拯馬壯，吉。|九三：明夷于南狩，得其大首，不可疾貞。|六四：入于左腹，獲明夷之心，于出門庭。|六五：箕子之明夷，利貞。|上六：不明晦，初登于天，後入于地。||光明受傷|光明被遮蔽、賢者處在不利環境。宜韜光養晦、內明外柔，不鋒芒外露，堅持內心正道，熬過黑暗期後光明會再回來。", "利女貞。|初九：閑有家，悔亡。|六二：無攸遂，在中饋，貞吉。|九三：家人嗃嗃，悔厲吉；婦子嘻嘻，終吝。|六四：富家，大吉。|九五：王假有家，勿恤，吉。|上九：有孚威如，終吉。||齊家有序|講家庭與親近關係的經營。各人守好本分、立好規矩，又有愛與誠信，家就和順；管得太鬆或太嚴都不好，以誠相待最重要。", "小事吉。|初九：悔亡，喪馬勿逐，自復；見惡人，無咎。|九二：遇主于巷，無咎。|六三：見輿曳，其牛掣，其人天且劓，無初有終。|九四：睽孤，遇元夫，交孚，厲無咎。|六五：悔亡，厥宗噬膚，往何咎？|上九：睽孤，見豕負塗，載鬼一車，先張之弧，後說之弧，匪寇婚媾，往遇雨則吉。||乖違背離|彼此意見不合、關係疏離，大事不易成，只宜做小事。求同存異、保持溝通、不要猜疑，真誠相待後誤會往往能化解。", "利西南，不利東北。利見大人，貞吉。|初六：往蹇，來譽。|六二：王臣蹇蹇，匪躬之故。|九三：往蹇，來反。|六四：往蹇，來連。|九五：大蹇，朋來。|上六：往蹇，來碩，吉。利見大人。||險阻難行|前進遇到阻礙，像腳跛行走不便。宜停下來反省、找好助手與貴人，改變方向而不硬闖，在困難中修養自己，終能克服。", "利西南。無所往，其來復吉。有攸往，夙吉。|初六：無咎。|九二：田獲三狐，得黃矢，貞吉。|六三：負且乘，致寇至，貞吝。|九四：解而拇，朋至斯孚。|六五：君子維有解，吉；有孚于小人。|上六：公用射隼于高墉之上，獲之，無不利。||解除困難|困難紓解、緊張消散之象。要趁機把問題處理乾淨，有事早做早吉；不要再糾纏舊事，也要警惕德不配位招來麻煩。", "有孚，元吉，無咎，可貞，利有攸往。曷之用？二簋可用享。|初九：已事遄往，無咎，酌損之。|九二：利貞，征凶，弗損益之。|六三：三人行，則損一人；一人行，則得其友。|六四：損其疾，使遄有喜，無咎。|六五：或益之十朋之龜，弗克違，元吉。|上九：弗損益之，無咎，貞吉，利有攸往，得臣無家。||減損有益|有損才有益，在適當的地方減少、節制，反而帶來真正的收穫。誠心比排場重要，簡單一點也能表達心意，量力而為最好。", "利有攸往，利涉大川。|初九：利用為大作，元吉，無咎。|六二：或益之十朋之龜，弗克違，永貞吉。王用享于帝，吉。|六三：益之用凶事，無咎。有孚中行，告公用圭。|六四：中行，告公從。利用為依遷國。|九五：有孚惠心，勿問元吉。有孚惠我德。|上九：莫益之，或擊之，立心勿恆，凶。||增益受惠|上對下施益、彼此增益的好時機，宜積極進取、做有益大眾的事，得到助力。要持續保持善心；一旦動機轉為只顧自己，好運就會停止。", "揚于王庭，孚號，有厲。告自邑，不利即戎，利有攸往。|初九：壯于前趾，往不勝為咎。|九二：惕號，莫夜有戎，勿恤。|九三：壯于頄，有凶。君子夬夬，獨行遇雨，若濡有慍，無咎。|九四：臀無膚，其行次且。牽羊悔亡，聞言不信。|九五：莧陸夬夬，中行無咎。|上六：無號，終有凶。||果決除弊|要下決心清除小人與弊端，但要公開、有證據、以德服人，不宜以武力硬碰。果斷之中保持警惕與耐心，才不會反遭傷害。", "女壯，勿用取女。|初六：繫于金柅，貞吉，有攸往，見凶，羸豕孚蹢躅。|九二：包有魚，無咎，不利賓。|九三：臀無膚，其行次且，厲，無大咎。|九四：包無魚，起凶。|九五：以杞包瓜，含章，有隕自天。|上九：姤其角，吝，無咎。||不期而遇|意外的相遇或邂逅，來勢突然，要提防一開始看似小的影響逐步壯大。遇到時要保持界線、謹慎處理，不輕易深交。", "亨。王假有廟，利見大人，亨，利貞。用大牲吉，利有攸往。|初六：有孚不終，乃亂乃萃，若號，一握為笑，勿恤，往無咎。|六二：引吉，無咎，孚乃利用禴。|六三：萃如嗟如，無攸利，往無咎，小吝。|九四：大吉，無咎。|九五：萃有位，無咎。匪孚，元永貞，悔亡。|上六：齎咨涕洟，無咎。||聚集匯合|人事物彙聚的時候，需要有共同的目標與好的領導，才能凝聚人心。聚在一起要有防備，以誠信與禮制維持秩序，不然人多反而亂。", "元亨，用見大人，勿恤，南征吉。|初六：允升，大吉。|九二：孚乃利用禴，無咎。|九三：升虛邑。|六四：王用亨于岐山，吉，無咎。|六五：貞吉，升階。|上六：冥升，利于不息之貞。||逐步上升|像樹木生長一樣一步一步向上，事業與地位漸有進展，得到上位者的賞識。穩紮穩打、不躁進，到高處更要自我警醒、持續努力。", "亨，貞，大人吉，無咎。有言不信。|初六：臀困于株木，入于幽谷，三歲不覿。|九二：困于酒食，朱紱方來，利用享祀，征凶，無咎。|六三：困于石，據于蒺藜，入于其宮，不見其妻，凶。|九四：來徐徐，困于金車，吝，有終。|九五：劓刖，困于赤紱，乃徐有說，利用祭祀。|上六：困于葛藟，于臲卼，曰動悔，有悔，征吉。||困窘受限|處境困窘、資源受限，說話也不被相信。此時多說無益，保持信念、靜心修養，以不變的志向度過難關，終能由困轉通。", "改邑不改井，無喪無得，往來井井。汔至亦未繘井，羸其瓶，凶。|初六：井泥不食，舊井無禽。|九二：井谷射鮒，甕敝漏。|九三：井渫不食，為我心惻，可用汲，王明，並受其福。|六四：井甃，無咎。|九五：井冽，寒泉食。|上六：井收勿幕，有孚元吉。||養人不竭|像水井默默滋養眾人而不改常。要持續維護與修整，不能半途而廢；有才能就要被人用，並保持源頭清潔，長久才有好結果。", "己日乃孚，元亨利貞，悔亡。|初九：鞏用黃牛之革。|六二：己日乃革之，征吉，無咎。|九三：征凶，貞厲，革言三就，有孚。|九四：悔亡，有孚改命，吉。|九五：大人虎變，未占有孚。|上六：君子豹變，小人革面，征凶，居貞吉。||變革更新|時機成熟需要改革，但要等人心信服後再行動，不能操之過急。方案要多次商討、有誠信基礎，改革成功後局面煥然一新。", "元吉，亨。|初六：鼎顛趾，利出否，得妾以其子，無咎。|九二：鼎有實，我仇有疾，不我能即，吉。|九三：鼎耳革，其行塞，雉膏不食，方雨虧悔，終吉。|九四：鼎折足，覆公餗，其形渥，凶。|六五：鼎黃耳金鉉，利貞。|上九：鼎玉鉉，大吉，無不利。||鼎新成器|像鼎烹煮食物，象徵新秩序與成就的確立，是大吉亨通。要德才相稱、選對輔助者；若能力不足而承擔過重，鼎足折斷就會翻覆。", "亨。震來虩虩，笑言啞啞。震驚百里，不喪匕鬯。|初九：震來虩虩，後笑言啞啞，吉。|六二：震來厲，億喪貝，躋于九陵，勿逐，七日得。|六三：震蘇蘇，震行無眚。|九四：震遂泥。|六五：震往來厲，億無喪，有事。|上六：震索索，視矍矍，征凶。震不于其躬，于其鄰，無咎，婚媾有言。||雷動驚醒|突然的震動或驚嚇，雖然一時恐懼，卻能促人警醒、修省。保持鎮定、不亂陣腳，事過之後反而笑語平安，也不會丟掉原有的根本。", "艮其背，不獲其身，行其庭，不見其人，無咎。|初六：艮其趾，無咎，利永貞。|六二：艮其腓，不拯其隨，其心不快。|九三：艮其限，列其夤，厲薰心。|六四：艮其身，無咎。|六五：艮其輔，言有序，悔亡。|上九：敦艮，吉。||適時靜止|知止而後安，該停就停。控制慾望與妄動，守住當下，不強行向前；說話、行事都要有分寸，保持心定，才能避免災咎。", "女歸吉，利貞。|初六：鴻漸于干，小子厲，有言，無咎。|六二：鴻漸于磐，飲食衎衎，吉。|九三：鴻漸于陸，夫征不復，婦孕不育，凶。利禦寇。|六四：鴻漸于木，或得其桷，無咎。|九五：鴻漸于陵，婦三歲不孕，終莫之勝，吉。|上九：鴻漸于陸，其羽可用為儀，吉。||循序漸進|像大雁一步一步飛過水邊、岩石、樹木，事情宜按部就班、慢慢推進。如婚嫁般需要等待時機與程序，穩定積累終會有好結果。", "征凶，無攸利。|初九：歸妹以娣，跛能履，征吉。|九二：眇能視，利幽人之貞。|六三：歸妹以須，反歸以娣。|九四：歸妹愆期，遲歸有時。|六五：帝乙歸妹，其君之袂不如其娣之袂良，月幾望，吉。|上六：女承筐無實，士刲羊無血，無攸利。||名分不正|婚嫁或結合中位置、時機不夠正當，不宜急進。若硬要求成，容易有名無實、不得其所；宜守分守禮、耐心等待合適的時機。", "亨，王假之，勿憂，宜日中。|初九：遇其配主，雖旬無咎，往有尚。|六二：豐其蔀，日中見斗，往得疑疾，有孚發若，吉。|九三：豐其沛，日中見沬，折其右肱，無咎。|九四：豐其蔀，日中見斗，遇其夷主，吉。|六五：來章，有慶譽，吉。|上六：豐其屋，蔀其家，闚其戶，闃其無人，三歲不覿，凶。||盛大豐滿|事物達到盛大豐滿，如日正當中。此時宜把握時機、公平照顧各方；但盛極必衰，要有憂患意識，不炫耀、不封閉自己。", "小亨，旅貞吉。|初六：旅瑣瑣，斯其所取災。|六二：旅即次，懷其資，得童僕貞。|九三：旅焚其次，喪其童僕，貞厲。|九四：旅于處，得其資斧，我心不快。|六五：射雉一矢亡，終以譽命。|上九：鳥焚其巢，旅人先笑後號咷。喪牛于易，凶。||客旅在外|像在外作客，處境不穩，只宜小事、低調謹慎。待人要謙和，不要計較瑣碎或高傲；守住財物與人緣，才能平安度過。", "小亨，利有攸往，利見大人。|初六：進退，利武人之貞。|九二：巽在床下，用史巫紛若，吉，無咎。|九三：頻巽，吝。|六四：悔亡，田獲三品。|九五：貞吉，悔亡，無不利。無初有終，先庚三日，後庚三日，吉。|上九：巽在床下，喪其資斧，貞凶。||謙順入微|像風一樣無孔不入，以謙遜柔順的方式滲透、說服，小有亨通。命令要反覆申明、做事要果斷有決心；過度卑屈或猶豫不決都不好。", "亨，利貞。|初九：和兌，吉。|九二：孚兌，吉，悔亡。|六三：來兌，凶。|九四：商兌未寧，介疾有喜。|九五：孚于剝，有厲。|上六：引兌。||喜悅溝通|和悅愉快、能言善道之象，彼此交流讓人開心。要以誠懇和正道為基礎，別一味討好或沉溺享樂，被甜言蜜語引誘就容易出事。", "亨。王假有廟，利涉大川，利貞。|初六：用拯馬壯，吉。|九二：渙奔其機，悔亡。|六三：渙其躬，無悔。|六四：渙其群，元吉。渙有丘，匪夷所思。|九五：渙汗其大號，渙王居，無咎。|上九：渙其血，去逖出，無咎。||化散憂患|把凝結的心結、隔閡或僵局化開，使人心重新聚合。要用共同的信仰或目標來凝聚，放下私心與小團體，散開阻礙後局面更順暢。", "亨。苦節不可貞。|初九：不出戶庭，無咎。|九二：不出門庭，凶。|六三：不節若，則嗟若，無咎。|六四：安節，亨。|九五：甘節，吉，往有尚。|上六：苦節，貞凶，悔亡。||適度節制|凡事要有節制與界線，才能長久亨通。但節制不是苦行，過度壓抑、太苛刻無法持久；要找到舒適而可行的分寸，並選對時機行動。", "豚魚吉，利涉大川，利貞。|初九：虞吉，有它不燕。|九二：鳴鶴在陰，其子和之；我有好爵，吾與爾靡之。|六三：得敵，或鼓或罷，或泣或歌。|六四：月幾望，馬匹亡，無咎。|九五：有孚攣如，無咎。|上九：翰音登于天，貞凶。||誠信感通|內心誠信、虛懷若谷，連小豬與魚都能被感動。待人真誠就能感通彼此、共同克服困難；但光說不做、虛名在外就不會長久。", "亨，利貞。可小事，不可大事。飛鳥遺之音，不宜上，宜下，大吉。|初六：飛鳥以凶。|六二：過其祖，遇其妣；不及其君，遇其臣；無咎。|九三：弗過防之，從或戕之，凶。|九四：無咎，弗過遇之。往厲必戒，勿用永貞。|六五：密雲不雨，自我西郊，公弋取彼在穴。|上六：弗遇過之，飛鳥離之，凶，是謂災眚。||小事可為|小處稍微過一點可以，大事就不宜。做事低調、謙虛、重細節，向下沉穩而不往高處冒進，小事做好就能吉；勉強去做大事會有麻煩。", "亨小，利貞，初吉終亂。|初九：曳其輪，濡其尾，無咎。|六二：婦喪其茀，勿逐，七日得。|九三：高宗伐鬼方，三年克之，小人勿用。|六四：繻有衣袽，終日戒。|九五：東鄰殺牛，不如西鄰之禴祭，實受其福。|上六：濡其首，厲。||事已成功|事情大致完成、各就其位。但盛極而衰，越是成功越要居安思危、持續警惕；一開始吉，放鬆後容易出亂，要保持謹慎、防小漏洞。", "亨，小狐汔濟，濡其尾，無攸利。|初六：濡其尾，吝。|九二：曳其輪，貞吉。|六三：未濟，征凶，利涉大川。|九四：貞吉，悔亡，震用伐鬼方，三年有賞于大國。|六五：貞吉，無悔。君子之光，有孚，吉。|上九：有孚于飲酒，無咎；濡其首，有孚失是。||尚未完成|事情還沒完成、仍有轉機。要看清情勢、不能急躁，像小狐狸過河最怕在終點濕了尾巴。謹慎收尾、穩住節奏，下一個循環就有新機會。"];
-const MH_YT=["時機未到，先潛心蓄力，不要妄動。|才能開始顯露，適合出來見貴人、請教前輩。|整天勤奮、夜裡仍警惕反省，雖處危險也能無災。|可以試著進取，也可退回穩守，量力而行就無咎。|位置與時機最好，大展身手，適合與貴人相見。|爬到頂點過於高亢，物極必反，宜收斂防後悔。", "看到薄霜就知嚴寒將臨，小跡象要及早留意。|正直、端方、廣大，順著本性做事自然沒有不利。|把才華含蓄收藏，守正而不爭功，成果歸於上位。|像把袋口紮緊，少說話、少表態，謹慎免禍但也無名。|像穿著低調高貴的黃色衣裳，內斂有德，大吉。|陰盛到極點與陽相爭，兩敗俱傷，要避免硬碰。", "起步時徘徊不前，宜守正、先打好基礎並尋找助手。|困難重重、進退兩難；對方不是來搶而是求婚，要耐心等十年才有結果。|沒有嚮導就追鹿入林，貿然行動會吃虧，不如放棄。|看清形勢，主動求援合作，前進吉利。|恩惠被卡住不能廣施，小事可行，大事強推有凶。|走投無路、傷心流淚，要靠求助與反省。", "開始啟蒙需有規矩約束，過度放縱會有困難。|能包容愚昧者並加以引導，吉；善於持家也吉。|見到有錢人就失去自我，這種選擇沒有好處，要保持自主。|困在愚昧中又不肯學習，會有羞吝。|以純真謙虛的態度求教，吉。|對頑固的蒙昧要適度嚴厲糾正，但要防範過度。", "在遠郊等待，還離危險很遠，保持恆心就無災。|等在沙地，有些閒言閒語，最後仍吉。|等在泥濘邊，離險境很近，容易招來外敵，要謹慎。|陷入危險，要設法退出險地，保住安全。|等待時安心飲食休養，守正吉。|進入險境，有意外的三位客人來，恭敬相待終吉。", "不要把爭訟拖長，小有口舌，終究吉。|爭不過就退回，離開避禍，鄉里平安。|靠舊有的德行維持，守正，終吉；為公事不求功。|打不贏就回頭，改變主意安守正道，吉。|由公正者裁斷，是大吉。|即使因爭訟得到賞賜，也很快又被剝奪，不可恃。", "出兵必須有紀律，否則即使贏也是凶。|身在軍中居中指揮，吉無咎，並受上位重賞。|指揮不一，載屍而歸，凶。|暫時退守，不勉強進攻，無咎。|有可執之理才出手，用對的人當統帥，用錯則凶。|論功行賞，小人不可重用。", "以誠信與人親近，無咎，真誠充實終有它吉。|從內部、自己主動誠心親附，守正吉。|親近到不合適的人，要小心。|向外親近賢者，守正吉。|光明正大地親近，不強求，大方自然，吉。|沒有領頭人就想親附，結果凶。", "回到自己的正道，有什麼咎，吉。|被牽引著返回正道，吉。|車輪脫落，夫妻反目，因強行前進而失和。|有誠信，擔憂和血光都能離去，無咎。|誠信牽連，連鄰居一起富足，要互助。|雨已下、事已成，重德行；此時月近滿，不宜再進。", "以樸素本分的態度前行，往前無咎。|道路平坦，守正的隱者吉。|能力有限卻硬要逞強，踩到虎尾被咬，凶。|雖踩虎尾但極度謹慎，終吉。|決斷果敢地走，但守正也有危險。|回顧走過的路、檢視吉凶，圓滿大吉。", "拔起茅草連根帶出，與同類一同前進，吉。|包容荒穢、勇於涉險、不遺漏遠方，得到中道的支持。|沒有永遠平坦、沒有只去不返，艱難中守正無咎，享福。|輕鬆地與鄰居往來，不靠財富，也不必告誡就能互信。|君王嫁女、降尊相親，得福大吉。|城牆倒回護城河，泰極轉否，不要再動兵，守正也有憾。", "同類一同進退，守正吉亨。|包容順從，小人吉，大人在閉塞中守住自己亨通。|被迫容忍羞辱之事，處境尷尬。|有上命而行，無咎，同伴也得福。|使閉塞停止，大人吉；要時時警戒，像繫在桑樹根上。|閉塞被推翻，先否後喜。", "在家門口就與人和同，無咎。|只和同宗親近，格局小，有憾。|埋伏兵於草叢，疑心重，久久不能起事。|爬上城牆卻不攻，知難而退，吉。|先痛哭後歡笑，大軍終能會合。|在遠郊和同，雖不深入也無悔。", "不與害人之事交往，無咎，艱難時小心則無災。|用大車裝載，有能力承擔，前往無咎。|公侯向天子獻上財物，小人做不到。|不炫耀盛大，無咎。|以誠信相交又有威嚴，吉。|上天保佑，吉無不利。", "極度謙虛的君子，可以渡過大河，吉。|謙名遠播，守正吉。|有功勞又謙虛，有好結果，吉。|處處發揮謙德，無所不利。|不倚仗財富，可以出兵討伐不服者，無不利。|謙德昭著，可以用兵整頓邑國。", "得意到張揚，凶。|像石頭般堅定，不整天耽於享樂，守正吉。|仰望別人求快樂，後悔；遲疑也後悔。|由你帶來歡樂，大有所得，不要懷疑，朋友會聚合。|長期有隱疾，但不會死，要有節制。|沉迷享樂，若能改變則無咎。", "職守有變，守正吉；出門與人交往有功。|跟了小的，失去大的，取捨不當。|跟了大的，失去小的，所求可得，宜居守正。|跟隨有收穫，但要守正以防凶；有誠信走在正道，明白何咎。|以誠信嘉美相隨，吉。|被牢牢繫住、長久相隨，如君王在西山祭祀。", "整治父輩留下的弊端，有賢子則無咎，雖危險終吉。|整治母輩弊端，不可太堅持強硬。|整治弊端稍有悔，但沒有大錯。|對弊端寬縱不管，繼續下去會有羞吝。|整治弊端並得到好名聲。|不為王侯做事，高尚其志。", "以感化的方式親臨，守正吉。|感化臨下，吉，無不利。|以甜言蜜語對待，沒有好處；若能憂慮反省則無咎。|親自到位督導，無咎。|以智慧領導，這是大君的作法，吉。|以敦厚寬厚面對，吉，無咎。", "像孩童般淺薄地看，小人無咎，君子會羞吝。|從門縫偷看，視野狹窄，只適合女子守正。|觀察自己的行為，決定進退。|觀察國家的光明，適合受賓禮於王。|審視自己，君子無咎。|觀察他人影響，君子無咎。", "腳被刑具套住，小懲而止，無咎。|咬軟肉很容易，用力過頭到鼻子，無咎。|咬到陳肉中毒，小有羞吝，無咎。|咬硬骨肉，得到金箭，艱難守正，吉。|處理難事得到成果，要警惕守正，無咎。|枷鎖蓋過耳朵，惡積重大，凶。", "把腳裝飾好，捨車步行，寧可實在。|裝飾鬍鬚，外在跟隨內在。|潤澤華美，長久守正吉。|素白無華，白馬奔來，不是搶匪而是求婚。|在丘園儉樸，布帛微薄，雖吝但終吉。|以純白樸素為美，無咎。", "從床腳開始被侵蝕，根基受損，凶。|侵蝕到床架，更深一步，凶。|在侵蝕中與同類劃清界線，無咎。|侵蝕到身膚，災禍臨身，凶。|像一串魚依序獲得寵愛，無不利。|大果未被吃掉，君子得車、小人失屋。", "走不遠就回頭，沒有大悔，大吉。|美好地返回，吉。|頻繁反覆回頭，有危險但無咎。|在眾人中獨自走回正道。|敦厚地返回，無悔。|迷失而不知回頭，凶，有災。", "以真實不妄之心前進，吉。|不為收穫而耕、不為熟田而墾，順勢而行利於前進。|無緣無故的災禍，像牛被人牽走，路人得利、鄰人受災。|可以守正，無咎。|無妄之病，不用吃藥自然好，有喜。|此時若妄行就有災，無所利。", "有危險，宜停止前進。|車子卸下車軸，暫時停下來蓄力。|好馬追逐，艱難守正，加強防衛則利於前往。|給小牛先上牛角橫木，防患未然，大吉。|閹過的豬牙不傷人，以巧妙方式制止惡，吉。|通往天上大路，通暢亨通。", "捨棄自己的靈龜，只看別人的吃相，凶。|倒過來求養於下，違反常理，前進凶。|違背養的正道，守正也凶，十年不可用。|倒過來求養於下是為了成就善，虎視眈眈需有誠意，無咎。|違背常規，安居守正則吉，不可涉大川。|靠他來養天下，危險但吉，利於涉大川。", "用白茅墊著祭品，格外小心，無咎。|枯楊長新芽，老夫娶少妻，無不利。|棟樑彎曲，要垮了，凶。|棟樑隆起堅固，吉；若有其他心思會羞吝。|枯楊開花，老婦嫁壯夫，不好不壞。|過河沒頂，凶，但出於義所以無咎。", "陷入坎中又陷更深，凶。|身處險中，只求小的收穫。|來去都是險，前進後退都險，不要行動。|一樽酒兩碗飯，簡單真誠，從窗口進獻，終無咎。|坎還未滿，只要平復就無咎。|被繩索綑綁、置於荊棘，三年不得脫身，凶。", "腳步雜亂，敬慎對待，無咎。|黃色的光明，居中得正，大吉。|夕陽西下，不擊缶唱歌就會嘆老，凶。|突然來臨像火焚燒，被拋棄，過度急躁。|淚流滿面、憂傷嘆息，反而吉。|君王出征，有好成果，斬首領、不株連，無咎。", "感應在腳拇指，才剛開始，感動很小。|感應在小腿，一動就凶，安居則吉。|感應在大腿，總是隨別人動，前進有羞吝。|守正吉；心思不定來來去去，只有朋友順從你的想法。|感應在背肉，不再有所動，無悔。|感應只停在口舌上，只是說說而已。", "一開始就想深入長久，守正也凶，無所利。|悔恨消失。|德行不能持久，會招來羞辱。|打獵沒有獵物，所求不得。|保持德行，婦人吉，男子凶。|總是動盪不定，凶。", "退避落在最後，危險，不宜前往。|用黃牛皮牢牢綁住，沒人能解開（堅定守住）。|被牽絆而難退，有病有危險；養臣妾吉。|愉快地隱退，君子吉，小人不行。|美好地退隱，守正吉。|從容寬裕地退隱，無不利。", "只在腳趾逞強，前進凶，確定有誠信。|守正吉。|小人逞勇，君子不用，守正也危險；像羊撞籬笆被卡住角。|守正吉，籬笆破開，車軸強壯。|在田埂上輕易丟了羊，無悔。|公羊撞籬笆，進退不得，無所利；艱難守住則吉。", "前進被挫折，守正吉；不被信任也要寬裕處之，無咎。|前進而憂愁，守正吉，受到祖母般的大福。|大家認可，悔恨消失。|像貪婪的大老鼠，守正也危險。|悔恨消失，得失不用計較，前往吉。|進到牛角尖，只可用來攻伐自己的領邑，危險但吉。", "光明受傷而飛，垂下翅膀；君子奔走三天沒飯吃，主人有閒話。|傷到左腿，用強壯的馬拯救，吉。|向南方狩獵，捉到首領，不可急於守正。|深入內情，抓到明夷之心，走出門庭。|像箕子在黑暗中守正，利守正。|不明而昏暗，起先登天，後來落入地。", "在家中先立規矩，悔恨消失。|不專擅，在家管飲食，守正吉。|家人嚴厲時雖後悔卻吉；嬉笑無度反而終吝。|使家富裕，大吉。|君王以德感化家庭，不用憂慮，吉。|有誠信又有威嚴，終吉。", "悔恨消失，丟了馬別追，自然回來；見到惡人也無咎。|在巷子中巧遇主人，無咎。|看到車被拖、牛被拉，人受刑，起先不好，後來有好結果。|背離而孤獨，遇到好夥伴，相互誠信，雖危無咎。|悔恨消失，宗親咬膚（親近），前進何咎。|背離孤立，見到髒豬、鬼怪滿車，先拉弓後放下，不是強盜是來求婚，遇雨則吉。", "前進有困難，回來反得讚譽。|王臣一再遇到困難，不是為自己的緣故。|前進有困難，回頭反而回到原位。|前進有困難，回來與人連結合力。|大難臨頭，朋友來幫忙。|前進有困難，回來有大收穫，吉；利於見大人。", "難解之初，沒有災咎。|狩獵得三隻狐狸，得到黃色箭，守正吉。|背著東西又坐車，招來盜賊，守正也羞吝。|解開你的拇指（脫離小人），朋友就來誠信相待。|君子能解開困難，吉，對小人有誠信。|公侯射下高牆上的鷹，獲得，無不利。", "事完了就趕快去幫助，無咎，要斟酌減損。|守正有利，前進有凶；不減損自己而增益他人。|三個人走會損失一個，一個人走則得朋友。|減少疾病，快速恢復有喜，無咎。|有人送你十朋大龜，無法拒絕，大吉。|不損失自己也能增益別人，無咎，守正吉，有臣而無私家。", "利於大興作為，大吉，無咎。|有人送你貴重大龜，不能違抗，長久守正吉；君王祭天吉。|在凶險之事上得益，無咎；有誠信走中道，持圭告公。|走中道稟告公侯並獲聽從，利於依託遷國。|有誠信、惠及人心，不用問，大吉。|沒有人幫助，反而有人攻擊，立心不能恆久，凶。", "腳趾逞強，前進不能獲勝反成過失。|警惕呼號，夜間有敵兵，不用憂慮。|顴骨露出怒氣，有凶；君子果斷獨行，遇雨沾濕有怒，無咎。|臀部沒有皮，行走遲疑；牽羊則悔亡，但聽了話不相信。|像剷除莧陸草（小人）般果決，合乎中道則無過。|不用再號呼，最終有凶。", "用金屬制動器拴住，守正吉；前進有凶，像瘦豬躁動。|廚房有魚，無咎，但不利於賓客。|臀部沒有皮，行走遲疑，危險，沒有大過失。|廚房沒有魚，起而爭則凶。|用杞柳包瓜，內含美德，自天而降。|在角落相遇，有羞吝，無咎。", "誠信不能持久，心亂心聚，呼號求助，一握手破涕為笑，無咎。|被引領聚合吉，無咎，有誠信才適合簡單祭祀。|聚而嘆息，無所利，前往無咎，小有羞吝。|聚集大吉，無咎。|聚集有位，無咎；不被信任要長久守正，悔恨消失。|嘆息流淚，無咎。", "獲得信任而上升，大吉。|有誠信，簡單祭祀也可，無咎。|上升進入空城，沒有阻礙。|君王在岐山祭祀，吉，無咎。|守正吉，一階一階上升。|昏昧中仍想上升，利於持續守正不息。", "屁股困在樹墩上，進入幽谷，三年不見人。|被酒食困住，紅袍加身的人將來，利於祭祀，前進凶，無咎。|困在石頭上，坐在蒺藜上，回到家看不到妻子，凶。|來得緩慢，困在金車中，羞吝，終究有結果。|受刑傷害，困於紅袍的人，慢慢有喜悅，利於祭祀。|困在藤蔓和不穩處，說動就後悔，有悔但前進吉。", "井底有泥不能喝，舊井沒有禽鳥來。|井水只養小魚，瓦罐破漏。|井已疏通卻沒人喝，令人心痛；若君王明智則共享福氣。|修砌井壁，無咎。|井水清冽，喝寒泉。|取水後不要蓋住，有誠信，大吉。", "用黃牛皮牢牢綁住，不宜變動。|時機到了才改革，前進吉，無咎。|貿然前進凶，守正也危險；改革的話要多次討論，才有誠信。|悔恨消失，有誠信、改變天命，吉。|大人像老虎般變化，不用占卜就已有誠信。|君子像豹般變化，小人只改面貌；前進凶，安居守正吉。", "鼎倒過來，利於倒出污穢，得妾生子，無咎。|鼎中有食物，我的仇人有病，不能靠近我，吉。|鼎耳壞了，行不通，美味不能吃，將下雨減少悔恨，終吉。|鼎腳折斷，打翻美食，弄髒，凶。|黃色鼎耳配金鉉，利守正。|玉製鼎鉉，大吉，無不利。", "雷來恐懼，之後笑語連連，吉。|雷來有危險，丟了很多錢財，登上高丘避難，不用追，七日自得。|驚雷讓人恍惚，若因此行動改正則無災。|雷擊陷入泥中，震動消失。|雷來去都危險，無大損失，有事要做。|雷嚇得發抖、眼神驚恐，前進凶；災不在自己而在鄰居，無咎。", "止於腳趾，一開始就停住，無咎，利於長久守正。|止於小腿，不能救助跟隨者，心裡不痛快。|止在腰間，裂開脊肉，危險焦慮攻心。|止於全身，無咎。|止於口，言語有條理，悔恨消失。|敦厚地知止，吉。", "大雁漸進到水邊，小孩有危險，有閒話，無咎。|漸進到大石上，飲食快樂，吉。|漸進到陸地，丈夫出征不回，婦人懷孕不養，凶；利於防禦盜寇。|漸進到樹上，或許找到平穩樹枝，無咎。|漸進到丘陵，婦人三年不孕，終究無人能勝，吉。|漸進到高處，羽毛可用作儀飾，吉。", "嫁妹作陪嫁，跛腳也能走，前進吉。|瞎眼也能看，利於幽靜守正。|等待機會才出嫁，反成陪嫁。|嫁期延誤，遲嫁也有時機。|帝乙嫁女，正妻衣袖不如陪嫁的好，月近滿，吉。|女子捧筐無實物，男子刺羊不見血，無所利。", "遇到相配的主人，即使地位均等也無過，前往受尊崇。|遮蔽豐盛，日中見到北斗，前進會被懷疑；以誠信啟發則吉。|幔帳遮暗，日中見小星，折斷右臂，無咎。|遮蔽太盛，日中見北斗，遇到平等的主人，吉。|招來有文采的人才，有慶賀與讚譽，吉。|把屋子造得很大，卻遮住家，窺看無人，三年不見，凶。", "旅途中斤斤計較，自招災禍。|旅途有住處，帶著錢財，得到忠僕。|旅舍被燒，失去僕人，守正也危險。|旅途暫居，得到資產與斧，我心不快。|射野雞失去一支箭，最終得到美名與任命。|鳥巢被燒，旅人先笑後哭，在田界上丟牛，凶。", "猶豫進退，利於武人堅定守正。|謙卑到床下，用祝史巫覡紛紛祈禱，吉，無咎。|頻繁地屈從，有羞吝。|悔恨消失，打獵得三種獵物。|守正吉，悔恨消失，無不利；起初不好後來有好結果，吉。|謙卑到床下，失去資產與斧，守正凶。", "和悅相處，吉。|以誠信喜悅，吉，悔恨消失。|來求取喜悅（討好），凶。|商討喜悅還不安定，隔絕疾病就有喜。|信任剝蝕之人，有危險。|被引誘去喜悅。", "用強壯的馬來救助，吉。|渙散時奔向可依靠的桌几，悔恨消失。|散去自身私欲，無悔。|化散小團體，大吉；散聚成丘，是常人想不到的。|如汗水般發布大號令，散出王倉積蓄，無過。|化散憂傷，遠離危險，無咎。", "不出門庭，無咎。|該出門卻不出，凶。|不節制就會嘆息，無咎（自作自受）。|安然地節制，亨通。|以愉快的心節制，吉，前進受尊重。|過分苦行的節制，守正凶，悔恨消失。", "安守等待吉，若有他心就不安。|鶴在樹蔭鳴叫，小鶴唱和；我有美酒，願與你共享。|遇到對手，有時擊鼓進攻，有時罷兵，有時哭泣有時歌唱。|月近滿，馬匹走失，無咎。|誠信牽繫不斷，無咎。|雞鳴聲想上天，守正凶。", "像鳥一直往高處飛，凶。|越過祖父遇到祖母；不到君主那裡，遇到臣下，無咎。|不夠防備，小人會害你，凶。|沒有過錯，不要太過，遇到要警戒，不要長久守舊。|烏雲密佈不下雨，自西郊來，公侯射得穴中獵物。|太過頭而錯過，鳥離去，凶，這是災禍。", "拖住車輪、濕了尾巴，無咎。|婦人丟了車簾，不用追，七日自得。|高宗討伐鬼方，三年才打下，小人不可用。|華美的衣服要預備破布（防漏水），終日戒備。|東鄰殺牛祭祀，不如西鄰簡單祭祀，實際得福。|弄濕了頭，危險。", "弄濕了尾巴，羞吝。|拖住車輪，守正吉。|尚未完成，前進凶；利於涉大川。|守正吉，悔恨消失，奮力討伐鬼方，三年後得賞。|守正吉，無悔，君子光明，有誠信，吉。|安然飲酒有誠信，無咎；若弄濕頭，就失去正道。"];
+const MH_YT=["時機未到，先潛心蓄力，不要妄動。|才能開始顯露，適合出來見貴人、請教前輩。|整天勤奮、夜裡仍警惕反省，雖處危險也能無災。|可以試著進取，也可退回穩守，量力而行就無咎（不會有過失）。|位置與時機最好，大展身手，適合與貴人相見。|爬到頂點過於高亢，物極必反，宜收斂防後悔。", "看到薄霜就知嚴寒將臨，小跡象要及早留意。|正直、端方、廣大，順著本性做事自然沒有不利。|把才華含蓄收藏，守正而不爭功，成果歸於上位。|像把袋口紮緊，少說話、少表態，無咎無譽（沒有過失，也沒有讚譽），謹慎免禍但也無名。|像穿著低調高貴的黃色衣裳，內斂有德，大吉。|陰盛到極點與陽相爭，兩敗俱傷，要避免硬碰。", "起步時徘徊不前，宜守正、先打好基礎並尋找助手。|困難重重、進退兩難；對方不是來搶而是求婚，要耐心等十年才有結果。|沒有嚮導就追鹿入林，貿然行動會吃虧，不如放棄。|看清形勢，主動求援合作，前進吉利。|恩惠被卡住不能廣施，小事可行，大事強推有凶。|走投無路、傷心流淚，要靠求助與反省。", "開始啟蒙需有規矩約束，過度放縱會有困難。|能包容愚昧者並加以引導，吉；善於持家也吉。|見到有錢人就失去自我，這種選擇沒有好處，要保持自主。|困在愚昧中又不肯學習，會有羞吝。|以純真謙虛的態度求教，吉。|對頑固的蒙昧要適度嚴厲糾正，但要防範過度。", "在遠郊等待，還離危險很遠，保持恆心就無災。|等在沙地，有些閒言閒語，最後仍吉。|等在泥濘邊，離險境很近，容易招來外敵，要謹慎。|陷入危險，要設法退出險地，保住安全。|等待時安心飲食休養，守正吉。|進入險境，有意外的三位客人來，恭敬相待終吉。", "不要把爭訟拖長，小有口舌，終究吉。|爭不過就退回，離開避禍，鄉里平安。|靠舊有的德行維持，守正，終吉；為公事不求功。|打不贏就回頭，改變主意安守正道，吉。|由公正者裁斷，是大吉。|即使因爭訟得到賞賜，也很快又被剝奪，不可恃。", "出兵必須有紀律，否則即使贏也是凶。|身在軍中居中指揮，吉無咎（不會有過失），並受上位重賞。|指揮不一，載屍而歸，凶。|暫時退守，不勉強進攻，無咎（不會有過失）。|有可執之理才出手，無咎（不會有過失）；用對的人當統帥，用錯則凶。|論功行賞，小人不可重用。", "以誠信與人親近，無咎（不會有過失），真誠充實終有它吉。|從內部、自己主動誠心親附，守正吉。|親近到不合適的人，要小心。|向外親近賢者，守正吉。|光明正大地親近，不強求，大方自然，吉。|沒有領頭人就想親附，結果凶。", "回到自己的正道，有什麼咎，吉。|被牽引著返回正道，吉。|車輪脫落，夫妻反目，因強行前進而失和。|有誠信，擔憂和血光都能離去，無咎（不會有過失）。|誠信牽連，連鄰居一起富足，要互助。|雨已下、事已成，重德行；此時月近滿，不宜再進。", "以樸素本分的態度前行，往前無咎（不會有過失）。|道路平坦，守正的隱者吉。|能力有限卻硬要逞強，踩到虎尾被咬，凶。|雖踩虎尾但極度謹慎，終吉。|決斷果敢地走，但守正也有危險。|回顧走過的路、檢視吉凶，圓滿大吉。", "拔起茅草連根帶出，與同類一同前進，吉。|包容荒穢、勇於涉險、不遺漏遠方，得到中道的支持。|沒有永遠平坦、沒有只去不返，艱難中守正無咎（不會有過失），享福。|輕鬆地與鄰居往來，不靠財富，也不必告誡就能互信。|君王嫁女、降尊相親，得福大吉。|城牆倒回護城河，泰極轉否，不要再動兵，守正也有憾。", "同類一同進退，守正吉亨。|包容順從，小人吉，大人在閉塞中守住自己亨通。|被迫容忍羞辱之事，處境尷尬。|有上命而行，無咎（不會有過失），同伴也得福。|使閉塞停止，大人吉；要時時警戒，像繫在桑樹根上。|閉塞被推翻，先否後喜。", "在家門口就與人和同，無咎（不會有過失）。|只和同宗親近，格局小，有憾。|埋伏兵於草叢，疑心重，久久不能起事。|爬上城牆卻不攻，知難而退，吉。|先痛哭後歡笑，大軍終能會合。|在遠郊和同，雖不深入也無悔。", "不與害人之事交往，無咎（不會有過失），艱難時小心則無災。|用大車裝載，有能力承擔，前往無咎（不會有過失）。|公侯向天子獻上財物，小人做不到。|不炫耀盛大，無咎（不會有過失）。|以誠信相交又有威嚴，吉。|上天保佑，吉無不利。", "極度謙虛的君子，可以渡過大河，吉。|謙名遠播，守正吉。|有功勞又謙虛，有好結果，吉。|處處發揮謙德，無所不利。|不倚仗財富，可以出兵討伐不服者，無不利。|謙德昭著，可以用兵整頓邑國。", "得意到張揚，凶。|像石頭般堅定，不整天耽於享樂，守正吉。|仰望別人求快樂，後悔；遲疑也後悔。|由你帶來歡樂，大有所得，不要懷疑，朋友會聚合。|長期有隱疾，但不會死，要有節制。|沉迷享樂，若能改變則無咎（不會有過失）。", "職守有變，守正吉；出門與人交往有功。|跟了小的，失去大的，取捨不當。|跟了大的，失去小的，所求可得，宜居守正。|跟隨有收穫，但要守正以防凶；有誠信走在正道，明白何咎。|以誠信嘉美相隨，吉。|被牢牢繫住、長久相隨，如君王在西山祭祀。", "整治父輩留下的弊端，有賢子則無咎（不會有過失），雖危險終吉。|整治母輩弊端，不可太堅持強硬。|整治弊端稍有悔，但沒有大錯。|對弊端寬縱不管，繼續下去會有羞吝。|整治弊端並得到好名聲。|不為王侯做事，高尚其志。", "以感化的方式親臨，守正吉。|感化臨下，吉，無不利。|以甜言蜜語對待，沒有好處；若能憂慮反省則無咎（不會有過失）。|親自到位督導，無咎（不會有過失）。|以智慧領導，這是大君的作法，吉。|以敦厚寬厚面對，吉，無咎（不會有過失）。", "像孩童般淺薄地看，小人無咎（不會有過失），君子會羞吝。|從門縫偷看，視野狹窄，只適合女子守正。|觀察自己的行為，決定進退。|觀察國家的光明，適合受賓禮於王。|審視自己，君子無咎（不會有過失）。|觀察他人影響，君子無咎（不會有過失）。", "腳被刑具套住，小懲而止，無咎（不會有過失）。|咬軟肉很容易，用力過頭到鼻子，無咎（不會有過失）。|咬到陳肉中毒，小有羞吝，無咎（不會有過失）。|咬硬骨肉，得到金箭，艱難守正，吉。|處理難事得到成果，要警惕守正，無咎（不會有過失）。|枷鎖蓋過耳朵，惡積重大，凶。", "把腳裝飾好，捨車步行，寧可實在。|裝飾鬍鬚，外在跟隨內在。|潤澤華美，長久守正吉。|素白無華，白馬奔來，不是搶匪而是求婚。|在丘園儉樸，布帛微薄，雖吝但終吉。|以純白樸素為美，無咎（不會有過失）。", "從床腳開始被侵蝕，根基受損，凶。|侵蝕到床架，更深一步，凶。|在侵蝕中與同類劃清界線，無咎（不會有過失）。|侵蝕到身膚，災禍臨身，凶。|像一串魚依序獲得寵愛，無不利。|大果未被吃掉，君子得車、小人失屋。", "走不遠就回頭，沒有大悔，大吉。|美好地返回，吉。|頻繁反覆回頭，有危險但無咎（不會有過失）。|在眾人中獨自走回正道。|敦厚地返回，無悔。|迷失而不知回頭，凶，有災。", "以真實不妄之心前進，吉。|不為收穫而耕、不為熟田而墾，順勢而行利於前進。|無緣無故的災禍，像牛被人牽走，路人得利、鄰人受災。|可以守正，無咎（不會有過失）。|無妄之病，不用吃藥自然好，有喜。|此時若妄行就有災，無所利。", "有危險，宜停止前進。|車子卸下車軸，暫時停下來蓄力。|好馬追逐，艱難守正，加強防衛則利於前往。|給小牛先上牛角橫木，防患未然，大吉。|閹過的豬牙不傷人，以巧妙方式制止惡，吉。|通往天上大路，通暢亨通。", "捨棄自己的靈龜，只看別人的吃相，凶。|倒過來求養於下，違反常理，前進凶。|違背養的正道，守正也凶，十年不可用。|倒過來求養於下是為了成就善，虎視眈眈需有誠意，無咎（不會有過失）。|違背常規，安居守正則吉，不可涉大川。|靠他來養天下，危險但吉，利於涉大川。", "用白茅墊著祭品，格外小心，無咎（不會有過失）。|枯楊長新芽，老夫娶少妻，無不利。|棟樑彎曲，要垮了，凶。|棟樑隆起堅固，吉；若有其他心思會羞吝。|枯楊開花，老婦嫁壯夫，無咎無譽（沒有過失，也沒有讚譽），不好不壞。|過河沒頂，凶，但出於義所以無咎（不會有過失）。", "陷入坎中又陷更深，凶。|身處險中，只求小的收穫。|來去都是險，前進後退都險，不要行動。|一樽酒兩碗飯，簡單真誠，從窗口進獻，終無咎（不會有過失）。|坎還未滿，只要平復就無咎（不會有過失）。|被繩索綑綁、置於荊棘，三年不得脫身，凶。", "腳步雜亂，敬慎對待，無咎（不會有過失）。|黃色的光明，居中得正，大吉。|夕陽西下，不擊缶唱歌就會嘆老，凶。|突然來臨像火焚燒，被拋棄，過度急躁。|淚流滿面、憂傷嘆息，反而吉。|君王出征，有好成果，斬首領、不株連，無咎（不會有過失）。", "感應在腳拇指，才剛開始，感動很小。|感應在小腿，一動就凶，安居則吉。|感應在大腿，總是隨別人動，前進有羞吝。|守正吉；心思不定來來去去，只有朋友順從你的想法。|感應在背肉，不再有所動，無悔。|感應只停在口舌上，只是說說而已。", "一開始就想深入長久，守正也凶，無所利。|悔恨消失。|德行不能持久，會招來羞辱。|打獵沒有獵物，所求不得。|保持德行，婦人吉，男子凶。|總是動盪不定，凶。", "退避落在最後，危險，不宜前往。|用黃牛皮牢牢綁住，沒人能解開（堅定守住）。|被牽絆而難退，有病有危險；養臣妾吉。|愉快地隱退，君子吉，小人不行。|美好地退隱，守正吉。|從容寬裕地退隱，無不利。", "只在腳趾逞強，前進凶，確定有誠信。|守正吉。|小人逞勇，君子不用，守正也危險；像羊撞籬笆被卡住角。|守正吉，籬笆破開，車軸強壯。|在田埂上輕易丟了羊，無悔。|公羊撞籬笆，進退不得，無所利；艱難守住則吉。", "前進被挫折，守正吉；不被信任也要寬裕處之，無咎（不會有過失）。|前進而憂愁，守正吉，受到祖母般的大福。|大家認可，悔恨消失。|像貪婪的大老鼠，守正也危險。|悔恨消失，得失不用計較，前往吉。|進到牛角尖，只可用來攻伐自己的領邑，危險但吉，無咎（不會有過失）。", "光明受傷而飛，垂下翅膀；君子奔走三天沒飯吃，主人有閒話。|傷到左腿，用強壯的馬拯救，吉。|向南方狩獵，捉到首領，不可急於守正。|深入內情，抓到明夷之心，走出門庭。|像箕子在黑暗中守正，利守正。|不明而昏暗，起先登天，後來落入地。", "在家中先立規矩，悔恨消失。|不專擅，在家管飲食，守正吉。|家人嚴厲時雖後悔卻吉；嬉笑無度反而終吝。|使家富裕，大吉。|君王以德感化家庭，不用憂慮，吉。|有誠信又有威嚴，終吉。", "悔恨消失，丟了馬別追，自然回來；見到惡人也無咎（不會有過失）。|在巷子中巧遇主人，無咎（不會有過失）。|看到車被拖、牛被拉，人受刑，起先不好，後來有好結果。|背離而孤獨，遇到好夥伴，相互誠信，雖危無咎（不會有過失）。|悔恨消失，宗親咬膚（親近），前進何咎。|背離孤立，見到髒豬、鬼怪滿車，先拉弓後放下，不是強盜是來求婚，遇雨則吉。", "前進有困難，回來反得讚譽。|王臣一再遇到困難，不是為自己的緣故。|前進有困難，回頭反而回到原位。|前進有困難，回來與人連結合力。|大難臨頭，朋友來幫忙。|前進有困難，回來有大收穫，吉；利於見大人。", "難解之初，沒有災咎。|狩獵得三隻狐狸，得到黃色箭，守正吉。|背著東西又坐車，招來盜賊，守正也羞吝。|解開你的拇指（脫離小人），朋友就來誠信相待。|君子能解開困難，吉，對小人有誠信。|公侯射下高牆上的鷹，獲得，無不利。", "事完了就趕快去幫助，無咎（不會有過失），要斟酌減損。|守正有利，前進有凶；不減損自己而增益他人。|三個人走會損失一個，一個人走則得朋友。|減少疾病，快速恢復有喜，無咎（不會有過失）。|有人送你十朋大龜，無法拒絕，大吉。|不損失自己也能增益別人，無咎（不會有過失），守正吉，有臣而無私家。", "利於大興作為，大吉，無咎（不會有過失）。|有人送你貴重大龜，不能違抗，長久守正吉；君王祭天吉。|在凶險之事上得益，無咎（不會有過失）；有誠信走中道，持圭告公。|走中道稟告公侯並獲聽從，利於依託遷國。|有誠信、惠及人心，不用問，大吉。|沒有人幫助，反而有人攻擊，立心不能恆久，凶。", "腳趾逞強，前進不能獲勝反成過失。|警惕呼號，夜間有敵兵，不用憂慮。|顴骨露出怒氣，有凶；君子果斷獨行，遇雨沾濕有怒，無咎（不會有過失）。|臀部沒有皮，行走遲疑；牽羊則悔亡，但聽了話不相信。|像剷除莧陸草（小人）般果決，合乎中道則無過。|不用再號呼，最終有凶。", "用金屬制動器拴住，守正吉；前進有凶，像瘦豬躁動。|廚房有魚，無咎（不會有過失），但不利於賓客。|臀部沒有皮，行走遲疑，危險，沒有大過失。|廚房沒有魚，起而爭則凶。|用杞柳包瓜，內含美德，自天而降。|在角落相遇，有羞吝，無咎（不會有過失）。", "誠信不能持久，心亂心聚，呼號求助，一握手破涕為笑，無咎（不會有過失）。|被引領聚合吉，無咎（不會有過失），有誠信才適合簡單祭祀。|聚而嘆息，無所利，前往無咎（不會有過失），小有羞吝。|聚集大吉，無咎（不會有過失）。|聚集有位，無咎（不會有過失）；不被信任要長久守正，悔恨消失。|嘆息流淚，無咎（不會有過失）。", "獲得信任而上升，大吉。|有誠信，簡單祭祀也可，無咎（不會有過失）。|上升進入空城，沒有阻礙。|君王在岐山祭祀，吉，無咎（不會有過失）。|守正吉，一階一階上升。|昏昧中仍想上升，利於持續守正不息。", "屁股困在樹墩上，進入幽谷，三年不見人。|被酒食困住，紅袍加身的人將來，利於祭祀，前進凶，無咎（不會有過失）。|困在石頭上，坐在蒺藜上，回到家看不到妻子，凶。|來得緩慢，困在金車中，羞吝，終究有結果。|受刑傷害，困於紅袍的人，慢慢有喜悅，利於祭祀。|困在藤蔓和不穩處，說動就後悔，有悔但前進吉。", "井底有泥不能喝，舊井沒有禽鳥來。|井水只養小魚，瓦罐破漏。|井已疏通卻沒人喝，令人心痛；若君王明智則共享福氣。|修砌井壁，無咎（不會有過失）。|井水清冽，喝寒泉。|取水後不要蓋住，有誠信，大吉。", "用黃牛皮牢牢綁住，不宜變動。|時機到了才改革，前進吉，無咎（不會有過失）。|貿然前進凶，守正也危險；改革的話要多次討論，才有誠信。|悔恨消失，有誠信、改變天命，吉。|大人像老虎般變化，不用占卜就已有誠信。|君子像豹般變化，小人只改面貌；前進凶，安居守正吉。", "鼎倒過來，利於倒出污穢，得妾生子，無咎（不會有過失）。|鼎中有食物，我的仇人有病，不能靠近我，吉。|鼎耳壞了，行不通，美味不能吃，將下雨減少悔恨，終吉。|鼎腳折斷，打翻美食，弄髒，凶。|黃色鼎耳配金鉉，利守正。|玉製鼎鉉，大吉，無不利。", "雷來恐懼，之後笑語連連，吉。|雷來有危險，丟了很多錢財，登上高丘避難，不用追，七日自得。|驚雷讓人恍惚，若因此行動改正則無災。|雷擊陷入泥中，震動消失。|雷來去都危險，無大損失，有事要做。|雷嚇得發抖、眼神驚恐，前進凶；災不在自己而在鄰居，無咎（不會有過失）。", "止於腳趾，一開始就停住，無咎（不會有過失），利於長久守正。|止於小腿，不能救助跟隨者，心裡不痛快。|止在腰間，裂開脊肉，危險焦慮攻心。|止於全身，無咎（不會有過失）。|止於口，言語有條理，悔恨消失。|敦厚地知止，吉。", "大雁漸進到水邊，小孩有危險，有閒話，無咎（不會有過失）。|漸進到大石上，飲食快樂，吉。|漸進到陸地，丈夫出征不回，婦人懷孕不養，凶；利於防禦盜寇。|漸進到樹上，或許找到平穩樹枝，無咎（不會有過失）。|漸進到丘陵，婦人三年不孕，終究無人能勝，吉。|漸進到高處，羽毛可用作儀飾，吉。", "嫁妹作陪嫁，跛腳也能走，前進吉。|瞎眼也能看，利於幽靜守正。|等待機會才出嫁，反成陪嫁。|嫁期延誤，遲嫁也有時機。|帝乙嫁女，正妻衣袖不如陪嫁的好，月近滿，吉。|女子捧筐無實物，男子刺羊不見血，無所利。", "遇到相配的主人，即使地位均等也無過，前往受尊崇。|遮蔽豐盛，日中見到北斗，前進會被懷疑；以誠信啟發則吉。|幔帳遮暗，日中見小星，折斷右臂，無咎（不會有過失）。|遮蔽太盛，日中見北斗，遇到平等的主人，吉。|招來有文采的人才，有慶賀與讚譽，吉。|把屋子造得很大，卻遮住家，窺看無人，三年不見，凶。", "旅途中斤斤計較，自招災禍。|旅途有住處，帶著錢財，得到忠僕。|旅舍被燒，失去僕人，守正也危險。|旅途暫居，得到資產與斧，我心不快。|射野雞失去一支箭，最終得到美名與任命。|鳥巢被燒，旅人先笑後哭，在田界上丟牛，凶。", "猶豫進退，利於武人堅定守正。|謙卑到床下，用祝史巫覡紛紛祈禱，吉，無咎（不會有過失）。|頻繁地屈從，有羞吝。|悔恨消失，打獵得三種獵物。|守正吉，悔恨消失，無不利；起初不好後來有好結果，吉。|謙卑到床下，失去資產與斧，守正凶。", "和悅相處，吉。|以誠信喜悅，吉，悔恨消失。|來求取喜悅（討好），凶。|商討喜悅還不安定，隔絕疾病就有喜。|信任剝蝕之人，有危險。|被引誘去喜悅。", "用強壯的馬來救助，吉。|渙散時奔向可依靠的桌几，悔恨消失。|散去自身私欲，無悔。|化散小團體，大吉；散聚成丘，是常人想不到的。|如汗水般發布大號令，散出王倉積蓄，無過。|化散憂傷，遠離危險，無咎（不會有過失）。", "不出門庭，無咎（不會有過失）。|該出門卻不出，凶。|不節制就會嘆息，無咎（不會有過失）（自作自受）。|安然地節制，亨通。|以愉快的心節制，吉，前進受尊重。|過分苦行的節制，守正凶，悔恨消失。", "安守等待吉，若有他心就不安。|鶴在樹蔭鳴叫，小鶴唱和；我有美酒，願與你共享。|遇到對手，有時擊鼓進攻，有時罷兵，有時哭泣有時歌唱。|月近滿，馬匹走失，無咎（不會有過失）。|誠信牽繫不斷，無咎（不會有過失）。|雞鳴聲想上天，守正凶。", "像鳥一直往高處飛，凶。|越過祖父遇到祖母；不到君主那裡，遇到臣下，無咎（不會有過失）。|不夠防備，小人會害你，凶。|沒有過錯，不要太過，遇到要警戒，不要長久守舊。|烏雲密佈不下雨，自西郊來，公侯射得穴中獵物。|太過頭而錯過，鳥離去，凶，這是災禍。", "拖住車輪、濕了尾巴，無咎（不會有過失）。|婦人丟了車簾，不用追，七日自得。|高宗討伐鬼方，三年才打下，小人不可用。|華美的衣服要預備破布（防漏水），終日戒備。|東鄰殺牛祭祀，不如西鄰簡單祭祀，實際得福。|弄濕了頭，危險。", "弄濕了尾巴，羞吝。|拖住車輪，守正吉。|尚未完成，前進凶；利於涉大川。|守正吉，悔恨消失，奮力討伐鬼方，三年後得賞。|守正吉，無悔，君子光明，有誠信，吉。|安然飲酒有誠信，無咎（不會有過失）；若弄濕頭，就失去正道。"];
 const MH_TN={乾:1,兌:2,離:3,震:4,巽:5,坎:6,艮:7,坤:8};
 const MH_KW=[[1,43,14,34,9,5,26,11],[10,58,38,54,61,60,41,19],[13,49,30,55,37,63,22,36],[25,17,21,51,42,3,27,24],[44,28,50,32,57,48,18,46],[6,47,64,40,59,29,4,7],[33,31,56,62,53,39,52,15],[12,45,35,16,20,8,23,2]];
 const mhKw=(u,l)=>MH_KW[MH_TN[l]-1][MH_TN[u]-1];
 const mhNow=()=>{const d=new Date(),p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes())};
 const MH_ZHI='子丑寅卯辰巳午未申酉戌亥',MH_GAN='甲乙丙丁戊己庚辛壬癸',MH_YAO=['初爻','二爻','三爻','四爻','五爻','上爻'];
-let mhOpen=false,mhTab='num',mhN1='',mhN2='',mhT='',mhQ='',mhSeason='auto',mhRes=null;
+let mhOpen=false,mhTab='num',mhN1='',mhN2='',mhT='',mhQ='',mhSeason='auto',mhRes=null,mhResBy={};
+function mhClear(){mhN1='';mhN2='';mhT=mhNow();mhQ='';mhSeason='auto';mhRes=null;mhResBy={}}
 function mhLunar(d){try{const p=new Intl.DateTimeFormat('en-u-ca-chinese',{year:'numeric',month:'numeric',day:'numeric'}).formatToParts(d),g=t=>(p.find(x=>x.type===t)||{}).value||'',m=g('month'),mo=parseInt(m,10),da=parseInt(g('day'),10),y=parseInt(g('relatedYear'),10);if(!(mo>=1&&mo<=12&&da>=1&&y))return null;return{y,m:mo,d:da,leap:/bis/i.test(m)}}catch(e){return null}}
 const mhSeasonOf=m=>m<=3?'春':m<=6?'夏':m<=9?'秋':'冬';
 const mhFmt=d=>d.getFullYear()+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
@@ -1219,11 +1257,11 @@ function mhGo(){let r,meta;const sel=mhSeason;
   mhRes={id:uid(),t:Date.now(),meta,r};render();const el=$('#mhres');if(el)el.scrollIntoView({block:'start',behavior:'smooth'})}
 const Safe=Number.isSafeInteger;
 function mhSvg(lines,mark){let h='<svg viewBox="0 0 100 100" width="46" height="46" aria-hidden="true">';for(let i=0;i<6;i++){const y=(5-i)*17+2,c=(i+1===mark)?'#d98faa':'currentColor';if(lines[i])h+='<rect x="0" y="'+y+'" width="100" height="11" rx="2" fill="'+c+'"/>';else h+='<rect x="0" y="'+y+'" width="40" height="11" rx="2" fill="'+c+'"/><rect x="60" y="'+y+'" width="40" height="11" rx="2" fill="'+c+'"/>'}return h+'</svg>'}
-function mhGuaBlock(lab,name,u,l,mark,mlab,isBen){const kw=mhKw(u,l),f=(MH_TXT[kw-1]||'').split('|'),yao=f.slice(1,7),ex=f[7],gl=t=>'<span style="color:var(--soft)">'+t+'</span>';
+function mhGuaBlock(lab,name,u,l,mark,mlab,isBen){const kw=mhKw(u,l),f=(MH_TXT[kw-1]||'').split('|'),yao=f.slice(1,7),ex=f[7],wj=/無咎/.test(f[0]+yao.join('')),gl=t=>'<span style="color:var(--soft)">'+t+'</span>';
   return '<div style="margin:0 0 12px;padding:10px 12px;border:1.2px dashed var(--line);border-radius:12px"><b style="font-weight:500">'+lab+'：'+esc(name)+'（第'+kw+'卦）· 卦意：'+esc(f[8])+'</b>'
    +'<div style="margin-top:6px">'+gl('卦辭')+'　'+esc(f[0])+'</div>'
    +'<div style="margin-top:6px">'+gl('爻辭')+[5,4,3,2,1,0].map(i=>'<div'+((i+1===mark)?' style="color:#c0607f;font-weight:500"':'')+'>'+esc(yao[i])+((i+1===mark)?'　◀ '+mlab:'')+'</div>').join('')+(ex?'<div>'+esc(ex)+'</div>':'')+'</div>'
-   +'<div style="margin-top:6px">'+gl(isBen?'卦辭白話':'白話')+'　'+esc(f[9])+'</div>'+((isBen&&mark)?'<div style="margin-top:6px">'+gl('動爻白話（'+MH_YAO[mark-1]+'）')+'　'+esc((MH_YT[kw-1]||'').split('|')[mark-1]||'')+'</div>':'')+'</div>'}
+   +'<div style="margin-top:6px">'+gl(isBen?'卦辭白話':'白話')+'　'+esc(f[9])+'</div>'+((isBen&&mark)?'<div style="margin-top:6px">'+gl('動爻白話（'+MH_YAO[mark-1]+'）')+'　'+esc((MH_YT[kw-1]||'').split('|')[mark-1]||'')+'</div>':'')+(wj?'<div style="margin-top:6px">'+gl('無咎')+'　沒有災禍、不會有過失的意思；通常表示只要謹慎、守正、照著該爻的提醒去做，就不會出差錯。</div>':'')+'</div>'}
 function mhResultHtml(rec){const r=rec.r,m=rec.meta,mv=r.movingLine,o=r.originalLines,hl=[o[1],o[2],o[3],o[2],o[3],o[4]],sg=n=>(n>0?'+':'')+n;
   const col=(lab,lines,name,u,l,ue,le,mark)=>'<div style="flex:1;min-width:0;text-align:center"><div class="hint" style="margin:0 0 4px">'+lab+'</div><div style="display:flex;justify-content:center;color:var(--ink)">'+mhSvg(lines,mark)+'</div><div style="font-weight:500;margin-top:4px;font-size:14px">'+esc(name)+'</div><div class="hint" style="margin:2px 0 0">第'+mhKw(u,l)+'卦</div><div class="hint" style="margin:0">上'+u+'（'+ue+'）</div><div class="hint" style="margin:0">下'+l+'（'+le+'）</div></div>';
   const row=(k,v)=>'<div style="margin:0 0 9px"><b style="font-weight:500">'+k+'</b><br><span style="color:var(--soft)">'+v+'</span></div>';
@@ -1282,17 +1320,129 @@ function playSnd(k){try{const a=acx();if(!a||!k||k==='none')return;const t=a.cur
 const sndMe=()=>{if(S&&S.set&&S.set.ntMeOn)playSnd(S.set.ntMeSnd)};
 document.addEventListener('change',e=>{const t=e.target;if(!t||!t.matches||!t.matches('select[data-snd]'))return;S.set[t.dataset.snd]=t.value;save();playSnd(t.value)});
 
+/* ── 番茄鐘 ── */
+let pomoOpen=false;
+const PM_NAME={foc:'專注',brk:'休息',lng:'長休息'};
+const pmDur=p=>(p.ph==='foc'?p.foc:p.ph==='brk'?p.brk:p.lng)*60000;
+const pmLeft=()=>{const p=S.pomo;return p.run?Math.max(0,p.end-Date.now()):p.left};
+const pmFmt=ms=>{const s=Math.ceil(ms/1000);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
+function pmToday(){const d=new Date(),k=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();if(S.pomo.day!==k){S.pomo.day=k;S.pomo.n=0}}
+function pmChime(){try{const a=acx();if(!a)return;[[660,0],[880,.22],[1320,.44]].forEach(([f,d])=>{const o=a.createOscillator(),g=a.createGain(),t=a.currentTime+.02+d;o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(.25,t+.03);g.gain.exponentialRampToValueAtTime(.0001,t+.5);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.55)})}catch(e){}}
+function pmDone(){const p=S.pomo;pmToday();const was=p.ph;
+  if(was==='foc'){p.n++;p.idx++;p.ph=(p.idx%Math.max(1,p.cyc)===0)?'lng':'brk'}else p.ph='foc';
+  p.left=pmDur(p);if(p.snd)pmChime();toast(was==='foc'?'專注完成，休息一下吧':'休息結束，準備開始專注',2200);
+  if(p.auto){p.run=1;p.end=Date.now()+p.left}else{p.run=0;p.end=0}save()}
+function pmPaint(){const p=S.pomo,t=document.getElementById('pmT'),a=document.getElementById('pmArc');if(!t&&!a)return;const l=pmLeft(),tot=pmDur(p)||1;if(t)t.textContent=pmFmt(l);if(a)a.style.strokeDashoffset=(2*Math.PI*96*(1-l/tot)).toFixed(2)}
+setInterval(()=>{try{const p=S&&S.pomo;if(!p||!p.run)return;if(p.end-Date.now()<=0){const open=pomoOpen&&tab==='home';pmDone();if(open&&!(document.activeElement&&document.activeElement.tagName==='INPUT'))render();else pmPaint()}else pmPaint()}catch(x){}},250);
+function vPomo(){const p=S.pomo;pmToday();const R=96,C=2*Math.PI*R,tot=pmDur(p)||1,l=pmLeft(),cyc=Math.max(1,p.cyc),fill=p.ph==='lng'?cyc:p.idx%cyc;
+  const dots=Array.from({length:cyc},(_,i)=>'<span class="pm-dot'+(i<fill?' on':'')+'"></span>').join('');
+  const SW=(k,l2)=>'<div class="sr" style="align-items:center"><span>'+l2+'</span><button class="sw '+(p[k]?'on':'')+'" data-a="pomosw" data-i="'+k+'"></button></div>';
+  const NI=(k,l2,u,mx)=>'<div class="sr" style="align-items:center"><span>'+l2+'</span><span><input type="number" inputmode="numeric" data-pm="'+k+'" min="1" max="'+mx+'" value="'+p[k]+'" style="width:56px;text-align:right;padding:6px 4px"> '+u+'</span></div>';
+  return '<div class="ph2"><button class="ib" data-a="pomoback">‹</button><h1>番茄鐘</h1></div>'
+  +'<div class="card" style="text-align:center"><div style="font-size:14px;color:var(--soft);margin-bottom:6px">'+PM_NAME[p.ph]+(p.run?'中':(l<tot?'（已暫停）':''))+'</div>'
+  +'<div class="pm-wrap"><svg viewBox="0 0 220 220" width="220" height="220"><circle cx="110" cy="110" r="'+R+'" fill="none" stroke="var(--bub)" stroke-width="10"/><circle id="pmArc" cx="110" cy="110" r="'+R+'" fill="none" stroke="var(--lav)" stroke-width="10" stroke-linecap="round" transform="rotate(-90 110 110)" stroke-dasharray="'+C.toFixed(2)+'" style="stroke-dashoffset:'+(C*(1-l/tot)).toFixed(2)+'"/></svg><div class="pm-t" id="pmT">'+pmFmt(l)+'</div></div>'
+  +'<div class="pm-dots">'+dots+'</div><div style="font-size:13px;color:var(--soft);margin:2px 0 12px">今天完成 '+p.n+' 個番茄</div>'
+  +'<div style="display:flex;gap:8px"><button class="btn" data-a="pomoreset" style="flex:1;margin:0">重置</button><button class="btn s" data-a="pomogo" style="flex:2;margin:0">'+(p.run?'暫停':(l<tot?'繼續':'開始'))+'</button><button class="btn" data-a="pomoskip" style="flex:1;margin:0">跳過</button></div></div>'
+  +'<div class="card set"><h3>番茄鐘設置</h3>'+NI('foc','專注時間','分鐘',180)+NI('brk','休息時間','分鐘',60)+NI('lng','長休息時間','分鐘',120)+NI('cyc','幾輪後長休息','輪',12)+SW('auto','自動進入下一階段')+SW('snd','提示音')+'</div>'}
+document.addEventListener('input',e=>{const t=e.target;if(!t||!t.dataset||!t.dataset.pm||!S||!S.pomo)return;const p=S.pomo,k=t.dataset.pm,v=Math.max(1,Math.min(+t.max||999,Math.round(+t.value)||0));if(!v)return;const full=!p.run&&p.left===pmDur(p);p[k]=v;if(full)p.left=pmDur(p);pmPaint();saveSoon()});
+document.addEventListener('change',e=>{const t=e.target;if(t&&t.dataset&&t.dataset.pm&&S&&S.pomo){t.value=S.pomo[t.dataset.pm]}});
+
 /* ── 朋友圈 ── */
 let momOpen=false;
 const MOM_PEN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>';
-function momPost(p){const c=S.contacts.find(x=>x.id===p.cid);if(!c)return '';const im=Array.isArray(p.imgs)?p.imgs.slice(0,9):[],likes=Array.isArray(p.likes)?p.likes:[],cm=Array.isArray(p.cmts)?p.cmts:[];
-  return '<div class="mom-post">'+avh(c,'msgav')+'<div class="mom-bd"><div class="mom-nm">'+esc(c.name)+'</div>'+(p.x?'<div class="mom-tx">'+esc(p.x)+'</div>':'')+(im.length?'<div class="mom-imgs'+(im.length===1?' one':'')+'">'+im.map(u=>'<img src="'+u+'" alt="">').join('')+'</div>':'')+'<div class="mom-meta">'+ltime(p.t)+'</div>'+((likes.length||cm.length)?'<div class="mom-re">'+(likes.length?'♡ '+likes.map(esc).join('、'):'')+cm.map(m=>'<div><b style="font-weight:500">'+esc(m.n)+'</b>：'+esc(m.x)+'</div>').join('')+'</div>':'')+'</div></div>'}
+let momTab='me',momDraft=null,momPlacing=null,momPK='kao',momSK='emoji',momStkPost=null;
+const stkPool=cid=>pool('emoji',cid).concat(pool('emj',cid));
+const mItem=k=>({img:k.img||'',x:k.img?'':k.text});
+function momWall(p){const w=p.wall;if(!w)return '';
+  const it=Array.isArray(w.items)?w.items:[],st=Array.isArray(w.st)?w.st:[];
+  const cell=o=>'<div class="mw-c">'+(o.img?'<img src="'+o.img+'" alt="">':esc(o.x||''))+'</div>',blank='<div class="mw-c"></div>';
+  let rows='',buf=[];const flush=()=>{if(!buf.length)return;const n=Math.ceil(buf.length/3)*3;rows+='<div class="mw-g">'+buf.map(cell).join('')+blank.repeat(n-buf.length)+'</div>';buf=[]};
+  it.forEach(o=>{if(o.k==='i'){flush();rows+='<div class="mw-i"><img src="'+o.img+'" alt=""></div>'}else buf.push(o)});flush();
+  if(!rows)rows='<div class="mw-g">'+blank.repeat(3)+'</div>';
+  const pl=!!(momPlacing&&momPlacing.pid===p.id);
+  const sk=st.map(t=>'<div class="mom-stk'+(t.by==='me'?' mine':'')+'" style="left:'+t.px+'%;top:'+t.py+'%"'+(t.by==='me'&&!momPlacing?' data-a="stkdel" data-i="'+p.id+'|'+t.id+'"':'')+'>'+(t.img?'<img src="'+t.img+'" alt="">':esc(t.x||''))+'</div>').join('');
+  return '<div class="mom-wall'+(S.momStk===0?' nostk':'')+(pl?' placing':'')+'"><div class="mw-in"'+(pl?' data-a="momplace" data-i="'+p.id+'"':'')+'>'+rows+sk+'</div></div>'}
+const MI={edit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>',del:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>',face:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 14c1.8 2 5.2 2 7 0"/><circle cx="9" cy="10" r=".6" fill="currentColor"/><circle cx="15" cy="10" r=".6" fill="currentColor"/></svg>'};
+const momCm=(m,pid)=>'<div'+(m.id&&m.cid&&pid?' class="mom-rp" data-a="momrep" data-i="'+pid+'|'+m.id+'"':'')+'><b style="font-weight:500">'+esc(m.n)+'</b>'+(m.rt?' 回覆 <b style="font-weight:500">'+esc(m.rt)+'</b>':'')+'：'+esc(m.x||'')+(m.img?'<img class="mom-cimg" src="'+m.img+'" alt="">':'')+'</div>';
+function momPost(p){const me=p.cid==='me',c=me?{id:'me',av:S.meAv,name:S.me}:S.contacts.find(x=>x.id===p.cid);if(!c)return '';const im=Array.isArray(p.imgs)?p.imgs.slice(0,9):[],likes=Array.isArray(p.likes)?p.likes:[],cm=Array.isArray(p.cmts)?p.cmts:[];
+  const top='<button class="mom-top" data-a="'+(me?'mompedit':'momdelask')+'" data-i="'+p.id+'" aria-label="'+(me?'編輯貼文':'刪除貼文')+'">'+(me?MI.edit:MI.del)+'</button>';
+  const acts='<div class="mom-acts"><button class="mom-ic'+(p.liked?' lk':'')+'" data-a="momlike" data-i="'+p.id+'" aria-label="點贊">'+(p.liked?'♥':'♡')+'</button><button class="mom-ic" data-a="momcmt" data-i="'+p.id+'" aria-label="留言">💬</button><button class="mom-ic" data-a="mstk" data-i="'+p.id+'" aria-label="貼紙">'+MI.face+'</button><button class="mom-ic'+(p.fav?' fv':'')+'" data-a="momfav" data-i="'+p.id+'" aria-label="收藏">'+(p.fav?'★':'☆')+'</button></div>';
+  return '<div class="mom-post">'+top+'<div class="mom-hd">'+avh(c,'msgav')+'<div><div class="mom-nm">'+esc(c.name)+'</div><div class="mom-time">'+ltime(p.t)+(p.edited?' · 已編輯':'')+'</div></div></div><div class="mom-bd">'+(p.x?'<div class="mom-tx">'+esc(p.x)+'</div>':'')+(im.length?'<div class="mom-imgs'+(im.length===1?' one':'')+'">'+im.map(u=>'<img src="'+u+'" alt="">').join('')+'</div>':'')+momWall(p)+acts+((likes.length||cm.length)?'<div class="mom-re">'+(likes.length?'♡ '+likes.map(esc).join('、'):'')+cm.map(m=>momCm(m,p.id)).join('')+'</div>':'')+'</div></div>'}
 function vMom(){
-  const head='<div class="ph2"><button class="ib" data-a="momback">‹</button><h1>朋友圈</h1></div>';
+  const head='<div class="ph2"><button class="ib" data-a="momback">‹</button><h1>朋友圈</h1><span class="grow"></span><span class="mom-stksw">貼紙<button class="sw '+(S.momStk===0?'':'on')+'" data-a="momstk" aria-label="顯示或隱藏貼紙"></button></span></div>';
   const sig=S.momSig||'',cv=S.momCover;
-  const cover='<div class="mom-cover" data-a="momcover" role="button" aria-label="朋友圈封面"'+(cv?' style="background-image:url('+cv+')"':'')+'>'+(cv?'':'<div class="mom-hint"><b>＋</b>點擊放上封面圖片</div>')+avh({id:'me',av:S.meAv,name:S.me},'big')+'<div class="mom-sig" data-a="momsig" role="button" aria-label="編輯簽名"><span'+(sig?'':' class="ph"')+'>'+(sig?esc(sig):'寫下你的簽名')+'</span>'+MOM_PEN+'</div></div>';
-  const l=[...(S.moments||[])].filter(p=>S.contacts.some(c=>c.id===p.cid)).sort((a,b)=>b.t-a.t);
-  return head+cover+(l.length?'<div class="card" style="padding:4px 14px">'+l.map(momPost).join('')+'</div>':'<div class="empty">還沒有朋友圈貼文。<br>聯絡人發布的貼文會顯示在這裡。</div>')}
+  const cover='<div class="mom-head"><div class="mom-cover" data-a="momcover" role="button" aria-label="朋友圈封面"'+(cv?' style="background-image:url('+cv+')"':'')+'>'+(cv?'':'<div class="mom-hint"><b>＋</b>點擊放上封面圖片</div>')+'</div>'+avh({id:'me',av:S.meAv,name:S.me},'big')+'<label class="mom-sig">'+MOM_PEN+'<input id="momsigin" type="text" maxlength="40" placeholder="寫下你的簽名" autocomplete="off" value="'+esc(sig)+'"></label></div>';
+  const bar=momPlacing?'<div class="mom-bar"><span>點一下貼圖牆，把貼紙放在想要的位置</span><button class="btn" data-a="momcancel">取消</button></div>':'';
+  const tabs='<div class="stabs">'+[['me','我的空間'],['ct','聯繫人貼文']].map(([k,n])=>'<button class="stab '+(momTab===k?'on':'')+'" data-a="momtab" data-i="'+k+'">'+n+'</button>').join('')+'</div>';
+  const all=[...(S.moments||[])].sort((x,y)=>y.t-x.t);let body;
+  if(momTab==='me'){const l=all.filter(p=>p.cid==='me');body='<button class="btn s" style="width:100%;margin:0 0 12px" data-a="mompost">發布貼文</button>'+(l.length?'<div class="card" style="padding:4px 14px">'+l.map(momPost).join('')+'</div>':'<div class="empty">你還沒有發布過貼文。</div>')}
+  else{const l=all.filter(p=>p.cid!=='me'&&S.contacts.some(c=>c.id===p.cid));body=l.length?'<div class="card" style="padding:4px 14px">'+l.map(momPost).join('')+'</div>':'<div class="empty">還沒有朋友圈貼文。<br>聯絡人發布的貼文會顯示在這裡。</div>'}
+  return head+bar+cover+tabs+body}
+/* 發布貼文（我的空間） */
+function momSync(){const e=$('#momtx');if(e&&momDraft)momDraft.x=e.value}
+function momCompose(){const d=momDraft;sheet(d.edit?'編輯貼文':'發布貼文','<textarea class="mh-in" id="momtx" rows="4" maxlength="500" placeholder="寫點什麼…" style="resize:none">'+esc(d.x)+'</textarea><div class="mom-tools"><button class="btn" data-a="mpkopen">顏文字 / emoji / 表情包</button><button class="btn" data-a="mpimg">圖片</button></div>'+(d.items.length?'<div class="mom-dr">'+d.items.map((o,n)=>'<span class="mom-dc" data-a="mdrm" data-i="'+n+'">'+(o.img?'<img src="'+o.img+'" alt="">':esc(o.x))+'<b>×</b></span>').join('')+'</div><p class="hint" style="margin:6px 2px">表情包與圖片會放進貼圖牆，點一下可移除。</p>':'')+'<div style="display:flex;gap:8px;margin-top:10px"><button class="btn" data-a="close" style="flex:1;margin:0">取消</button><button class="btn s" data-a="momsend" style="flex:1;margin:0">'+(d.edit?'儲存':'發布')+'</button></div>'+(d.edit?'<button class="btn d" data-a="momdelask" data-i="'+d.edit+'">刪除貼文</button>':''),0)}
+function momPicker(){momSync();const T=[['kao','顏文字'],['emj','emoji'],['emoji','表情包']],l=pool(momPK,S.cur);
+  sheet('選擇內容','<div class="stabs">'+T.map(([k,n])=>'<button class="stab '+(momPK===k?'on':'')+'" data-a="mpktab" data-i="'+k+'">'+n+'</button>').join('')+'</div>'+(l.length?'<div class="mom-pg t-'+momPK+'">'+l.map(k=>'<button data-a="mpkadd" data-i="'+k.id+'">'+(k.img?'<img src="'+k.img+'" alt="">':esc(k.text))+'</button>').join('')+'</div>':'<div class="empty">這裡還沒有內容。<br>到「字卡」頁新增。</div>')+'<button class="btn s" data-a="mpkdone">完成</button>',0)}
+function stkPicker(){const p=S.moments.find(x=>x.id===momStkPost);if(!p)return;const oc=p.cid==='me'?S.cur:p.cid,l=pool(momSK,oc);
+  sheet('選擇貼紙','<div class="stabs">'+[['emoji','表情包'],['emj','emoji']].map(([k,n])=>'<button class="stab '+(momSK===k?'on':'')+'" data-a="mstktab" data-i="'+k+'">'+n+'</button>').join('')+'</div>'+(l.length?'<div class="mom-pg t-'+(momSK==='emj'?'emj':'emoji')+'">'+l.map(k=>'<button data-a="mstkpick" data-i="'+k.id+'">'+(k.img?'<img src="'+k.img+'" alt="">':esc(k.text))+'</button>').join('')+'</div>':'<div class="empty">這裡還沒有內容。<br>到「字卡」頁新增。</div>')+'<button class="btn" data-a="close">取消</button>',0)}
+function momRefresh(){if(tab!=='home'||!momOpen||momPlacing||$('#sh').classList.contains('show')||(document.activeElement&&document.activeElement.id==='momsigin'))return;const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}
+const momPos=()=>+(6+rnd()*88).toFixed(1),momHit=p=>rnd()*100<Math.max(0,Math.min(100,+p||0)),momRange=(a,b)=>{a=Math.max(0,Math.round(+a||0));b=Math.max(a,Math.round(+b||0));return a+ri(b-a+1)};
+/* ── 聯絡人發布朋友圈：字卡 → 表情包 → 貼紙，全部完成後一起發布 ── */
+function momNext(cid,n){const c=S.contacts.find(x=>x.id===cid);if(!c)return;const m=cmo(c);S.mst[cid]={ph:'j',due:n+inspRand(m.tmin,m.tmax)}}
+function momStartCard(cid,st,n){const pl=cardPool(cid);if(!pl.length){momNext(cid,n);return}const s=S.set;st.d.cur={t:pk(pl).text};st.q=[['emj','mpemj'],['kao','mpkao']].sort(()=>rnd()-.5).filter(a=>(+s[a[1]]||0)>0).map(a=>a[0]);momNextQ(cid,st,n)}
+function momNextQ(cid,st,n){const s=S.set;if(st.q.length){const k=st.q[0];st.ph='s';st.due=n+Math.max(0,+s[k==='emj'?'mpemjT':'mpkaoT']||0)*1000;return}
+  st.d.cards.push(st.d.cur.t);st.d.cur=null;if(st.d.cards.length<st.d.n)momStartCard(cid,st,n);else momAfterCards(cid,st,n)}
+function momFinish(cid,text,d,n){const np={id:uid(),cid,t:Date.now(),x:text,wall:((d.items&&d.items.length)||(d.st&&d.st.length))?{items:d.items||[],st:d.st||[]}:null};S.moments.push(np);mcmPost(np);momNext(cid,n)}
+function momAfterCards(cid,st,n){const c=S.contacts.find(x=>x.id===cid),text=st.d.cards.join('  ');
+  if(!cmo(c).wall||!stkPool(cid).length){momFinish(cid,text,{},n);return}
+  st.d.text=text;st.d.items=[];st.d.st=[];st.ph='e';st.due=n+inspRand(S.set.mwEmin,S.set.mwEmax)}
+function momTick(){if(!S||!S.mst)return false;const n=Date.now(),s=S.set;let ch=false;
+  Object.keys(S.mst).forEach(id=>{const c=S.contacts.find(x=>x.id===id);if(!c||!cmo(c).on){delete S.mst[id];ch=true}});
+  S.contacts.forEach(c=>{const m=cmo(c);if(!m.on)return;const cid=c.id,st=S.mst[cid];
+    if(!st){momNext(cid,n);ch=true;return}if(st.due>n)return;ch=true;
+    switch(st.ph){
+      case 'j':if(momHit(m.prob)){st.ph='c';st.due=n+inspRand(s.mpcmin,s.mpcmax)}else momNext(cid,n);break;
+      case 'c':st.d={cards:[],n:Math.max(1,momRange(s.mpnmin,s.mpnmax)),cur:null};momStartCard(cid,st,n);break;
+      case 's':{const k=st.q.shift(),items=pool(k,cid);if(items.length&&momHit(s[k==='emj'?'mpemj':'mpkao'])){const z=pk(items).text;st.d.cur.t=rnd()<.5?z+' '+st.d.cur.t:st.d.cur.t+' '+z}momNextQ(cid,st,n);break}
+      case 'e':{const em=pool('emoji',cid);if(em.length&&momHit(s.mwEp)){const k=momRange(s.mwNmin,s.mwNmax);for(let i=0;i<k;i++)st.d.items.push(Object.assign({k:'s'},mItem(pk(em))))}st.ph='k';st.due=n+inspRand(s.mwSmin,s.mwSmax);break}
+      case 'k':{const sp=stkPool(cid);if(sp.length&&momHit(s.mwSp)){const k=momRange(s.mwKmin,s.mwKmax);st.d.pend=Array.from({length:k},()=>mItem(pk(sp)));if(st.d.pend.length){st.ph='p';st.due=n+Math.max(0,+s.mwPlace||0)*1000;break}}momFinish(cid,st.d.text,st.d,n);break}
+      case 'p':st.d.st=st.d.pend.map(o=>({id:uid(),img:o.img,x:o.x,px:momPos(),py:momPos(),by:cid,t:n}));momFinish(cid,st.d.text,st.d,n);break;
+      default:momNext(cid,n)}});
+  return ch}
+/* ── 貼圖回覆：使用者貼貼紙後，聯絡人判定是否回覆貼紙 ── */
+function mrepSchedule(p){const s=S.set;if(!s.srOn||!p)return;const oc=p.cid==='me'?S.cur:p.cid;S.mrep.push({id:uid(),cid:oc,pid:p.id,ph:'j',due:Date.now()+Math.max(0,+s.srJudge||0)*1000})}
+function mrepTick(){if(!S||!S.mrep||!S.mrep.length)return false;const n=Date.now(),s=S.set;let ch=false;const keep=[];
+  S.mrep.forEach(r=>{const post=S.moments.find(x=>x.id===r.pid);if(!post||!post.wall||!S.contacts.some(c=>c.id===r.cid)){ch=true;return}
+    if(r.due>n){keep.push(r);return}ch=true;
+    if(r.ph==='j'){if(momHit(s.srProb)){r.ph='c';r.due=n+inspRand(s.srMin,s.srMax);keep.push(r)}return}
+    if(r.ph==='c'){const sp=stkPool(r.cid);if(!sp.length)return;r.q=Array.from({length:momRange(s.srNmin,s.srNmax)},()=>mItem(pk(sp)));if(!r.q.length)return;r.ph='p';r.due=n+Math.max(0,+s.srPlace||0)*1000;keep.push(r);return}
+    if(r.ph==='p'){const o=r.q.shift();post.wall.st=post.wall.st||[];post.wall.st.push({id:uid(),img:o.img,x:o.x,px:momPos(),py:momPos(),by:r.cid,t:n});if(r.q.length){r.due=n+1000;keep.push(r)}}});
+  S.mrep=keep;return ch}
+/* ── 聯絡人留言：主動留言（其他聯絡人的貼文）／回覆留言（其他聯絡人的留言） ── */
+const MCM_GAP=1500;
+function mcmCfg(k){const s=S.set,p=(k!=='p'&&!s.crSame)?'cr':'cm';return{prob:+s[p+'Prob']||0,tmin:s[p+'Tmin'],tmax:s[p+'Tmax'],nmin:s[p+'Nmin'],nmax:s[p+'Nmax'],fmin:s[p+'Fmin'],fmax:s[p+'Fmax'],ep:+s[p+'Ep']||0,emj:+s[p+'Emj']||0,emjT:s[p+'EmjT'],kao:+s[p+'Kao']||0,kaoT:s[p+'KaoT']}}
+function mcmPost(post){if(!S.set.cmOn||!post||post.cid==='me')return;S.mcm=S.mcm||[];const n=Date.now();S.contacts.forEach(c=>{if(c.id!==post.cid)S.mcm.push({id:uid(),k:'p',cid:c.id,pid:post.id,ph:'j',due:n+1000})})}
+function mcmReply(post,cm){if(!S.set.crOn||!post||!cm||!cm.cid)return;S.mcm=S.mcm||[];const n=Date.now();S.contacts.forEach(c=>{if(c.id!==cm.cid)S.mcm.push({id:uid(),k:'r',cid:c.id,pid:post.id,mid:cm.id,to:cm.n,ph:'j',due:n+1000})})}
+/* 先排好本輪所有留言與送出時間：每條字卡後 emoji／顏文字各自等待選擇時間再判定；表情包每輪只判定一次，抽中當作一條留言插在隨機位置（與聊天室相同） */
+/* 你留言／回覆後，被回覆的聯絡人依回覆設置的機率判定是否回覆你；你再回覆，就再判定一次，直到判定失敗或你不再回覆 */
+function mcmUser(post,cm,tcid){if(!S.set.crOn||!post||post.cid==='me'||!cm||!cm.id||!S.contacts.some(c=>c.id===tcid))return;S.mcm=S.mcm||[];S.mcm.push({id:uid(),k:'u',cid:tcid,pid:post.id,mid:cm.id,to:S.me,ph:'j',due:Date.now()+1000})}
+function mcmBuild(j,n){const cf=mcmCfg(j.k),cid=j.cid,pl=cardPool(cid);if(!pl.length)return[];
+  const EJ=pool('emj',cid),KA=pool('kao',cid),cnt=(a,b)=>Math.max(1,momRange(a,b));let off=n;const out=[];
+  for(let i=0,N=cnt(cf.nmin,cf.nmax);i<N;i++){
+    const x=Array.from({length:cnt(cf.fmin,cf.fmax)},()=>{let c=pk(pl).text;[[EJ,cf.emj,cf.emjT],[KA,cf.kao,cf.kaoT]].sort(()=>rnd()-.5).forEach(([items,p,T])=>{if(p<=0)return;off+=Math.max(0,+T||0)*1000;if(items.length&&momHit(p)){const z=pk(items).text;c=rnd()<.5?z+' '+c:c+' '+z}});return c}).join('  ');
+    out.push({x,at:off});off+=MCM_GAP}
+  const em=pool('emoji',cid);if(em.length&&momHit(cf.ep)){const e=mItem(pk(em));out.splice(ri(out.length+1),0,{x:e.x,img:e.img,at:null})}
+  let prev=n-MCM_GAP;out.forEach(o=>{o.at=Math.max(o.at==null?0:o.at,prev+MCM_GAP);prev=o.at});return out}
+function mcmSend(j,o,post){const c=S.contacts.find(x=>x.id===j.cid);if(!c)return;post.cmts=Array.isArray(post.cmts)?post.cmts:[];const m={id:uid(),cid:j.cid,n:c.name,x:o.x||'',img:o.img||''};if(j.k!=='p'){m.rt=j.to;m.rid=j.mid}post.cmts.push(m);if(j.k==='p')mcmReply(post,m)}
+function mcmTick(){if(!S||!S.mcm||!S.mcm.length)return false;const n=Date.now(),s=S.set;let ch=false;const list=S.mcm;S.mcm=[];const keep=S.mcm;
+  list.forEach(j=>{const post=S.moments.find(x=>x.id===j.pid);if(!post||!S.contacts.some(c=>c.id===j.cid)||!(j.k==='p'?s.cmOn:s.crOn)){ch=true;return}
+    if(j.due>n){keep.push(j);return}ch=true;
+    if(j.ph==='j'){const cf=mcmCfg(j.k);if(momHit(cf.prob)){j.ph='w';j.due=n+inspRand(cf.tmin,cf.tmax);keep.push(j)}return}
+    if(j.ph==='w'){j.q=mcmBuild(j,n);if(j.q.length){j.ph='s';j.due=j.q[0].at;keep.push(j)}return}
+    if(j.ph==='s'){const o=j.q.shift();mcmSend(j,o,post);if(j.q.length){j.due=j.q[0].at;keep.push(j)}}});
+  return ch}
+setInterval(()=>{try{const a=momTick(),b=mrepTick(),c=mcmTick();if(a||b||c){save();momRefresh()}}catch(x){}},1000);
+document.addEventListener('input',e=>{if(e.target.id==='momsigin'){S.momSig=e.target.value.slice(0,40);saveSoon()}});
 
 /* ── 答案之書 ── */
 let abOpen=false,abTab='num',abN='',abQ='',abRes=null;
@@ -1417,7 +1567,7 @@ async function icScan(){const st=icState;st.busy=true;st.res=null;icSheet();cons
 /* ── 事件 ── */
 document.addEventListener('click',e=>{
   const T=e.target.closest('[data-t]');
-  if(T&&!e.target.closest('[data-a]')){const nt=T.dataset.t,pt=tab;if(pt==='set'&&nt!=='set')keepSet=(sTab===1&&sPage)?{sTab:1,sPage:sPage}:null;tab=nt;inspOpen=false;dataOpen=false;grpOpen=false;grpRoom=null;mhOpen=false;abOpen=false;momOpen=false;mailOpen=false;mailEdit=false;mailSel=[];mailReplyId=null;mailKeep={};recOpen=false;recEdit=false;recSel=[];recPage=null;recSeen={};sPage=null;oPage=null;delMode=false;selC=[];if(nt==='set'){if(pt==='set'){sTab=0;keepSet=null}else if(keepSet){sTab=keepSet.sTab;sPage=keepSet.sPage;keepSet=null}else sTab=0}closeSheet();render();return}
+  if(T&&!e.target.closest('[data-a]')){const nt=T.dataset.t,pt=tab;if(pt==='set'&&nt!=='set')keepSet=(sTab===1&&sPage)?{sTab:1,sPage:sPage}:null;tab=nt;inspOpen=false;dataOpen=false;grpOpen=false;grpRoom=null;mhOpen=false;mhClear();abOpen=false;momOpen=false;pomoOpen=false;mailOpen=false;mailEdit=false;mailSel=[];mailReplyId=null;mailKeep={};recOpen=false;recEdit=false;recSel=[];recPage=null;recSeen={};sPage=null;oPage=null;delMode=false;selC=[];if(nt==='set'){if(pt==='set'){sTab=0;keepSet=null}else if(keepSet){sTab=keepSet.sTab;sPage=keepSet.sPage;keepSet=null}else sTab=0}closeSheet();render();return}
   if(e.target.id==='cfov'){qaConfirm=null;askSheet(1);return}if(e.target.id==='addov'){qaAdd=null;askSheet(1);return}if(e.target.id==='sh'){closeSheet();return}if($('#sh')?.classList.contains('chat-pop')&&$('#sh').classList.contains('show')&&!e.target.closest('#sh .box')&&!e.target.closest('[data-a=emo]')&&!e.target.closest('[data-a=more]')){closeSheet()}if(e.target.id==='daily-pop'){closeDaily();return}
   const A=e.target.closest('[data-a]');
   const R=e.target.closest('[data-c]');
@@ -1426,7 +1576,7 @@ document.addEventListener('click',e=>{
   const cat=S.cats.find(c=>c.id===selCat);
   switch(a){
     case 'close':closeSheet();break;
-    case 'mail':mailOpen=true;mailTab='w';mailEdit=false;mailSel=[];mailReplyId=null;mailKeep={};render();$('#v').scrollTop=0;break;
+    case 'mail':mailOpen=true;mailTab='w';mailEdit=false;mailSel=[];mailReplyId=null;mailKeep={};render();$('#v').scrollTop=0;crabMailRun();break;
     case 'mback':mailOpen=false;mailEdit=false;mailSel=[];mailReplyId=null;mailKeep={};render();break;
     case 'mtab':mailTab=i;mailEdit=false;mailSel=[];mailReplyId=null;render();break;
     case 'lnew':sheet('寫信給 '+esc(cur().name),'<textarea id="lt" rows="8" placeholder="寫點什麼…"></textarea><button class="btn s" data-a="lsend">寄出</button><button class="btn" data-a="close">取消</button>',1);break;
@@ -1595,15 +1745,49 @@ document.addEventListener('click',e=>{
     case 'icgo':{const st=icState;if(!st||!st.res)break;const saved=st.res.saved,n=st.res.list.length;st.res.list.forEach(x=>x.t.set(x.nu));icState=null;save();dCalc();closeSheet();render();toast('已壓縮 '+n+' 張，省下約 '+dFmt(saved),4000);break}
     case 'icset':dataOpen=false;tab='set';sTab=2;sPage='imgc';render();$('#v').scrollTop=0;break;
     case 'cedit':catEditSheet();break;
-    case 'mh':mhOpen=true;mhT=mhNow();render();$('#v').scrollTop=0;break;
-    case 'mhback':mhOpen=false;render();break;
+    case 'mh':mhClear();mhOpen=true;render();$('#v').scrollTop=0;break;
+    case 'mhback':mhOpen=false;mhClear();render();break;
+    case 'pomo':pomoOpen=true;render();$('#v').scrollTop=0;break;
+    case 'pomoback':pomoOpen=false;render();break;
+    case 'pomogo':{const p=S.pomo;if(p.run){p.left=Math.max(0,p.end-Date.now());p.run=0;p.end=0}else{acx();p.run=1;p.end=Date.now()+(p.left>0?p.left:pmDur(p))}save();render();break}
+    case 'pomoreset':{const p=S.pomo;p.run=0;p.end=0;p.left=pmDur(p);save();render();break}
+    case 'pomoskip':{const p=S.pomo;if(p.ph==='foc'){p.idx++;p.ph=(p.idx%Math.max(1,p.cyc)===0)?'lng':'brk'}else p.ph='foc';p.run=0;p.end=0;p.left=pmDur(p);save();render();break}
+    case 'pomosw':{S.pomo[i]=S.pomo[i]?0:1;save();render();break}
     case 'mom':momOpen=true;render();$('#v').scrollTop=0;break;
-    case 'momback':momOpen=false;render();break;
+    case 'momback':momOpen=false;momPlacing=null;render();break;
     case 'momcover':{if(!S.momCover){pick(f=>rd(f,1000,u=>{S.momCover=u;save();render()}));break}sheet('朋友圈封面','<button class="btn s" style="width:100%;margin:0 0 8px" data-a="momcpick">更換圖片</button><button class="btn d" style="width:100%;margin:0 0 8px" data-a="momcdel">移除封面</button><button class="btn" style="width:100%;margin:0" data-a="close">取消</button>',1);break}
     case 'momcpick':closeSheet();pick(f=>rd(f,1000,u=>{S.momCover=u;save();render()}));break;
     case 'momcdel':S.momCover='';save();closeSheet();render();break;
     case 'momsig':sheet('個性簽名','<input class="mh-in" id="momsigin" type="text" maxlength="40" placeholder="寫下你的簽名" value="'+esc(S.momSig||'')+'"><p class="hint" style="margin:6px 2px 10px">最多 40 字，留空則清除簽名。</p><button class="btn s" style="width:100%;margin:0 0 8px" data-a="momsigok">儲存</button><button class="btn" style="width:100%;margin:0" data-a="close">取消</button>',1);setTimeout(()=>{const e=$('#momsigin');if(e)e.focus()},50);break;
     case 'momsigok':{const e=$('#momsigin');S.momSig=e?e.value.trim().slice(0,40):S.momSig;save();closeSheet();render();break}
+    case 'cmsw':{const m=cmo(cur());m[i]=m[i]?0:1;if(i==='on')delete S.mst[cur().id];save();render();break}
+    case 'momtab':momTab=i;render();break;
+    case 'momstk':S.momStk=S.momStk===0?1:0;save();render();break;
+    case 'mompost':momDraft={x:'',items:[]};momCompose();break;
+    case 'mpkopen':momPicker();break;
+    case 'mpktab':momPK=i;momPicker();break;
+    case 'mpkadd':{const k=S.cards.find(x=>x.id===i);if(!k||!momDraft)break;if(momPK==='emoji')momDraft.items.push(Object.assign({k:'s'},mItem(k)));else momDraft.x=(momDraft.x||'')+k.text;toast('已加入',900);break}
+    case 'mpkdone':momCompose();break;
+    case 'mpimg':momSync();pick(f=>rd(f,1200,u=>{if(!momDraft)return;momDraft.items.push({k:'i',img:u});momCompose()}));break;
+    case 'mdrm':momSync();momDraft.items.splice(+i,1);momCompose();break;
+    case 'momsend':{momSync();const d=momDraft,x=(d.x||'').trim();if(d.edit){const p=S.moments.find(q=>q.id===d.edit);if(!p){closeSheet();break}const hasSt=p.wall&&p.wall.st&&p.wall.st.length;if(!x&&!d.items.length&&!hasSt){toast('還沒有內容');break}p.x=x;if(d.items.length||hasSt)p.wall={items:d.items,st:(p.wall&&p.wall.st)||[]};else p.wall=null;p.edited=1;momDraft=null;save();closeSheet();render();break}
+      if(!x&&!d.items.length){toast('還沒有內容');break}S.moments.push({id:uid(),cid:'me',t:Date.now(),x,wall:d.items.length?{items:d.items,st:[]}:null});momDraft=null;momTab='me';save();closeSheet();render();break}
+    case 'mompedit':{const p=S.moments.find(q=>q.id===i);if(!p)break;momDraft={x:p.x||'',items:(p.wall&&p.wall.items?p.wall.items.map(o=>Object.assign({},o)):[]),edit:p.id};momCompose();break}
+    case 'momdelask':sheet('刪除貼文','<p class="hint" style="margin:0 0 10px">確定要刪除這則貼文嗎？刪除後無法復原。</p><button class="btn d" data-a="momdel" data-i="'+i+'">確認刪除</button><button class="btn" data-a="close">取消</button>',1);break;
+    case 'momlike':{const p=S.moments.find(q=>q.id===i);if(!p)break;p.likes=Array.isArray(p.likes)?p.likes:[];if(p.liked){p.liked=0;const k=p.likes.indexOf(S.me);if(k>=0)p.likes.splice(k,1)}else{p.liked=1;p.likes.push(S.me)}save();render();break}
+    case 'momfav':{const p=S.moments.find(q=>q.id===i);if(!p)break;p.fav=p.fav?0:1;save();render();break}
+    case 'momcmt':sheet('留言','<input class="mh-in" id="momcin" type="text" maxlength="100" placeholder="寫下留言…" autocomplete="off"><div style="display:flex;gap:8px;margin-top:10px"><button class="btn" data-a="close" style="flex:1;margin:0">取消</button><button class="btn s" data-a="momcsend" data-i="'+i+'" style="flex:1;margin:0">送出</button></div>',1);setTimeout(()=>{const e2=$('#momcin');if(e2)e2.focus()},50);break;
+    case 'momcsend':{const e2=$('#momcin'),x=e2?e2.value.trim():'',p=S.moments.find(q=>q.id===i);if(!x){toast('還沒有內容');break}if(p){p.cmts=Array.isArray(p.cmts)?p.cmts:[];const m={id:uid(),n:S.me,x};p.cmts.push(m);mcmUser(p,m,p.cid)}save();closeSheet();render();break}
+    case 'momrep':{const[pid,mid]=i.split('|'),p=S.moments.find(q=>q.id===pid),t=p&&(p.cmts||[]).find(q=>q.id===mid);if(!t)break;sheet('回覆 '+esc(t.n),'<input class="mh-in" id="momcin" type="text" maxlength="100" placeholder="回覆 '+esc(t.n)+'…" autocomplete="off"><div style="display:flex;gap:8px;margin-top:10px"><button class="btn" data-a="close" style="flex:1;margin:0">取消</button><button class="btn s" data-a="momrsend" data-i="'+i+'" style="flex:1;margin:0">送出</button></div>',1);setTimeout(()=>{const e2=$('#momcin');if(e2)e2.focus()},50);break}
+    case 'momrsend':{const[pid,mid]=i.split('|'),e2=$('#momcin'),x=e2?e2.value.trim():'',p=S.moments.find(q=>q.id===pid),t=p&&(p.cmts||[]).find(q=>q.id===mid);if(!x){toast('還沒有內容');break}if(p&&t){const m={id:uid(),n:S.me,x,rt:t.n,rid:t.id};p.cmts.push(m);if(t.cid)mcmUser(p,m,t.cid)}save();closeSheet();render();break}
+    case 'momdel':S.moments=S.moments.filter(p=>p.id!==i);S.mrep=S.mrep.filter(r=>r.pid!==i);S.mcm=(S.mcm||[]).filter(r=>r.pid!==i);save();closeSheet();render();break;
+    case 'mstk':{const p=S.moments.find(q=>q.id===i);if(!p||!p.wall){toast('這則貼文沒有貼圖牆');break}momStkPost=i;stkPicker();break}
+    case 'mstktab':momSK=i;stkPicker();break;
+    case 'mstkpick':{const k=S.cards.find(x=>x.id===i);if(!k||!momStkPost)break;momPlacing=Object.assign({pid:momStkPost},mItem(k));S.momStk=1;closeSheet();render();break}
+    case 'momcancel':momPlacing=null;render();break;
+    case 'momplace':{const p=S.moments.find(x=>x.id===i);if(!p||!momPlacing)break;const r=A.getBoundingClientRect(),cl=v=>Math.min(96,Math.max(4,v));p.wall.st=p.wall.st||[];p.wall.st.push({id:uid(),img:momPlacing.img,x:momPlacing.x,px:+cl((e.clientX-r.left)/r.width*100).toFixed(1),py:+cl((e.clientY-r.top)/r.height*100).toFixed(1),by:'me',t:Date.now()});momPlacing=null;save();render();mrepSchedule(p);break}
+    case 'stkdel':sheet('移除貼紙','<p class="hint" style="margin:0 0 10px">要把這張貼紙從貼圖牆上拿掉嗎？</p><button class="btn d" data-a="stkdelok" data-i="'+i+'">移除</button><button class="btn" data-a="close">取消</button>',1);break;
+    case 'stkdelok':{const [pid,sid]=i.split('|'),p=S.moments.find(x=>x.id===pid);if(p&&p.wall)p.wall.st=(p.wall.st||[]).filter(t=>t.id!==sid);save();closeSheet();render();break}
     case 'ab':abOpen=true;abTab='num';abN='';abQ='';abRes=null;render();$('#v').scrollTop=0;break;
     case 'abback':abOpen=false;render();break;
     case 'abtab':abTab=i;abRes=null;render();$('#v').scrollTop=0;break;
@@ -1615,9 +1799,9 @@ document.addEventListener('click',e=>{
     case 'bsel':{recSel=recSel.includes(i)?recSel.filter(x=>x!==i):recSel.concat(i);const st=$('#v').scrollTop;render();$('#v').scrollTop=st;break}
     case 'bdelsel':{if(!recSel.length){toast('請先選擇紀錄');break}sheet('是否確認刪除？','<p class="hint" style="margin:0 0 4px">將刪除所選的 '+recSel.length+' 筆答案之書紀錄。</p><button class="btn d" data-a="bdelok">確認刪除</button><button class="btn" data-a="close">取消</button>',1);break}
     case 'bdelok':{S.book=(S.book||[]).filter(x=>!recSel.includes(x.id));recSel=[];recEdit=false;save();closeSheet();render();break}
-    case 'mhtab':mhTab=i;mhRes=null;render();$('#v').scrollTop=0;break;
+    case 'mhtab':mhResBy[mhTab]=mhRes;mhTab=i;mhRes=mhResBy[i]||null;render();$('#v').scrollTop=0;break;
     case 'mhs':{mhSeason=i;const st=$('#v').scrollTop;render();$('#v').scrollTop=st;break}
-    case 'mhreset':mhN1='';mhN2='';mhT=mhNow();mhQ='';mhSeason='auto';mhRes=null;render();break;
+    case 'mhreset':mhClear();render();break;
     case 'mhgo':mhGo();break;
     case 'mhsave':{if(!mhRes){toast('請先排盤');break}S.plum=S.plum||[];const ex=S.plum.find(x=>x.id===mhRes.id);if(ex){ex.q=mhQ.trim();save();toast('已更新紀錄');break}S.plum.push({...mhRes,q:mhQ.trim()});if(S.plum.length>300)S.plum.splice(0,S.plum.length-300);save();toast('已保存到紀錄');break}
     case 'pview':{const x=(S.plum||[]).find(p=>p.id===i);if(x)sheet('梅花易數',mhResultHtml(x)+'<button class="btn" data-a="close">關閉</button>',1);break}
@@ -1691,7 +1875,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateRead
 function tobotUpdate(){const l=$('#cl'),b=$('#tobot');if(!l||!b)return;b.classList.toggle('show',l.scrollHeight-l.scrollTop-l.clientHeight>160)}
 document.addEventListener('scroll',e=>{if(e.target&&e.target.id==='cl')tobotUpdate()},true);
 /* ── 備忘錄：文字依卡片的六條線排放 ── */
-const MEMO={lines:[46,54.5,63,71.5,80],h:8.5,w:53,fs:.046};
+const MEMO={lines:[49.5,58,66.5,75],h:8.5,w:53,fs:.046};
 function memoLines(text){const cv=memoLines.cv||(memoLines.cv=document.createElement('canvas')),ctx=cv.getContext('2d'),W0=400,maxW=MEMO.w/100*W0*0.97;
   ctx.font=(MEMO.fs*W0)+'px '+getComputedStyle(document.body).fontFamily;const m=t=>ctx.measureText(t).width;let out=[];
   String(text||'').replace(/\r/g,'').split('\n').forEach(raw=>{let cur='';for(const ch of [...raw]){if(cur&&m(cur+ch)>maxW){out.push(cur);cur=ch}else cur+=ch}out.push(cur)});
@@ -1796,6 +1980,399 @@ const flow=t=>esc(String(t||'').split('\n').join(' '));
 const mailUnseen=()=>(S.letters||[]).filter(x=>(x.from==='ta'&&!x.seen)||(x.from==='me'&&x.reply&&!x.rseen)).length;
 const mailBadge=()=>{const n=mailUnseen();return(S.set&&S.set.letterBadge&&n)?'<b class="nb mbd">'+(n>9?'9+':n)+'</b>':''};
 function updateMailBadge(){const t=document.querySelector('.tile[data-a=mail]');if(!t)return;const o=t.querySelector('.mbd');if(o)o.remove();t.insertAdjacentHTML('afterbegin',mailBadge())}
+// pen-synth.js — 合成版寫信沙沙聲（備援：找不到音檔時使用）
+// 用法：
+//   PenSound.attach(document.querySelector('#letterTextarea'));
+//   PenSound.setEnabled(true);   // 預設關閉，之後接設置開關
+//   PenSound.setVolume(0.5);     // 0 ~ 1
+const PenSynth = (() => {
+  // 連續的書寫音：先合成一段約 6 秒、由許多筆畫組成的紙上書寫聲，打字時循環播放，
+  // 停止打字約 0.35 秒後淡出並停止。
+  let ctx = null, loop = null, enabled = false, volume = 0.7;
+  let src = null, gain = null, idle = null, playing = false;
+  const IDLE_MS = 350;
+
+  function makeLoop() {
+    const sr = ctx.sampleRate, dur = 6, n = Math.floor(sr * dur);
+    const buf = ctx.createBuffer(1, n, sr), d = buf.getChannelData(0);
+    // 1) 筆畫排程：每劃一道速度先升後降，筆畫之間有短暫換向；偶爾有較長的停頓（換字）
+    const sp = new Float32Array(n), fq = new Float32Array(n);
+    let t = 0.15;
+    while (t < dur - 0.6) {
+      const len = 0.12 + Math.random() * 0.34, a = 0.55 + Math.random() * 0.45, f = 0.7 + Math.random() * 0.6;
+      const i0 = Math.floor(t * sr), i1 = Math.min(n - 1, Math.floor((t + len) * sr));
+      for (let i = i0; i <= i1; i++) {
+        const x = (i - i0) / Math.max(1, i1 - i0), v = Math.pow(Math.sin(Math.PI * x), 0.8) * a;
+        if (v > sp[i]) { sp[i] = v; fq[i] = f; }
+      }
+      t += len + (Math.random() < 0.2 ? 0.1 + Math.random() * 0.14 : 0.008 + Math.random() * 0.04);
+    }
+    // 2) 合成：帶通濾波的柔和噪音（音色隨筆速變化）× 紙纖維顆粒 + 稀疏的細小摩擦「喀沙」
+    let low = 0, band = 0, gs = Math.random(), gt = Math.random(), cr = 0, y = 0;
+    const gstep = Math.floor(sr / 110), Q = 0.55;
+    for (let i = 0; i < n; i++) {
+      const v = sp[i];
+      if (v < 0.002) { d[i] = 0; y *= 0.9; continue; }
+      const fc = 380 + 1000 * v * fq[i], F = 2 * Math.sin(Math.PI * fc / sr);
+      const w = Math.random() * 2 - 1;
+      low += F * band; const high = w - low - Q * band; band += F * high;
+      const k = i % gstep; if (k === 0) { gs = gt; gt = Math.random(); }
+      const gr = 0.5 + 0.5 * (gs + (gt - gs) * (k / gstep));
+      if (Math.random() < v * 0.010) cr = (Math.random() * 2 - 1);
+      cr *= 0.82;
+      const x = (band * 0.6 * gr + cr * 0.6) * v;
+      y += 0.3 * (x - y); d[i] = y;
+    }
+    let pk = 0; for (let i = 0; i < n; i++) pk = Math.max(pk, Math.abs(d[i]));
+    const m = pk ? 0.9 / pk : 1; for (let i = 0; i < n; i++) d[i] *= m;
+    const fade = Math.floor(sr * 0.04);
+    for (let i = 0; i < fade; i++) { const r = i / fade; d[i] *= r; d[n - 1 - i] *= r; }
+    return buf;
+  }
+
+  function init() {
+    if (ctx) { if (ctx.state === 'suspended') ctx.resume(); return; }
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    ctx = new AC();
+    loop = makeLoop();
+  }
+
+  function start() {
+    if (!enabled || !ctx || !loop) return;
+    if (ctx.state === 'suspended') ctx.resume();
+    const t = ctx.currentTime, target = 0.85 * volume;
+    if (!playing) {
+      src = ctx.createBufferSource(); src.buffer = loop; src.loop = true;
+      gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.linearRampToValueAtTime(Math.max(target, 0.0002), t + 0.06);
+      src.connect(gain); gain.connect(ctx.destination);
+      src.start(0, Math.random() * (loop.duration - 0.8));
+      playing = true;
+    } else {
+      gain.gain.cancelScheduledValues(t);
+      gain.gain.setValueAtTime(Math.max(gain.gain.value, 0.0001), t);
+      gain.gain.linearRampToValueAtTime(Math.max(target, 0.0002), t + 0.04);
+    }
+    clearTimeout(idle);
+    idle = setTimeout(stop, IDLE_MS);
+  }
+
+  function stop() {
+    clearTimeout(idle);
+    if (!playing) return;
+    playing = false;
+    const g = gain, s = src, t = ctx.currentTime;
+    src = null; gain = null;
+    g.gain.cancelScheduledValues(t);
+    g.gain.setValueAtTime(Math.max(g.gain.value, 0.0001), t);
+    g.gain.linearRampToValueAtTime(0.0001, t + 0.18);
+    try { s.stop(t + 0.2); } catch (e) {}
+  }
+
+  function attach(el) {
+    if (!el) return;
+    el.addEventListener('pointerdown', init);
+    el.addEventListener('focus', init);
+    el.addEventListener('input', start);
+    el.addEventListener('blur', stop);
+  }
+
+  return {
+    attach,
+    unlock: init,
+    play: start,
+    stop,
+    setEnabled(v) { enabled = !!v; if (enabled) init(); else stop(); },
+    setVolume(v) { volume = Math.min(1, Math.max(0, Number(v) || 0)); },
+    _loop: () => loop,
+  };
+})();
+
+// pen-sound.js — Pearla 寫信沙沙聲（使用「使用者提供的影片原始音軌」，連續循環版）
+// 音檔：public/assets/pearla-writing-sound-from-video.wav（相對路徑，GitHub Pages 子路徑也能讀到）
+// 打字時整段音軌無縫循環播放、不會中斷；停止打字約 0.35 秒後淡出並停止，刪除文字不會觸發。
+// 找不到音檔時自動退回合成沙沙聲（PenSynth）。
+const PenSound = (() => {
+  const SOUND_URL = 'assets/pearla-writing-sound-from-video.wav';
+  const IDLE_MS = 350;      // 停止打字多久後停止播放
+  const XFADE = 0.25;       // 首尾交叉淡化秒數，讓循環接縫聽不出來
+  const BASE_GAIN = 0.7;
+  let ctx = null, loop = null, loading = false, failed = false;
+  let enabled = false, volume = 0.5;
+  let src = null, gain = null, idle = null, playing = false;
+  const lens = new WeakMap();
+
+  // 把原音軌首尾做等功率交叉淡化，產生可無縫循環的 buffer
+  function makeSeamless(b) {
+    const sr = b.sampleRate, L = b.length;
+    const xf = Math.min(Math.floor(sr * XFADE), Math.floor(L / 3));
+    const out = ctx.createBuffer(b.numberOfChannels, L - xf, sr);
+    for (let c = 0; c < b.numberOfChannels; c++) {
+      const d = b.getChannelData(c), o = out.getChannelData(c);
+      for (let i = 0; i < L - xf; i++) o[i] = d[i];
+      for (let i = 0; i < xf; i++) {
+        const r = i / xf, a = Math.sin(r * Math.PI / 2), z = Math.cos(r * Math.PI / 2);
+        o[i] = d[i] * a + d[L - xf + i] * z;
+      }
+    }
+    return out;
+  }
+
+  function load() {
+    if (loop || loading || failed || !ctx) return;
+    loading = true;
+    fetch(SOUND_URL)
+      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.arrayBuffer(); })
+      .then(ab => new Promise((ok, no) => ctx.decodeAudioData(ab, ok, no)))
+      .then(b => { loop = makeSeamless(b); })
+      .catch(() => { failed = true; })
+      .then(() => { loading = false; });
+  }
+
+  function init(el) {
+    if (el && el.value != null) lens.set(el, el.value.length);
+    if (!ctx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) { failed = true; return; }
+      ctx = new AC();
+    }
+    if (ctx.state === 'suspended') ctx.resume();
+    load();
+  }
+
+  function play(el, force) {
+    if (!enabled && !force) return;
+    if (el && el.value != null) {
+      const n = el.value.length, prev = lens.has(el) ? lens.get(el) : n - 1;
+      lens.set(el, n);
+      if (n <= prev) return;            // 只在新增文字時續播
+    }
+    init();
+    if (!loop) {                         // 音檔載入失敗 → 備援合成音；載入中 → 先靜音
+      if (failed) { PenSynth.setVolume(volume); PenSynth.setEnabled(true); PenSynth.play(); }
+      return;
+    }
+    const t = ctx.currentTime, target = Math.max(volume * BASE_GAIN, 0.0002);
+    if (!playing) {
+      src = ctx.createBufferSource(); src.buffer = loop; src.loop = true;
+      gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.0001, t);
+      gain.gain.linearRampToValueAtTime(target, t + 0.06);
+      src.connect(gain); gain.connect(ctx.destination);
+      src.start(0, Math.random() * loop.duration);
+      playing = true;
+    } else {
+      gain.gain.cancelScheduledValues(t);
+      gain.gain.setValueAtTime(Math.max(gain.gain.value, 0.0001), t);
+      gain.gain.linearRampToValueAtTime(target, t + 0.04);
+    }
+    clearTimeout(idle);
+    idle = setTimeout(stop, IDLE_MS);
+  }
+
+  function stop() {
+    clearTimeout(idle);
+    if (failed) PenSynth.stop();
+    if (!playing) return;
+    playing = false;
+    const g = gain, s = src, t = ctx.currentTime;
+    src = null; gain = null;
+    g.gain.cancelScheduledValues(t);
+    g.gain.setValueAtTime(Math.max(g.gain.value, 0.0001), t);
+    g.gain.linearRampToValueAtTime(0.0001, t + 0.18);
+    try { s.stop(t + 0.2); } catch (e) {}
+  }
+
+  function attach(el) {
+    if (!el) return;
+    el.addEventListener('pointerdown', () => init(el));
+    el.addEventListener('focus', () => init(el));
+    el.addEventListener('input', () => play(el));
+    el.addEventListener('blur', stop);
+  }
+
+  return {
+    attach,
+    unlock: init,
+    play,
+    stop,
+    setEnabled(v) { enabled = !!v; if (enabled) init(); else stop(); },
+    setVolume(v) { volume = Math.min(1, Math.max(0, Number(v) || 0)); PenSynth.setVolume(volume); },
+    preview() { init(); let k = 0; const tick = () => { if (k++ < 6) { play(null, true); setTimeout(tick, 150); } }; tick(); },
+  };
+})();
+
+// crab-mail.js — Pearla 重要信件：螃蟹送信動畫（獨立模組，尚未接入主程式）
+// 用法（點信箱、且有重要信件時）：
+//   CrabMail.show({
+//     content: '信件內容文字',
+//     onSave: () => { /* 這裡寫保存信件的動作，可回傳 Promise */ },
+//     skipAnimation: false,   // true＝略過螃蟹，直接顯示信件
+//   });
+// 流程：螃蟹從右邊走到中間 → 點信件，螃蟹往左走出去 → 再點信件打開
+//       → 打開後只有「保存信件」有反應，按了保存才會關閉。
+const CrabMail = (() => {
+  const CSS = `
+  .cm-overlay{position:fixed;inset:0;z-index:9999;background:rgba(80,60,110,.38);
+    touch-action:none;overflow:hidden;-webkit-user-select:none;user-select:none}
+  .cm-wrap{position:absolute;left:50%;top:36%;width:160px;margin-left:-80px;
+    display:flex;flex-direction:column;align-items:center}
+  .cm-in{animation:cm-in 2.6s ease-out forwards}
+  .cm-out{animation:cm-out 2.2s ease-in forwards}
+  @keyframes cm-in{from{transform:translateX(calc(50vw + 120px))}to{transform:translateX(0)}}
+  @keyframes cm-out{from{transform:translateX(0)}to{transform:translateX(calc(-50vw - 120px))}}
+  .cm-env{width:96px;height:66px;margin-bottom:-16px;cursor:pointer;position:relative;z-index:1}
+  .cm-env-fixed{position:fixed;margin:0}
+  .cm-pulse{animation:cm-pulse 1s ease-in-out infinite alternate}
+  @keyframes cm-pulse{from{transform:scale(1)}to{transform:scale(1.1)}}
+  .cm-crab{width:160px;height:120px;display:block;position:relative;z-index:2;pointer-events:none}
+  .cm-walking .cm-crab{animation:cm-bob .4s ease-in-out infinite alternate}
+  .cm-walking .legsA{animation:cm-legA .3s ease-in-out infinite alternate}
+  .cm-walking .legsB{animation:cm-legB .3s ease-in-out infinite alternate}
+  .legsA,.legsB{transform-origin:80px 75px}
+  @keyframes cm-bob{from{transform:translateY(0) rotate(-1.5deg)}to{transform:translateY(-4px) rotate(1.5deg)}}
+  @keyframes cm-legA{from{transform:rotate(-9deg)}to{transform:rotate(9deg)}}
+  @keyframes cm-legB{from{transform:rotate(9deg)}to{transform:rotate(-9deg)}}
+  .cm-card{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:86vw;max-width:420px;max-height:72vh;display:flex;flex-direction:column;
+    background:#fffaf6;border:2px solid #b9a0d4;border-radius:18px;padding:18px;
+    box-shadow:0 8px 30px rgba(80,60,110,.3);touch-action:pan-y}
+  .cm-text{overflow-y:auto;white-space:pre-wrap;word-break:break-word;font-size:16px;
+    line-height:1.7;color:#5a4670;-webkit-user-select:text;user-select:text}
+  .cm-save{margin-top:14px;padding:11px;border:0;border-radius:12px;font-size:16px;
+    background:#e9a3c0;color:#fff;cursor:pointer}
+  .cm-save:disabled{opacity:.6}`;
+
+  const ENV_SVG = `<svg viewBox="0 0 96 66" width="96" height="66">
+    <rect x="3" y="3" width="90" height="60" rx="6" fill="#fff5f7" stroke="#8f6fae" stroke-width="3"/>
+    <path d="M5 8 L48 38 L91 8" fill="none" stroke="#8f6fae" stroke-width="3" stroke-linejoin="round"/>
+    <circle cx="48" cy="38" r="7" fill="#f29ab0" stroke="#8f6fae" stroke-width="2"/></svg>`;
+
+  const CRAB_SVG = `<svg class="cm-crab" viewBox="0 0 160 120">
+    <g class="legsA" stroke="#9b7bb8" stroke-width="5" stroke-linecap="round" fill="none">
+      <path d="M48 76 L22 88 L14 108"/><path d="M58 88 L38 104 L34 116"/>
+      <path d="M108 74 L132 70 L144 82"/></g>
+    <g class="legsB" stroke="#9b7bb8" stroke-width="5" stroke-linecap="round" fill="none">
+      <path d="M52 66 L26 70 L16 82"/><path d="M102 88 L122 104 L126 116"/>
+      <path d="M112 76 L138 88 L146 108"/></g>
+    <g stroke="#8f6fae" stroke-width="3" fill="#f6a5b9">
+      <path d="M52 60 Q30 54 34 32" fill="none" stroke-width="5" stroke="#9b7bb8" stroke-linecap="round"/>
+      <path d="M108 60 Q130 54 126 32" fill="none" stroke-width="5" stroke="#9b7bb8" stroke-linecap="round"/>
+      <ellipse cx="33" cy="26" rx="12" ry="14"/><ellipse cx="127" cy="26" rx="12" ry="14"/>
+      <ellipse cx="80" cy="76" rx="40" ry="28"/></g>
+    <g stroke="#9b7bb8" stroke-width="3" stroke-linecap="round"><path d="M68 52 L66 40"/><path d="M92 52 L94 40"/></g>
+    <circle cx="66" cy="38" r="6" fill="#fff" stroke="#8f6fae" stroke-width="2"/>
+    <circle cx="94" cy="38" r="6" fill="#fff" stroke="#8f6fae" stroke-width="2"/>
+    <circle cx="66" cy="38" r="2.5" fill="#5a4670"/><circle cx="94" cy="38" r="2.5" fill="#5a4670"/>
+    <path d="M72 82 Q80 90 88 82" fill="none" stroke="#8f6fae" stroke-width="3" stroke-linecap="round"/></svg>`;
+
+  let styled = false;
+  function addStyle() {
+    if (styled) return;
+    const s = document.createElement('style');
+    s.textContent = CSS;
+    document.head.appendChild(s);
+    styled = true;
+  }
+
+  function show({ content = '', onSave = null, skipAnimation = false } = {}) {
+    addStyle();
+    return new Promise((resolve) => {
+      let state = 'enter'; // enter → hold → taking → ready → open
+      const overlay = document.createElement('div');
+      overlay.className = 'cm-overlay';
+      // 蓋住整個畫面，底下的按鈕都點不到
+      overlay.addEventListener('click', (e) => e.stopPropagation());
+
+      const env = document.createElement('div');
+      env.className = 'cm-env';
+      env.innerHTML = ENV_SVG;
+
+      const wrap = document.createElement('div');
+      wrap.className = 'cm-wrap cm-walking cm-in';
+      wrap.appendChild(env);
+      wrap.insertAdjacentHTML('beforeend', CRAB_SVG);
+      overlay.appendChild(wrap);
+      document.body.appendChild(overlay);
+
+      function placeEnvFixed(left, top) {
+        overlay.appendChild(env);
+        env.classList.add('cm-env-fixed', 'cm-pulse');
+        env.style.left = left + 'px';
+        env.style.top = top + 'px';
+      }
+
+      function openLetter() {
+        state = 'open';
+        env.remove();
+        const card = document.createElement('div');
+        card.className = 'cm-card';
+        const text = document.createElement('div');
+        text.className = 'cm-text';
+        text.textContent = content; // 用純文字顯示，避免信件內容被當成程式
+        const btn = document.createElement('button');
+        btn.className = 'cm-save';
+        btn.textContent = '保存信件';
+        let saving = false;
+        btn.addEventListener('click', async () => {
+          if (saving) return;
+          saving = true;
+          btn.disabled = true;
+          try { if (onSave) await onSave(); } finally {
+            overlay.remove();
+            resolve();
+          }
+        });
+        card.append(text, btn);
+        overlay.appendChild(card);
+      }
+
+      env.addEventListener('click', () => {
+        if (state === 'hold') {
+          state = 'taking';
+          const r = env.getBoundingClientRect();
+          placeEnvFixed(r.left, r.top);
+          wrap.className = 'cm-wrap cm-walking cm-out';
+        } else if (state === 'ready') {
+          openLetter();
+        }
+      });
+
+      wrap.addEventListener('animationend', (e) => {
+        if (e.target !== wrap) return;
+        if (state === 'enter') {
+          state = 'hold';
+          wrap.classList.remove('cm-walking');
+          env.classList.add('cm-pulse');
+        } else if (state === 'taking') {
+          wrap.remove();
+          state = 'ready';
+        }
+      });
+
+      if (skipAnimation) {
+        wrap.remove();
+        placeEnvFixed(window.innerWidth / 2 - 48, window.innerHeight * 0.38);
+        state = 'ready';
+      }
+    });
+  }
+
+  return { show };
+})();
+
+/* 寫信音效：信箱的寫信 / 回信輸入框打字時沙沙聲（設置-信箱設置-效果 可開關、調音量） */
+function penSync(){PenSound.setEnabled(!!(S&&S.set&&S.set.penSnd));PenSound.setVolume(S&&S.set&&S.set.penVol!=null?(+S.set.penVol||0)/100:.5)}
+document.addEventListener('input',e=>{const t=e.target;if(t&&t.matches&&t.matches('input[data-pvol]')){const v=Math.max(0,Math.min(100,+t.value||0));S.set.penVol=v;const l=document.getElementById('pvl');if(l)l.textContent=v+'%';penSync();saveSoon()}},true);
+document.addEventListener('change',e=>{const t=e.target;if(t&&t.matches&&t.matches('input[data-pvol]')){penSync();PenSound.preview()}},true);
+['pointerdown','focusin'].forEach(ev=>document.addEventListener(ev,e=>{if(e.target.matches&&e.target.matches('#lt,#lrt')){penSync();PenSound.unlock(e.target)}},true));
+document.addEventListener('input',e=>{if(e.target.matches&&e.target.matches('#lt,#lrt')&&1){penSync();PenSound.play(e.target)}},true);document.addEventListener('focusout',e=>{if(e.target.matches&&e.target.matches('#lt,#lrt'))PenSound.stop()},true);
+/* 重要聯繫人來信：點信箱時，依序播放尚未看過的重要聯絡人來信 */
+async function crabMailRun(){if(!S.set.crabMail||window.__crabBusy)return;const imp=c=>S.contacts.some(x=>x.id===c&&x.star),list=(S.letters||[]).filter(x=>x.from==='ta'&&!x.seen&&imp(x.cid)).sort((a,b)=>a.t-b.t);if(!list.length)return;
+  window.__crabBusy=1;try{for(let i=0;i<list.length;i++){const L=list[i];await CrabMail.show({content:(cname(L.cid)+' 寄來的信\n\n')+L.text,skipAnimation:i>0,onSave:()=>{L.seen=1;L.star=true;save()}})}}finally{window.__crabBusy=0}
+  updateMailBadge();if(mailOpen&&tab==='home'){const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}}
 function vMail(){const c=cur(),all=[...(S.letters||[])].sort((x,y)=>y.t-x.t);
   const head='<div class="ph2"><button class="ib" data-a="mback">‹</button><h1>信箱</h1><span class="grow"></span><button class="btn" data-a="medit" style="width:auto;padding:6px 14px">'+(mailEdit?'完成':'編輯')+'</button></div><div class="seg mail-seg">'+[['w','寫信與回信'],['r','收到的信'],['i','重要信件']].map(([k,n])=>'<button class="'+(mailTab===k?'on':'')+'" data-a="mtab" data-i="'+k+'">'+n+'</button>').join('')+'</div>';
   const bar=mailEdit?'<div class="selbar">'+selAllHtml('mail',mailIds(),mailSel)+'<button class="btn d" data-a="mdelsel" style="border-style:solid">刪除所選（'+mailSel.length+'）</button></div>':'';
@@ -1888,15 +2465,15 @@ document.addEventListener('click',e=>{if(tab!=='chat')return;if(e.target.closest
   applyTheme();
   document.addEventListener('focusout',e=>{const n=e.target.dataset&&e.target.dataset.n;if(!n)return;const v=e.target.textContent.trim();let t;if(n==='m'){S.me=v||'我';t=S.me}else{const c=n==='c'?cur():S.contacts.find(x=>x.id===e.target.closest('[data-c]').dataset.c);c.name=v||'名字';t=c.name}e.target.textContent=t;save()});
   document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset&&e.target.dataset.n){e.preventDefault();e.target.blur()}});
-  document.addEventListener('change',e=>{const k=e.target.dataset.n2;if(k){e.target.value=S.set[k];if(activeSetting(k))resetA();else save()}});
-  document.addEventListener('input',e=>{if(e.target.dataset.n2){const k=e.target.dataset.n2,v=parseFloat(e.target.value);if(!isNaN(v)){S.set[k]=e.target.dataset.u==='%'?Math.min(100,Math.max(0,v)):Math.max(0,v);if(activeSetting(k))resetA();else saveSoon()}}if(e.target.id==='memoin'){S.memo=e.target.value;saveSoon();const mt=$('.memo-txt');if(mt)mt.innerHTML=memoSlots()}if(e.target.id==='cphex'&&cpk){const rgb=hex2rgb(e.target.value);if(rgb){[cpk.h,cpk.s,cpk.v]=rgb2hsv(rgb);cpUI(true)}}if(e.target.dataset.md){mailDraft[e.target.dataset.md]=e.target.value}if(e.target.dataset.qd!=null){qd[e.target.dataset.qd]=e.target.value}if(e.target.dataset.qs){const [qa_,qb_]=e.target.dataset.qs.split('.'),qv=parseFloat(e.target.value);if(!isNaN(qv)&&S.qa[qa_]){S.qa[qa_][qb_]=Math.max(0,qv);saveSoon()}}if(e.target.id==='rq'){rQ=e.target.value;const rb=$('#rbody');if(rb)rb.innerHTML=rCard(rQ)}if(e.target.id==='sq'){sQ=e.target.value;$('#sl').innerHTML=sList()}if(e.target.id==='tc'){S.ink=e.target.value;applyTheme();saveSoon()}if(e.target.id==='markColor'){S.set.starColor=e.target.value;saveSoon();paint()}if(e.target.id==='lc'){S.line=e.target.value;document.documentElement.style.setProperty('--line',S.line);saveSoon()}if(e.target.id==='bgc'){S.bgColors=S.bgColors||{};S.bgColors[e.target.dataset.i]=e.target.value;saveSoon();render()}});
+  document.addEventListener('change',e=>{const k=e.target.dataset.n2;if(k){e.target.value=sget(k);if(activeSetting(k))resetA();else save()}});
+  document.addEventListener('input',e=>{if(e.target.dataset.n2){const k=e.target.dataset.n2,v=parseFloat(e.target.value);if(!isNaN(v)){sput(k,e.target.dataset.u==='%'?Math.min(100,Math.max(0,v)):Math.max(0,v));if(activeSetting(k))resetA();else saveSoon()}}if(e.target.id==='memoin'){S.memo=e.target.value;saveSoon();const mt=$('.memo-txt');if(mt)mt.innerHTML=memoSlots()}if(e.target.id==='cphex'&&cpk){const rgb=hex2rgb(e.target.value);if(rgb){[cpk.h,cpk.s,cpk.v]=rgb2hsv(rgb);cpUI(true)}}if(e.target.dataset.md){mailDraft[e.target.dataset.md]=e.target.value}if(e.target.dataset.qd!=null){qd[e.target.dataset.qd]=e.target.value}if(e.target.dataset.qs){const [qa_,qb_]=e.target.dataset.qs.split('.'),qv=parseFloat(e.target.value);if(!isNaN(qv)&&S.qa[qa_]){S.qa[qa_][qb_]=Math.max(0,qv);saveSoon()}}if(e.target.id==='rq'){rQ=e.target.value;const rb=$('#rbody');if(rb)rb.innerHTML=rCard(rQ)}if(e.target.id==='sq'){sQ=e.target.value;$('#sl').innerHTML=sList()}if(e.target.id==='tc'){S.ink=e.target.value;applyTheme();saveSoon()}if(e.target.id==='markColor'){S.set.starColor=e.target.value;saveSoon();paint()}if(e.target.id==='lc'){S.line=e.target.value;document.documentElement.style.setProperty('--line',S.line);saveSoon()}if(e.target.id==='bgc'){S.bgColors=S.bgColors||{};S.bgColors[e.target.dataset.i]=e.target.value;saveSoon();render()}});
   document.addEventListener('scroll',e=>{const t=e.target;if(t.classList&&t.classList.contains('pager')){const n=Math.round(t.scrollLeft/t.clientWidth);document.querySelectorAll('.dots i').forEach((d,k)=>d.classList.toggle('on',k===n))}},true);
   document.addEventListener('focusin',e=>{if(e.target.id==='bt')$('#bph').style.display='none'});
   document.addEventListener('focusout',e=>{if(e.target.id==='bt'&&!e.target.value)$('#bph').style.display=''});
   document.addEventListener('input',e=>{const t=e.target;
     if(t.id==='gname'){const g=grp(gEditId);if(g)g.name=t.value;return}if(t.id==='abn'){t.value=t.value.replace(/\D/g,'').slice(0,16);abN=t.value;return}if(t.id==='abq'){abQ=t.value;return}if(t.id==='mh1'||t.id==='mh2'){t.value=t.value.replace(/\D/g,'').slice(0,16);if(t.id==='mh1')mhN1=t.value;else mhN2=t.value;return}if(t.id==='mht'){mhT=t.value;return}if(t.id==='mhq'){mhQ=t.value;return}if(t.id==='cq'){cq=t.value;if(delMode&&selC.length){const ok=new Set(cardSelIds()),n=selC.filter(x=>ok.has(x));if(n.length!==selC.length){selC=n;render();const f=$('#cq');if(f){f.focus();try{f.setSelectionRange(f.value.length,f.value.length)}catch(er){}}return}}const r=$('#cres'),m=$('#cmain'),on=cq.trim();r.innerHTML=on?cres():'';r.style.display=on?'':'none';m.style.display=on?'none':''}
-    if(t.dataset&&t.dataset.t3){const k=t.dataset.t3,v=[...t.closest('.sr').querySelectorAll('[data-t3]')].map(x=>Math.max(0,parseInt(x.value)||0));S.set[k]=v[0]*3600+v[1]*60+v[2];saveSoon()}});
-  document.addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.t3){const k=t.dataset.t3,T=Math.round(S.set[k]||0),a=[Math.floor(T/3600),Math.floor(T%3600/60),T%60];t.closest('.sr').querySelectorAll('[data-t3]').forEach((x,i)=>x.value=a[i]);save()}});
+    if(t.dataset&&t.dataset.t3){const k=t.dataset.t3;let T=0;t.closest('.sr').querySelectorAll('[data-t3]').forEach(x=>{T+=Math.max(0,parseInt(x.value)||0)*({h:3600,m:60,s:1}[x.dataset.p]||1)});sput(k,T);saveSoon()}});
+  document.addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.t3){const k=t.dataset.t3,T=Math.round(sget(k)||0),row=t.closest('.sr'),hasH=!!row.querySelector('[data-p=h]');row.querySelectorAll('[data-t3]').forEach(x=>{const p=x.dataset.p;x.value=p==='h'?Math.floor(T/3600):p==='m'?(hasH?Math.floor(T%3600/60):Math.floor(T/60)):T%60});save()}});
   ['gesturestart','gesturechange'].forEach(g=>document.addEventListener(g,e=>e.preventDefault()));
   document.addEventListener('touchmove',e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});
   S.pend=S.pend||[];
