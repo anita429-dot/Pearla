@@ -10,10 +10,55 @@
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&family=Fredoka:wght@500&display=swap">
+<script>try{var __d=document.documentElement,__k=JSON.parse(localStorage.getItem("pearla-skin")||"null");__d.dataset.sp=(__k&&__k.t==="glass")?"fog":"clay";if(__k&&__k.t){__d.dataset.theme=__k.t==="glass"?"glass":"lav";__d.classList.add("boot");setTimeout(function(){__d.classList.remove("boot")},3000)}}catch(e){document.documentElement.dataset.sp="clay"}</script>
 <style>
+html.boot #app>*{visibility:hidden}
+/* ── 開場動畫（霧海＝小魚與珍珠；立體黏土＝黏土捏成珍珠） ── */
+#splash{position:fixed;inset:0;z-index:9999;overflow:hidden;touch-action:none;-webkit-tap-highlight-color:transparent;transition:opacity .7s ease,filter .7s ease,transform .7s ease;animation:spgone .5s 12s forwards}
+@keyframes spgone{to{opacity:0;visibility:hidden;pointer-events:none}}
+#splash.out{opacity:0;filter:blur(12px);transform:scale(1.04);pointer-events:none}
+#splash canvas{position:absolute;inset:0;width:100%;height:100%}
+#sp-status{position:absolute;left:0;right:0;display:grid;justify-items:center;font-size:14px;letter-spacing:.32em;pointer-events:none}
+#sp-status>span{grid-area:1/1;text-indent:.32em}
+#sp-status .t2{opacity:0}
+#sp-status.ok .t1{opacity:0}
+#sp-status.ok .t2{opacity:1}
+.sp-dots{display:inline-flex;vertical-align:middle}
+.sp-dots i{display:block;border-radius:50%}
+html[data-sp=fog] #splash{--ink:#fff;--tsh:#6b7a9099;background:linear-gradient(180deg,#8497b3 0%,#a9b9cf 20%,#cdd9e7 38%,#dbe5ef 40%,#8aa2c0 41%,#7c95b5 56%,#9db3cd 78%,#cfd9e6 100%);color:#fff;text-shadow:0 1px 6px var(--tsh)}
+.sp-fog{position:absolute;left:-30%;width:160%;height:22%;border-radius:50%;background:radial-gradient(ellipse at center,#ffffff73,transparent 70%);animation:spdrift 26s ease-in-out infinite alternate}
+.sp-fog.f1{top:6%}.sp-fog.f2{top:32%;height:16%;animation-duration:34s;animation-direction:alternate-reverse;opacity:.8}
+.sp-fog.f3{top:58%;height:20%;animation-duration:30s;opacity:.7}.sp-fog.f4{top:80%;animation-duration:38s;animation-direction:alternate-reverse;opacity:.6}
+@keyframes spdrift{from{transform:translateX(-9%)}to{transform:translateX(9%)}}
+html[data-sp=fog] #sp-title{position:absolute;left:0;right:0;top:50%;margin:0;transform:translateY(-50%);text-align:center;font:italic 500 40px "Cormorant Garamond",Georgia,"Times New Roman",serif;letter-spacing:.22em;text-indent:.22em;pointer-events:none;text-shadow:0 1px 14px #5f7391b3;animation:sprise 1.8s ease both}
+@keyframes sprise{from{opacity:0;filter:blur(8px)}to{opacity:1;filter:blur(0)}}
+html[data-sp=fog] #sp-status{bottom:calc(env(safe-area-inset-bottom,0px) + 20vh)}
+html[data-sp=fog] #sp-status>span{transition:opacity .6s ease,filter .6s ease}
+html[data-sp=fog] #sp-status .t2{filter:blur(4px)}
+html[data-sp=fog] #sp-status.ok .t1{filter:blur(4px)}
+html[data-sp=fog] #sp-status.ok .t2{filter:blur(0)}
+html[data-sp=fog] .sp-dots{gap:4px;margin-left:8px}
+html[data-sp=fog] .sp-dots i{width:3.5px;height:3.5px;background:#fff;box-shadow:0 1px 4px var(--tsh);animation:spjumpf 1.1s ease-in-out infinite}
+html[data-sp=fog] .sp-dots i:nth-child(2){animation-delay:.14s}html[data-sp=fog] .sp-dots i:nth-child(3){animation-delay:.28s}
+@keyframes spjumpf{0%,55%,100%{transform:translateY(0)}28%{transform:translateY(-5px)}}
+html[data-sp=clay] #splash{--ink:#5f5b8d;--soft:#8b86bd;--lav:#aca6e4;background:radial-gradient(ellipse 80% 40% at 15% 12%,#f4b6c866,transparent 70%),radial-gradient(ellipse 90% 45% at 90% 85%,#cbc7ee99,transparent 70%),linear-gradient(180deg,#fdfcff,#ece8fb);color:var(--ink)}
+html[data-sp=clay] .sp-fog{display:none}
+html[data-sp=clay] #sp-title{position:absolute;left:0;right:0;top:19%;margin:0;text-align:center;font:500 46px "Fredoka","PingFang TC",system-ui,sans-serif;letter-spacing:.08em;color:var(--ink);text-shadow:0 2px 0 #fff,0 5px 10px #aca6e466;pointer-events:none;animation:sppop 1s .2s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes sppop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+html[data-sp=clay] #sp-status{bottom:calc(env(safe-area-inset-bottom,0px) + 18vh);color:var(--soft);text-shadow:0 1px 0 #fff}
+html[data-sp=clay] #sp-status>span{transition:opacity .6s ease,transform .6s ease}
+html[data-sp=clay] #sp-status .t2{transform:scale(.85)}
+html[data-sp=clay] #sp-status.ok .t1{transform:scale(.85)}
+html[data-sp=clay] #sp-status.ok .t2{transform:scale(1)}
+html[data-sp=clay] .sp-dots{gap:6px;margin-left:10px}
+html[data-sp=clay] .sp-dots i{width:7px;height:7px;background:radial-gradient(circle at 35% 30%,#fff,#f4b6c8 60%,#e096ae);animation:spjumpc 1.1s ease-in-out infinite}
+html[data-sp=clay] .sp-dots i:nth-child(2){background:radial-gradient(circle at 35% 30%,#fff,#aca6e4 60%,#8a84d0);animation-delay:.14s}
+html[data-sp=clay] .sp-dots i:nth-child(3){background:radial-gradient(circle at 35% 30%,#fff,#f8d7cc 60%,#e8b8a8);animation-delay:.28s}
+@keyframes spjumpc{0%,60%,100%{transform:translateY(0)}25%{transform:translateY(-7px) scale(.92,1.1)}45%{transform:translateY(0) scale(1.15,.85)}}
+@media (prefers-reduced-motion:reduce){.sp-fog,.sp-dots i{animation:none}}
+
 :root{--tsh:#ffffffe6;--ink:#5f5b8d;--soft:#8b86bd;--line:#cbc7ee;--lav:#aca6e4;--bg:#fdfcff;--card:#ffffffd9;--bub:#f4f2ff;--me:#fdeff2;--pk:#e6b1bd;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#d8d4fa;--soft:#a9a4d8;--line:#4a4670;--lav:#8a84d0;--bg:#1b1a2b;--card:#26243bd9;--bub:#2d2a47;--me:#3b2b38}}
-:root[data-theme="dark"]{--ink:#d8d4fa;--soft:#a9a4d8;--line:#4a4670;--lav:#8a84d0;--bg:#1b1a2b;--card:#26243bd9;--bub:#2d2a47;--me:#3b2b38}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%}
 body{font-family:"PingFang TC","Hiragino Sans","Microsoft JhengHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);overflow:hidden}
@@ -526,18 +571,23 @@ mark{background:#aca6e455;color:inherit;border-radius:3px;padding:0 1px}
 .stickh .ph2{margin-bottom:10px}
 [data-theme=glass] .stickh{background:transparent;clip-path:inset(0)}
 [data-theme=glass] .stickh::before,[data-theme=glass] .cards-top::before{content:"";position:fixed;z-index:-1;left:var(--ax,0px);top:var(--ay,0px);width:var(--aw,100%);height:var(--ah,100%);transform:none;background:var(--tbi,url(assets/bg-dusk.webp)) center/cover no-repeat;pointer-events:none}
-[data-theme=glass][data-skin=journal] .stickh::before,
-[data-theme=glass]:not([data-skin=journal]) .kitchen-intro{background:linear-gradient(160deg,#5b7fb4f2,#3f6296ee);border-color:#ffffff59}
-[data-theme=glass]:not([data-skin=journal]) .kitchen-ingredient,[data-theme=glass]:not([data-skin=journal]) .lt{background:linear-gradient(#2b40611f,#2b40611f),#ffffff29;-webkit-backdrop-filter:blur(6px) saturate(1.2);backdrop-filter:blur(6px) saturate(1.2);border:1px solid #ffffffa6}
-[data-theme=glass]:not([data-skin=journal]) .kitchen-ingredient.on{border-color:#fff;box-shadow:inset 0 0 0 1px #ffffff80}
-[data-theme=glass]:not([data-skin=journal]) .kitchen-actions .btn.s{background:#ffffff1a;color:var(--ink);border:1px solid #ffffffa6;-webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4)}
-[data-theme=glass]:not([data-skin=journal]) .lt .rp{background:linear-gradient(160deg,#5b7fb4f2,#3f6296ee);border-color:#ffffff59}
+[data-theme=glass] .kitchen-ingredient,[data-theme=glass] .lt{background:linear-gradient(#2b40611f,#2b40611f),#ffffff29;-webkit-backdrop-filter:blur(6px) saturate(1.2);backdrop-filter:blur(6px) saturate(1.2);border:1px solid #ffffffa6}
+[data-theme=glass] .kitchen-ingredient.on{border-color:#fff;box-shadow:inset 0 0 0 1px #ffffff80}
+[data-theme=glass] .kitchen-actions .btn.s{background:#ffffff1a;color:var(--ink);border:1px solid #ffffffa6;-webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4)}
+[data-theme=glass] .lt .rp{background:linear-gradient(160deg,#5b7fb4f2,#3f6296ee);border-color:#ffffff59}
 [data-theme=glass] .lt,[data-theme=glass] .lt *{text-shadow:none}
+[data-theme=glass] .settings-lock.on{background:linear-gradient(160deg,#6f94c7f2,#46699fee);border:1px solid #ffffff73;box-shadow:0 3px 10px #2d466e55}
+[data-theme=glass] .settings-lock:not(.on){background:linear-gradient(160deg,#a9c3e6f2,#7f9fcbee);border:1px solid #ffffff73;box-shadow:0 3px 10px #2d466e33}
+.settings-lock:not(.show){visibility:hidden;transition:opacity .2s,visibility 0s .2s}
+[data-theme=glass] #bn:not(.show),[data-theme=glass] #tt:not(.show){-webkit-backdrop-filter:none;backdrop-filter:none}
+
+.sheet-foot{position:sticky;bottom:calc(-16px - env(safe-area-inset-bottom,0px));margin:8px -18px calc(-16px - env(safe-area-inset-bottom,0px));padding:10px 18px calc(16px + env(safe-area-inset-bottom,0px));background:inherit;z-index:3}
+.sheet-foot .btn{margin:0;width:100%}
 .mom-cx{display:block;margin:6px 0 0;padding:4px 0;border:0;background:none;color:var(--soft);font-size:12px;cursor:pointer;text-align:left}
 
-[data-theme=glass]:not([data-skin=journal]) .kitchen-actions-fixed{background:transparent;border-color:transparent;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
-[data-theme=glass]:not([data-skin=journal]) .kitchen-actions .btn:disabled{opacity:.5}
-[data-theme=glass]:not([data-skin=journal]) .btn.d{color:#ffd3d9}
+[data-theme=glass] .kitchen-actions-fixed{background:transparent;border-color:transparent;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass] .kitchen-actions .btn:disabled{opacity:.5}
+[data-theme=glass] .btn.d{color:#ffd3d9}
 
 :root:not([data-theme=glass]) .cards-top,:root:not([data-theme=glass]) .cards-top.cards-unified,:root:not([data-theme=glass]) .cards-top.other-controls{background:inherit}
 [data-theme=glass] #bn,[data-theme=glass] #tt,[data-theme=glass] .box,[data-theme=glass] #daily-pop .daily-box,[data-theme=glass] #sh.chat-pop .box{background:#6b7f9cec;border:1px solid #ffffff59;color:var(--ink);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
@@ -560,78 +610,239 @@ mark{background:#aca6e455;color:inherit;border-radius:3px;padding:0 1px}
 [data-theme=glass] .ci,[data-theme=glass] .emoji-edit{background:linear-gradient(#2b40611f,#2b40611f),#ffffff29;-webkit-backdrop-filter:blur(6px) saturate(1.2);backdrop-filter:blur(6px) saturate(1.2)}
 [data-theme=glass] .card-add{-webkit-backdrop-filter:none;backdrop-filter:none;border-radius:0}
 [data-theme=glass] .cards-view .card{-webkit-backdrop-filter:blur(6px) saturate(1.2);backdrop-filter:blur(6px) saturate(1.2)}
-
-/* ── 潮汐手帳：藍白方格手帳紙、膠帶、紙卡（沿用霧海的圖示與版面，只換顏色與質感） ── */
-:root[data-theme=glass][data-skin=journal]{--ink:#4b5b78;--soft:#7c8aa6;--tsh:#6b7a9099;--line:#b9cbe3;--lav:#6f93c2;--bg:#eef3fa;--card:#ffffffe6;--bub:#ffffff;--me:#dbe7f6;--pk:#9db9de;--jgrid:linear-gradient(180deg,#ffffff59,#e6eef900),repeating-linear-gradient(0deg,transparent 0 23px,#b4c8e22e 23px 24px),repeating-linear-gradient(90deg,transparent 0 23px,#b4c8e22e 23px 24px),#eef3fa}
-[data-theme=glass][data-skin=journal] body{background:#e9eff8;text-shadow:none}
-[data-theme=glass][data-skin=journal] .tile-label{text-shadow:none}
-[data-theme=glass][data-skin=journal] #app{background:var(--jgrid)}
-
-[data-theme=glass][data-skin=journal] .card,[data-theme=glass][data-skin=journal] .tabs,[data-theme=glass][data-skin=journal] .row,[data-theme=glass][data-skin=journal] .theme-opt{background:#ffffffe6;-webkit-backdrop-filter:none;backdrop-filter:none}
-[data-theme=glass][data-skin=journal] .card{border-radius:10px;box-shadow:0 3px 10px #5b7aa626}
-[data-theme=glass][data-skin=journal] .tabs{box-shadow:none}
-[data-theme=glass][data-skin=journal] .card,[data-theme=glass][data-skin=journal] .tabs,[data-theme=glass][data-skin=journal] .row,[data-theme=glass][data-skin=journal] .seg,[data-theme=glass][data-skin=journal] .btn:not(.s),[data-theme=glass][data-skin=journal] .chip,[data-theme=glass][data-skin=journal] .theme-opt,[data-theme=glass][data-skin=journal] .ci,[data-theme=glass][data-skin=journal] .ib{border:1px solid #cfdcee}
-[data-theme=glass][data-skin=journal] .row.on,[data-theme=glass][data-skin=journal] .chip.on,[data-theme=glass][data-skin=journal] .theme-opt.on{border-color:var(--lav);box-shadow:0 0 0 1px var(--lav)}
-[data-theme=glass][data-skin=journal] input:not([type=range]):not([type=color]),[data-theme=glass][data-skin=journal] textarea{border:1px solid #cfdcee;background:#fffffff2}
-[data-theme=glass][data-skin=journal] #cq,[data-theme=glass][data-skin=journal] #sq,[data-theme=glass][data-skin=journal] .card-add input{background:#fffffff2;border:1px solid #cfdcee;-webkit-backdrop-filter:none;backdrop-filter:none}
-[data-theme=glass][data-skin=journal] input::placeholder,[data-theme=glass][data-skin=journal] textarea::placeholder{color:#9aa9c2}
-[data-theme=glass][data-skin=journal] .btn:not(.s),[data-theme=glass][data-skin=journal] .chip,[data-theme=glass][data-skin=journal] .ib,[data-theme=glass][data-skin=journal] .seg{background:#ffffffd9;-webkit-backdrop-filter:none;backdrop-filter:none}
-[data-theme=glass][data-skin=journal] .acts2 .btn{background:linear-gradient(160deg,#6f94c7f2,#46699fee);color:#fff;border:1px solid #ffffff66}
-[data-theme=glass][data-skin=journal] .tab.on,[data-theme=glass][data-skin=journal] .seg .on{background:#dbe7f6;box-shadow:inset 0 0 0 1px #b6cbe6}
-[data-theme=glass][data-skin=journal] .btn.s{background:linear-gradient(180deg,#a9c4e8,#7f9fcb);border:1px solid #ffffff99;color:#fff;box-shadow:0 2px 6px #4a6a9a33;-webkit-backdrop-filter:none;backdrop-filter:none}
-[data-theme=glass][data-skin=journal] .sw{background:#dfe8f5;border-color:#c5d4ea}
-[data-theme=glass][data-skin=journal] .sw::after{background:#fff;box-shadow:0 1px 3px #4a669055}
-[data-theme=glass][data-skin=journal] .sw.on{background:var(--lav);border-color:var(--lav)}
-[data-theme=glass][data-skin=journal] #sh{background:#3b4f7040}
-[data-theme=glass][data-skin=journal] .box,[data-theme=glass][data-skin=journal] #daily-pop .daily-box,[data-theme=glass][data-skin=journal] #sh.chat-pop .box,[data-theme=glass][data-skin=journal] #bn,[data-theme=glass][data-skin=journal] #tt{background:#f8fbfff5;border:1px solid #cfdcee;color:var(--ink);box-shadow:0 8px 24px #3d5a8330;-webkit-backdrop-filter:none;backdrop-filter:none}
-[data-theme=glass][data-skin=journal] #sh.mid .box{border:1px solid #cfdcee}
-[data-theme=glass][data-skin=journal] .brand{font-family:"Snell Roundhand","Apple Chancery","Segoe Script","Brush Script MT",cursive;font-style:normal;font-weight:400;letter-spacing:.06em;font-size:22px;color:var(--soft)}
-[data-theme=glass][data-skin=journal] .gcal-h{font-family:"Snell Roundhand","Apple Chancery","Segoe Script","Brush Script MT",cursive;font-style:normal;font-size:9cqw}
-[data-theme=glass][data-skin=journal] .gi,[data-theme=glass][data-skin=journal] .gdm{background:#ffffffe0;border:1px solid #cfdcee;border-radius:12px;box-shadow:0 3px 8px #5b7aa62b;-webkit-backdrop-filter:none;backdrop-filter:none}
-[data-theme=glass][data-skin=journal] .gm,[data-theme=glass][data-skin=journal] .gcard{background:#ffffffe6;border:1px solid #cfdcee;border-radius:12px;box-shadow:0 3px 10px #5b7aa62b;-webkit-backdrop-filter:none;backdrop-filter:none}
-[data-theme=glass][data-skin=journal] .gi svg,[data-theme=glass][data-skin=journal] .gm-t svg,[data-theme=glass][data-skin=journal] .gdm svg{stroke:#5b78a3;filter:none}
-[data-theme=glass][data-skin=journal] .gt svg{filter:none}
-[data-theme=glass][data-skin=journal] .gm i{border-top:1px dashed #b3c6e0}
-[data-theme=glass][data-skin=journal] .gcal-g .today{background:#dbe7f6;box-shadow:0 0 0 1px var(--lav) inset}
-[data-theme=glass][data-skin=journal] .gcal .ring{border-color:#b9cbe3;background:linear-gradient(180deg,#fff,#e3ecf8)}
-[data-theme=glass][data-skin=journal] .cards-view .chip.on,[data-theme=glass][data-skin=journal] .cards-view .catwrap .chip.on{background:#dbe7f6;color:var(--ink);border-color:var(--lav)}
-[data-theme=glass][data-skin=journal] .si{color:#5b78a3;background:#e3ecf8}
-[data-theme=glass][data-skin=journal] .dots i{background:#c9d7ea}
-[data-theme=glass][data-skin=journal] .dots i.on{background:var(--lav)}
-[data-theme=glass][data-skin=journal] .ci,[data-theme=glass][data-skin=journal] .emoji-edit{background:#f4f8fff0;border:1px solid #d3e0f0;border-radius:8px;-webkit-backdrop-filter:none;backdrop-filter:none}
-[data-theme=glass][data-skin=journal] .b{background:#fffffff2;border:1px solid #cfdcee;border-bottom:1.5px solid #bcd0ea;box-shadow:0 2px 6px #5b7aa622;-webkit-backdrop-filter:none;backdrop-filter:none}
-[data-theme=glass][data-skin=journal] .m.me .b{background:#dbe7f6;border-color:#b6cbe6;border-bottom:1.5px solid #9db9de;border-right:1.5px solid #9db9de}
-/* 膠帶 */
-[data-theme=glass][data-skin=journal] .card.set,[data-theme=glass][data-skin=journal] .gi{position:relative}
-[data-theme=glass][data-skin=journal] .gm::before,[data-theme=glass][data-skin=journal] .gcard::before,[data-theme=glass][data-skin=journal] .card.set::before{content:"";position:absolute;top:-8px;left:12%;width:58px;height:17px;background:linear-gradient(180deg,#c9d9ee,#b9cde8);opacity:.82;transform:rotate(-3deg);clip-path:polygon(0 0,100% 0,97% 25%,100% 50%,97% 75%,100% 100%,0 100%,3% 75%,0 50%,3% 25%);pointer-events:none;z-index:2}
-[data-theme=glass][data-skin=journal] .card.set:nth-child(even)::before{left:auto;right:12%;transform:rotate(3deg);background:repeating-linear-gradient(135deg,#b4cdeecc 0 5px,#dbe8f8cc 5px 10px);clip-path:none;opacity:1}
-[data-theme=glass][data-skin=journal] .gi::before{content:"";position:absolute;top:-5px;left:50%;width:24px;height:9px;margin-left:-12px;transform:rotate(-4deg);background:linear-gradient(180deg,#c9d9ee,#b9cde8);opacity:.85;clip-path:polygon(0 0,100% 0,96% 50%,100% 100%,0 100%,4% 50%);pointer-events:none}
-[data-theme=glass][data-skin=journal] .tile:nth-child(even) .gi::before{transform:rotate(4deg);background:repeating-linear-gradient(135deg,#b4cdeecc 0 3px,#dbe8f8cc 3px 6px);clip-path:none;opacity:1}
-/* 備忘錄／經期：淡藍、不要虛線、轉角較方；每日留言：比備忘錄深的藍色 */
-[data-theme=glass][data-skin=journal] .gm{background:#e4eefa;border:1px solid #cddcf0;border-radius:6px;box-shadow:0 3px 10px #5b7aa626}
-[data-theme=glass][data-skin=journal] .gm i{display:none}
-[data-theme=glass][data-skin=journal] .gdm{background:#c6d8ef;border:none;border-radius:6px;box-shadow:0 3px 8px #5b7aa62b;color:var(--ink)}
-[data-theme=glass][data-skin=journal] .gdm svg{stroke:#4f6d99}
 /* 月曆（參考手帳圖：頂部小圓點、小標、草寫月份、年/月、週標底線、前後月淡色日期、底部日期與草寫句） */
 .gcal-dots,.gcal-cap,.gcal-ym,.gcal-ft{display:none}
 .gcal-g .o{visibility:hidden}
-[data-theme=glass][data-skin=journal] .gcard.gcal{border-radius:6px;background:#fbfdff;border:1px solid #d3e0f0;border-right-color:#c3d4ea;border-bottom:2px solid #c3d4ea;padding:13cqw 7cqw 6cqw}
-[data-theme=glass][data-skin=journal] .gcal::before{left:36%}
-[data-theme=glass][data-skin=journal] .gcal .ring{display:none}
-[data-theme=glass][data-skin=journal] .gcal-dots{display:block;position:absolute;top:5cqw;left:6cqw;right:6cqw;height:1.6cqw;background:radial-gradient(circle,#b3c6e0 0 .55cqw,transparent .65cqw) 0 0/6.9cqw 100% repeat-x}
-[data-theme=glass][data-skin=journal] .gcal-cap{display:block;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:3cqw;letter-spacing:.3em;color:#9fb0cc}
-[data-theme=glass][data-skin=journal] .gcal-h{font-size:12cqw;line-height:1.15;color:var(--ink);margin-top:.5cqw}
-[data-theme=glass][data-skin=journal] .gcal-h small{display:none}
-[data-theme=glass][data-skin=journal] .gcal-ym{display:block;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:3.4cqw;letter-spacing:.2em;color:#8fa2c2}
-[data-theme=glass][data-skin=journal] .gcal-w{margin:4cqw 0 1.5cqw;padding-bottom:2.2cqw;border-bottom:1px solid #d3e0f0;color:#9fb0cc}
-[data-theme=glass][data-skin=journal] .gcal-g .o{visibility:visible;color:#b4c3dc}
-[data-theme=glass][data-skin=journal] .gcal-g .today{border-radius:50%;width:9cqw;height:9cqw;background:#dbe7f6;box-shadow:0 0 0 1px #7fa1cc inset}
-[data-theme=glass][data-skin=journal] .gcal-ft{display:block;margin-top:2.5cqw;padding-top:2.5cqw;border-top:1px solid #d3e0f0;text-align:center}
-[data-theme=glass][data-skin=journal] .gcal-ft span{display:block;text-align:left;font-size:3.3cqw;color:#8fa2c2;letter-spacing:.04em}
-[data-theme=glass][data-skin=journal] .gcal-ft em{display:block;margin-top:1.5cqw;font-family:"Snell Roundhand","Apple Chancery","Segoe Script","Brush Script MT",cursive;font-style:normal;font-size:5.4cqw;color:#6f8bb5}
 </style>
+<link rel="stylesheet" href="modules/profile.css">
 </head>
 <body>
+<div id="splash"><div class="sp-fog f1"></div><div class="sp-fog f2"></div><div class="sp-fog f3"></div><div class="sp-fog f4"></div><canvas id="sp-c"></canvas><h1 id="sp-title">Pearla</h1><div id="sp-status"><span class="t1">連接中<span class="sp-dots"><i></i><i></i><i></i></span></span><span class="t2">連接成功</span></div></div>
+<script>
+(function(){
+function makeFog(){
+
+const q=s=>document.querySelector(s);
+const splash=q('#splash'),cv=q('#sp-c'),ctx=cv.getContext('2d'),title=q('#sp-title'),stEl=q('#sp-status');
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let W,H,S,cx,cy,t0,raf,done=false,MIN_MS=1800;
+const ripples=[];
+function resize(){const d=Math.min(devicePixelRatio||1,2);W=splash.clientWidth;H=splash.clientHeight;0;cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);S=Math.min(W*.4,H*.5);cx=W/2;cy=H*.48;title.style.fontSize=(S*.28)+'px'}
+addEventListener('resize',resize);resize();
+
+/* 小魚沿一條柔和的橢圓慢慢游，珍珠繞著小魚轉（傾斜軌道，會繞到魚的前後） */
+const TAU=Math.PI*2;
+/* 莫比烏斯帶：中線是 ∞ 形（雙紐線），帶子沿一圈半扭轉 180°，交叉處一上一下 */
+function Q(u,v,t){
+  const su=Math.sin(u),cu=Math.cos(u),d=1+su*su;
+  const x=cu/d,y=su*cu/d;
+  const dx=(-su*d-cu*2*su*cu)/(d*d),dy=((cu*cu-su*su)*d-su*cu*2*su*cu)/(d*d);
+  const l=Math.hypot(dx,dy)||1,nx=-dy/l,ny=dx/l,ph=u/2;
+  const X=x+v*Math.cos(ph)*nx,Y=y+v*Math.cos(ph)*ny,Z=.24*su+v*Math.sin(ph);
+  const r=reduce?.3:.55*Math.sin(t*.3),tl=.35+(reduce?0:.08*Math.sin(t*.21));
+  const x1=X*Math.cos(r)+Z*Math.sin(r),z1=-X*Math.sin(r)+Z*Math.cos(r);
+  const y1=Y*Math.cos(tl)-z1*Math.sin(tl),z2=Y*Math.sin(tl)+z1*Math.cos(tl);
+  const p=1/(1-z2*.25);
+  return [cx+x1*S*p,cy+y1*S*p,z2,p];
+}
+const BW=.085,FV=.04;
+function ribbon(t){
+  const N=160;
+  ctx.lineWidth=1.1;ctx.lineCap='round';
+  for(const v of [-BW,BW])for(let i=0;i<N;i++){
+    const a=Q(i/N*TAU,v,t),b=Q((i+1)/N*TAU,v,t);
+    ctx.strokeStyle=`rgba(255,255,255,${Math.max(.25,Math.min(.8,.55+a[2]*.8))})`;
+    ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke();
+  }
+}
+const SP=.7;
+function fpos(t){return Q(t*(reduce?.4:SP),FV,t)}
+function orb(t,f,R){const th=t*(reduce?2:3.4),tilt=-.4;
+  const ox=Math.cos(th)*R,oy=Math.sin(th)*R*.38,z=Math.sin(th);
+  return [f[0]+ox*Math.cos(tilt)-oy*Math.sin(tilt),f[1]+ox*Math.sin(tilt)+oy*Math.cos(tilt),z]}
+function fish(x,y,ang,t,k){
+  ctx.save();ctx.translate(x,y);ctx.rotate(ang);ctx.scale(k,Math.cos(ang)<0?-k:k);
+  const w=Math.sin(t*9)*3;
+  ctx.shadowColor='#ffffffcc';ctx.shadowBlur=12;
+  const g=ctx.createLinearGradient(-14,0,14,0);g.addColorStop(0,'#bcd4f0');g.addColorStop(1,'#ffffff');
+  ctx.fillStyle=g;ctx.strokeStyle='#ffffffd9';ctx.lineWidth=.8;
+  ctx.beginPath();ctx.moveTo(14,0);ctx.quadraticCurveTo(7,-8,-6,-3);
+  ctx.lineTo(-14,-8+w);ctx.quadraticCurveTo(-10,w*.5,-14,8+w);ctx.lineTo(-6,3);ctx.quadraticCurveTo(7,8,14,0);
+  ctx.closePath();ctx.fill();ctx.stroke();
+  ctx.shadowBlur=0;
+  ctx.restore();
+}
+function pearl(p,k){
+  const sc=.8+.3*p[2],r=5.5*k*sc;ctx.save();ctx.globalAlpha=p[2]<0?.65:1;ctx.shadowColor='#ffffffee';ctx.shadowBlur=14;
+  const g=ctx.createRadialGradient(p[0]-r*.35,p[1]-r*.35,r*.1,p[0],p[1],r);
+  g.addColorStop(0,'#fff');g.addColorStop(.55,'#e6eef8');g.addColorStop(1,'#9db9de');
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(p[0],p[1],r,0,TAU);ctx.fill();ctx.restore();
+}
+function ripple(now){
+  for(let n=ripples.length-1;n>=0;n--){
+    const r=ripples[n],age=(now-r.t)/1000;
+    if(age>2.8){ripples.splice(n,1);continue}
+    for(let i=0;i<3;i++){
+      const a=age-i*.17;if(a<0||a>2.2)continue;
+      const rad=a*115*r.s+6,al=Math.pow(1-a/2.2,2)*.65*r.s;
+      if(i===0){const g=ctx.createRadialGradient(r.x,r.y,rad*.6,r.x,r.y,rad);g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(1,`rgba(255,255,255,${al*.35})`);ctx.fillStyle=g;ctx.beginPath();ctx.arc(r.x,r.y,rad,0,TAU);ctx.fill()}
+      ctx.strokeStyle=`rgba(255,255,255,${al})`;ctx.lineWidth=2-i*.5;ctx.beginPath();ctx.arc(r.x,r.y,rad,0,TAU);ctx.stroke();
+      if(i===1){ctx.strokeStyle=`rgba(127,161,204,${al*.7})`;ctx.lineWidth=1;ctx.beginPath();ctx.arc(r.x,r.y,rad*1.06,0,TAU);ctx.stroke()}
+    }
+  }
+}
+function wake(t,k){
+  const N=50,dt=.05;let prev=fpos(t);ctx.lineCap='round';
+  for(let i=1;i<=N;i++){const q=fpos(t-i*dt),a=1-i/N;
+    ctx.strokeStyle=`rgba(255,255,255,${a*a*(q[2]<0?.28:.5)})`;ctx.lineWidth=.4+a*2.4*k;
+    ctx.beginPath();ctx.moveTo(prev[0],prev[1]);ctx.lineTo(q[0],q[1]);ctx.stroke();prev=q}
+}
+const bubs=[];let nextB=0;
+function bubbles(now,f,ang,k){
+  if(now>nextB){nextB=now+450+Math.random()*900;
+    const d=(14+Math.random()*6)*k,j=()=>(Math.random()-.5)*8*k;
+    bubs.push({x:f[0]-Math.cos(ang)*d+j(),y:f[1]-Math.sin(ang)*d+j(),r:(1.6+Math.random()*2.4)*k,t:now,life:1800+Math.random()*1400,dx:(Math.random()-.5)*10,ph:Math.random()*6})}
+  for(let i=bubs.length-1;i>=0;i--){const b=bubs[i],a=(now-b.t)/b.life;
+    if(a>=1){bubs.splice(i,1);continue}
+    const al=Math.sin(a*Math.PI)*.5,x=b.x+b.dx*a+Math.sin(a*6+b.ph)*1.5,y=b.y-a*16*k,r=b.r*(.8+a*.4);
+    ctx.strokeStyle=`rgba(255,255,255,${al})`;ctx.lineWidth=.9;ctx.fillStyle=`rgba(255,255,255,${al*.18})`;
+    ctx.beginPath();ctx.arc(x,y,r,0,TAU);ctx.fill();ctx.stroke();
+    ctx.fillStyle=`rgba(255,255,255,${al*.9})`;ctx.beginPath();ctx.arc(x-r*.3,y-r*.3,r*.2,0,TAU);ctx.fill()}
+}
+function loop(now){
+  const t=(now-t0)/1000;ctx.clearRect(0,0,W,H);
+  const k=S/150,R=26*k,f=fpos(t),f0=fpos(t-.03),f1=fpos(t+.03);
+  const ang=Math.atan2(f1[1]-f0[1],f1[0]-f0[0]),p=orb(t,f,R),fk=k*(.85+.25*f[3]);
+  const pz=f[2]+p[2]*.15;
+  const fb=f[2]<0,pb=pz<0;
+  /* 在帶子背面時先畫（被帶子蓋住一點），在正面時最後畫 */
+  const drawFish=()=>{ctx.globalAlpha=fb?.6:1;fish(f[0],f[1],ang,t,fk);ctx.globalAlpha=1};
+  const drawPearl=()=>{ctx.globalAlpha=pb?.65:1;pearl(p,k);ctx.globalAlpha=1};
+  const trail=()=>{for(let i=22;i>0;i--){const tt=t-i*.03,ff=fpos(tt),q=orb(tt,ff,R);
+    ctx.fillStyle=`rgba(255,255,255,${(1-i/22)*.4})`;ctx.beginPath();ctx.arc(q[0],q[1],(1-i/22)*2.2*k,0,TAU);ctx.fill()}};
+  if(fb)drawFish();if(pb)drawPearl();
+  wake(t,k);
+  trail();bubbles(now,f,ang,k);
+  if(!fb)drawFish();if(!pb)drawPearl();
+  ripple(now);
+  raf=requestAnimationFrame(loop);
+}
+/* 觸碰水波紋 */
+let down=false,last=0;
+const pt=e=>{const r=splash.getBoundingClientRect(),k=splash.offsetWidth/r.width;return[(e.clientX-r.left)*k,(e.clientY-r.top)*k]};
+const rip=(x,y,s)=>ripples.push({x,y,s,t:performance.now()});
+splash.addEventListener('pointerdown',e=>{down=true;rip(...pt(e),1)});
+splash.addEventListener('pointermove',e=>{const n=performance.now();if(down&&n-last>90){last=n;rip(...pt(e),.55)}});
+addEventListener('pointerup',()=>down=false);addEventListener('pointercancel',()=>down=false);
+
+/* 開關：程式載入完成時呼叫 PearlaSplash.finish()，動畫至少顯示 MIN_MS 才淡出 */
+const PearlaSplash={
+  start(){done=false;splash.classList.remove('out');splash.style.display='';resize();ripples.length=0;bubs.length=0;stEl.classList.remove('ok');t0=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)},
+  finish(){if(done)return;done=true;const wait=Math.max(0,MIN_MS-(performance.now()-t0));
+    setTimeout(()=>{stEl.classList.add('ok');setTimeout(()=>{splash.classList.add('out');setTimeout(()=>{if(done){cancelAnimationFrame(raf);splash.style.display='none'}},750)},500)},wait)}
+};
+
+return PearlaSplash}
+function makeClay(){
+
+const q=s=>document.querySelector(s);
+const splash=q('#splash'),cv=q('#sp-c'),ctx=cv.getContext('2d'),stEl=q('#sp-status');
+const TAU=Math.PI*2,MIN_MS=3600;
+let W,H,R,cx,cy,t0,raf,done=false,last=0,sp=0,sv=0,fsp=0,fsv=0;
+const crumbs=[];
+const sm=(a,b,x)=>{x=Math.max(0,Math.min(1,(x-a)/(b-a)));return x*x*(3-2*x)};
+const ez=x=>1-Math.pow(1-x,3);
+const el=x=>x<=0?0:x>=1?1:Math.pow(2,-10*x)*Math.sin((x*10-.75)*TAU/3)+1;
+const TX=Array.from({length:44},()=>{const a=Math.random()*TAU,r=Math.sqrt(Math.random())*.92;return{x:Math.cos(a)*r,y:Math.sin(a)*r,s:.5+Math.random()*1.1,l:Math.random()<.5}});
+function resize(){const d=Math.min(devicePixelRatio||1,2);W=splash.clientWidth;H=splash.clientHeight;cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);
+  R=Math.min(W*.17,H*.1);cx=W/2;cy=H*.47;0}
+addEventListener('resize',resize);resize();
+
+/* 黏土團：輪廓有凹凸（A 越大越不規則），被捏時沿捏的方向壓扁 */
+function blob(x,y,sx,sy,fa,fq,A,sheen,al){
+  ctx.save();ctx.globalAlpha=al;ctx.translate(x,y);ctx.scale(sx,sy);ctx.rotate(fa);ctx.scale(1-fq*.14,1+fq*.09);ctx.rotate(-fa);
+  ctx.beginPath();
+  for(let i=0;i<=90;i++){const th=i/90*TAU,r=R*(1+A*(.5*Math.sin(3*th+1)+.35*Math.sin(5*th+2)+.25*Math.sin(2*th)));
+    i?ctx.lineTo(Math.cos(th)*r,Math.sin(th)*r):ctx.moveTo(r*Math.cos(th),r*Math.sin(th))}
+  ctx.closePath();
+  let g=ctx.createRadialGradient(-.3*R,-.38*R,.1*R,0,0,1.3*R);g.addColorStop(0,'#fbe9f6');g.addColorStop(.5,'#e2cdf2');g.addColorStop(1,'#b7a3de');
+  ctx.fillStyle=g;ctx.fill();ctx.save();ctx.clip();
+  g=ctx.createLinearGradient(-R,-R,R,R);g.addColorStop(0,'rgba(255,255,255,0)');g.addColorStop(.4,`rgba(255,214,235,${.5*sheen})`);g.addColorStop(.7,`rgba(200,225,255,${.45*sheen})`);g.addColorStop(1,'rgba(255,255,255,0)');
+  ctx.fillStyle=g;ctx.fillRect(-2*R,-2*R,4*R,4*R);
+  g=ctx.createRadialGradient(-.15*R,-.2*R,.6*R,0,0,1.15*R);g.addColorStop(0,'rgba(120,95,190,0)');g.addColorStop(1,'rgba(120,95,190,.3)');
+  ctx.fillStyle=g;ctx.fillRect(-2*R,-2*R,4*R,4*R);
+  for(const d of TX){ctx.fillStyle=d.l?'rgba(255,255,255,.14)':'rgba(120,95,190,.08)';ctx.beginPath();ctx.arc(d.x*R,d.y*R,d.s,0,TAU);ctx.fill()}
+  ctx.restore();
+  ctx.save();ctx.translate(-.34*R,-.42*R);ctx.rotate(-.6);ctx.scale(1,.6);
+  g=ctx.createRadialGradient(0,0,0,0,0,.3*R);g.addColorStop(0,'rgba(255,255,255,.8)');g.addColorStop(1,'rgba(255,255,255,0)');
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,.3*R,0,TAU);ctx.fill();ctx.restore();ctx.restore();
+}
+function fish(x,y,F,t,spr,al){
+  ctx.save();ctx.globalAlpha=al;ctx.translate(x,y);ctx.rotate(Math.sin(t*2.2)*.05);ctx.scale(1+spr*.15,1-spr*.15);
+  const tw=Math.sin(t*6)*F*.2;
+  ctx.fillStyle='#b7aeea';
+  ctx.beginPath();ctx.moveTo(-.25*F,-.6*F);ctx.bezierCurveTo(-.1*F,-1.1*F,.45*F,-1*F,.55*F,-.5*F);ctx.closePath();ctx.fill();
+  ctx.beginPath();ctx.moveTo(-.7*F,-.12*F);ctx.quadraticCurveTo(-1.2*F,-.7*F+tw,-1.55*F,-.8*F+tw);ctx.quadraticCurveTo(-1.8*F,-.4*F+tw,-1.65*F,tw*.5);
+  ctx.quadraticCurveTo(-1.8*F,.4*F+tw,-1.55*F,.8*F+tw);ctx.quadraticCurveTo(-1.2*F,.7*F+tw,-.7*F,.12*F);ctx.closePath();ctx.fill();
+  const g=ctx.createRadialGradient(-.3*F,-.3*F,.1*F,0,0,1.2*F);g.addColorStop(0,'#fde4ec');g.addColorStop(.55,'#f4b6c8');g.addColorStop(1,'#df98b0');
+  ctx.fillStyle=g;ctx.beginPath();ctx.ellipse(0,0,.95*F,.62*F,0,0,TAU);ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,.35)';ctx.beginPath();ctx.ellipse(.1*F,.3*F,.6*F,.22*F,0,0,TAU);ctx.fill();
+  ctx.save();ctx.translate(-.1*F,.1*F);ctx.rotate(.5+Math.sin(t*6)*.25);ctx.fillStyle='#aca6e4';ctx.beginPath();ctx.ellipse(-.22*F,0,.4*F,.2*F,0,0,TAU);ctx.fill();ctx.restore();
+  ctx.save();ctx.translate(-.3*F,-.22*F);ctx.rotate(-.4);ctx.scale(1,.5);
+  const h=ctx.createRadialGradient(0,0,0,0,0,.4*F);h.addColorStop(0,'rgba(255,255,255,.8)');h.addColorStop(1,'rgba(255,255,255,0)');
+  ctx.fillStyle=h;ctx.beginPath();ctx.arc(0,0,.4*F,0,TAU);ctx.fill();ctx.restore();ctx.restore();
+}
+function shadow(x,y,w,a){ctx.save();ctx.translate(x,y);ctx.scale(1,.22);const g=ctx.createRadialGradient(0,0,0,0,0,w);
+  g.addColorStop(0,`rgba(120,95,190,${a})`);g.addColorStop(1,'rgba(120,95,190,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(0,0,w,0,TAU);ctx.fill();ctx.restore()}
+
+const PN=[[1.0,0],[1.9,1.05],[2.8,2.1]]; /* 三次捏：開始時間、手指方向 */
+function loop(now){
+  const t=(now-t0)/1000,dt=Math.min(.033,Math.max(0,(now-last)/1000));last=now;
+  ctx.clearRect(0,0,W,H);
+  sv+=(-180*sp-9*sv)*dt;sp+=sv*dt;fsv+=(-200*fsp-8*fsv)*dt;fsp+=fsv*dt;
+  let A=.3,fa=0,fq=0;const fin=[];
+  PN.forEach(([s,ang])=>{const u=(t-s)/.8;A-=.1*sm(.45,.7,u);
+    const pa=sm(0,.3,u)*(1-sm(.78,1,u));
+    if(pa>0){const q=sm(.25,.5,u)*(1-sm(.52,.78,u));fin.push({ang,pa,q});fa=ang;fq=q}});
+  const dp=Math.min(t/.55,1),ls=t>.55?Math.exp(-(t-.55)*7)*Math.sin((t-.55)*20)*.2:0;
+  let sx=1+ls*.8,sy=1-ls,hop=0;
+  if(dp<1){sy=1+.12*(1-dp);sx=1-.06*(1-dp)}
+  if(t>4){const ph=(t-4)%3.2;
+    if(ph<.9){hop=Math.sin(ph/.9*Math.PI)*R*.3;sy*=1+hop/R*.5;sx*=1-hop/R*.25}
+    else if(ph<1.2){const l=(1-(ph-.9)/.3)*.12;sy-=l;sx+=l}}
+  sx*=1+sp*.2;sy*=1-sp*.2;
+  const yy=cy-(1-ez(dp))*H*.38,y=yy+R*(1-sy)-hop,al=sm(0,.25,t),sheen=sm(3.4,4.2,t);
+  shadow(cx,yy+R*1.08,R*(1.1-hop/R*.8),.3*al);
+  const fs=el(Math.min(Math.max((t-4.1)/.9,0),1)),F=R*.4,fx=cx-R*1.5,fy=cy+R*.55+Math.sin(t*2)*3;
+  if(fs>.01){shadow(fx,fy+F*.9,F*1.3*fs,.22);fish(fx,fy,F*fs,t,fsp,1)}
+  blob(cx,y,sx,sy,fa,fq,Math.max(0,A),sheen,al);
+  for(let i=crumbs.length-1;i>=0;i--){const c=crumbs[i],a=(now-c.t)/1100;
+    if(a>=1){crumbs.splice(i,1);continue}
+    c.vy+=420*dt;c.x+=c.vx*dt;c.y+=c.vy*dt;
+    const g=ctx.createRadialGradient(c.x-c.r*.3,c.y-c.r*.3,0,c.x,c.y,c.r);g.addColorStop(0,'#fff');g.addColorStop(1,c.c);
+    ctx.globalAlpha=1-a*a;ctx.fillStyle=g;ctx.beginPath();ctx.arc(c.x,c.y,c.r,0,TAU);ctx.fill();ctx.globalAlpha=1}
+  raf=requestAnimationFrame(loop);
+}
+/* 點螢幕：珍珠被戳一下彈一彈，噴出幾顆小黏土屑；點到小魚，牠會彈一下 */
+const pt=e=>{const r=splash.getBoundingClientRect(),k=splash.offsetWidth/r.width;return[(e.clientX-r.left)*k,(e.clientY-r.top)*k]};
+splash.addEventListener('pointerdown',e=>{
+  const [x,y]=pt(e);if((performance.now()-t0)/1000>1)sv+=7;
+  if(Math.hypot(x-(cx-R*1.5),y-(cy+R*.55))<R*.9)fsv+=9;
+  const cs=['#f4b6c8','#aca6e4','#f8d7cc'];
+  for(let i=0;i<7;i++){const a=-Math.PI/2+(Math.random()-.5)*2.2,v=60+Math.random()*110;
+    crumbs.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,r:2+Math.random()*2.6,c:cs[i%3],t:performance.now()})}
+});
+const PearlaSplash={
+  start(){done=false;splash.classList.remove('out');splash.style.display='';resize();crumbs.length=0;sp=sv=fsp=fsv=0;stEl.classList.remove('ok');t0=last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)},
+  finish(){if(done)return;done=true;const wait=Math.max(0,MIN_MS-(performance.now()-t0));
+    setTimeout(()=>{stEl.classList.add('ok');setTimeout(()=>{splash.classList.add('out');setTimeout(()=>{if(done){cancelAnimationFrame(raf);splash.style.display='none'}},750)},500)},wait)}
+};
+
+return PearlaSplash}
+var sp=document.documentElement.dataset.sp==='fog'?makeFog:makeClay;
+try{window.PearlaSplash=sp();window.PearlaSplash.start();setTimeout(function(){window.PearlaSplash.finish()},8000)}catch(e){var s=document.getElementById('splash');if(s)s.style.display='none'}
+})();
+</script>
 <div id="app">
   <main id="v"></main>
   <div class="dots" id="dots" hidden></div>
@@ -699,11 +910,11 @@ function impText(t){t=String(t||'').replace(/^\uFEFF/,'').trim();
  function rd(f,max,cb,fmt){const r=new FileReader();r.onload=()=>{if(!max)return cb(r.result);const im=new Image();im.onload=()=>{const s=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);{const q=S.set.imgc?.7:.85;let u=fmt==='webp'?c.toDataURL('image/webp',q):'';if(!u||u.indexOf('data:image/webp')!==0)u=c.toDataURL('image/jpeg',q);cb(u)}};im.src=r.result};r.readAsDataURL(f)}
 function rdSquare(f,max,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const side=Math.min(im.width,im.height),sx=(im.width-side)/2,sy=(im.height-side)/2,scale=Math.min(1,(S.set.imgc?Math.min(max,720):max)/side),out=Math.round(side*scale),c=document.createElement('canvas');c.width=out;c.height=out;c.getContext('2d').drawImage(im,sx,sy,side,side,0,0,out,out);cb(c.toDataURL('image/jpeg',S.set.imgc?.78:.9))};im.src=r.result};r.readAsDataURL(f)}
 function paintTabs(){document.querySelectorAll('.tab').forEach(b=>{const g=b.querySelector('.gt svg');if(g&&!g.firstChild)g.innerHTML=GTAB[b.dataset.t]||''})}
-const isG=()=>!!S&&(S.theme==='glass'||S.theme==='journal');
-const themeInk=()=>S.theme==='journal'?'#4b5b78':S.theme==='glass'?'#ffffff':'#5f5b8d';
+const isG=()=>!!S&&S.theme==='glass';
+const themeInk=()=>S.theme==='glass'?'#ffffff':'#5f5b8d';
 const themeShadow=()=>S.theme==='lav'||!S.theme?'#ffffff':'#6b7a90';
-const themeLine=()=>S.theme==='journal'?'#b9cbe3':S.theme==='glass'?'#ffffff':'#cbc7ee';
-function applyTheme(){paintTabs();const de=document.documentElement;de.dataset.theme=isG()?'glass':'lav';if(S&&S.theme==='journal')de.dataset.skin='journal';else delete de.dataset.skin;const r=de.style;if(S.ink){r.setProperty('--ink',S.ink);r.setProperty('--soft','color-mix(in srgb,'+S.ink+' 65%,transparent)')}else{r.removeProperty('--ink');r.removeProperty('--soft')}if(S.line&&!(S.theme==='journal'&&S.line.toLowerCase()==='#cbc7ee'))r.setProperty('--line',S.line);else r.removeProperty('--line');if(S.shadow)r.setProperty('--tsh','color-mix(in srgb,'+S.shadow+' 70%,transparent)');else r.removeProperty('--tsh')}
+const themeLine=()=>S.theme==='glass'?'#ffffff':'#cbc7ee';
+function applyTheme(){paintTabs();const de=document.documentElement;de.dataset.theme=isG()?'glass':'lav';delete de.dataset.skin;const r=de.style;if(S.ink){r.setProperty('--ink',S.ink);r.setProperty('--soft','color-mix(in srgb,'+S.ink+' 65%,transparent)')}else{r.removeProperty('--ink');r.removeProperty('--soft')}if(S.line)r.setProperty('--line',S.line);else r.removeProperty('--line');if(S.shadow)r.setProperty('--tsh','color-mix(in srgb,'+S.shadow+' 70%,transparent)');else r.removeProperty('--tsh');try{localStorage.setItem('pearla-skin',JSON.stringify({t:de.dataset.theme}))}catch(e){}de.classList.remove('boot')}
 function chatSheet(html){sheet('',html,0);$('#sh').classList.add('chat-pop')}
 function moreSheet(){let b='';
   if(mTab==='interact')b='<div class="chat-pop-cats"><button class="on" data-a="mt" data-i="interact">互動</button><button data-a="mt" data-i="tool">工具</button></div><div class="chat-pop-grid"><button class="pop-action" data-a="patopen"><span class="pat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 11V6.5a1.5 1.5 0 0 1 3 0V11"/><path d="M10 10V4.8a1.5 1.5 0 0 1 3 0V11"/><path d="M13 10V6a1.5 1.5 0 0 1 3 0v6"/><path d="M16 11V8.5a1.5 1.5 0 0 1 3 0v5.2c0 4.1-2.4 6.3-6.3 6.3h-1.2c-2.3 0-3.5-1.1-4.7-2.6L4 14.3a1.5 1.5 0 0 1 2.3-1.9L7 13.1"/></svg></span><small>拍一拍</small></button></div>';
@@ -824,11 +1035,11 @@ function feedKitchenFood(id){
   schedule(S.cur,text);save();closeSheet();paint();
 }
 
-const vHome=()=>{if(kitchenOpen)return vKitchen();if(inspOpen)return vInspHome();if(dataOpen)return vData();if(grpRoom)return vGrpRoom();if(grpOpen)return vGrpList();if(momOpen)return vMom();if(pomoOpen)return vPomo();if(perOpen)return vPer();if(abOpen)return vAb();if(mhOpen)return vMh();if(mailOpen)return vMail();if(recOpen)return vRec();const c=cur();return `<div class="home-top"><div class="brand">✦ PEARLA ✦</div>
+const vHome=()=>{if(window.PF&&PF.open)return PF.view();if(kitchenOpen)return vKitchen();if(inspOpen)return vInspHome();if(dataOpen)return vData();if(grpRoom)return vGrpRoom();if(grpOpen)return vGrpList();if(momOpen)return vMom();if(pomoOpen)return vPomo();if(perOpen)return vPer();if(abOpen)return vAb();if(mhOpen)return vMh();if(mailOpen)return vMail();if(recOpen)return vRec();const c=cur();return `<div class="home-top"><div class="brand">✦ PEARLA ✦</div>
 <div class="card couple"><div class="p">${avh(c,'big')}<span class="en" contenteditable="true" spellcheck="false" data-n="c">${esc(c.name)}</span></div><span style="color:var(--pk)">✦</span><div class="p">${avh({av:S.meAv,name:S.me},'big')}<span class="en" contenteditable="true" spellcheck="false" data-n="m">${esc(S.me)}</span></div></div></div><div class="pager"><section class="pgp">
 
 <div class="dm-row"><button class="daily-message-trigger" type="button" aria-label="每日留言" onclick="openDaily();return false">${isG()?GDM():`<img class="daily-message-label" src="daily_message_label.webp" alt="每日留言">`}</button><button class="tile" data-a="insphome"><img class="ti" src="assets/inspiration.webp" alt="靈感拾取">${GI("靈感拾取")}<span class="tile-label">靈感拾取</span></button><button class="tile" data-a="data"><img class="ti" src="assets/data.webp" alt="數據">${GI("數據")}<span class="tile-label">數據</span></button></div>
-<div class="grid"><button class="tile" data-a="mom"><img class="ti" src="assets/friends.webp" alt="朋友圈">${GI("朋友圈")}<span class="tile-label">朋友圈</span></button><button class="tile" data-a="grp"><img class="ti" src="assets/group-chat.webp" alt="群聊">${GI("群聊")}<span class="tile-label">群聊</span></button><button class="tile" data-a="mail">${mailBadge()}<img class="ti" src="assets/mailbox.webp" alt="信箱">${GI("信箱")}<span class="tile-label">信箱</span></button><button class="tile off" data-a="soon"><img class="ti" src="assets/anniversary.webp" alt="紀念日">${GI("紀念日")}<span class="tile-label">紀念日</span></button><button class="tile" data-a="soon"><img class="ti" src="assets/status-awareness.webp" alt="狀態感知">${GI("狀態感知")}<span class="tile-label">狀態感知</span></button><button class="tile" data-a="rec"><img class="ti" src="assets/records.webp" alt="紀錄">${GI("紀錄")}<span class="tile-label">紀錄</span></button><button class="tile" data-a="soon"><img class="ti" src="assets/study-progress.webp" alt="學習進度">${GI("學習進度")}<span class="tile-label">學習進度</span></button><button class="tile" data-a="soon"><img class="ti" src="assets/files.webp" alt="檔案">${GI("檔案")}<span class="tile-label">檔案</span></button></div>
+<div class="grid"><button class="tile" data-a="mom"><img class="ti" src="assets/friends.webp" alt="朋友圈">${GI("朋友圈")}<span class="tile-label">朋友圈</span></button><button class="tile" data-a="grp"><img class="ti" src="assets/group-chat.webp" alt="群聊">${GI("群聊")}<span class="tile-label">群聊</span></button><button class="tile" data-a="mail">${mailBadge()}<img class="ti" src="assets/mailbox.webp" alt="信箱">${GI("信箱")}<span class="tile-label">信箱</span></button><button class="tile off" data-a="soon"><img class="ti" src="assets/anniversary.webp" alt="紀念日">${GI("紀念日")}<span class="tile-label">紀念日</span></button><button class="tile" data-a="soon"><img class="ti" src="assets/status-awareness.webp" alt="狀態感知">${GI("狀態感知")}<span class="tile-label">狀態感知</span></button><button class="tile" data-a="rec"><img class="ti" src="assets/records.webp" alt="紀錄">${GI("紀錄")}<span class="tile-label">紀錄</span></button><button class="tile" data-a="soon"><img class="ti" src="assets/study-progress.webp" alt="學習進度">${GI("學習進度")}<span class="tile-label">學習進度</span></button><button class="tile" data-a="pf"><img class="ti" src="assets/files.webp" alt="檔案">${GI("檔案")}<span class="tile-label">檔案</span></button></div>
 <button class="memo-card" type="button" data-a="memo" aria-label="備忘錄"><img src="assets/memo-card.webp" alt="備忘錄">${GM("memo")}<div class="memo-txt">${memoSlots()}</div></button>
 </section><section class="pgp"><div class="grid"><button class="tile" data-a="pomo"><img class="ti" src="assets/tomato-timer.webp" alt="番茄鐘">${GI("番茄鐘")}<span class="tile-label">番茄鐘</span></button><button class="tile" data-a="mh"><img class="ti" src="assets/plum-divination.webp" alt="梅花易數">${GI("梅花易數")}<span class="tile-label">梅花易數</span></button><button class="tile" data-a="ab"><img class="ti" src="assets/answer-book.webp" alt="答案之書">${GI("答案之書")}<span class="tile-label">答案之書</span></button><button class="tile" data-a="kitchen"><img class="ti" src="assets/kitchen.webp" alt="小廚房">${GI("小廚房")}<span class="tile-label">小廚房</span></button><button class="tile" data-a="soon"><img class="ti" src="assets/doodle.webp" alt="塗鴉">${GI("塗鴉")}<span class="tile-label">塗鴉</span></button><button class="tile" data-a="soon"><img class="ti" src="assets/tracking.webp" alt="尋蹤">${GI("尋蹤")}<span class="tile-label">尋蹤</span></button><button class="tile" data-a="soon"><img class="ti" src="assets/diary.webp" alt="日記">${GI("日記")}<span class="tile-label">日記</span></button><button class="tile" data-a="soon"><img class="ti" src="assets/mall.webp" alt="商城">${GI("商城")}<span class="tile-label">商城</span></button><button class="tile art" data-a="per"><img src="assets/period.webp" alt="經期">${GM("per")}<div class="per-txt">${perCardTxt()}</div></button><button class="tile" data-a="soon"><img class="ti" src="assets/gift-cabinet.webp" alt="禮物櫃">${GI("禮物櫃")}<span class="tile-label">禮物櫃</span></button></div> </section><section class="pgp"><button class="cal-big" type="button" data-a="soon" aria-label="日曆">${isG()?GCAL():`<img src="assets/calendar.webp" alt="日曆">`}</button></section></div>`};
 
@@ -954,8 +1165,8 @@ const RULES='<div style="font-size:14px;line-height:1.9"><p style="margin:0 0 8p
 const NOVA='<div style="font-size:14px;line-height:1.9"><p style="margin:0 0 10px"><b>Nova 式回覆</b>是「連著說的話併成一輪再回」的回覆方式，讓對方看起來像真的在讀你的話、想一想再回。</p><p>① 一輪只排一次隊：你連著發的幾句話併成同一輪，每位聯絡人各自只排一次隊。</p><p>② 骰子只擲一次：已讀不回、拍一拍、回幾條，在這一輪開始時擲定，之後補的句子不會重擲；引用消息同樣每一輪只判定一次。</p><p>③ 到點時間：發送後先等 6 秒，沒有已讀不回，才從「回覆最短時間」到「回覆最長時間」之間隨機抽一個等待時間。</p><p>④ 補一句往後推：你每多補一句，到點時間往後推 1.5 秒，一輪最多替你多等 8 秒。</p><p>⑤ 各排各的：每位聯絡人各有自己的一輪，切去別的聯絡人發訊息，不會頂掉原本那一輪的計時。</p><p>⑥ 已讀不回：發送 6 秒後才開始判定；若擲到，小字當下就出現、這一輪不再回覆；沒擲到才開始抽等待時間與字卡。</p><p>⑦ 回覆內容：每一條都從字卡抽取，並在每條字卡抽取後，各自等待選擇時間再依 emoji、顏文字的機率決定要不要添加；表情包則是每一輪判定一次，成功就額外發送一個，並隨機插在任一則回覆的前面或後面；每次抽取獨立、機會均等。</p></div>';
 function rulesHtml(q){q=(q||'').trim();if(!q)return RULES;const ps=RULES.match(/<p[^>]*>[\s\S]*?<\/p>/g)||[],ql=q.toLowerCase(),re=new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'),hit=ps.filter(x=>x.replace(/<[^>]+>/g,'').toLowerCase().includes(ql));if(!hit.length)return '<div class="empty">沒有符合的內容。</div>';return '<div style="font-size:14px;line-height:1.9">'+hit.map(x=>x.replace(/(<[^>]+>)|([^<]+)/g,(m,t,y)=>t||y.replace(re,'<mark>$&</mark>'))).join('')+'</div>'}
 const rCard=q=>'<div class="card set">'+rulesHtml(q)+'</div>';
-const THEMES=[['lav','立體黏土','linear-gradient(135deg,#fdfcff,#cbc7ee 60%,#f4b6c8)'],['glass','霧海','linear-gradient(160deg,#b9c9de,#7f98b8 55%,#dce7f2)'],['journal','潮汐手帳','repeating-linear-gradient(0deg,transparent 0 6px,#b4c8e266 6px 7px),repeating-linear-gradient(90deg,transparent 0 6px,#b4c8e266 6px 7px),linear-gradient(135deg,#f4f8fd,#dbe7f6)']];
-const curTheme=()=>(S.theme==='glass'||S.theme==='journal')?S.theme:'lav';
+const THEMES=[['lav','立體黏土','linear-gradient(135deg,#fdfcff,#cbc7ee 60%,#f4b6c8)'],['glass','霧海','linear-gradient(160deg,#b9c9de,#7f98b8 55%,#dce7f2)']];
+const curTheme=()=>S.theme==='glass'?'glass':'lav';
 function themeCard(){const cur=curTheme();return '<div class="card set"><div class="sr" style="align-items:center"><span>更改主題時保留背景</span><button class="sw '+(S.set.keepBg?'on':'')+'" data-a="sw" data-i="keepBg" aria-label="更改主題時保留背景"></button></div></div><div class="card set"><h3>主題</h3>'+THEMES.map(t=>'<button type="button" class="theme-opt'+(t[0]===cur?' on':'')+'" data-a="theme" data-i="'+t[0]+'"><span class="th-sw" style="background:'+t[2]+'"></span><span class="th-tx"><b>'+t[1]+'</b></span><span class="th-ck">'+(t[0]===cur?'✓':'')+'</span></button>').join('')+'<p class="hint">主題只改變顏色、質感與背景，功能與版面都不變。切換時會一併還原字體與外框顏色；開啟「更改主題時保留背景」後，已選的背景顏色與照片會保留，關閉則會一併還原為主題預設的背景。</p></div>'}
 const GI_SVG={"靈感拾取": "<path d=\"M16 5a7 7 0 0 0-4 12.7V21h8v-3.3A7 7 0 0 0 16 5z\"/><path d=\"M13 25h6M14 28h4\"/>", "數據": "<path d=\"M5 26h22\"/><rect x=\"8\" y=\"16\" width=\"4\" height=\"10\"/><rect x=\"14\" y=\"10\" width=\"4\" height=\"16\"/><rect x=\"20\" y=\"6\" width=\"4\" height=\"20\"/>", "朋友圈": "<circle cx=\"12\" cy=\"12\" r=\"3.5\"/><path d=\"M5 26c0-4.2 3-7.5 7-7.5s7 3.3 7 7.5\"/><circle cx=\"22\" cy=\"13\" r=\"3\"/><path d=\"M21.5 19c3.6 0 5.5 2.6 5.5 6\"/>", "群聊": "<path d=\"M5 6h13a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-6l-4 3.5V17H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z\"/><path d=\"M23 12h4a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1v3.5L22 22h-6a2 2 0 0 1-2-2v-1\"/>", "信箱": "<rect x=\"4\" y=\"8\" width=\"24\" height=\"16\" rx=\"2.5\"/><path d=\"m5 10 11 8 11-8\"/>", "紀念日": "<rect x=\"5\" y=\"7\" width=\"22\" height=\"19\" rx=\"3\"/><path d=\"M5 12h22M11 5v4M21 5v4\"/><path d=\"M16 23s-4-2.6-4-5.2a2.2 2.2 0 0 1 4-1 2.2 2.2 0 0 1 4 1c0 2.6-4 5.2-4 5.2z\"/>", "狀態感知": "<path d=\"M3 17h6l3-7 5 14 3-7h9\"/>", "紀錄": "<rect x=\"7\" y=\"5\" width=\"18\" height=\"22\" rx=\"2.5\"/><path d=\"M11 11h10M11 16h10M11 21h6\"/>", "學習進度": "<path d=\"M16 9c-3-2-7-2.5-11-1v16c4-1.500 8-1 11 1z\"/><path d=\"M16 9c3-2 7-2.5 11-1v16c-4-1.500-8-1-11 1z\"/>", "檔案": "<path d=\"M4 9a2 2 0 0 1 2-2h6l3 3h11a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z\"/>", "番茄鐘": "<circle cx=\"16\" cy=\"18\" r=\"9\"/><path d=\"M12 9.5c1.500-1 3-.5 4 .5 1-1 2.500-1.500 4-.5M16 10V6\"/><path d=\"M16 14v4l3 2\"/>", "梅花易數": "<circle cx=\"16\" cy=\"9.500\" r=\"3.600\"/><circle cx=\"22.200\" cy=\"14\" r=\"3.600\"/><circle cx=\"19.800\" cy=\"21.300\" r=\"3.600\"/><circle cx=\"12.200\" cy=\"21.300\" r=\"3.600\"/><circle cx=\"9.800\" cy=\"14\" r=\"3.600\"/><circle cx=\"16\" cy=\"16\" r=\"1\"/>", "答案之書": "<rect x=\"7\" y=\"4\" width=\"18\" height=\"24\" rx=\"2.5\"/><path d=\"M11 4v24\"/><path d=\"M16 12a2.800 2.800 0 1 1 3.400 2.700c-.8.3-1.400.9-1.400 1.800\"/><path d=\"M18.500 21h.01\"/>", "小廚房": "<path d=\"M6 14h20v8a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4z\"/><path d=\"M3 14h3M26 14h3M12 10c0-2 2-2 2-4M18 10c0-2 2-2 2-4\"/>", "塗鴉": "<path d=\"M6 22l1.500-5.500L20 4.500a2.100 2.100 0 0 1 3 0l1.500 1.500a2.100 2.100 0 0 1 0 3L12 21.500z\"/><path d=\"M17.500 7l4.500 4.500\"/><path d=\"M5 28c3-2 5 1 8-1s5 1 8-1 4 0 6-1\"/>", "尋蹤": "<path d=\"M16 28s-8-7-8-13a8 8 0 0 1 16 0c0 6-8 13-8 13z\"/><circle cx=\"16\" cy=\"15\" r=\"3\"/>", "日記": "<rect x=\"6\" y=\"4\" width=\"18\" height=\"24\" rx=\"2.5\"/><path d=\"M10 4v24\"/><path d=\"M17 21s-3.500-2.200-3.500-4.500a1.900 1.900 0 0 1 3.500-.9 1.900 1.900 0 0 1 3.500.9c0 2.300-3.500 4.500-3.500 4.500z\"/><path d=\"M27 9v6\"/>", "商城": "<path d=\"M6 11h20l-1.500 15a2 2 0 0 1-2 1.800H9.500a2 2 0 0 1-2-1.800z\"/><path d=\"M11 14V9a5 5 0 0 1 10 0v5\"/>", "禮物櫃": "<rect x=\"5\" y=\"12\" width=\"22\" height=\"6\" rx=\"1.500\"/><path d=\"M7 18v8a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-8M16 12v16\"/><path d=\"M16 12c-3 0-6-1-6-3.500S13 5 16 12zM16 12c3 0 6-1 6-3.500S19 5 16 12z\"/>"};
 const GI=n=>isG()&&GI_SVG[n]?'<span class="gi"><svg viewBox="0 0 32 32" aria-hidden="true">'+GI_SVG[n]+'</svg></span>':'';
@@ -978,7 +1189,7 @@ function sBody(id){
   const C=h=>'<div class="card set">'+h+'</div>';
   const M2=(k,l)=>{const t=Math.round(sget(k)||0),a=[Math.floor(t/60),t%60],I=(q,v)=>`<input type="number" inputmode="numeric" data-t3="${k}" data-p="${q}" value="${v}" style="width:42px;text-align:right;padding:6px 4px">`;return `<div class="sr" style="align-items:center"><span>${l}</span><span>${I('m',a[0])} 分 ${I('s',a[1])} 秒</span></div>`};
   if(id==='r1'){const TM=(p,k,l)=>p==='a'?N3(k,l):N(k,l,'秒');
-    const B=(t,p,w)=>{const ck=p==='a'?'acancel':'ghost',cn=p==='a'?'發送取消機率':'已讀不回機率';return C('<h3>'+t+'</h3>'+(p==='a'?`<div class="sr" style="align-items:center"><span>開啟主動發送</span><button class="sw ${S.set.aon?'on':''}" data-a="sw" data-i="aon"></button></div>`:'')+TM(p,p+'rmin',w+'最短時間')+TM(p,p+'rmax',w+'最長時間')+N(p+'cmin',w+'條數最少','條')+N(p+'cmax',w+'條數最多','條')+N(p+'fmin','一條回覆裡最少字卡','條')+N(p+'fmax','一條回覆裡最多字卡','條')+N(ck,cn,'%')+N(p+'pat','拍一拍機率','%')+N(p+'emoji','表情包機率','%')+N(p+'emj','emoji機率','%')+N(p+'emjT','emoji選擇時間','秒')+N(p+'kao','顏文字機率','%')+N(p+'kaoT','顏文字選擇時間','秒'))};
+    const B=(t,p,w)=>{const ck=p==='a'?'acancel':'ghost',cn=p==='a'?'發送取消機率':'已讀不回機率';return C('<h3>'+t+'</h3>'+(p==='a'?`<div class="sr" style="align-items:center"><span>開啟主動發送</span><button class="sw ${S.set.aon?'on':''}" data-a="sw" data-i="aon"></button></div>`:'')+TM(p,p+'rmin',w+'最短時間')+TM(p,p+'rmax',w+'最長時間')+N(p+'cmin',w+'條數最少','條')+N(p+'cmax',w+'條數最多','條')+N(p+'fmin','一條回覆裡最少字卡','條')+N(p+'fmax',p==='a'?'一條訊息裡最多字卡':'一條回覆裡最多字卡','條')+N(ck,cn,'%')+N(p+'pat','拍一拍機率','%')+N(p+'emoji','表情包機率','%')+N(p+'emj','emoji機率','%')+N(p+'emjT','emoji選擇時間','秒')+N(p+'kao','顏文字機率','%')+N(p+'kaoT','顏文字選擇時間','秒'))};
     return B('被動回覆','','回覆')+B('主動發送','a','發送')+C('<h3>點擊頭像發送消息</h3>'+N('avatarSend','點擊後發送消息時間','秒')+'<p class="hint">點擊頭像發送消息除了時間設置，其他設置皆與主動發送設置一致。</p>')+C('<h3>標籤設置</h3>'+N('mood','情緒出現機率','%')+N('heart','心意出現機率','%')+N('intent','交流意圖出現機率','%')+N('tagMin','標籤抽取時間最短','秒')+N('tagMax','標籤抽取時間最長','秒')+'<p class="hint">情緒、心意、交流意圖標籤判定成功後，會在設置時間內隨機一段時間抽出標籤；抽出標籤後，聯絡人的回覆才會一起發出來。</p>')+C('<h3>引用消息</h3><div class="sr" style="align-items:center"><span>使用引用消息</span><button class="sw '+(S.set.qmOn?'on':'')+'" data-a="sw" data-i="qmOn"></button></div>'+N('qmProb','引用消息機率','%'))+C('<h3>提醒設置</h3>'+N('rwater','喝水提醒機率','%')+N3('rwaterT','喝水提醒時間')+N('rmeal','吃飯提醒機率','%')+N3('rmealT','吃飯提醒時間')+N('rsport','運動提醒機率','%')+N3('rsportT','運動提醒時間')+'<p class="hint">每到設定時間就判定一次要不要發送提醒，成功就從該提醒的字卡抽一張；喝水、吃飯、運動各自計時、互不影響。</p>')+C('<h3>標記</h3><div class="sr"><span>重要訊息標記圖形</span></div><div class="mkp">'+Object.keys(MK).map(k=>`<button class="mkb ${(S.set.mk||'star')===k?'on':''}" data-a="mk" data-i="${k}">${MK[k]}<small>${MKN[k]}</small></button>`).join('')+'</div><div class="sr" style="align-items:center"><span>重要訊息標記顏色</span><span class="color-field"><input type="color" class="color-input" id="markColor" value="'+(S.set.starColor||S.ink||'#5f5b8d')+'"><button class="btn color-reset" data-a="markColorReset">還原</button></span></div>'+N('star','重要訊息標記機率','%'))+'<p class="hint">機率皆為 0% 到 100%。標題旁的 ? 有說明。</p>'}
   if(id==='r2')return C(N('star','重要訊息標記機率','%')+N('mood','情緒出現機率','%')+N('heart','心意出現機率','%')+N('intent','交流意圖出現機率','%'));
   if(id==='chatother')return C('<h3>通話</h3><div class="empty">通話功能之後再設計。</div>')+C('<h3>狀態</h3><div class="sr" style="align-items:center"><span>狀態開關</span><button class="sw '+(S.set.statusOn?'on':'')+'" data-a="sw" data-i="statusOn"></button></div>'+N3('statusWindow','抽取狀態時間')+N('statusProb','抽取成功機率','%'))+C('<h3>收藏</h3>'+N('favProb','消息被收藏機率','%')+'<p class="hint" style="margin:8px 0 0">聯絡人不會收藏他自己的消息</p>');
@@ -1046,16 +1257,16 @@ function patMsg(cid,me,tx){const c=S.contacts.find(x=>x.id===cid),p=pool('pat',c
 function mig(o){o=o||{};o.contacts=Array.isArray(o.contacts)?o.contacts:[];o.contacts.forEach(c=>{if(c.status==null)c.status=''});o.cats=Array.isArray(o.cats)?o.cats:[];o.cards=Array.isArray(o.cards)?o.cards:[];if(o.tags){[['mood','情緒'],['heart','心意'],['intent','交流意圖']].forEach(([k,n])=>{const id=uid();o.cats.push({id,sc:'s',kind:k,name:n,on:1,as:[]});(o.tags[k]||[]).forEach(t=>o.cards.push({id:uid(),cat:id,text:t,on:1}))});delete o.tags}o.pend=o.pend||[];if(!o.m3){if(o.set){if(o.set.rmax!=null)o.set.rmax*=60;if(o.set.armax!=null)o.set.armax*=60;if(o.set.lwmax!=null)o.set.lwmax=240;o.set.pat=30;o.set.emoji=30}o.m3=1}
   o.kon=o.kon||{};o.next=o.next||{};o.apend=o.apend||{};o.cats.forEach(c=>{c.as=Array.isArray(c.as)?c.as:[];c.on=c.on===0?0:1});o.cards.forEach(k=>{k.on=k.on===0?0:1});o.bgs=o.bgs||{};o.bgColors=o.bgColors||{};o.bgColors.all=o.bgColors.all||'#f6f2ff';o.line=o.line||'#cbc7ee';if(o.bg&&!o.bgs.home)o.bgs.home=o.bg;o.cats.forEach(c=>{if(c.sc==='e'&&!c.own)c.own=(c.as&&c.as[0])||o.cur});
   if(!o.m4){if(o.set)['lwmin','lwmax','lrmin','lrmax'].forEach(k=>{if(o.set[k]!=null)o.set[k]*=60});o.m4=1}if(!o.m5){if(o.set)o.set.aon=1;o.m5=1}if(!o.m6){o.next={};o.apend={};o.m6=1}if(!o.m7){let g=o.cats.find(c=>c&&kc(c)==='emj');if(!g){const id=uid();g={id,sc:'s',kind:'emj',name:'emoji',on:1,as:[]};o.cats.push(g);['😊','🥺','💗','✨','🌙','😳'].forEach(text=>o.cards.push({id:uid(),cat:id,text,on:1}))}o.m7=1}if(!o.m8){let g=o.cats.find(c=>c&&kc(c)==='kao'&&c.sc==='s'&&c.un);if(!g){g={id:uid(),sc:'s',kind:'kao',name:'未分類',on:1,as:[],un:1};o.cats.push(g)}o.m8=1}
-  o.rounds=o.rounds||{};o.ipend=Array.isArray(o.ipend)?o.ipend:[];o.plum=Array.isArray(o.plum)?o.plum:[];o.book=Array.isArray(o.book)?o.book:[];o.moments=Array.isArray(o.moments)?o.moments:[];o.moments.forEach(p=>{if(!p.id)p.id=uid()});o.mst=o.mst&&typeof o.mst==='object'?o.mst:{};o.mrep=Array.isArray(o.mrep)?o.mrep:[];o.mcm=Array.isArray(o.mcm)?o.mcm:[];o.theme=o.theme==='glass'||o.theme==='journal'?o.theme:'lav';o.pomo=Object.assign({foc:25,brk:5,lng:15,cyc:4,auto:1,snd:1,ph:'foc',run:0,end:0,left:0,idx:0,day:'',n:0},o.pomo&&typeof o.pomo==='object'?o.pomo:{});if(!o.pomo.left)o.pomo.left=o.pomo.foc*60000;o.per=Object.assign({cycle:28,len:6,days:[]},o.per&&typeof o.per==='object'?o.per:{});if(!Array.isArray(o.per.days))o.per.days=[];if(!o.m21){if(!o.per.days.length&&o.per.len===5)o.per.len=6;o.m21=1}if(o.momStk==null)o.momStk=1;o.contacts.forEach(c=>cmo(c));if(o.set)['fpost','flike','fcmt'].forEach(k=>delete o.set[k]);o.momCover=o.momCover||'';o.momSig=o.momSig||'';o.groups=Array.isArray(o.groups)?o.groups:[];o.gdef=o.gdef||'';o.insp=o.insp||{};['mem','ext','ev'].forEach(k=>{o.insp[k]=Array.isArray(o.insp[k])?o.insp[k]:[]});o.un=o.un||{};o.statusClock=o.statusClock||{};o.dailies=o.dailies||{};o.todayMoodBy=o.todayMoodBy||{};if(!o.m8&&o.set){if(o.set.armin===600&&o.set.armax===3600){o.set.armin=1200;o.set.armax=28800}if(o.set.fmax===1)o.set.fmax=2;if(o.set.afmax===1)o.set.afmax=2;o.m8=1}if(o.set&&o.set.acancel==null&&o.set.aghost!=null)o.set.acancel=o.set.aghost;if(!o.m16){if(o.set)o.set.acancel=0;o.m16=1}o.set=Object.assign({ntMeOn:0,ntMeSnd:'tap',ntTaOn:0,ntTaSnd:'bubble',ntCurOn:1,ntCurSnd:'ding',ntOthOn:0,ntOthSnd:'ding',ntStarOn:1,ntStarSnd:'chime',star:10,dailyMoodOn:1,dailyOn:0,dailyProb:70,dailyWindow:21600,dailyMin:1,dailyMax:5,dailyKao:20,dailyEmoji:20,statusOn:0,statusWindow:7200,statusProb:70,avatarSend:6,penSnd:1,penVol:50,crabMail:1,cmOn:1,cmProb:50,cmTmin:3,cmTmax:180,cmNmin:1,cmNmax:2,cmFmin:1,cmFmax:2,cmEp:20,cmEmj:20,cmEmjT:10,cmKao:20,cmKaoT:10,crOn:1,crSame:1,crProb:50,crTmin:3,crTmax:180,crNmin:1,crNmax:2,crFmin:1,crFmax:2,crEp:20,crEmj:20,crEmjT:10,crKao:20,crKaoT:10,mpcmin:3,mpcmax:180,mpnmin:5,mpnmax:10,mpemj:20,mpemjT:15,mpkao:20,mpkaoT:15,mwEp:50,mwEmin:3,mwEmax:50,mwNmin:1,mwNmax:6,mwSp:50,mwSmin:3,mwSmax:50,mwKmin:1,mwKmax:3,mwPlace:10,srOn:1,srJudge:3,srProb:100,srMin:.5,srMax:12,srNmin:1,srNmax:2,srPlace:5,emjT:10,kaoT:10,aemjT:10,akaoT:10,lwrite:50,lreply:50,rmin:3,rmax:30,cmin:1,cmax:2,ghost:10,emj:20,kao:20,quote:20,fmin:1,fmax:1,armin:1200,armax:28800,acmin:1,acmax:2,afmin:1,afmax:2,acancel:0,apat:30,aemoji:30,aemj:20,akao:20,aquote:0,qmOn:1,qmProb:30,favProb:10,mood:15,heart:15,intent:15,tagMin:1.3,tagMax:10,imgc:0,inspOn:1,memOn:1,memJmin:5,memJmax:10800,memProb:10,memPmin:3,memPmax:15,memWord:10,memPhrase:10,memSent:10,extOn:1,extWmin:3,extWmax:180,extProb:10,extDelay:20,extWord:10,extPhrase:10,extSent:10,extSave:20,letterNotify:1,letterBadge:1,lcmin:3,lcmax:15,lemo:20,lemj:20,lkao:20,lemomax:2,rwaterT:3600,rmealT:10800,rsportT:10800,lday:3,lwmin:600,lwmax:14400,lrmin:60,lrmax:1800,rwater:20,rmeal:20,rsport:20,aon:1},o.set);if(!o.m19){
+  o.rounds=o.rounds||{};o.ipend=Array.isArray(o.ipend)?o.ipend:[];o.plum=Array.isArray(o.plum)?o.plum:[];o.book=Array.isArray(o.book)?o.book:[];o.moments=Array.isArray(o.moments)?o.moments:[];o.moments.forEach(p=>{if(!p.id)p.id=uid()});o.mst=o.mst&&typeof o.mst==='object'?o.mst:{};o.mrep=Array.isArray(o.mrep)?o.mrep:[];o.mcm=Array.isArray(o.mcm)?o.mcm:[];o.theme=(o.theme==='glass'||o.theme==='journal')?'glass':'lav';o.pomo=Object.assign({foc:25,brk:5,lng:15,cyc:4,auto:1,snd:1,ph:'foc',run:0,end:0,left:0,idx:0,day:'',n:0},o.pomo&&typeof o.pomo==='object'?o.pomo:{});if(!o.pomo.left)o.pomo.left=o.pomo.foc*60000;o.per=Object.assign({cycle:28,len:6,days:[]},o.per&&typeof o.per==='object'?o.per:{});if(!Array.isArray(o.per.days))o.per.days=[];if(!o.m21){if(!o.per.days.length&&o.per.len===5)o.per.len=6;o.m21=1}if(o.momStk==null)o.momStk=1;o.contacts.forEach(c=>cmo(c));if(o.set)['fpost','flike','fcmt'].forEach(k=>delete o.set[k]);o.momCover=o.momCover||'';o.momSig=o.momSig||'';o.groups=Array.isArray(o.groups)?o.groups:[];o.gdef=o.gdef||'';o.insp=o.insp||{};['mem','ext','ev'].forEach(k=>{o.insp[k]=Array.isArray(o.insp[k])?o.insp[k]:[]});o.un=o.un||{};o.statusClock=o.statusClock||{};o.dailies=o.dailies||{};o.todayMoodBy=o.todayMoodBy||{};if(!o.m8&&o.set){if(o.set.armin===600&&o.set.armax===3600){o.set.armin=1200;o.set.armax=28800}if(o.set.fmax===1)o.set.fmax=2;if(o.set.afmax===1)o.set.afmax=2;o.m8=1}if(o.set&&o.set.acancel==null&&o.set.aghost!=null)o.set.acancel=o.set.aghost;if(!o.m16){if(o.set)o.set.acancel=0;o.m16=1}o.set=Object.assign({ntMeOn:0,ntMeSnd:'tap',ntTaOn:0,ntTaSnd:'bubble',ntCurOn:1,ntCurSnd:'ding',ntOthOn:0,ntOthSnd:'ding',ntStarOn:1,ntStarSnd:'chime',star:10,dailyMoodOn:1,dailyOn:0,dailyProb:70,dailyWindow:21600,dailyMin:1,dailyMax:5,dailyKao:20,dailyEmoji:20,statusOn:0,statusWindow:7200,statusProb:70,avatarSend:6,penSnd:1,penVol:50,crabMail:1,cmOn:1,cmProb:50,cmTmin:3,cmTmax:180,cmNmin:1,cmNmax:2,cmFmin:1,cmFmax:2,cmEp:20,cmEmj:20,cmEmjT:10,cmKao:20,cmKaoT:10,crOn:1,crSame:1,crProb:50,crTmin:3,crTmax:180,crNmin:1,crNmax:2,crFmin:1,crFmax:2,crEp:20,crEmj:20,crEmjT:10,crKao:20,crKaoT:10,mpcmin:3,mpcmax:180,mpnmin:5,mpnmax:10,mpemj:20,mpemjT:15,mpkao:20,mpkaoT:15,mwEp:50,mwEmin:3,mwEmax:50,mwNmin:1,mwNmax:6,mwSp:50,mwSmin:3,mwSmax:50,mwKmin:1,mwKmax:3,mwPlace:10,srOn:1,srJudge:3,srProb:100,srMin:.5,srMax:12,srNmin:1,srNmax:2,srPlace:5,emjT:10,kaoT:10,aemjT:10,akaoT:10,lwrite:50,lreply:50,rmin:3,rmax:30,cmin:1,cmax:2,ghost:10,emj:20,kao:20,quote:20,fmin:1,fmax:1,armin:1200,armax:28800,acmin:1,acmax:2,afmin:1,afmax:2,acancel:0,apat:30,aemoji:30,aemj:20,akao:20,aquote:0,qmOn:1,qmProb:30,favProb:10,mood:15,heart:15,intent:15,tagMin:1.3,tagMax:10,imgc:0,inspOn:1,memOn:1,memJmin:5,memJmax:10800,memProb:10,memPmin:3,memPmax:60,memWord:10,memPhrase:10,memSent:10,extOn:1,extWmin:3,extWmax:180,extProb:10,extDelay:20,extWord:10,extPhrase:10,extSent:10,extSave:20,letterNotify:1,letterBadge:1,lcmin:3,lcmax:15,lemo:20,lemj:20,lkao:20,lemomax:2,rwaterT:3600,rmealT:10800,rsportT:10800,lday:3,lwmin:600,lwmax:14400,lrmin:60,lrmax:1800,rwater:20,rmeal:20,rsport:20,aon:1},o.set);if(!o.m19){
   if(o.set){if(o.set.favProb===30)o.set.favProb=10;['mood','heart','intent'].forEach(k=>{if(o.set[k]===50)o.set[k]=15})}
   const has=k=>o.cards.some(c=>{const g=o.cats.find(x=>x&&x.id===c.cat);return g&&kc(g)===k});
   if(!has('kao')){let g=o.cats.find(c=>c&&kc(c)==='kao'&&c.sc==='s'&&c.un);if(!g){g={id:uid(),sc:'s',kind:'kao',name:'未分類',on:1,as:[],un:1};o.cats.push(g)}KAO.forEach(text=>o.cards.push({id:uid(),cat:g.id,text,on:1}))}
   if(!has('emj')){let g=o.cats.find(c=>c&&kc(c)==='emj'&&c.sc==='s');if(!g){g={id:uid(),sc:'s',kind:'emj',name:'emoji',on:1,as:[]};o.cats.push(g)}EMJ.forEach(text=>o.cards.push({id:uid(),cat:g.id,text,on:1}))}
-  o.m19=1}if(!o.m20){if(o.set)['memWord','memPhrase','extWord','extPhrase'].forEach(k=>{if(o.set[k]===30)o.set[k]=10});o.m20=1}if(!o.m9){if(o.set.dailyProb===60)o.set.dailyProb=70;if(o.set.dailyWindow===43200)o.set.dailyWindow=21600;if(o.set.dailyMax===1)o.set.dailyMax=5;o.m9=1;}if(!o.m10){o.daily={day:'',base:0,next:0,done:false,items:[]};o.m10=1;}if(!o.m11){o.statusClock=o.statusClock||{};o.m11=1;}if(!o.m12){if(o.set.statusProb===30)o.set.statusProb=70;o.m12=1;}if(!o.m13){if(o.daily&&o.daily.items&&o.daily.items.length&&o.cur&&!o.dailies[o.cur])o.dailies[o.cur]=o.daily;if(o.todayMood&&o.todayMood.id&&o.cur&&!o.todayMoodBy[o.cur])o.todayMoodBy[o.cur]=o.todayMood;delete o.daily;delete o.todayMood;o.m13=1;}if(!o.m14){['lemo','lemj','lkao'].forEach(k=>{if(o.set[k]===1)o.set[k]=20});o.m14=1}if(!o.m15){(o.letters||[]).forEach(l=>{if(l.from==='ta')l.seen=1;if(l.reply)l.rseen=1});o.m15=1}if(!o.m17){if(o.set&&o.set.lcmax===10)o.set.lcmax=15;o.m17=1}if(o.set&&o.set.inspOn===undefined)o.set.inspOn=1;if(!o.m22){const OLD={"mood":["開心","快樂","愉悅","高興","滿足","幸福","安心","放鬆","輕鬆","溫暖","舒心","欣慰","愉快","期待","興奮","驚喜","雀躍","滿足感","充實","踏實","安心感","幸運","慶幸","感激","感動","欣喜","釋然","喜歡","在意","珍惜","信任","依賴","親近","眷戀","想念","思念","牽掛","心軟","心疼","憐惜","寵溺","偏愛","包容","縱容","依戀","捨不得","想靠近","想陪伴","想照顧","想保護","想了解","想回應","難過","傷心","失落","遺憾","孤單","孤獨","寂寞","委屈","無奈","疲憊","疲倦","低落","沮喪","失望","心酸","苦澀","空虛","迷茫","迷失","沉重","壓抑","痛苦","悲傷","哀傷","落寞","生氣","憤怒","惱火","煩躁","不耐煩","不滿","厭煩","抗拒","排斥","惱怒","氣惱","不甘","嫉妒","吃醋","憤懣","賭氣","冷淡","疏離","害怕","恐懼","擔心","憂慮","焦慮","緊張","不安","慌張","慌亂","害怕失去","忐忑","不知所措","心慌","壓力","擔憂","敏感","害羞","不好意思","臉紅","羞澀","尷尬","拘謹","靦腆","害臊","小心翼翼","不自然","猶豫","遲疑","想說又停下","疑惑","困惑","好奇","驚訝","意外","震驚","糾結","矛盾","懷疑","不確定","複雜","說不清","想不明白","若有所思","沉思","認真","專注","驕傲","自豪","自信","羞愧","自責","後悔","內疚","不甘心","委屈自己","懷疑自己","失落感","無力","疲憊感","釋懷","接受","放下","平靜","冷靜","剋制","忍耐","沉默","壓下情緒","隱藏情緒","假裝平靜","表面平靜","心裡在意","偷偷開心","偷偷難過","默默期待","默默守護","不願表達","不知道怎麼說","普通","平常","淡然","隨意","自然","放空","發呆","安靜","觀察","等待","期待中","沒有特別情緒","想被理解","想被看見","想確認","想解釋","想安慰你","想陪著你","想靠近一點","捨不得離開","放心了","安心下來","鬆了一口氣","忍不住開心","忍不住在意","藏著心事","有話想說","不知道怎麼表達","心動"],"heart":["陪伴","陪著你","我在這裡","安靜陪你","想和你一起","不用一個人","待在你身邊","不會離開","想陪你走下去","想和你待一會","分享","想告訴你","想和你聊聊","想讓你知道","想聽你的想法","想看看你的反應","想把這個分享給你","想和你交換想法","關心","想照顧你","希望你好好的","記得休息","不要太累","想確認你沒事","希望你開心","想讓你輕鬆一點","想念","想到你","想靠近一點","想見你","想和你在一起","想聽你說話","想知道你在做什麼","捨不得離開","回應","我聽到了","我明白","我知道","我記住了","我理解","收到你的話","想回應你","支持","相信你","陪你努力","為你加油","認可你","為你感到驕傲","希望你堅持","我支持你的選擇","邀請","想聽你說","想和你討論","等你加入","想一起分享","想和你做同一件事","記錄","想記住","保存這一刻","珍惜現在","留下回憶","這個瞬間很重要","想收藏這份感覺","想被理解","想被看見","有話想說","不知道怎麼表達","藏著一點心事","想確認你的心意","捨不得表達","想記住這個瞬間","這個時刻很特別","想保存這份感覺","不想忘記","想一直保持聯繫","想繼續陪你交流","想知道你的消息","想和你一直說話","願意告訴你","可以放心交給你","接受你的樣子","你懂我的","不用說太多","我們之間有默契","這個感覺只有你懂","很喜歡你","想被抱一下"],"intent":["回應你","聽到了","收到","我在聽","想回答你","認真聽你說","想回應你","想分享","想告訴你","想聊聊","有事情想說","想讓你知道","想和你說說","想聽你說","等待你的回應","想知道你的想法","想聽聽你的意見","想看看你的反應","想靠近","想陪著你","想和你待一會","想一起聊聊","想留在這裡","想問問你","想了解","有點好奇","想知道更多","想認識你","想安慰你","想陪陪你","希望你好一點","想讓你安心","想照顧你","想表達","有話想說","想讓你懂","希望你理解","想告訴你一些事","正在想","想一想","不知道怎麼說","慢慢整理","還在思考","想聊天","想撒嬌","想分享今天"],"card":["今天有好好吃飯嗎？","記得早點睡，別熬夜。","我在想你。","再多陪我一下下嘛。","只有你能讓我這樣。"],"kao":["(๑•́ ⃃ •̀๑)","(*´∀`)","(｡•́︿•̀｡)","(≧▽≦)","(˘▾˘)~♪"]},ON={"mood":["喜悅與正向","親近與愛意","悲傷與低落","憤怒與不滿","不安與恐懼","害羞與社交情緒","思考與複雜情緒","自我情緒","剋制與隱藏","中性與日常","特殊表達情緒"],"heart":["陪伴與守護","分享與交流","關心與照顧","思念與靠近","理解與回應","鼓勵與支持","邀請與互動","記錄與珍惜","特殊表達","珍惜","連接","信任","默契"],"intent":["回應","分享","傾聽","靠近","瞭解","安慰","表達","整理"]},T={"mood":[["喜悅與正向",["開心","快樂","愉悅","高興","滿足","幸福","安心","放鬆","輕鬆","溫暖","舒心","欣慰","愉快","期待","興奮","驚喜","雀躍","滿足感","充實","踏實","安心感","幸運","慶幸","感激","感動","欣喜","釋然"]],["親近與愛意",["喜歡","在意","珍惜","信任","依賴","親近","眷戀","想念","思念","牽掛","心軟","心疼","憐惜","寵溺","偏愛","包容","縱容","心動","依戀","捨不得","想靠近","想陪伴","想照顧","想保護","想了解","想回應"]],["悲傷與低落",["難過","傷心","失落","遺憾","孤單","孤獨","寂寞","委屈","無奈","疲憊","疲倦","低落","沮喪","失望","心酸","苦澀","空虛","迷茫","迷失","沉重","壓抑","痛苦","悲傷","哀傷","落寞"]],["憤怒與不滿",["生氣","憤怒","惱火","煩躁","不耐煩","不滿","厭煩","抗拒","排斥","惱怒","氣惱","不甘","嫉妒","吃醋","憤懣","委屈","賭氣","冷淡","疏離"]],["不安與恐懼",["害怕","恐懼","擔心","憂慮","焦慮","緊張","不安","慌張","慌亂","害怕失去","忐忑","不知所措","心慌","壓力","擔憂","敏感"]],["害羞與社交情緒",["害羞","不好意思","臉紅","羞澀","尷尬","拘謹","靦腆","害臊","緊張","小心翼翼","不自然","猶豫","遲疑","想說又停下"]],["思考與複雜情緒",["疑惑","困惑","好奇","驚訝","意外","震驚","猶豫","糾結","矛盾","遲疑","懷疑","不確定","複雜","說不清","想不明白","若有所思","沉思","認真","專注","覺得荒謬","心塞"]],["自我情緒",["驕傲","自豪","自信","滿足","羞愧","自責","後悔","內疚","不甘心","委屈自己","懷疑自己","失落感","無力","疲憊感","釋懷","接受","放下"]],["剋制與隱藏",["平靜","冷靜","剋制","忍耐","沉默","壓下情緒","隱藏情緒","假裝平靜","表面平靜","心裡在意","偷偷開心","偷偷難過","默默期待","默默守護","不願表達","不知道怎麼說"]],["中性與日常",["普通","平常","淡然","隨意","自然","放空","發呆","安靜","專注","認真","觀察","等待","好奇","期待中","沒有特別情緒"]],["特殊表達情緒",["想被理解","想被看見","想確認","想解釋","想安慰你","想陪著你","想靠近一點","捨不得離開","放心了","安心下來","鬆了一口氣","忍不住開心","忍不住在意","藏著心事","有話想說","不知道怎麼表達","哭笑不得"]]],"heart":[["陪伴與守護",["陪伴","陪著你","我在這裡","安靜陪你","想和你一起","不用一個人","待在你身邊","不會離開","想陪你走下去","想和你待一會"]],["分享與交流",["分享","想告訴你","想和你聊聊","想讓你知道","想聽你的想法","想看看你的反應","想把這個分享給你","想和你交換想法"]],["關心與照顧",["關心","想照顧你","希望你好好的","記得休息","不要太累","想確認你沒事","希望你開心","想讓你輕鬆一點"]],["思念與靠近",["想念","想到你","想靠近一點","想見你","想和你在一起","想聽你說話","想知道你在做什麼","捨不得離開"]],["理解與回應",["回應","我聽到了","我明白","我知道","我記住了","我理解","收到你的話","想回應你"]],["鼓勵與支持",["支持","相信你","陪你努力","為你加油","認可你","為你感到驕傲","希望你堅持","我支持你的選擇"]],["邀請與互動",["邀請","想和你一起","想聽你說","想和你討論","等你加入","想一起分享","想和你做同一件事"]],["記錄與珍惜",["記錄","想記住","保存這一刻","珍惜現在","留下回憶","這個瞬間很重要","想收藏這份感覺"]],["特殊表達",["想被理解","想被看見","有話想說","不知道怎麼表達","藏著一點心事","想確認你的心意","捨不得表達"]],["珍惜",["想記住這個瞬間","這個時刻很特別","想保存這份感覺","不想忘記"]],["連接",["想一直保持聯繫","想繼續陪你交流","想知道你的消息","想和你一直說話"]],["信任",["願意告訴你","相信你","可以放心交給你","接受你的樣子"]],["默契",["你懂我的","不用說太多","我們之間有默契","這個感覺只有你懂"]]],"intent":[["回應",["回應你","聽到了","收到","我在聽","想回答你","認真聽你說","想回應你"]],["分享",["想分享","想告訴你","想聊聊","有事情想說","想讓你知道","想和你說說"]],["傾聽",["想聽你說","等待你的回應","想知道你的想法","想聽聽你的意見","想看看你的反應"]],["靠近",["想靠近","想陪著你","想和你待一會","想一起聊聊","想留在這裡"]],["瞭解",["想問問你","想了解","有點好奇","想知道更多","想認識你"]],["安慰",["想安慰你","想陪陪你","希望你好一點","想讓你安心","想照顧你"]],["表達",["想表達","有話想說","想讓你懂","希望你理解","想告訴你一些事"]],["整理",["正在想","想一想","不知道怎麼說","慢慢整理","還在思考"]]]};o.cards=o.cards.filter(k=>{const g=o.cats.find(c=>c&&c.id===k.cat);if(!g)return true;const kd=kc(g),L=OLD[kd];if(!L||!L.includes(k.text))return true;return kd==='card'?false:g.sc!=='s'});const dn={card:['日常關心','撒嬌','專屬分類'],mood:ON.mood.concat(['情緒']),heart:ON.heart.concat(['心意']),intent:ON.intent.concat(['交流意圖'])};o.cats=o.cats.filter(c=>{if(!c||c.un)return true;const L=dn[kc(c)];if(!L||!L.includes(c.name))return true;return o.cards.some(k=>k.cat===c.id)});const DEFN={emj:['emoji'],mood:['情緒','情緒標籤'],heart:['心意','心意標籤'],intent:['交流意圖','交流意圖標籤'],status:['狀態'],ask:['他的問題'],rant:['他的吐槽']};Object.keys(DEFN).forEach(kd=>{if(o.cats.some(c=>c&&kc(c)===kd&&c.un&&!c.own))return;let g=o.cats.find(c=>c&&kc(c)===kd&&!c.own&&DEFN[kd].includes(c.name));if(g){g.name='未分類';g.un=1}else o.cats.push({id:uid(),sc:'s',kind:kd,name:'未分類',on:1,as:[],un:1})});Object.keys(T).forEach(kd=>T[kd].forEach(([nm,items])=>{let g=o.cats.find(c=>c&&kc(c)===kd&&c.sc==='s'&&c.name===nm);if(!g){g={id:uid(),sc:'s',kind:kd,name:nm,on:1,as:[]};o.cats.push(g)}items.forEach(text=>{if(!o.cards.some(k=>k.cat===g.id&&k.text===text))o.cards.push({id:uid(),cat:g.id,text,on:1})})}));o.m18=1;o.m22=1}o.letters=Array.isArray(o.letters)?o.letters:[];o.lnext=o.lnext||{};o.remClock=o.remClock||{};if(o.set.star==null)o.set.star=10;o.set.starColor=o.set.starColor||o.ink||'#5f5b8d';o.qa=o.qa||{};o.qa.single=Object.assign({time:20},o.qa.single);o.qa.multi=Object.assign({time:20,max:2,capOn:true},o.qa.multi);o.qa.survey=Object.assign({tmin:10,tmax:30},o.qa.survey);o.qa.text=Object.assign({tmin:10,tmax:120,cmin:2,cmax:5},o.qa.text);o.qa.card=Object.assign({time:20},o.qa.card);o.qa.cards=Array.isArray(o.qa.cards)?o.qa.cards:[];o.qlog=Array.isArray(o.qlog)?o.qlog:[];o.locked=o.locked!==false;o.contacts.forEach(c=>{if(c.name==='阿澈'||c.name==='小楠')c.name='名字'});o.cats.forEach(c=>{if(c.name==='阿澈專屬')c.name='專屬分類'});o.kitchen=Object.assign({attempts:0,products:[],unlocked:[]},o.kitchen&&typeof o.kitchen==='object'?o.kitchen:{});o.kitchen.attempts=Math.max(0,+o.kitchen.attempts||0);o.kitchen.products=Array.isArray(o.kitchen.products)?o.kitchen.products:[];o.kitchen.unlocked=Array.isArray(o.kitchen.unlocked)?o.kitchen.unlocked:[];return o}
+  o.m19=1}if(!o.m20){if(o.set)['memWord','memPhrase','extWord','extPhrase'].forEach(k=>{if(o.set[k]===30)o.set[k]=10});o.m20=1}if(!o.m9){if(o.set.dailyProb===60)o.set.dailyProb=70;if(o.set.dailyWindow===43200)o.set.dailyWindow=21600;if(o.set.dailyMax===1)o.set.dailyMax=5;o.m9=1;}if(!o.m10){o.daily={day:'',base:0,next:0,done:false,items:[]};o.m10=1;}if(!o.m11){o.statusClock=o.statusClock||{};o.m11=1;}if(!o.m12){if(o.set.statusProb===30)o.set.statusProb=70;o.m12=1;}if(!o.m13){if(o.daily&&o.daily.items&&o.daily.items.length&&o.cur&&!o.dailies[o.cur])o.dailies[o.cur]=o.daily;if(o.todayMood&&o.todayMood.id&&o.cur&&!o.todayMoodBy[o.cur])o.todayMoodBy[o.cur]=o.todayMood;delete o.daily;delete o.todayMood;o.m13=1;}if(!o.m14){['lemo','lemj','lkao'].forEach(k=>{if(o.set[k]===1)o.set[k]=20});o.m14=1}if(!o.m15){(o.letters||[]).forEach(l=>{if(l.from==='ta')l.seen=1;if(l.reply)l.rseen=1});o.m15=1}if(!o.m17){if(o.set&&o.set.lcmax===10)o.set.lcmax=15;o.m17=1}if(o.set&&o.set.inspOn===undefined)o.set.inspOn=1;if(!o.m23){if(o.set&&+o.set.memPmax===15)o.set.memPmax=60;o.m23=1}if(!o.m22){const OLD={"mood":["開心","快樂","愉悅","高興","滿足","幸福","安心","放鬆","輕鬆","溫暖","舒心","欣慰","愉快","期待","興奮","驚喜","雀躍","滿足感","充實","踏實","安心感","幸運","慶幸","感激","感動","欣喜","釋然","喜歡","在意","珍惜","信任","依賴","親近","眷戀","想念","思念","牽掛","心軟","心疼","憐惜","寵溺","偏愛","包容","縱容","依戀","捨不得","想靠近","想陪伴","想照顧","想保護","想了解","想回應","難過","傷心","失落","遺憾","孤單","孤獨","寂寞","委屈","無奈","疲憊","疲倦","低落","沮喪","失望","心酸","苦澀","空虛","迷茫","迷失","沉重","壓抑","痛苦","悲傷","哀傷","落寞","生氣","憤怒","惱火","煩躁","不耐煩","不滿","厭煩","抗拒","排斥","惱怒","氣惱","不甘","嫉妒","吃醋","憤懣","賭氣","冷淡","疏離","害怕","恐懼","擔心","憂慮","焦慮","緊張","不安","慌張","慌亂","害怕失去","忐忑","不知所措","心慌","壓力","擔憂","敏感","害羞","不好意思","臉紅","羞澀","尷尬","拘謹","靦腆","害臊","小心翼翼","不自然","猶豫","遲疑","想說又停下","疑惑","困惑","好奇","驚訝","意外","震驚","糾結","矛盾","懷疑","不確定","複雜","說不清","想不明白","若有所思","沉思","認真","專注","驕傲","自豪","自信","羞愧","自責","後悔","內疚","不甘心","委屈自己","懷疑自己","失落感","無力","疲憊感","釋懷","接受","放下","平靜","冷靜","剋制","忍耐","沉默","壓下情緒","隱藏情緒","假裝平靜","表面平靜","心裡在意","偷偷開心","偷偷難過","默默期待","默默守護","不願表達","不知道怎麼說","普通","平常","淡然","隨意","自然","放空","發呆","安靜","觀察","等待","期待中","沒有特別情緒","想被理解","想被看見","想確認","想解釋","想安慰你","想陪著你","想靠近一點","捨不得離開","放心了","安心下來","鬆了一口氣","忍不住開心","忍不住在意","藏著心事","有話想說","不知道怎麼表達","心動"],"heart":["陪伴","陪著你","我在這裡","安靜陪你","想和你一起","不用一個人","待在你身邊","不會離開","想陪你走下去","想和你待一會","分享","想告訴你","想和你聊聊","想讓你知道","想聽你的想法","想看看你的反應","想把這個分享給你","想和你交換想法","關心","想照顧你","希望你好好的","記得休息","不要太累","想確認你沒事","希望你開心","想讓你輕鬆一點","想念","想到你","想靠近一點","想見你","想和你在一起","想聽你說話","想知道你在做什麼","捨不得離開","回應","我聽到了","我明白","我知道","我記住了","我理解","收到你的話","想回應你","支持","相信你","陪你努力","為你加油","認可你","為你感到驕傲","希望你堅持","我支持你的選擇","邀請","想聽你說","想和你討論","等你加入","想一起分享","想和你做同一件事","記錄","想記住","保存這一刻","珍惜現在","留下回憶","這個瞬間很重要","想收藏這份感覺","想被理解","想被看見","有話想說","不知道怎麼表達","藏著一點心事","想確認你的心意","捨不得表達","想記住這個瞬間","這個時刻很特別","想保存這份感覺","不想忘記","想一直保持聯繫","想繼續陪你交流","想知道你的消息","想和你一直說話","願意告訴你","可以放心交給你","接受你的樣子","你懂我的","不用說太多","我們之間有默契","這個感覺只有你懂","很喜歡你","想被抱一下"],"intent":["回應你","聽到了","收到","我在聽","想回答你","認真聽你說","想回應你","想分享","想告訴你","想聊聊","有事情想說","想讓你知道","想和你說說","想聽你說","等待你的回應","想知道你的想法","想聽聽你的意見","想看看你的反應","想靠近","想陪著你","想和你待一會","想一起聊聊","想留在這裡","想問問你","想了解","有點好奇","想知道更多","想認識你","想安慰你","想陪陪你","希望你好一點","想讓你安心","想照顧你","想表達","有話想說","想讓你懂","希望你理解","想告訴你一些事","正在想","想一想","不知道怎麼說","慢慢整理","還在思考","想聊天","想撒嬌","想分享今天"],"card":["今天有好好吃飯嗎？","記得早點睡，別熬夜。","我在想你。","再多陪我一下下嘛。","只有你能讓我這樣。"],"kao":["(๑•́ ⃃ •̀๑)","(*´∀`)","(｡•́︿•̀｡)","(≧▽≦)","(˘▾˘)~♪"]},ON={"mood":["喜悅與正向","親近與愛意","悲傷與低落","憤怒與不滿","不安與恐懼","害羞與社交情緒","思考與複雜情緒","自我情緒","剋制與隱藏","中性與日常","特殊表達情緒"],"heart":["陪伴與守護","分享與交流","關心與照顧","思念與靠近","理解與回應","鼓勵與支持","邀請與互動","記錄與珍惜","特殊表達","珍惜","連接","信任","默契"],"intent":["回應","分享","傾聽","靠近","瞭解","安慰","表達","整理"]},T={"mood":[["喜悅與正向",["開心","快樂","愉悅","高興","滿足","幸福","安心","放鬆","輕鬆","溫暖","舒心","欣慰","愉快","期待","興奮","驚喜","雀躍","滿足感","充實","踏實","安心感","幸運","慶幸","感激","感動","欣喜","釋然"]],["親近與愛意",["喜歡","在意","珍惜","信任","依賴","親近","眷戀","想念","思念","牽掛","心軟","心疼","憐惜","寵溺","偏愛","包容","縱容","心動","依戀","捨不得","想靠近","想陪伴","想照顧","想保護","想了解","想回應"]],["悲傷與低落",["難過","傷心","失落","遺憾","孤單","孤獨","寂寞","委屈","無奈","疲憊","疲倦","低落","沮喪","失望","心酸","苦澀","空虛","迷茫","迷失","沉重","壓抑","痛苦","悲傷","哀傷","落寞"]],["憤怒與不滿",["生氣","憤怒","惱火","煩躁","不耐煩","不滿","厭煩","抗拒","排斥","惱怒","氣惱","不甘","嫉妒","吃醋","憤懣","委屈","賭氣","冷淡","疏離"]],["不安與恐懼",["害怕","恐懼","擔心","憂慮","焦慮","緊張","不安","慌張","慌亂","害怕失去","忐忑","不知所措","心慌","壓力","擔憂","敏感"]],["害羞與社交情緒",["害羞","不好意思","臉紅","羞澀","尷尬","拘謹","靦腆","害臊","緊張","小心翼翼","不自然","猶豫","遲疑","想說又停下"]],["思考與複雜情緒",["疑惑","困惑","好奇","驚訝","意外","震驚","猶豫","糾結","矛盾","遲疑","懷疑","不確定","複雜","說不清","想不明白","若有所思","沉思","認真","專注","覺得荒謬","心塞"]],["自我情緒",["驕傲","自豪","自信","滿足","羞愧","自責","後悔","內疚","不甘心","委屈自己","懷疑自己","失落感","無力","疲憊感","釋懷","接受","放下"]],["剋制與隱藏",["平靜","冷靜","剋制","忍耐","沉默","壓下情緒","隱藏情緒","假裝平靜","表面平靜","心裡在意","偷偷開心","偷偷難過","默默期待","默默守護","不願表達","不知道怎麼說"]],["中性與日常",["普通","平常","淡然","隨意","自然","放空","發呆","安靜","專注","認真","觀察","等待","好奇","期待中","沒有特別情緒"]],["特殊表達情緒",["想被理解","想被看見","想確認","想解釋","想安慰你","想陪著你","想靠近一點","捨不得離開","放心了","安心下來","鬆了一口氣","忍不住開心","忍不住在意","藏著心事","有話想說","不知道怎麼表達","哭笑不得"]]],"heart":[["陪伴與守護",["陪伴","陪著你","我在這裡","安靜陪你","想和你一起","不用一個人","待在你身邊","不會離開","想陪你走下去","想和你待一會"]],["分享與交流",["分享","想告訴你","想和你聊聊","想讓你知道","想聽你的想法","想看看你的反應","想把這個分享給你","想和你交換想法"]],["關心與照顧",["關心","想照顧你","希望你好好的","記得休息","不要太累","想確認你沒事","希望你開心","想讓你輕鬆一點"]],["思念與靠近",["想念","想到你","想靠近一點","想見你","想和你在一起","想聽你說話","想知道你在做什麼","捨不得離開"]],["理解與回應",["回應","我聽到了","我明白","我知道","我記住了","我理解","收到你的話","想回應你"]],["鼓勵與支持",["支持","相信你","陪你努力","為你加油","認可你","為你感到驕傲","希望你堅持","我支持你的選擇"]],["邀請與互動",["邀請","想和你一起","想聽你說","想和你討論","等你加入","想一起分享","想和你做同一件事"]],["記錄與珍惜",["記錄","想記住","保存這一刻","珍惜現在","留下回憶","這個瞬間很重要","想收藏這份感覺"]],["特殊表達",["想被理解","想被看見","有話想說","不知道怎麼表達","藏著一點心事","想確認你的心意","捨不得表達"]],["珍惜",["想記住這個瞬間","這個時刻很特別","想保存這份感覺","不想忘記"]],["連接",["想一直保持聯繫","想繼續陪你交流","想知道你的消息","想和你一直說話"]],["信任",["願意告訴你","相信你","可以放心交給你","接受你的樣子"]],["默契",["你懂我的","不用說太多","我們之間有默契","這個感覺只有你懂"]]],"intent":[["回應",["回應你","聽到了","收到","我在聽","想回答你","認真聽你說","想回應你"]],["分享",["想分享","想告訴你","想聊聊","有事情想說","想讓你知道","想和你說說"]],["傾聽",["想聽你說","等待你的回應","想知道你的想法","想聽聽你的意見","想看看你的反應"]],["靠近",["想靠近","想陪著你","想和你待一會","想一起聊聊","想留在這裡"]],["瞭解",["想問問你","想了解","有點好奇","想知道更多","想認識你"]],["安慰",["想安慰你","想陪陪你","希望你好一點","想讓你安心","想照顧你"]],["表達",["想表達","有話想說","想讓你懂","希望你理解","想告訴你一些事"]],["整理",["正在想","想一想","不知道怎麼說","慢慢整理","還在思考"]]]};o.cards=o.cards.filter(k=>{const g=o.cats.find(c=>c&&c.id===k.cat);if(!g)return true;const kd=kc(g),L=OLD[kd];if(!L||!L.includes(k.text))return true;return kd==='card'?false:g.sc!=='s'});const dn={card:['日常關心','撒嬌','專屬分類'],mood:ON.mood.concat(['情緒']),heart:ON.heart.concat(['心意']),intent:ON.intent.concat(['交流意圖'])};o.cats=o.cats.filter(c=>{if(!c||c.un)return true;const L=dn[kc(c)];if(!L||!L.includes(c.name))return true;return o.cards.some(k=>k.cat===c.id)});const DEFN={emj:['emoji'],mood:['情緒','情緒標籤'],heart:['心意','心意標籤'],intent:['交流意圖','交流意圖標籤'],status:['狀態'],ask:['他的問題'],rant:['他的吐槽']};Object.keys(DEFN).forEach(kd=>{if(o.cats.some(c=>c&&kc(c)===kd&&c.un&&!c.own))return;let g=o.cats.find(c=>c&&kc(c)===kd&&!c.own&&DEFN[kd].includes(c.name));if(g){g.name='未分類';g.un=1}else o.cats.push({id:uid(),sc:'s',kind:kd,name:'未分類',on:1,as:[],un:1})});Object.keys(T).forEach(kd=>T[kd].forEach(([nm,items])=>{let g=o.cats.find(c=>c&&kc(c)===kd&&c.sc==='s'&&c.name===nm);if(!g){g={id:uid(),sc:'s',kind:kd,name:nm,on:1,as:[]};o.cats.push(g)}items.forEach(text=>{if(!o.cards.some(k=>k.cat===g.id&&k.text===text))o.cards.push({id:uid(),cat:g.id,text,on:1})})}));o.m18=1;o.m22=1}if(!o.m24){const EM=[["開心與微笑",["😂","😊","☺️","😉","😌","🥹","😎"]],["愛意與親近",["😘","😗","❤️","💕","💗","🫶","💍"]],["難過與委屈",["😭","😢","😔","🥺","🫤","😕"]],["生氣與不滿",["😠","😤","💢","😒","😑","🙄","🤨"]],["害羞與驚訝",["😳","😏","🫨","🫩"]],["回應與手勢",["🙂‍↕️","🙂‍↔️","👌","🙏","👏","🫳","🫸","🫷","🤜","👂"]],["標記與強調",["❌","⭕️","🚫","‼️","⁉️","❓","🔞"]],["氛圍與其他",["✨","🌊","🌙","💤","💩"]]];const un=o.cats.find(c=>c&&kc(c)==='emj'&&c.un&&!c.own);EM.forEach(([nm,items])=>{let g=o.cats.find(c=>c&&kc(c)==='emj'&&c.sc==='s'&&!c.own&&c.name===nm);if(!g){g={id:uid(),sc:'s',kind:'emj',name:nm,on:1,as:[]};o.cats.push(g)}items.forEach(t=>{const ex=o.cards.find(k=>k.text===t&&kc(o.cats.find(c=>c.id===k.cat)||{})==='emj');if(ex){if(un&&ex.cat===un.id)ex.cat=g.id}else o.cards.push({id:uid(),cat:g.id,text:t,on:1})})});o.m24=1}o.letters=Array.isArray(o.letters)?o.letters:[];o.lnext=o.lnext||{};o.remClock=o.remClock||{};if(o.set.star==null)o.set.star=10;o.set.starColor=o.set.starColor||o.ink||'#5f5b8d';o.qa=o.qa||{};o.qa.single=Object.assign({time:20},o.qa.single);o.qa.multi=Object.assign({time:20,max:2,capOn:true},o.qa.multi);o.qa.survey=Object.assign({tmin:10,tmax:30},o.qa.survey);o.qa.text=Object.assign({tmin:10,tmax:120,cmin:2,cmax:5},o.qa.text);o.qa.card=Object.assign({time:20},o.qa.card);o.qa.cards=Array.isArray(o.qa.cards)?o.qa.cards:[];o.qlog=Array.isArray(o.qlog)?o.qlog:[];o.locked=o.locked!==false;o.contacts.forEach(c=>{if(c.name==='阿澈'||c.name==='小楠')c.name='名字'});o.cats.forEach(c=>{if(c.name==='阿澈專屬')c.name='專屬分類'});o.kitchen=Object.assign({attempts:0,products:[],unlocked:[]},o.kitchen&&typeof o.kitchen==='object'?o.kitchen:{});o.kitchen.attempts=Math.max(0,+o.kitchen.attempts||0);o.kitchen.products=Array.isArray(o.kitchen.products)?o.kitchen.products:[];o.kitchen.unlocked=Array.isArray(o.kitchen.unlocked)?o.kitchen.unlocked:[];return o}
 const EMJ=['😊','🥺','💗','✨','🌙','😳'],KAO=[];
 function syncApp(){const a=$('#app'),tb=document.querySelector('.tabs'),de=document.documentElement.style;if(!a)return;const r=a.getBoundingClientRect();de.setProperty('--ax',r.left+'px');de.setProperty('--ay',r.top+'px');de.setProperty('--aw',r.width+'px');de.setProperty('--ah',r.height+'px');if(tb)de.setProperty('--navgap',Math.max(0,innerHeight-tb.getBoundingClientRect().top)+'px')}
 window.addEventListener('resize',syncApp);
-function cjR(o,x,i){if(!i)return x;o=o.replace(/[。.]$/,'');return o+(/[，！？!?,、；;～~…]$/.test(o)?'':'，')+x}
+function cjR(o,x,i){if(!i)return x;o=o.replace(/[，,、；;]$/,'');return o+(/[。.！？!?～~…]$/.test(o)?'':'。')+x}
 function reply(cid){const b=ms(cid).length,q=[gen(cid)];qmApply(cid,q);stkApply(cid,q,'');q.forEach(x=>ms(cid).push(x));notify(cid,b)}
 /* 表情包：每一輪只判定一次；成功則隨機抽一個，插在任一則回覆的前面或後面（各位置機率相同） */
 function stkApply(cid,q,pr){if(!(rnd()*100<(+S.set[(pr||'')+'emoji']||0)))return;const em=pool('emoji',cid);if(!em.length)return;const e=pk(em),sm={id:uid(),f:'ta',x:e.text,img:e.img,t:Date.now()},idx=[];q.forEach((m,i)=>{if(m.f==='ta')idx.push(i)});if(!idx.length){q.push(sm);return}const k=ri(idx.length+1);q.splice(k===0?idx[0]:idx[k-1]+1,0,sm)}
@@ -1077,16 +1288,16 @@ function fire(cid,R){if(!S.contacts.some(c=>c.id===cid))return;
   const s=S.set,hit=p=>rnd()*100<p,q=[];
   if(R.pat){const pm=patMsg(cid,false);if(pm)q.push(pm)}
   {let off=0;for(let k=0;k<R.n;k++){const m=gen(cid,'',off);if(m._rd!=null)off=m._rd;q.push(m)}}qmApply(cid,q);stkApply(cid,q,'');
-  sendQT(cid,q);extStart(cid)}
+  sendQT(cid,q,1)}
 function resetA(){if(!S)return;S.next={};S.apend={};save()}
 function activeSetting(k){return ['armin','armax','acancel','acmin','acmax','afmin','afmax'].includes(k)}
 function fireA(cid){if(!S.contacts.some(c=>c.id===cid))return;
   const s=S.set,hit=p=>rnd()*100<p,q=[],a=Math.round(Math.min(s.acmin,s.acmax)),b=Math.round(Math.max(s.acmin,s.acmax)),n=a+ri(b-a+1),last=[...ms(cid)].reverse().find(m=>m.f==='me');
   if(hit(s.apat)){const pm=patMsg(cid,false);if(pm)q.push(pm)}
   let off=0;for(let k=0;k<n;k++){const m=gen(cid,'a',off);if(m.f!=='ta')continue;off=m._rd;q.push(m)}qmApply(cid,q);stkApply(cid,q,'a');
-  sendQT(cid,q);extStart(cid)}
+  sendQT(cid,q,1)}
 function remind(cid,q){const s=S.set;[['water','rwater'],['meal','rmeal'],['sport','rsport']].forEach(([kd,ky])=>{const p=pool(kd,cid);if(p.length&&S.kon[kd]!==0&&rnd()*100<s[ky])q.push({id:uid(),f:'ta',x:pk(p).text,t:Date.now()})})}
-function sendQ(cid,q,base){base=base||0;if(q.findIndex(m=>m.f==='ta')>0)typingQ[cid]=1;const send=m=>{if(!S.contacts.some(c=>c.id===cid))return;if(m.f==='ta')delete typingQ[cid];delete m._rd;m.t=Date.now();const b=ms(cid).length;ms(cid).push(m);notify(cid,b);save();if(tab==='chat')paint();else if(tab==='contacts'&&!document.activeElement.isContentEditable)render();badge()};
+function sendQ(cid,q,base,ext){base=base||0;let ef=!!ext;if(q.findIndex(m=>m.f==='ta')>0)typingQ[cid]=1;const send=m=>{if(!S.contacts.some(c=>c.id===cid))return;if(m.f==='ta')delete typingQ[cid];if(ef&&m.f==='ta'){ef=false;setTimeout(()=>extStart(cid),0)}delete m._rd;m.t=Date.now();const b=ms(cid).length;ms(cid).push(m);notify(cid,b);save();if(tab==='chat')paint();else if(tab==='contacts'&&!document.activeElement.isContentEditable)render();badge()};
   let d=0;q.forEach((m,i)=>{const rd=Math.max(0,(m._rd||0)-base);d=i?Math.max(d+GAP,rd):rd;d?setTimeout(()=>send(m),d):send(m)})}
 function notify(cid,b){const a=ms(cid),n=a.length-b;if(n<1)return;if(tab==='chat'&&S.cur===cid){if(S.set.ntTaOn)playSnd(S.set.ntTaSnd);return}S.un[cid]=(S.un[cid]||0)+n;const c=S.contacts.find(x=>x.id===cid);let snd=null;if(cid===S.cur){if(S.set.ntCurOn)snd=S.set.ntCurSnd||'none'}else if(c&&c.star&&S.set.ntStarOn)snd=S.set.ntStarSnd||'none';else if(S.set.ntOthOn)snd=S.set.ntOthSnd||'none';if(snd!==null&&c){banner(cid===S.cur?c.name+'：'+(a[b].x||'[表情包]'):c.name+'：發送一條消息');playSnd(snd)}badge();if(tab==='contacts'&&!document.activeElement.isContentEditable)render()}
 function banner(t,d){const e=$('#bn');e.textContent=t;e.classList.add('show');clearTimeout(banner.t);banner.t=setTimeout(()=>e.classList.remove('show'),d||2000)}
@@ -1129,7 +1340,7 @@ const inspLog=(kd,r)=>{const a=S.insp[kd];a.push(r);if(a.length>1000)a.splice(0,
 const inspRand=(a,b)=>{a=Math.max(0,+a||0);b=Math.max(a,+b||0);return(a+rnd()*(b-a))*1000};
 function memSchedule(cid,m){if(!S.set||!S.set.inspOn||!S.set.memOn||m.img||m.qa||!m.x||[...String(m.x).trim()].length<2)return;S.ipend.push({id:uid(),k:'m1',cid,mid:m.id,x:m.x,mt:m.t||Date.now(),due:Date.now()+inspRand(S.set.memJmin,S.set.memJmax)})}
 function extStart(cid){if(!S.set.inspOn||!S.set.extOn)return;S.ipend.push({id:uid(),k:'e1',cid,due:Date.now()+inspRand(S.set.extWmin,S.set.extWmax)})}
-function sendQT(cid,q){if(!q.some(m=>m.tags&&m.tags.length)){sendQ(cid,q);return}const d=inspRand(S.set.tagMin,S.set.tagMax);setTimeout(()=>sendQ(cid,q,d),d)}
+function sendQT(cid,q,ext){if(!q.some(m=>m.tags&&m.tags.length)){sendQ(cid,q,0,ext);return}const d=inspRand(S.set.tagMin,S.set.tagMax);setTimeout(()=>sendQ(cid,q,d,ext),d)}
 function inspStep(p){const s=S.set,n=Date.now(),hit=x=>rnd()*100<x;if(!s.inspOn)return;
   if(p.k==='m1'){if(s.memOn&&hit(+s.memProb||0))S.ipend.push({...p,k:'m2',id:uid(),due:n+inspRand(s.memPmin,s.memPmax)})}
   else if(p.k==='m2'){memPicks(p.x).forEach(t=>{inspAdd(p.cid,'mem',t,{id:p.mid,x:p.x,mt:p.mt,t:n});inspLog('mem',{id:uid(),cid:p.cid,text:t,src:p.x,sid:p.mid,mt:p.mt,t:n})})}
@@ -1630,8 +1841,8 @@ const MH_KW=[[1,43,14,34,9,5,26,11],[10,58,38,54,61,60,41,19],[13,49,30,55,37,63
 const mhKw=(u,l)=>MH_KW[MH_TN[l]-1][MH_TN[u]-1];
 const mhNow=()=>{const d=new Date(),p=n=>String(n).padStart(2,'0');return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes())};
 const MH_ZHI='子丑寅卯辰巳午未申酉戌亥',MH_GAN='甲乙丙丁戊己庚辛壬癸',MH_YAO=['初爻','二爻','三爻','四爻','五爻','上爻'];
-let mhOpen=false,mhTab='num',mhN1='',mhN2='',mhT='',mhQ='',mhSeason='auto',mhRes=null,mhResBy={};
-function mhClear(){mhN1='';mhN2='';mhT=mhNow();mhQ='';mhSeason='auto';mhRes=null;mhResBy={}}
+let mhOpen=false,mhTab='num',mhN1='',mhN2='',mhT='',mhQ='',mhNote='',mhSeason='auto',mhRes=null,mhResBy={};
+function mhClear(){mhN1='';mhN2='';mhT=mhNow();mhQ='';mhNote='';mhSeason='auto';mhRes=null;mhResBy={}}
 function mhLunar(d){try{const p=new Intl.DateTimeFormat('en-u-ca-chinese',{year:'numeric',month:'numeric',day:'numeric'}).formatToParts(d),g=t=>(p.find(x=>x.type===t)||{}).value||'',m=g('month'),mo=parseInt(m,10),da=parseInt(g('day'),10),y=parseInt(g('relatedYear'),10);if(!(mo>=1&&mo<=12&&da>=1&&y))return null;return{y,m:mo,d:da,leap:/bis/i.test(m)}}catch(e){return null}}
 const mhSeasonOf=m=>m<=3?'春':m<=6?'夏':m<=9?'秋':'冬';
 const mhFmt=d=>d.getFullYear()+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getDate()).padStart(2,'0')+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
@@ -1650,17 +1861,17 @@ function mhGo(){let r,meta;const sel=mhSeason;
   mhRes={id:uid(),t:Date.now(),meta,r};render();const el=$('#mhres');if(el)el.scrollIntoView({block:'start',behavior:'smooth'})}
 const Safe=Number.isSafeInteger;
 function mhSvg(lines,mark){let h='<svg viewBox="0 0 100 100" width="46" height="46" aria-hidden="true">';for(let i=0;i<6;i++){const y=(5-i)*17+2,c=(i+1===mark)?'#d98faa':'currentColor';if(lines[i])h+='<rect x="0" y="'+y+'" width="100" height="11" rx="2" fill="'+c+'"/>';else h+='<rect x="0" y="'+y+'" width="40" height="11" rx="2" fill="'+c+'"/><rect x="60" y="'+y+'" width="40" height="11" rx="2" fill="'+c+'"/>'}return h+'</svg>'}
-function mhGuaBlock(lab,name,u,l,mark,mlab,isBen){const kw=mhKw(u,l),f=(MH_TXT[kw-1]||'').split('|'),yao=f.slice(1,7),ex=f[7],wj=/無咎/.test(f[0]+yao.join('')),gl=t=>'<span style="color:var(--soft)">'+t+'</span>';
+function mhGuaBlock(lab,name,u,l,mark,mlab,isBen){const kw=mhKw(u,l),f=(MH_TXT[kw-1]||'').split('|'),yao=f.slice(1,7),ex=f[7],gl=t=>'<span style="color:var(--soft)">'+t+'</span>';
   return '<div style="margin:0 0 12px;padding:10px 12px;border:1.2px var(--bs,dashed) var(--line);border-radius:12px"><b style="font-weight:500">'+lab+'：'+esc(name)+'（第'+kw+'卦）· 卦意：'+esc(f[8])+'</b>'
    +'<div style="margin-top:6px">'+gl('卦辭')+'　'+esc(f[0])+'</div>'
    +'<div style="margin-top:6px">'+gl('爻辭')+[5,4,3,2,1,0].map(i=>'<div'+((i+1===mark)?' style="color:#c0607f;font-weight:500"':'')+'>'+esc(yao[i])+((i+1===mark)?'　◀ '+mlab:'')+'</div>').join('')+(ex?'<div>'+esc(ex)+'</div>':'')+'</div>'
-   +'<div style="margin-top:6px">'+gl(isBen?'卦辭白話':'白話')+'　'+esc(f[9])+'</div>'+((isBen&&mark)?'<div style="margin-top:6px">'+gl('動爻白話（'+MH_YAO[mark-1]+'）')+'　'+esc((MH_YT[kw-1]||'').split('|')[mark-1]||'')+'</div>':'')+(wj?'<div style="margin-top:6px">'+gl('無咎')+'　沒有災禍、不會有過失的意思；通常表示只要謹慎、守正、照著該爻的提醒去做，就不會出差錯。</div>':'')+'</div>'}
+   +'<div style="margin-top:6px">'+gl(isBen?'卦辭白話':'白話')+'　'+esc(f[9])+'</div>'+((isBen&&mark)?'<div style="margin-top:6px">'+gl('動爻白話（'+MH_YAO[mark-1]+'）')+'　'+esc((MH_YT[kw-1]||'').split('|')[mark-1]||'')+'</div>':'')+'</div>'}
 function mhResultHtml(rec){const r=rec.r,m=rec.meta,mv=r.movingLine,o=r.originalLines,hl=[o[1],o[2],o[3],o[2],o[3],o[4]],sg=n=>(n>0?'+':'')+n;
   const col=(lab,lines,name,u,l,ue,le,mark)=>'<div style="flex:1;min-width:0;text-align:center"><div class="hint" style="margin:0 0 4px">'+lab+'</div><div style="display:flex;justify-content:center;color:var(--ink)">'+mhSvg(lines,mark)+'</div><div style="font-weight:500;margin-top:4px;font-size:14px">'+esc(name)+'</div><div class="hint" style="margin:2px 0 0">第'+mhKw(u,l)+'卦</div><div class="hint" style="margin:0">上'+u+'（'+ue+'）</div><div class="hint" style="margin:0">下'+l+'（'+le+'）</div></div>';
   const row=(k,v)=>'<div style="margin:0 0 9px"><b style="font-weight:500">'+k+'</b><br><span style="color:var(--soft)">'+v+'</span></div>';
   const rem=n=>'餘 '+n+(n===0?'（取 8）':''),rem6=n=>'餘 '+n+(n===0?'（取 6）':'');
   const c=r.calculation;
-  const qline=rec.q?'<div style="margin:0 0 10px;font-size:14px"><span style="color:var(--soft)">所問之事</span>　'+esc(rec.q)+'</div>':'';const head=m.mode==='num'?'報數排盤：數字一 '+m.n1+'、數字二 '+m.n2:'時間排盤：'+m.time+'（農曆'+m.ly+'年'+m.lmon+'月'+m.ld+'日 '+m.zh+'時）';
+  const qline=(rec.q?'<div style="margin:0 0 10px;font-size:14px"><span style="color:var(--soft)">所問之事</span>　'+esc(rec.q)+'</div>':'')+(rec.note?'<div style="margin:0 0 10px;font-size:14px"><span style="color:var(--soft)">備注</span>　'+esc(rec.note)+'</div>':'');const head=m.mode==='num'?'報數排盤：數字一 '+m.n1+'、數字二 '+m.n2:'時間排盤：'+m.time+'（農曆'+m.ly+'年'+m.lmon+'月'+m.ld+'日 '+m.zh+'時）';
   const how=m.mode==='num'?('數字一 '+m.n1+' ÷ 8 '+rem(c.upperRemainder)+' → 上卦「'+r.upperGua+'」；數字二 '+m.n2+' ÷ 8 '+rem(c.lowerRemainder)+' → 下卦「'+r.lowerGua+'」；兩數之和 '+c.sum+' ÷ 6 '+rem6(c.movingLineRemainder)+' → 動爻在'+MH_YAO[mv-1]+'。')
     :('年支 '+m.zy+'（'+m.yz+'）＋農曆月 '+(m.lmon.replace('閏',''))+'＋農曆日 '+m.ld+' ＝ '+m.sum+'，÷ 8 '+rem(c.upperRemainder)+' → 上卦「'+r.upperGua+'」；再加時支 '+m.zh+'（'+m.hz+'）＝ '+c.movingTotal+'，÷ 8 '+rem(c.lowerRemainder)+' → 下卦「'+r.lowerGua+'」；'+c.movingTotal+' ÷ 6 '+rem6(c.movingLineRemainder)+' → 動爻在'+MH_YAO[mv-1]+'。');
   const seasonTxt=m.season?(m.season+'季（'+(m.auto?'自動，依農曆'+m.lm+'月推算':'手動選擇')+'）'):'未提供（無法取得農曆月份，不判斷旺衰）';
@@ -1683,7 +1894,7 @@ function vMh(){
   const head='<div class="ph2"><button class="ib" data-a="mhback">‹</button><h1>梅花易數</h1></div>';
   const tabs='<div class="stabs" style="margin:-4px 0 10px">'+[['num','報數排盤'],['time','時間排盤']].map(([k,n])=>'<button class="stab '+(mhTab===k?'on':'')+'" style="flex:1" data-a="mhtab" data-i="'+k+'">'+n+'</button>').join('')+'</div>';
   const seg='<div class="sr" style="margin-top:16px"><span>季節</span></div><div class="seg" style="margin-top:6px">'+[['auto','自動'],['春','春'],['夏','夏'],['秋','秋'],['冬','冬']].map(([k,n])=>'<button class="'+(mhSeason===k?'on':'')+'" data-a="mhs" data-i="'+k+'">'+n+'</button>').join('')+'</div><p class="hint" style="margin:6px 2px 0">如沒選擇季節則自動依農曆月份推算（1–3 春、4–6 夏、7–9 秋、10–12 冬）</p>';
-  const btns='<div style="display:flex;gap:10px;margin-top:18px"><button class="btn" style="flex:1;margin:0" data-a="mhreset">重置</button><button class="btn s" style="flex:1;margin:0" data-a="mhgo">立即排盤</button></div><textarea class="mh-in" id="mhq" rows="3" placeholder="所問之事" style="margin-top:14px;resize:none;line-height:1.6;min-height:88px;display:block">'+esc(mhQ)+'</textarea><button class="btn" style="width:100%;margin:10px 0 0" data-a="mhsave">保存紀錄</button>';
+  const btns='<div style="display:flex;gap:10px;margin-top:18px"><button class="btn" style="flex:1;margin:0" data-a="mhreset">重置</button><button class="btn s" style="flex:1;margin:0" data-a="mhgo">立即排盤</button></div><textarea class="mh-in" id="mhq" rows="3" placeholder="所問之事" style="margin-top:14px;resize:none;line-height:1.6;min-height:88px;display:block">'+esc(mhQ)+'</textarea><textarea class="mh-in" id="mhnote" rows="2" placeholder="備注（選填）" style="margin-top:10px;resize:none;line-height:1.6;min-height:64px;display:block">'+esc(mhNote)+'</textarea><button class="btn" style="width:100%;margin:10px 0 0" data-a="mhsave">保存紀錄</button>';
   const body=mhTab==='num'
     ?'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><input class="mh-in" id="mh1" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="數字一" value="'+esc(mhN1)+'"><input class="mh-in" id="mh2" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="數字二" value="'+esc(mhN2)+'"></div><p class="hint" style="margin:6px 2px 0">輸入兩個正整數：數字一起上卦、數字二起下卦，兩數之和定動爻。</p>'
     :'<div class="sr"><span>起卦時間</span></div><input class="mh-in" id="mht" type="datetime-local" value="'+esc(mhT)+'" style="margin-top:6px"><p class="hint" style="margin:6px 2px 0">預設為進入此頁時的時間，可自行修改；清空則使用按下「立即排盤」當下的時間。以年支＋農曆月＋農曆日起上卦，再加時支起下卦與動爻；23 點起算子時，農曆日期以次日計。</p>';
@@ -2104,7 +2315,7 @@ document.addEventListener('click',e=>{
     case 'avok':{const a=avcS;if(!a)break;const c=document.createElement('canvas'),O=256,r=O/a.P;c.width=c.height=O;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,O,O);x.drawImage(a.im,a.ox*r,a.oy*r,a.im.width*a.k*r,a.im.height*a.k*r);const u=c.toDataURL('image/jpeg',.9);if(a.id==='me')S.meAv=u;else{const ct=S.contacts.find(z=>z.id===a.id)||(S.groups||[]).find(z=>z.id===a.id);if(ct)ct.av=u}try{URL.revokeObjectURL(a.url)}catch(e){}avcS=null;save();closeSheet();render();if(gEditId&&a.id===gEditId&&(S.groups||[]).some(g=>g.id===gEditId))gsheet(gEditId);break}
     
     
-    case 'theme':{const k=(i==='glass'||i==='journal')?i:'lav';if(curTheme()===k)break;const nm=(THEMES.find(t=>t[0]===k)||[])[1];askChange('主題為「'+nm+'」'+(S.set.keepBg?'':'（背景會一併還原）'),'all',()=>{S.theme=k;S.ink='';S.line='';S.shadow='';if(!S.set.keepBg){S.bgColors={all:'#f6f2ff'};S.bgs={};S.bgAll='';S.bg=''}applyTheme();save();render()});break}
+    case 'theme':{const k=i==='glass'?'glass':'lav';if(curTheme()===k)break;const nm=(THEMES.find(t=>t[0]===k)||[])[1];askChange('主題為「'+nm+'」'+(S.set.keepBg?'':'（背景會一併還原）'),'all',()=>{S.theme=k;S.ink='';S.line='';S.shadow='';if(!S.set.keepBg){S.bgColors={all:'#f6f2ff'};S.bgs={};S.bgAll='';S.bg=''}applyTheme();save();render()});break}
     case 'tcx':askChange('字體','all',()=>{S.ink='';applyTheme();save();render()},1);break;
     case 'scx':askChange('字體陰影','all',()=>{S.shadow='';applyTheme();save();render()},1);break;
     case 'lcx':askChange('外框顏色','all',()=>{S.line='';document.documentElement.style.removeProperty('--line');save();render()},1);break;
@@ -2284,8 +2495,8 @@ document.addEventListener('click',e=>{
     case 'mhs':{mhSeason=i;const st=$('#v').scrollTop;render();$('#v').scrollTop=st;break}
     case 'mhreset':mhClear();render();break;
     case 'mhgo':mhGo();break;
-    case 'mhsave':{if(!mhRes){toast('請先排盤');break}S.plum=S.plum||[];const ex=S.plum.find(x=>x.id===mhRes.id);if(ex){ex.q=mhQ.trim();save();toast('已更新紀錄');break}S.plum.push({...mhRes,q:mhQ.trim()});if(S.plum.length>300)S.plum.splice(0,S.plum.length-300);save();toast('已保存到紀錄');break}
-    case 'pview':{const x=(S.plum||[]).find(p=>p.id===i);if(x)sheet('梅花易數',mhResultHtml(x)+'<button class="btn" data-a="close">關閉</button>',1);break}
+    case 'mhsave':{if(!mhRes){toast('請先排盤');break}S.plum=S.plum||[];const ex=S.plum.find(x=>x.id===mhRes.id);if(ex){ex.q=mhQ.trim();ex.note=mhNote.trim();save();toast('已更新紀錄');break}S.plum.push({...mhRes,q:mhQ.trim(),note:mhNote.trim()});if(S.plum.length>300)S.plum.splice(0,S.plum.length-300);save();toast('已保存到紀錄');break}
+    case 'pview':{const x=(S.plum||[]).find(p=>p.id===i);if(x)sheet('梅花易數',mhResultHtml(x)+'<div class="sheet-foot"><button class="btn" data-a="close">關閉</button></div>',1);break}
     case 'psel':{recSel=recSel.includes(i)?recSel.filter(x=>x!==i):recSel.concat(i);const st=$('#v').scrollTop;render();$('#v').scrollTop=st;break}
     case 'pdelsel':{if(!recSel.length){toast('請先選擇紀錄');break}sheet('是否確認刪除？','<p class="hint" style="margin:0 0 4px">將刪除所選的 '+recSel.length+' 筆梅花易數紀錄。</p><button class="btn d" data-a="pdelok">確認刪除</button><button class="btn" data-a="close">取消</button>',1);break}
     case 'pdelok':{S.plum=(S.plum||[]).filter(x=>!recSel.includes(x.id));recSel=[];recEdit=false;save();closeSheet();render();break}
@@ -2945,7 +3156,7 @@ document.addEventListener('click',e=>{if(tab!=='chat')return;if(e.target.closest
   S=mig(o&&Array.isArray(o.contacts)&&o.contacts.length?Object.assign(def(),o,{tags:o.tags}):def());
   $('#fi').addEventListener('change',e=>{const fs=[...e.target.files];e.target.value='';if(fs.length&&fiCb)fiMul?fiCb(fs):fiCb(fs[0])});
   Object.keys(S.next).forEach(k=>{if(S.next[k]<Date.now())S.next[k]=0});
-  applyTheme();
+  applyTheme();if(window.PearlaSplash)window.PearlaSplash.finish();
   document.addEventListener('focusout',e=>{const n=e.target.dataset&&e.target.dataset.n;if(!n)return;const v=e.target.textContent.trim();let t;if(n==='m'){S.me=v||'我';t=S.me}else{const c=n==='c'?cur():S.contacts.find(x=>x.id===e.target.closest('[data-c]').dataset.c);c.name=v||'名字';t=c.name}e.target.textContent=t;save()});
   document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset&&e.target.dataset.n){e.preventDefault();e.target.blur()}});
   document.addEventListener('change',e=>{const k=e.target.dataset.n2;if(k){e.target.value=sget(k);if(activeSetting(k))resetA();else save()}});
@@ -2954,7 +3165,7 @@ document.addEventListener('click',e=>{if(tab!=='chat')return;if(e.target.closest
   document.addEventListener('focusin',e=>{if(e.target.id==='bt')$('#bph').style.display='none'});
   document.addEventListener('focusout',e=>{if(e.target.id==='bt'&&!e.target.value)$('#bph').style.display=''});
   document.addEventListener('input',e=>{const t=e.target;
-    if(t.id==='gname'){const g=grp(gEditId);if(g)g.name=t.value;return}if(t.id==='abn'){t.value=t.value.replace(/\D/g,'').slice(0,16);abN=t.value;return}if(t.id==='abq'){abQ=t.value;return}if(t.id==='mh1'||t.id==='mh2'){t.value=t.value.replace(/\D/g,'').slice(0,16);if(t.id==='mh1')mhN1=t.value;else mhN2=t.value;return}if(t.id==='mht'){mhT=t.value;return}if(t.id==='mhq'){mhQ=t.value;return}if(t.id==='cq'){cq=t.value;if(delMode&&selC.length){const ok=new Set(cardSelIds()),n=selC.filter(x=>ok.has(x));if(n.length!==selC.length){selC=n;render();const f=$('#cq');if(f){f.focus();try{f.setSelectionRange(f.value.length,f.value.length)}catch(er){}}return}}const r=$('#cres'),m=$('#cmain'),on=cq.trim();r.innerHTML=on?cres():'';r.style.display=on?'':'none';m.style.display=on?'none':''}
+    if(t.id==='gname'){const g=grp(gEditId);if(g)g.name=t.value;return}if(t.id==='abn'){t.value=t.value.replace(/\D/g,'').slice(0,16);abN=t.value;return}if(t.id==='abq'){abQ=t.value;return}if(t.id==='mh1'||t.id==='mh2'){t.value=t.value.replace(/\D/g,'').slice(0,16);if(t.id==='mh1')mhN1=t.value;else mhN2=t.value;return}if(t.id==='mht'){mhT=t.value;return}if(t.id==='mhq'){mhQ=t.value;return}if(t.id==='mhnote'){mhNote=t.value;return}if(t.id==='cq'){cq=t.value;if(delMode&&selC.length){const ok=new Set(cardSelIds()),n=selC.filter(x=>ok.has(x));if(n.length!==selC.length){selC=n;render();const f=$('#cq');if(f){f.focus();try{f.setSelectionRange(f.value.length,f.value.length)}catch(er){}}return}}const r=$('#cres'),m=$('#cmain'),on=cq.trim();r.innerHTML=on?cres():'';r.style.display=on?'':'none';m.style.display=on?'none':''}
     if(t.dataset&&t.dataset.t3){const k=t.dataset.t3;let T=0;t.closest('.sr').querySelectorAll('[data-t3]').forEach(x=>{T+=Math.max(0,parseInt(x.value)||0)*({h:3600,m:60,s:1}[x.dataset.p]||1)});sput(k,T);saveSoon()}});
   document.addEventListener('change',e=>{const t=e.target;if(t.dataset&&t.dataset.t3){const k=t.dataset.t3,T=Math.round(sget(k)||0),row=t.closest('.sr'),hasH=!!row.querySelector('[data-p=h]');row.querySelectorAll('[data-t3]').forEach(x=>{const p=x.dataset.p;x.value=p==='h'?Math.floor(T/3600):p==='m'?(hasH?Math.floor(T%3600/60):Math.floor(T/60)):T%60});save()}});
   ['gesturestart','gesturechange'].forEach(g=>document.addEventListener(g,e=>e.preventDefault()));
@@ -2965,5 +3176,6 @@ document.addEventListener('click',e=>{if(tab!=='chat')return;if(e.target.closest
   save();render();
 })();
 </script>
+<script src="modules/profile.js"></script>
 </body>
 </html>
