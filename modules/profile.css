@@ -1,0 +1,91 @@
+/* Pearla「檔案」模組樣式：只用主題變數（--ink / --soft / --line / --card），三個主題自動套用 */
+:root{--pf-tag:#d4608f;--pf-dot:var(--lav)}
+[data-theme=glass]{--pf-tag:#a9cdff;--pf-dot:#fff}
+[data-theme=glass][data-skin=journal]{--pf-tag:#3f78c4;--pf-dot:var(--lav)}
+
+/* 聯絡人小分類（做法同字卡分類按鈕） */
+.pf-cats{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;margin:0 -2px;scrollbar-width:none}
+.pf-cats::-webkit-scrollbar{display:none}
+.pf-chip{flex:0 0 auto;font-size:12px;padding:7px 12px}
+.pf-chip.on{background:var(--ink);color:#fff;border-color:var(--ink);border-style:solid}
+[data-theme=glass] .pf-chip.on{background:linear-gradient(#2b406147,#2b406147),#ffffff33;color:#fff;border-color:#fff}
+[data-theme=glass][data-skin=journal] .pf-chip.on{background:#dbe7f6;color:var(--ink);border-color:var(--lav)}
+
+/* 基本資料列表 */
+.pf-list{padding:2px 0;margin-bottom:6px}
+.pf-row{display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;min-height:48px;padding:6px 14px;margin:0;border:0;border-bottom:1px var(--bs,dashed) var(--line);border-radius:0;background:transparent;color:var(--ink);font:inherit;font-size:14px;text-align:left;cursor:pointer}
+.pf-row:last-child{border-bottom:0}
+.pf-k{flex:0 0 auto;max-width:11em;color:var(--ink)}
+.pf-v{flex:1;min-width:0;border:0!important;background:transparent!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border-radius:0!important;padding:8px 0!important;margin:0;text-align:left;font:inherit;font-size:14px;color:var(--ink);outline:0}
+.pf-v::placeholder{color:var(--soft);opacity:.75}
+.pf-sum{flex:0 1 auto;text-align:left;color:var(--soft);font-size:13px}
+.pf-arr{margin-left:auto;color:var(--soft);font-size:18px;line-height:1}
+
+/* 欄位分頁 */
+.pf-sub{font-size:12.5px;color:var(--soft);margin:-2px 2px 10px}
+.pf-add{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.pf-add input{flex:1;min-width:0;box-sizing:border-box;padding:9px 12px}
+.pf-add .btn{width:auto;margin:0;padding:8px 16px;flex:0 0 auto}
+.pf-item{display:flex;align-items:flex-start;gap:8px;padding:6px 8px 6px 14px;margin-bottom:10px}
+.pf-item textarea{flex:1;min-width:0;border:0!important;background:transparent!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;padding:8px 0!important;margin:0;resize:none;overflow:hidden;font:inherit;font-size:14px;line-height:1.7;color:var(--ink);outline:0}
+.pf-x{flex:0 0 auto;border:0;background:transparent;color:var(--soft);font-size:14px;padding:10px 8px;cursor:pointer;white-space:nowrap}
+
+/* 我的發現 */
+.pf-addfind{display:block;width:100%;margin:0 0 12px}
+.pf-find{padding:12px 14px;margin-bottom:10px;cursor:pointer}
+.pf-lead2{font-size:12px;color:var(--soft);margin-bottom:4px}
+.pf-ftxt{font-size:14.5px;line-height:1.7;color:var(--ink);white-space:pre-wrap;word-break:break-word}
+.pf-ftags{margin-top:6px;font-size:12.5px;line-height:1.8}
+.pf-fdate{margin-top:4px;font-size:11px;color:var(--soft);text-align:right}
+.pf-tg{color:var(--pf-tag);font-weight:600}
+
+/* 「我發現⋯⋯」輸入浮窗 */
+.pf-ov{position:fixed;inset:0;z-index:30;display:flex;align-items:flex-start;justify-content:center;padding:11vh 16px 16px;background:#2f476680;overflow-y:auto}
+.pf-pop{width:100%;max-width:440px}
+.pf-lead{margin:0 0 8px 4px;font-size:18px;font-weight:600;letter-spacing:.04em;color:#fff;text-shadow:0 1px 6px #00000055}
+.pf-ta{display:grid;min-height:140px;border:1.5px solid var(--line);border-radius:16px;background:#fffffff2;overflow:hidden;box-shadow:0 8px 24px #3d5a8330}
+[data-theme=glass] .pf-ta{background:#ffffff2e;border-color:#ffffffa6;-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4)}
+[data-theme=glass][data-skin=journal] .pf-ta{background:#fffffff2;border-color:#cfdcee;-webkit-backdrop-filter:none;backdrop-filter:none}
+.pf-hl,.pf-ta textarea{grid-area:1/1;box-sizing:border-box;margin:0;padding:12px 14px;font:inherit;font-size:15px;line-height:1.7;letter-spacing:normal;white-space:pre-wrap;word-break:break-word;overflow-wrap:anywhere;text-align:left}
+.pf-hl{color:var(--ink);pointer-events:none}
+.pf-ta textarea{width:100%;resize:none;overflow:hidden;border:0!important;background:transparent!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border-radius:0!important;color:transparent!important;-webkit-text-fill-color:transparent;caret-color:var(--ink);outline:0}
+.pf-ta textarea::placeholder{color:var(--soft);-webkit-text-fill-color:var(--soft);opacity:.8}
+.pf-fixed{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 4px}
+.pf-fix,.pf-plus{border:1px solid var(--line);background:#fffffff2;color:var(--ink);font:inherit;font-size:12.5px;line-height:1;padding:8px 11px;border-radius:999px;cursor:pointer}
+.pf-plus{width:34px;padding:8px 0;font-size:16px}
+.pf-fix.on{filter:brightness(.78)}
+[data-theme=glass] .pf-fix,[data-theme=glass] .pf-plus{background:#ffffff38;color:#fff;border-color:#ffffff99;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+[data-theme=glass][data-skin=journal] .pf-fix,[data-theme=glass][data-skin=journal] .pf-plus{background:#fffffff2;color:var(--ink);border-color:#cfdcee;-webkit-backdrop-filter:none;backdrop-filter:none}
+.pf-newtag{display:flex;gap:8px;margin:8px 0 2px}
+.pf-newtag[hidden]{display:none}
+.pf-newtag input{flex:1;min-width:0;box-sizing:border-box;padding:8px 12px}
+.pf-newtag .btn{width:auto;margin:0;padding:7px 14px}
+.pf-acts{display:flex;align-items:center;gap:8px;margin-top:14px}
+.pf-acts .btn{width:auto;margin:0;padding:8px 18px}
+.pf-acts .grow{flex:1}
+
+/* 線條規則（跟最新版一致）：大容器與列表分隔線＝虛線；分類按鈕、項目卡片、按鈕、輸入框＝實線 */
+.pf-chip{border-style:solid}
+.pf-item,.pf-find{border:1.5px solid var(--line);border-radius:14px}
+.pf-add .btn,.pf-acts .btn,.pf-addfind,.pf-newtag .btn{border-style:solid}
+
+/* 兩個部分的輸入、程度圈圈、刪除通知框 */
+.pf-add.pf-col{flex-direction:column;align-items:stretch;gap:10px}
+.pf-add.pf-col>*{flex:none}
+.pf-add.pf-col .btn{width:100%}
+.pf-cl{display:block}
+.pf-pl{display:block;font-size:11.5px;color:var(--soft);margin:0 0 4px 2px}
+.pf-cl input{width:100%}
+.pf-parts{flex:1;min-width:0}
+.pf-part+.pf-part{margin-top:2px}
+.pf-part .pf-pl{margin-top:4px;margin-bottom:0}
+.pf-item textarea{display:block;width:100%}
+.pf-lvrow{display:flex;align-items:center;gap:10px;padding:2px 0 6px}
+.pf-lvrow .pf-pl{margin:0}
+.pf-dots{display:flex;gap:8px}
+.pf-dot{flex:none;width:22px;height:22px;min-width:0;padding:0;border-radius:50%;border:1.8px solid var(--pf-dot);background:transparent;box-shadow:none;cursor:pointer}
+.pf-dot.on{background:var(--pf-dot)}
+.pf-cf{z-index:31;align-items:center;padding:0 28px}
+.pf-cfbox.box{width:100%;max-width:320px;max-height:none;overflow:hidden;border-radius:22px;border-bottom:1.5px var(--bs,dashed) var(--line)}
+.pf-cfa{display:flex;gap:8px}
+.pf-cfa .btn{flex:1;margin:0;border-style:solid}
