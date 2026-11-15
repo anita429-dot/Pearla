@@ -89,3 +89,9 @@
 .pf-cfbox.box{width:100%;max-width:320px;max-height:none;overflow:hidden;border-radius:22px;border-bottom:1.5px var(--bs,dashed) var(--line)}
 .pf-cfa{display:flex;gap:8px}
 .pf-cfa .btn{flex:1;margin:0;border-style:solid}
+
+/* 像素 */
+[data-theme=glass][data-skin=pixel]{--pf-tag:#8e38cb;--pf-dot:var(--lav)}
+[data-theme=glass][data-skin=pixel] .pf-chip.on{background:#ebdaf7;color:var(--ink);border-color:var(--lav)}
+[data-theme=glass][data-skin=pixel] .pf-ta{background:#fffffff2;border-color:#e1cdf0;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=pixel] .pf-fix,[data-theme=glass][data-skin=pixel] .pf-plus{background:#fffffff2;color:var(--ink);border-color:#e1cdf0;-webkit-backdrop-filter:none;backdrop-filter:none}
