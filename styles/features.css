@@ -1,0 +1,33 @@
+/* 功能頁樣式：日曆頁、通知、彈窗等（各主題共用） */
+/* 日曆頁 */
+.cal2-bar{display:flex;align-items:center;justify-content:space-between;margin:2px 0 10px}
+.cal2-bar b{font-weight:500;font-size:16px;color:var(--ink)}
+.cal2-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal2-w{text-align:center;font-size:12px;color:var(--soft);padding:4px 0}
+.cal2-d{position:relative;aspect-ratio:1;border:1.5px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);font:inherit;font-size:13px;display:flex;align-items:flex-start;justify-content:center;padding:5px 0 0;cursor:pointer}
+.cal2-d.o{visibility:hidden;pointer-events:none}
+.cal2-d.today{box-shadow:inset 0 0 0 1.5px var(--lav)}
+.cal2-d.sel{background:var(--lav);color:#fff;border-color:var(--lav)}
+.cal2-dots{position:absolute;bottom:4px;left:0;right:0;display:flex;justify-content:center;gap:3px}
+.cal2-dots i{width:5px;height:5px;border-radius:50%;background:var(--pk)}
+.cal2-dots i.me{background:var(--lav)}
+.cal2-d.sel .cal2-dots i{background:#fff}
+.cal2-box{margin-top:12px;padding:12px 14px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink)}
+.cal2-box h3{margin:0 0 8px;font-size:14px;font-weight:500}
+.cal2-ct{padding:8px 0;border-top:1px var(--bs,dashed) var(--line)}
+.cal2-ct:first-of-type{border-top:0;padding-top:0}
+.cal2-nm{font-size:14px;font-weight:500}
+.cal2-k{font-size:11.5px;color:var(--soft);margin-top:8px}
+.cal2-v{font-size:14px;line-height:1.7;word-break:break-word;white-space:pre-wrap}
+.cal2-re{color:var(--soft)}
+.cal2-in{width:100%;box-sizing:border-box;margin-top:4px;font:inherit;font-size:14px;padding:8px 10px;border-radius:12px;resize:vertical}
+/* 長按不選取、不出現儲存圖片選單 */
+img,svg,.av,.ti,.cal-big,.daily-message-trigger,[style*="url("]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+img{-webkit-user-drag:none;user-drag:none}
+/* 可點擊的聊天室通知 */
+.sys.go{cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+#bn.show[data-a]{cursor:pointer;pointer-events:auto}
+#bz{position:fixed;inset:0;z-index:80;display:grid;place-items:center;background:#0000004d}
+#bz .bzb{display:flex;align-items:center;gap:12px;padding:16px 22px;border-radius:16px;background:#fff;color:#333;box-shadow:0 8px 30px #0003;font-size:15px}
+#bz .bzs{width:20px;height:20px;border:3px solid currentColor;border-top-color:transparent;border-radius:50%;animation:bzs .8s linear infinite}
+@keyframes bzs{to{transform:rotate(360deg)}}
