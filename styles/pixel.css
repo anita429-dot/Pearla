@@ -95,3 +95,12 @@
 [data-skin=pixel] #bz .bzb{border:3px solid #2a1f5c;border-radius:0;box-shadow:4px 4px 0 #e6a9d4;background:#fbfaff;color:#2a1f5c}
 [data-skin=pixel] #bz .bzs{border-radius:0;animation:bzs .8s steps(8) infinite}
 [data-theme=glass][data-skin=pixel] .dm-toggle{border-radius:0;border:2px solid #2a1f5c;box-shadow:2px 2px 0 #2a1f5c}
+
+[data-theme=glass][data-skin=pixel] #sh.chat-pop .emo-sticky{background:#fcf8ff}
+
+/* 像素主題的月曆：英文與年月全部換成像素字體，跟整體一致 */
+[data-theme=glass][data-skin=pixel] .gcal-h,[data-theme=glass][data-skin=pixel] .gcal-cap,[data-theme=glass][data-skin=pixel] .gcal-ym,[data-theme=glass][data-skin=pixel] .gcal-ft em,[data-theme=glass][data-skin=pixel] .gcal-ft span{font-family:'DotGothic16','PingFang TC','Noto Sans TC',monospace;font-style:normal;font-weight:400}
+[data-theme=glass][data-skin=pixel] .gcal-h{font-size:9.5cqw;letter-spacing:.06em}
+[data-theme=glass][data-skin=pixel] .gcal-cap{font-size:2.8cqw;letter-spacing:.2em}
+[data-theme=glass][data-skin=pixel] .gcal-ym{font-size:3.6cqw;letter-spacing:.14em}
+[data-theme=glass][data-skin=pixel] .gcal-ft em{font-size:3.4cqw;letter-spacing:.04em}

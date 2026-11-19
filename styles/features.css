@@ -37,12 +37,11 @@ img{-webkit-user-drag:none;user-drag:none}
 .cal2-n{line-height:1.15}
 .cal2-lu{font-size:9px;line-height:1.1;color:var(--soft);margin-top:1px}
 .cal2-d.sel .cal2-lu{color:#fff}
-.cal2-d.l1{border-color:#e48aa6}
-.cal2-d.l15{border-color:#6fa8dc}
+.cal2-d.l1,.cal2-d.l15{border-color:#e48aa6}
 .cal2-dots i.ev{background:#e0a34a}
 .cal2-lg{display:flex;align-items:center;gap:6px;justify-content:flex-end;font-size:11px;color:var(--soft);margin:6px 2px 0}
 .cal2-lg i{width:12px;height:12px;border-radius:4px;border:1.5px solid;display:inline-block;margin-left:8px}
-.cal2-lg i.l1{border-color:#e48aa6}.cal2-lg i.l15{border-color:#6fa8dc}
+.cal2-lg i.l1{border-color:#e48aa6}
 .cal2-tabs{margin-top:14px}
 .cal2-tm{font-weight:400;color:var(--soft);font-size:11.5px;margin-left:8px}
 .cal2-moods{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px}
@@ -63,3 +62,41 @@ img{-webkit-user-drag:none;user-drag:none}
 .rem-leap{display:flex;align-items:center;gap:4px;font-size:13px;color:var(--ink)}
 .ml-ev{white-space:nowrap;overflow:hidden}
 .ml-ev span{display:inline-block;border:1px solid currentColor;border-radius:5px;padding:0 5px;margin-right:4px;line-height:1.3}
+
+/* 主頁月曆（黏土／月眠）：圖上疊月曆數字與年／月 */
+.cal-art{display:block;position:relative;container-type:inline-size}
+.cal-art img{width:100%;height:auto;display:block}
+.cal-art .ca{position:absolute;transform:translate(-50%,-50%);font-size:3.6vw;font-size:5.2cqw;font-weight:600;line-height:1;color:var(--ca-ink,#7468b0);pointer-events:none;font-variant-numeric:tabular-nums}
+.cal-art .ca.t{font-size:3.2vw;font-size:4.6cqw;white-space:nowrap}
+.cal-art .ca.today{width:8.4cqw;height:8.4cqw;display:grid;place-items:center;border-radius:50%;background:#aca6e4;color:#fff}
+[data-theme=glass][data-skin=moon] .cal-art{--ca-ink:#5b45a8}
+[data-theme=glass][data-skin=moon] .cal-art .ca.today{background:#7c63c9}
+[data-theme=lav] .cal-big{width:90%;margin-left:auto;margin-right:auto}
+/* 黏土主題：漸變背景、主頁圖示不要虛線外框、雙人頭像卡實線 */
+[data-theme=lav] #app{background:linear-gradient(165deg,#fdf9ff 0%,#f1ecff 36%,#e7ebff 64%,#fdeaf2 100%)}
+[data-theme=lav] #v.cards-view{background-color:transparent}
+[data-theme=lav] .tile{border-color:transparent}
+[data-theme=lav] .card.couple{border-style:solid}
+/* 心情 */
+.cal2-pick{width:auto;margin:6px 0 8px;padding:6px 14px;font-size:13px}
+.cal2-mrow{display:flex;gap:8px}
+.cal2-mrow .cal2-in{margin-top:0}
+.cal2-em{width:58px;flex:none;text-align:center;padding-left:6px;padding-right:6px}
+#calpop{position:fixed;inset:0;z-index:70;background:transparent}
+.calpop-box{position:absolute;max-width:min(340px,calc(100vw - 24px));max-height:50vh;overflow:auto;background:var(--bg);color:var(--ink);border:1.5px solid var(--line);border-radius:14px;padding:10px;box-shadow:0 8px 24px #3c366a33}
+.calpop-box .cal2-moods{margin:0}
+
+.cal-art.moon .ca.t{font-size:3.7vw;font-size:3.9cqw}
+
+/* 未讀數字：貼在圖示（圖片／簡筆畫外框）的左上角，剛好蓋住那個角 */
+.tile .nb.mbd{top:3px;right:auto;left:calc(50% - 30px);display:block;z-index:2}
+/* 下拉選單：字色、底色跟著主題，不會混成一色 */
+select{font:inherit;font-size:15px;color:var(--ink);background-color:var(--card);border:1.5px solid var(--line);border-radius:13px;padding:9px 10px;outline:none;max-width:100%}
+select option{color:#3d3a5c;background:#fff}
+/* 自選字體（美化 → 統一更改） */
+html[data-ff] body,html[data-ff] button,html[data-ff] input,html[data-ff] textarea,html[data-ff] select{font-family:var(--ff)!important}
+.font-opt{display:block;width:100%;text-align:left;margin:0 0 8px;font-size:15px}
+.font-opt.on{border-color:var(--lav);box-shadow:0 0 0 1.5px var(--lav) inset}
+
+/* 像素、手帳（藍／綠）：設置與字卡的大分類陰影改白色 */
+[data-theme=glass][data-skin=pixel] .stab,[data-theme=glass][data-skin=journal]:not([data-tone=dark]) .stab{text-shadow:0 2px 5px #fff}
