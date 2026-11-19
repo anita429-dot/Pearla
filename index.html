@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500&family=Fredoka:wght@500&family=DotGothic16&family=Press+Start+2P&display=swap">
-<script>try{var __d=document.documentElement,__k=JSON.parse(localStorage.getItem("pearla-skin")||"null");var __q=(location.search.match(/[?&]splash=(\w+)/)||[])[1];__d.dataset.sp=(__q&&{fog:1,clay:1,moon:1,pixel:1}[__q])?__q:(__k&&__k.s==="moon")?"moon":(__k&&(__k.t==="pixel"||__k.s==="pixel"))?"pixel":(__k&&__k.t==="glass")?"fog":"clay";if(__k&&__k.t){__d.dataset.theme=__k.t==="glass"?"glass":"lav";if(__k.s)__d.dataset.skin=__k.s;if(__k.k)__d.dataset.tone=__k.k;__d.classList.add("boot");setTimeout(function(){__d.classList.remove("boot")},3000)}}catch(e){document.documentElement.dataset.sp="clay"}</script>
+<script>try{var __d=document.documentElement,__k=JSON.parse(localStorage.getItem("pearla-skin")||"null");var __q=(location.search.match(/[?&]splash=(\w+)/)||[])[1];__d.dataset.sp=(__q&&{fog:1,clay:1,moon:1,pixel:1,cat:1}[__q])?__q:(__k&&__k.s==="cat")?"cat":(__k&&__k.s==="moon")?"moon":(__k&&(__k.t==="pixel"||__k.s==="pixel"))?"pixel":(__k&&__k.t==="glass")?"fog":"clay";if(__k&&__k.t){__d.dataset.theme=__k.t==="glass"?"glass":"lav";if(__k.s)__d.dataset.skin=__k.s;if(__k.k)__d.dataset.tone=__k.k;__d.classList.add("boot");setTimeout(function(){__d.classList.remove("boot")},3000)}}catch(e){document.documentElement.dataset.sp="clay"}</script>
 <link rel="stylesheet" href="styles/base.css">
 <link rel="stylesheet" href="modules/profile.css">
 <link rel="stylesheet" href="styles/splash.css">
@@ -401,7 +401,48 @@ const PearlaSplash={
 };
 
 return PearlaSplash}
-var SPM={fog:makeFog,clay:makeClay,moon:makeMoon,pixel:makePixel};var sp=SPM[document.documentElement.dataset.sp]||makeClay;
+function makeCat(){
+const $=s=>document.querySelector(s);
+const splash=$('#splash'),stEl=$('#sp-status'),MIN_MS=3000;
+let layer=$('#sp-layer');if(!layer){layer=document.createElement('div');layer.id='sp-layer';splash.insertBefore(layer,splash.firstChild)}
+let t0=0,done=false,tms=[];const T=(f,ms)=>{tms.push(setTimeout(f,ms))};
+const SVG=`<div class="ct-wrap"><svg class="ct-svg" viewBox="-150 -150 300 265" xmlns="http://www.w3.org/2000/svg">
+<g fill="#26262b"><path class="ct-tw" d="M-122 -96 l3 9 9 3 -9 3 -3 9 -3 -9 -9 -3 9 -3z"/><path class="ct-tw" style="animation-delay:.9s" d="M118 -70 l2.5 7 7 2.5 -7 2.5 -2.5 7 -2.5 -7 -7 -2.5 7 -2.5z"/><path class="ct-tw" style="animation-delay:1.7s" d="M-98 -20 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z"/></g>
+<path d="M-132 106H132" stroke="#26262b" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 9" fill="none"/>
+<path class="ct-tail" d="M46 98C96 102 104 50 80 30" stroke="#26262b" stroke-width="15" stroke-linecap="round" fill="none"/>
+<ellipse cx="0" cy="62" rx="52" ry="43" fill="#26262b"/>
+<g class="ct-head">
+<path d="M-54 -20L-50 -76 -12 -42Z" fill="#26262b" stroke="#26262b" stroke-width="9" stroke-linejoin="round"/>
+<path d="M54 -20L50 -76 12 -42Z" fill="#26262b" stroke="#26262b" stroke-width="9" stroke-linejoin="round"/>
+<path d="M-45 -42L-43 -62 -29 -49Z M45 -42L43 -62 29 -49Z" fill="#f08aa0"/>
+<ellipse cx="0" cy="-12" rx="62" ry="45" fill="#26262b"/>
+<g stroke="#f5f3f0" stroke-width="2.5" stroke-linecap="round"><path d="M-50 2L-64 -1M-50 9L-63 13M50 2L64 -1M50 9L63 13"/></g>
+<ellipse cx="0" cy="3" rx="4.5" ry="3" fill="#f08aa0"/>
+<g class="ct-fish"><g transform="translate(0 -66)" stroke="#26262b" stroke-width="3" stroke-linejoin="round"><path class="ct-ft" d="M-12 0L-27 -10V10Z" fill="#fffefc"/><ellipse cx="2" cy="0" rx="15" ry="9" fill="#fffefc"/><path d="M-2-8Q3-16 9-8" fill="#f08aa0"/><path d="M-3-4V4" stroke="#f08aa0" stroke-linecap="round"/><circle cx="10" cy="-2" r="2" fill="#26262b" stroke="none"/></g></g>
+<g class="ct-look">
+<g class="ct-bl"><g class="ct-op"><ellipse cx="-22" cy="-14" rx="5.5" ry="10" fill="#fff"/><ellipse cx="22" cy="-14" rx="5.5" ry="10" fill="#fff"/></g></g>
+</g></g>
+<g fill="#26262b" stroke="#f5f3f0" stroke-width="1.5"><g class="ct-pawL"><ellipse cx="-26" cy="96" rx="15" ry="10"/><path d="M-30 98v4M-22 98v4" stroke-linecap="round"/></g><g class="ct-pawR"><ellipse cx="26" cy="96" rx="15" ry="10"/><path d="M22 98v4M30 98v4" stroke-linecap="round"/></g></g>
+<g class="ct-m1" stroke="#26262b" stroke-width="3.5" stroke-linecap="round" fill="none" transform="translate(-105 82)"><path d="M-30-26L-38-36M-36-10L-47-12M-22-34V-46"/></g>
+<g class="ct-m2" stroke="#26262b" stroke-width="3.5" stroke-linecap="round" fill="none" transform="translate(105 82)"><path d="M30-26L38-36M36-10L47-12M22-34V-46"/></g>
+<g transform="translate(0 82)"><g class="ct-px"><g class="ct-py"><g class="ct-pr">
+<circle r="22" fill="#fffefc" stroke="#26262b" stroke-width="4.5"/>
+<path d="M-12-5A13 13 0 0 1-4-13" stroke="#f08aa0" stroke-width="3.5" stroke-linecap="round" fill="none"/><circle cx="-14" cy="3" r="1.8" fill="#f08aa0"/>
+</g></g></g></g>
+</svg></div>`;
+function mount(){layer.innerHTML=SVG}
+mount();
+splash.addEventListener('pointerdown',e=>{const r=splash.getBoundingClientRect(),h=document.createElement('div');h.className='ct-heart';
+  h.style.left=(e.clientX-r.left)+'px';h.style.top=(e.clientY-r.top)+'px';
+  h.innerHTML='<svg viewBox="0 0 26 24"><path d="M13 22C4 15 2 10 2 7a5.5 5.5 0 0 1 11-1 5.5 5.5 0 0 1 11 1c0 3-2 8-11 15z" fill="#f08aa0" stroke="#26262b" stroke-width="2.4" stroke-linejoin="round"/></svg>';
+  layer.appendChild(h);setTimeout(()=>h.remove(),1000)});
+return{
+  start(){done=false;splash.classList.remove('out');splash.style.display='';stEl.classList.remove('ok');mount();tms.forEach(clearTimeout);tms=[];t0=performance.now()},
+  finish(){if(done)return;done=true;const wait=Math.max(0,MIN_MS-(performance.now()-t0));
+    T(()=>{stEl.classList.add('ok');
+      T(()=>{splash.classList.add('out');T(()=>{if(done)splash.style.display='none'},950)},1000)},wait)}
+}}
+var SPM={fog:makeFog,clay:makeClay,moon:makeMoon,pixel:makePixel,cat:makeCat};var sp=SPM[document.documentElement.dataset.sp]||makeClay;
 try{window.PearlaSplash=sp();window.PearlaSplash.start();setTimeout(function(){window.PearlaSplash.finish()},8000)}catch(e){var s=document.getElementById('splash');if(s)s.style.display='none'}
 })();
 </script>
