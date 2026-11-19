@@ -93,7 +93,7 @@
 [data-skin=cat] .tab[data-t] img{width:44px;height:42px}
 /* 黑貓：備忘錄、經期卡（白色格子在圖的下半部） */
 [data-theme=glass][data-skin=cat] .memo-card>img{visibility:visible;filter:drop-shadow(0 3px 0 #2d2d3222)}
-[data-theme=glass][data-skin=cat] .memo-txt .ml{left:12%;width:72%;height:11.5%;font-size:5.6cqw;line-height:1.1;padding:0 0 .6cqw;color:var(--ink);text-shadow:none}
+[data-theme=glass][data-skin=cat] .memo-txt .ml{left:12%;width:72%;height:12.5%;font-size:5.6cqw;line-height:1.1;padding:0 0 .6cqw;color:var(--ink);text-shadow:none}
 [data-theme=glass][data-skin=cat] .per-txt{left:13%;top:44%;width:72%;height:46%;color:var(--ink);text-shadow:none}
 [data-theme=glass][data-skin=cat] .per-txt small,[data-theme=glass][data-skin=cat] .per-txt b{color:var(--ink);opacity:1}
 [data-theme=glass][data-skin=cat] .ml-ev span{border-color:#2d2d32}

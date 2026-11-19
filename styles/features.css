@@ -88,8 +88,8 @@ img{-webkit-user-drag:none;user-drag:none}
 
 .cal-art.moon .ca.t{font-size:3.7vw;font-size:3.9cqw}
 
-/* 未讀數字：貼在圖示（圖片／簡筆畫外框）的左上角，剛好蓋住那個角 */
-.tile .nb.mbd{top:3px;right:auto;left:calc(50% - 30px);display:block;z-index:2}
+/* 未讀數字：貼在圖示的右上角 */
+.tile .nb.mbd{top:1px;right:auto;left:calc(50% + 14px);display:block;z-index:2}
 /* 下拉選單：字色、底色跟著主題，不會混成一色 */
 select{font:inherit;font-size:15px;color:var(--ink);background-color:var(--card);border:1.5px solid var(--line);border-radius:13px;padding:9px 10px;outline:none;max-width:100%}
 select option{color:#3d3a5c;background:#fff}
@@ -102,6 +102,15 @@ html[data-ff] body,html[data-ff] button,html[data-ff] input,html[data-ff] textar
 [data-theme=glass][data-skin=pixel] .stab,[data-theme=glass][data-skin=journal]:not([data-tone=dark]) .stab{text-shadow:0 2px 5px #fff}
 
 /* 分類編輯：名稱直接在浮窗內修改 */
-.catedit-nm{flex:1;min-width:0;border:1.3px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit;font-size:15px;padding:6px 10px;margin:0}
+.catedit-nm{flex:1;min-width:0;border:0;background:none;color:var(--ink);font:inherit;font-size:15px;padding:0 4px;margin:0}
 /* 主題頁：每個主題右邊的字體 */
 .th-font{margin-left:auto;margin-right:8px;font-size:12px;color:var(--soft);padding:3px 8px;border:1.2px solid var(--line);border-radius:999px;white-space:nowrap;cursor:pointer}
+
+/* 分類編輯：標題與「完成」固定，只有清單捲動 */
+.box.catedit-box{display:flex;flex-direction:column;overflow:hidden;max-height:80vh;padding-bottom:16px}
+.catedit-box>h2{flex:none}
+.catedit-list{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:2px 0}
+.catedit-box>.btn.catedit-done{flex:none;margin-top:10px;width:100%}
+.catedit-row .mv{width:30px;height:34px;display:grid;place-items:center;padding:0;border:0;background:none;color:var(--soft)}
+.catedit-row.holding{border-style:solid;border-color:var(--lav)}
+.catedit-row.drag{position:relative;z-index:5;background:var(--bg);border-style:solid;border-color:var(--lav);box-shadow:0 10px 24px #3c366a33}
