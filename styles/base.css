@@ -111,7 +111,7 @@ textarea{resize:vertical;line-height:1.7}
 .chh{display:flex;align-items:center;gap:10px;padding-bottom:10px}
 .cl{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:11px;padding:4px 2px}
 .m{display:flex;align-items:flex-end;gap:6px}
-.m .msgav{width:40px;height:40px;font-size:15px;border-width:1.2px}
+.m .msgav{width:34px;height:34px;font-size:15px;border-width:1.2px}
 .m .msgav.ph{background-size:cover}
 .m .b{min-width:0}
 .m.me{flex-direction:row-reverse}
@@ -190,7 +190,7 @@ input[type=range]{padding:0;border:none;background:none;accent-color:var(--lav)}
 .chat-pop-grid{gap:4px}
 .ch .m .b{padding:6px 9px}
 .ch .m{gap:5px}
-.ch .m .msgav{width:40px;height:40px}
+.ch .m .msgav{width:34px;height:34px}
 .ch .m .b + .mt{font-size:10px}
 .settings-lock{position:absolute;left:6px;top:-34px;transform:none;width:30px;height:30px;border:0;border-radius:50%;display:grid;place-items:center;padding:5px;background:#5f4a96;color:#fff;opacity:0;pointer-events:none;cursor:pointer;transition:.2s;z-index:3}
 .settings-lock.show{opacity:1;pointer-events:auto}
@@ -429,7 +429,7 @@ mark{background:#aca6e455;color:inherit;border-radius:3px;padding:0 1px}
 .cstar.on{color:var(--pk)}
 .tile{position:relative;text-shadow:none}
 .tile-label{display:inline-block;max-width:100%;padding:0 4px;border:0;border-radius:0;background:transparent;color:var(--ink);font-size:11px;line-height:1.25;white-space:nowrap;box-shadow:none;text-shadow:0 0 2px rgba(255,255,255,.98),0 0 5px rgba(255,255,255,.9)}
-.tile .nb.mbd{top:3px;right:5px}
+.tile .nb.mbd{top:3px;right:5px;display:block}
 .brow{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:13px}
 .bctl{display:grid;grid-template-columns:104px 64px;gap:8px;align-items:center}
 .bctl>*{margin:0!important;width:100%!important;box-sizing:border-box}
@@ -817,8 +817,11 @@ mark{background:#aca6e455;color:inherit;border-radius:3px;padding:0 1px}
 .gcal-g .o{visibility:hidden}
 /* 聊天室：吸頂大分類、表情分類、備用頭像 */
 #sh.chat-pop .chat-pop-cats{position:sticky;top:-8px;z-index:5;margin-top:-8px;padding-top:8px;background:var(--bg)}
-.emo-cats{display:flex;gap:4px;overflow-x:auto;padding:2px 0 4px;scrollbar-width:none}
+.emo-sticky{position:sticky;top:-8px;z-index:6;margin-top:-8px;padding-top:8px;background:var(--bg)}
+#sh.chat-pop .emo-sticky .chat-pop-cats{position:static;margin:0;padding-top:0;background:transparent}
+.emo-cats{display:flex;gap:4px;overflow-x:auto;padding:5px 0 5px;scrollbar-width:none}
 .emo-cats::-webkit-scrollbar{display:none}
+.emo-cats button.on{border-color:var(--lav);color:var(--ink);background:var(--card)}
 .emo-cats button{flex:0 0 auto;border:1.1px solid var(--line);background:transparent;border-radius:999px;padding:3px 9px;font-size:11px;color:var(--soft);white-space:nowrap}
 .emo-h{margin:8px 2px 2px;font-size:12px;color:var(--soft)}
 .av-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding-top:2px}
@@ -833,3 +836,27 @@ mark{background:#aca6e455;color:inherit;border-radius:3px;padding:0 1px}
 .dm-toggle{position:absolute;top:-8px;right:0;width:36px;height:36px;padding:0;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--soft);display:grid;place-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .dm-toggle svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .dm-toggle:active{transform:scale(.94)}
+
+/* 聊天室「⋯」彈窗：拉高；互動分頁的按鍵縮小 */
+#sh.chat-pop.more .box{height:260px;min-height:260px;max-height:260px}
+#sh.chat-pop.more .chat-pop-grid.sm .pop-action{width:68px;height:68px;gap:3px}
+#sh.chat-pop.more .chat-pop-grid.sm .pat-icon{width:26px;height:26px}
+#sh.chat-pop.more .chat-pop-grid.sm .pop-action small{font-size:12px}
+
+/* 錄音 */
+.chh .ib.rec-on{color:var(--lav)}
+.rec-box{flex:1;min-width:0;display:flex;align-items:center;gap:6px;border:1.1px solid var(--line);border-radius:999px;padding:3px 4px 3px 12px;background:var(--card);min-height:36px}
+.rec-info{flex:1;min-width:0;display:flex;align-items:center;gap:7px;font-size:13px;color:var(--soft);white-space:nowrap;overflow:hidden}
+.rec-info b{font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+.rec-dot{flex:none;width:9px;height:9px;border-radius:50%;background:#e5484d;opacity:.18}
+.rec-box.live .rec-dot{opacity:1;animation:recblink 1s ease-in-out infinite}
+@keyframes recblink{50%{opacity:.25}}
+.rec-mic{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;border:1.1px solid var(--line);background:var(--bg);color:var(--ink);padding:0}
+.rec-box.live .rec-mic{background:#e5484d;border-color:#e5484d;color:#fff}
+.rec-pl,.vm-pl{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;border:1.1px solid var(--line);background:var(--bg);color:var(--ink);padding:0}
+.rec-x{flex:none;border:0;background:transparent;color:var(--soft);font-size:12px;padding:2px 4px}
+.rec-wave{display:inline-flex;align-items:center;gap:3px;height:18px}
+.rec-wave i{display:block;width:3px;border-radius:2px;background:currentColor;opacity:.45}
+.rec-wave i:nth-child(1){height:6px}.rec-wave i:nth-child(2){height:12px}.rec-wave i:nth-child(3){height:16px}.rec-wave i:nth-child(4){height:9px}.rec-wave i:nth-child(5){height:14px}.rec-wave i:nth-child(6){height:7px}.rec-wave i:nth-child(7){height:11px}
+.vm{display:flex;align-items:center;gap:8px;min-width:120px}
+.vm b{font-weight:400;font-size:12px}

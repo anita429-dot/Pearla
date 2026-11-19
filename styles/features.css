@@ -31,3 +31,35 @@ img{-webkit-user-drag:none;user-drag:none}
 #bz .bzb{display:flex;align-items:center;gap:12px;padding:16px 22px;border-radius:16px;background:#fff;color:#333;box-shadow:0 8px 30px #0003;font-size:15px}
 #bz .bzs{width:20px;height:20px;border:3px solid currentColor;border-top-color:transparent;border-radius:50%;animation:bzs .8s linear infinite}
 @keyframes bzs{to{transform:rotate(360deg)}}
+
+/* 月曆：農曆、提醒、事件紀錄 */
+.cal2-d{flex-direction:column;align-items:center;justify-content:flex-start;gap:0;padding-top:3px}
+.cal2-n{line-height:1.15}
+.cal2-lu{font-size:9px;line-height:1.1;color:var(--soft);margin-top:1px}
+.cal2-d.sel .cal2-lu{color:#fff}
+.cal2-d.l1{border-color:#e48aa6}
+.cal2-d.l15{border-color:#6fa8dc}
+.cal2-dots i.ev{background:#e0a34a}
+.cal2-lg{display:flex;align-items:center;gap:6px;justify-content:flex-end;font-size:11px;color:var(--soft);margin:6px 2px 0}
+.cal2-lg i{width:12px;height:12px;border-radius:4px;border:1.5px solid;display:inline-block;margin-left:8px}
+.cal2-lg i.l1{border-color:#e48aa6}.cal2-lg i.l15{border-color:#6fa8dc}
+.cal2-tabs{margin-top:14px}
+.cal2-tm{font-weight:400;color:var(--soft);font-size:11.5px;margin-left:8px}
+.cal2-moods{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px}
+.cal2-mc{border:1.3px solid var(--line);border-radius:999px;background:var(--bg);color:var(--ink);font:inherit;font-size:13px;padding:4px 10px;cursor:pointer}
+.cal2-mc.on{background:var(--lav);border-color:var(--lav);color:#fff}
+.cal2-mc.add{border-style:dashed;color:var(--soft)}
+.cal2-tools{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.cal2-tools .btn{width:auto;margin:0;padding:6px 12px;font-size:13px;flex:none}
+.cal2-row{display:flex;align-items:center;gap:8px}
+.cal2-row.off{opacity:.55}
+.cal2-row .grow{flex:1}
+.cal2-sub{display:block;color:var(--soft);font-size:12px;line-height:1.5;word-break:break-word}
+.cal2-row .sw{flex:none;margin:0}
+.rem-ed{flex:none;border:0;background:transparent;color:var(--soft);font-size:17px;padding:2px 4px;cursor:pointer}
+.rem-lrow{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.rem-lrow .cal2-in{width:auto;margin:0}
+.rem-lrow #rm-ly{width:86px}
+.rem-leap{display:flex;align-items:center;gap:4px;font-size:13px;color:var(--ink)}
+.ml-ev{white-space:nowrap;overflow:hidden}
+.ml-ev span{display:inline-block;border:1px solid currentColor;border-radius:5px;padding:0 5px;margin-right:4px;line-height:1.3}
