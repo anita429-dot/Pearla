@@ -90,8 +90,42 @@
 .pf-cfa{display:flex;gap:8px}
 .pf-cfa .btn{flex:1;margin:0;border-style:solid}
 
+[data-theme=glass][data-skin=moon]{--pf-tag:#d6c0ff;--pf-dot:#fff}
+[data-theme=glass][data-skin=moon]{--pf-tag:#c8a9ff;--pf-dot:#fff}
+[data-theme=glass][data-skin=moon] .pf-chip.on{background:linear-gradient(#402b6147,#402b6147),#ffffff33;color:#fff;border-color:#fff}
+
+/* 我的發現：兩個輸入框、編輯筆、展開詳細、後續添加 */
+.pf-note{display:block;width:100%;box-sizing:border-box;margin:10px 0 0;padding:10px 14px;min-height:76px;font:inherit;font-size:14px;line-height:1.7;resize:none;border:1.5px solid var(--line);border-radius:16px;background:#fffffff2;color:var(--ink);outline:0}
+.pf-note::placeholder{color:var(--soft);opacity:.8}
+[data-theme=glass] .pf-note{background:#ffffff2e;border-color:#ffffffa6;color:#fff;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+[data-theme=glass] .pf-note::placeholder{color:#ffffffcc}
+[data-theme=glass][data-skin=journal] .pf-note{background:#fffffff2;border-color:#cfdcee;color:var(--ink);-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=journal] .pf-note::placeholder{color:var(--soft)}
+.pf-find{position:relative;cursor:default}
+.pf-fmain{cursor:pointer;padding-right:30px}
+.pf-fedit{position:absolute;top:6px;right:6px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;padding:0;margin:0;border:0;background:transparent;color:var(--soft);cursor:pointer;box-shadow:none}
+.pf-fnote{margin:6px 0 2px;padding:8px 10px;border-radius:10px;background:#8a8aa012;font-size:13.5px;line-height:1.7;color:var(--ink);white-space:pre-wrap;word-break:break-word}
+.pf-fnote.none{color:var(--soft);font-size:12.5px}
+.pf-ffoot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
+.pf-ffoot .pf-fdate{margin:0}
+.pf-fupb{border:1px solid var(--line);background:transparent;color:var(--soft);font:inherit;font-size:12px;line-height:1;padding:6px 11px;border-radius:999px;cursor:pointer}
+.pf-fupb.on{color:var(--ink);border-color:var(--ink)}
+.pf-fups{margin-top:10px;padding-top:10px;border-top:1px var(--bs,dashed) var(--line)}
+.pf-fuadd{display:flex;gap:8px;align-items:flex-end}
+.pf-fuadd textarea{flex:1;min-width:0;box-sizing:border-box;padding:9px 12px;resize:none;font:inherit;font-size:14px;line-height:1.6}
+.pf-fuadd .btn{width:auto;margin:0;padding:8px 16px;flex:0 0 auto;border-style:solid}
+.pf-fu{margin-top:10px;padding-left:10px;border-left:2px solid var(--line)}
+.pf-fut{font-size:14px;line-height:1.7;color:var(--ink);white-space:pre-wrap;word-break:break-word}
+.pf-fud{margin-top:2px;font-size:11px;color:var(--soft)}
+.pf-fuempty{margin-top:8px;font-size:12px;color:var(--soft)}
+
 /* 像素 */
 [data-theme=glass][data-skin=pixel]{--pf-tag:#8e38cb;--pf-dot:var(--lav)}
 [data-theme=glass][data-skin=pixel] .pf-chip.on{background:#ebdaf7;color:var(--ink);border-color:var(--lav)}
 [data-theme=glass][data-skin=pixel] .pf-ta{background:#fffffff2;border-color:#e1cdf0;-webkit-backdrop-filter:none;backdrop-filter:none}
 [data-theme=glass][data-skin=pixel] .pf-fix,[data-theme=glass][data-skin=pixel] .pf-plus{background:#fffffff2;color:var(--ink);border-color:#e1cdf0;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=pixel] .pf-note{background:#fffffff2;border-color:#e1cdf0;color:var(--ink);-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=pixel] .pf-note::placeholder{color:var(--soft)}
+
+[data-theme=glass][data-skin=cat]{--pf-tag:#2d2d32;--pf-dot:#2d2d32}
+[data-theme=glass][data-skin=cat] .pf-chip.on{background:#2d2d32;color:#fff;border-color:#2d2d32}
