@@ -1,0 +1,103 @@
+/* 黑貓（data-skin=cat）：黑白手繪貓咪圖示，沿用手帳的版面，顏色改成黑白灰 */
+:root[data-theme=glass][data-skin=cat]{--ink:#26262b;--soft:#6d6d75;--tsh:#ffffffcc;--line:#2d2d32;--lav:#2d2d32;--bg:#f5f3f0;--card:#fffffff2;--bub:#ffffff;--me:#e8e5e0;--pk:#f08aa0;--bs:solid;--pf-tag:#2d2d32;--pf-dot:#2d2d32;--jgrid:radial-gradient(circle,#d8d4ce 1px,transparent 1.4px) 0 0/18px 18px,linear-gradient(180deg,#fbfaf8,#ece9e4)}
+[data-theme=glass][data-skin=cat] body{background:#eeeeee;text-shadow:none}
+[data-theme=glass][data-skin=cat] .tile-label{text-shadow:none}
+[data-theme=glass][data-skin=cat] #app{background:var(--jgrid)}
+[data-theme=glass][data-skin=cat] .cards-top::before{background:var(--tbi,var(--jgrid)) center/cover no-repeat}
+[data-theme=glass][data-skin=cat] .card,[data-theme=glass][data-skin=cat] .tabs,[data-theme=glass][data-skin=cat] .row,[data-theme=glass][data-skin=cat] .theme-opt{background:#ffffffe6;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=cat] .card{border-radius:10px;box-shadow:0 3px 10px #76767626}
+[data-theme=glass][data-skin=cat] .tabs{box-shadow:none}
+[data-theme=glass][data-skin=cat] .card,[data-theme=glass][data-skin=cat] .tabs,[data-theme=glass][data-skin=cat] .row,[data-theme=glass][data-skin=cat] .seg,[data-theme=glass][data-skin=cat] .btn:not(.s),[data-theme=glass][data-skin=cat] .chip,[data-theme=glass][data-skin=cat] .theme-opt,[data-theme=glass][data-skin=cat] .ci,[data-theme=glass][data-skin=cat] .ib{border:1px solid #dadada}
+[data-theme=glass][data-skin=cat] .row.on,[data-theme=glass][data-skin=cat] .chip.on,[data-theme=glass][data-skin=cat] .theme-opt.on{border-color:var(--lav);box-shadow:0 0 0 1px var(--lav)}
+[data-theme=glass][data-skin=cat] input:not([type=range]):not([type=color]),[data-theme=glass][data-skin=cat] textarea{border:1px solid #dadada;background:#fffffff2}
+[data-theme=glass][data-skin=cat] #cq,[data-theme=glass][data-skin=cat] #sq,[data-theme=glass][data-skin=cat] .card-add input{background:#fffffff2;border:1px solid #dadada;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=cat] input::placeholder,[data-theme=glass][data-skin=cat] textarea::placeholder{color:#a7a7a7}
+[data-theme=glass][data-skin=cat] .btn:not(.s),[data-theme=glass][data-skin=cat] .chip,[data-theme=glass][data-skin=cat] .ib,[data-theme=glass][data-skin=cat] .seg{background:#ffffffd9;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=cat] .acts2 .btn{background:linear-gradient(160deg,#8f8f8ff2,#656565ee);color:#fff;border:1px solid #ffffff66}
+[data-theme=glass][data-skin=cat] .tab.on,[data-theme=glass][data-skin=cat] .seg .on{background:#e5e5e5;box-shadow:inset 0 0 0 1px #c8c8c8}
+[data-theme=glass][data-skin=cat] .btn.s{background:linear-gradient(180deg,#c0c0c0,#9a9a9a);border:1px solid #ffffff99;color:#fff;box-shadow:0 2px 6px #66666633;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=cat] .sw{background:#e7e7e7;border-color:#d2d2d2}
+[data-theme=glass][data-skin=cat] .sw::after{background:#fff;box-shadow:0 1px 3px #62626255}
+[data-theme=glass][data-skin=cat] .sw.on{background:var(--lav);border-color:var(--lav)}
+[data-theme=glass][data-skin=cat] #sh{background:#4d4d4d40}
+[data-theme=glass][data-skin=cat] .box,[data-theme=glass][data-skin=cat] #daily-pop .daily-box,[data-theme=glass][data-skin=cat] #sh.chat-pop .box,[data-theme=glass][data-skin=cat] #bn,[data-theme=glass][data-skin=cat] #tt{background:#fbfbfbf5;border:1px solid #dadada;color:var(--ink);box-shadow:0 8px 24px #56565630;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=cat] #sh.mid .box{border:1px solid #dadada}
+[data-theme=glass][data-skin=cat] .brand{font-family:"Snell Roundhand","Apple Chancery","Segoe Script","Brush Script MT",cursive;font-style:normal;font-weight:400;letter-spacing:.06em;font-size:22px;color:var(--soft)}
+[data-theme=glass][data-skin=cat] .gcal-h{font-family:"Snell Roundhand","Apple Chancery","Segoe Script","Brush Script MT",cursive;font-style:normal;font-size:9cqw}
+[data-theme=glass][data-skin=cat] .gi,[data-theme=glass][data-skin=cat] .gdm{background:#ffffffe0;border:1px solid #dadada;border-radius:12px;box-shadow:0 3px 8px #7676762b;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=cat] .gm,[data-theme=glass][data-skin=cat] .gcard{background:#ffffffe6;border:1px solid #dadada;border-radius:12px;box-shadow:0 3px 10px #7676762b;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=cat] .gi svg,[data-theme=glass][data-skin=cat] .gm-t svg,[data-theme=glass][data-skin=cat] .gdm svg{stroke:#747474;filter:none}
+[data-theme=glass][data-skin=cat] .gt svg{filter:none}
+[data-theme=glass][data-skin=cat] .gm i{border-top:1px dashed #c3c3c3}
+[data-theme=glass][data-skin=cat] .gcal-g .today{background:#e5e5e5;box-shadow:0 0 0 1px var(--lav) inset}
+[data-theme=glass][data-skin=cat] .gcal .ring{border-color:#c8c8c8;background:linear-gradient(180deg,#fff,#ebebeb)}
+[data-theme=glass][data-skin=cat] .cards-view .chip.on,[data-theme=glass][data-skin=cat] .cards-view .catwrap .chip.on{background:#e5e5e5;color:var(--ink);border-color:var(--lav)}
+[data-theme=glass][data-skin=cat] .si{color:#747474;background:#ebebeb}
+[data-theme=glass][data-skin=cat] .dots i{background:#d5d5d5}
+[data-theme=glass][data-skin=cat] .dots i.on{background:var(--lav)}
+[data-theme=glass][data-skin=cat] .ci,[data-theme=glass][data-skin=cat] .emoji-edit{background:#f8f8f8f0;border:1px solid #dedede;border-radius:8px;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=cat] .b{background:#fffffff2;border:1px solid #dadada;border-bottom:1.5px solid #cdcdcd;box-shadow:0 2px 6px #76767622;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=cat] .m.me .b{background:#e5e5e5;border-color:#c8c8c8;border-bottom:1.5px solid #b5b5b5;border-right:1.5px solid #b5b5b5}
+/* 備忘錄／經期：淡藍、不要虛線、轉角較方；每日留言：比備忘錄深的藍色 */
+[data-theme=glass][data-skin=cat] .gm{background:#ececec;border:1px solid #dadada;border-radius:6px;box-shadow:0 3px 10px #76767626}
+[data-theme=glass][data-skin=cat] .gm i{display:none}
+[data-theme=glass][data-skin=cat] .gdm{background:#d5d5d5;border:none;border-radius:6px;box-shadow:0 3px 8px #7676762b;color:var(--ink)}
+[data-theme=glass][data-skin=cat] .gdm svg{stroke:#696969}
+[data-theme=glass][data-skin=cat] .gcard.gcal{border-radius:6px;background:#fdfdfd;border:1px solid #dedede;border-right-color:#d1d1d1;border-bottom:2px solid #d1d1d1;padding:13cqw 7cqw 6cqw}
+[data-theme=glass][data-skin=cat] .gcal::before{display:none}
+[data-theme=glass][data-skin=cat] .gcal .ring{display:none}
+[data-theme=glass][data-skin=cat] .gcal-dots{display:block;position:absolute;top:5cqw;left:6cqw;right:6cqw;height:1.6cqw;background:radial-gradient(circle,#c3c3c3 0 .55cqw,transparent .65cqw) 0 0/6.9cqw 100% repeat-x}
+[data-theme=glass][data-skin=cat] .gcal-cap{display:block;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:3cqw;letter-spacing:.3em;color:#aeaeae}
+[data-theme=glass][data-skin=cat] .gcal-h{font-size:12cqw;line-height:1.15;color:var(--ink);margin-top:.5cqw}
+[data-theme=glass][data-skin=cat] .gcal-h small{display:none}
+[data-theme=glass][data-skin=cat] .gcal-ym{display:block;text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:3.4cqw;letter-spacing:.2em;color:#a0a0a0}
+[data-theme=glass][data-skin=cat] .gcal-w{margin:4cqw 0 1.5cqw;padding-bottom:2.2cqw;border-bottom:1px solid #dedede;color:#aeaeae}
+[data-theme=glass][data-skin=cat] .gcal-g .o{visibility:visible;color:#c1c1c1}
+[data-theme=glass][data-skin=cat] .gcal-g .today{border-radius:50%;width:9cqw;height:9cqw;background:#e5e5e5;box-shadow:0 0 0 1px #9c9c9c inset}
+[data-theme=glass][data-skin=cat] .gcal-ft{display:block;margin-top:2.5cqw;padding-top:2.5cqw;border-top:1px solid #dedede;text-align:center}
+[data-theme=glass][data-skin=cat] .gcal-ft span{display:block;text-align:left;font-size:3.3cqw;color:#a0a0a0;letter-spacing:.04em}
+[data-theme=glass][data-skin=cat] .gcal-ft em{display:block;margin-top:1.5cqw;font-family:"Snell Roundhand","Apple Chancery","Segoe Script","Brush Script MT",cursive;font-style:normal;font-size:5.4cqw;color:#878787}
+[data-theme=glass][data-skin=cat] .stickh::before{background:var(--tbi,var(--jgrid)) center/cover no-repeat}
+
+/* 黑貓：黑色外框、白色卡片 */
+[data-theme=glass][data-skin=cat] body{background:#f1eeea}
+[data-theme=glass][data-skin=cat] .card,[data-theme=glass][data-skin=cat] .tabs,[data-theme=glass][data-skin=cat] .row,[data-theme=glass][data-skin=cat] .seg,[data-theme=glass][data-skin=cat] .btn:not(.s),[data-theme=glass][data-skin=cat] .chip,[data-theme=glass][data-skin=cat] .theme-opt,[data-theme=glass][data-skin=cat] .ib{border:1.5px solid var(--line)}
+[data-theme=glass][data-skin=cat] .card{border-radius:16px;box-shadow:0 3px 0 #2d2d3214}
+[data-theme=glass][data-skin=cat] input:not([type=range]):not([type=color]),[data-theme=glass][data-skin=cat] textarea,[data-theme=glass][data-skin=cat] select{border:1.5px solid var(--line);background:#fffffffa;color:var(--ink)}
+[data-theme=glass][data-skin=cat] #cq,[data-theme=glass][data-skin=cat] #sq,[data-theme=glass][data-skin=cat] .card-add input{border:1.5px solid var(--line)}
+[data-theme=glass][data-skin=cat] input::placeholder,[data-theme=glass][data-skin=cat] textarea::placeholder{color:#a3a3ab}
+[data-theme=glass][data-skin=cat] .btn.s,[data-theme=glass][data-skin=cat] .acts2 .btn{background:#2d2d32;color:#fff;border:1.5px solid #2d2d32;box-shadow:none}
+[data-theme=glass][data-skin=cat] .btn.d{color:#c0394f;border-color:#c0394f}
+[data-theme=glass][data-skin=cat] .tab.on,[data-theme=glass][data-skin=cat] .seg .on{background:#e8e5e0;box-shadow:inset 0 0 0 1.5px #2d2d32}
+[data-theme=glass][data-skin=cat] .sw{background:#d9d6d1;border-color:#bdb9b3}
+[data-theme=glass][data-skin=cat] .sw.on{background:#2d2d32;border-color:#2d2d32}
+[data-theme=glass][data-skin=cat] #sh{background:#1b1b1f59}
+[data-theme=glass][data-skin=cat] .box,[data-theme=glass][data-skin=cat] #daily-pop .daily-box,[data-theme=glass][data-skin=cat] #sh.chat-pop .box,[data-theme=glass][data-skin=cat] #bn,[data-theme=glass][data-skin=cat] #tt{background:#fffefc;border:1.5px solid #2d2d32;color:var(--ink)}
+[data-theme=glass][data-skin=cat] #sh.chat-pop .chat-pop-cats,[data-theme=glass][data-skin=cat] #sh.chat-pop .emo-sticky{background:#fffefc}
+[data-theme=glass][data-skin=cat] .b{background:#fff;border:1.5px solid #2d2d32;box-shadow:none}
+[data-theme=glass][data-skin=cat] .m.me .b{background:#e8e5e0;border:1.5px solid #2d2d32}
+[data-theme=glass][data-skin=cat] .ci,[data-theme=glass][data-skin=cat] .emoji-edit{background:#fffffff2;border:1.5px solid #2d2d32}
+[data-theme=glass][data-skin=cat] .cards-view .chip.on,[data-theme=glass][data-skin=cat] .cards-view .catwrap .chip.on,[data-theme=glass][data-skin=cat] .an-chip.on,[data-theme=glass][data-skin=cat] .pf-chip.on{background:#2d2d32;color:#fff;border-color:#2d2d32}
+[data-theme=glass][data-skin=cat] .stab{text-shadow:0 2px 5px #fff}
+[data-theme=glass][data-skin=cat] .stabs{border-bottom:1.5px solid var(--line)}
+[data-theme=glass][data-skin=cat] .cal2-d.sel{background:#2d2d32;color:#fff}
+[data-theme=glass][data-skin=cat] .cal2-d.sel .cal2-lu{color:#ffffffcc}
+[data-theme=glass][data-skin=cat] .dots i.on,[data-theme=glass][data-skin=cat] .lp-bar i{background:#2d2d32}
+[data-theme=glass][data-skin=cat] .lp-bar{background:#e8e5e0;border-color:#2d2d32}
+[data-theme=glass][data-skin=cat] #bz .bzb{background:#2d2d32;color:#fff}
+/* 黑貓：用貓咪圖片當圖示（不用簡筆畫外框） */
+[data-theme=glass][data-skin=cat] .tile .ti{display:block;filter:drop-shadow(0 3px 0 #2d2d3222)}
+[data-theme=glass][data-skin=cat] .tile.art>img{visibility:visible}
+[data-theme=glass][data-skin=cat] .tile-label{background:#fffefc;border:1.5px solid var(--line);border-radius:999px;padding:1px 9px;text-shadow:none;color:var(--ink)}
+[data-theme=glass][data-skin=cat] .tile:not(.art){gap:6px}
+[data-skin=cat] .tab[data-t] img{width:44px;height:42px}
+/* 黑貓：備忘錄、經期卡（白色格子在圖的下半部） */
+[data-theme=glass][data-skin=cat] .memo-card>img{visibility:visible;filter:drop-shadow(0 3px 0 #2d2d3222)}
+[data-theme=glass][data-skin=cat] .memo-txt .ml{left:12%;width:72%;height:11.5%;font-size:5.6cqw;line-height:1.1;padding:0 0 .6cqw;color:var(--ink);text-shadow:none}
+[data-theme=glass][data-skin=cat] .per-txt{left:13%;top:44%;width:72%;height:46%;color:var(--ink);text-shadow:none}
+[data-theme=glass][data-skin=cat] .per-txt small,[data-theme=glass][data-skin=cat] .per-txt b{color:var(--ink);opacity:1}
+[data-theme=glass][data-skin=cat] .ml-ev span{border-color:#2d2d32}
+/* 黑貓：月曆用畫出來的版本（沒有專屬月曆圖） */
+[data-theme=glass][data-skin=cat] .gcal-g .today{background:#2d2d32;color:#fff;box-shadow:none}
+[data-theme=glass][data-skin=cat] .gdm{background:#2d2d32;color:#fff}
+[data-theme=glass][data-skin=cat] .gdm svg{stroke:#fff}

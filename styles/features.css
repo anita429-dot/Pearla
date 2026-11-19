@@ -100,3 +100,8 @@ html[data-ff] body,html[data-ff] button,html[data-ff] input,html[data-ff] textar
 
 /* 像素、手帳（藍／綠）：設置與字卡的大分類陰影改白色 */
 [data-theme=glass][data-skin=pixel] .stab,[data-theme=glass][data-skin=journal]:not([data-tone=dark]) .stab{text-shadow:0 2px 5px #fff}
+
+/* 分類編輯：名稱直接在浮窗內修改 */
+.catedit-nm{flex:1;min-width:0;border:1.3px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit;font-size:15px;padding:6px 10px;margin:0}
+/* 主題頁：每個主題右邊的字體 */
+.th-font{margin-left:auto;margin-right:8px;font-size:12px;color:var(--soft);padding:3px 8px;border:1.2px solid var(--line);border-radius:999px;white-space:nowrap;cursor:pointer}

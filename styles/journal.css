@@ -1,8 +1,8 @@
 /* 手帳（data-skin=journal） */
-[data-theme=glass]:not([data-skin=journal]) .kitchen-ingredient,[data-theme=glass]:not([data-skin=journal]) .lt{background:linear-gradient(#2b40611f,#2b40611f),#ffffff29;-webkit-backdrop-filter:blur(6px) saturate(1.2);backdrop-filter:blur(6px) saturate(1.2);border:1px solid #ffffffa6}
-[data-theme=glass]:not([data-skin=journal]) .kitchen-ingredient.on{border-color:#fff;box-shadow:inset 0 0 0 1px #ffffff80}
-[data-theme=glass]:not([data-skin=journal]) .kitchen-actions .btn.s{background:#ffffff1a;color:var(--ink);border:1px solid #ffffffa6;-webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4)}
-[data-theme=glass]:not([data-skin=journal]) .lt .rp{background:linear-gradient(160deg,#5b7fb4f2,#3f6296ee);border-color:#ffffff59}
+[data-theme=glass]:not([data-skin=journal]):not([data-skin=cat]) .kitchen-ingredient,[data-theme=glass]:not([data-skin=journal]):not([data-skin=cat]) .lt{background:linear-gradient(#2b40611f,#2b40611f),#ffffff29;-webkit-backdrop-filter:blur(6px) saturate(1.2);backdrop-filter:blur(6px) saturate(1.2);border:1px solid #ffffffa6}
+[data-theme=glass]:not([data-skin=journal]):not([data-skin=cat]) .kitchen-ingredient.on{border-color:#fff;box-shadow:inset 0 0 0 1px #ffffff80}
+[data-theme=glass]:not([data-skin=journal]):not([data-skin=cat]) .kitchen-actions .btn.s{background:#ffffff1a;color:var(--ink);border:1px solid #ffffffa6;-webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4)}
+[data-theme=glass]:not([data-skin=journal]):not([data-skin=cat]) .lt .rp{background:linear-gradient(160deg,#5b7fb4f2,#3f6296ee);border-color:#ffffff59}
 /* ── 手帳：藍白方格手帳紙、膠帶、紙卡（沿用霧海的圖示與版面，只換顏色與質感） ── */
 :root[data-theme=glass][data-skin=journal]{--ink:#4b5b78;--soft:#7c8aa6;--tsh:#6b7a9099;--line:#b9cbe3;--lav:#6f93c2;--bg:#eef3fa;--card:#ffffffe6;--bub:#ffffff;--me:#dbe7f6;--pk:#9db9de;--jgrid:linear-gradient(180deg,#ffffff59,#e6eef900),repeating-linear-gradient(0deg,transparent 0 23px,#b4c8e22e 23px 24px),repeating-linear-gradient(90deg,transparent 0 23px,#b4c8e22e 23px 24px),#eef3fa}
 [data-theme=glass][data-skin=journal] body{background:#e9eff8;text-shadow:none}
@@ -216,3 +216,7 @@
 [data-theme=glass][data-skin=journal][data-tone=dark] .sw{background:#3a3a42;border-color:#4a4a53}
 [data-theme=glass][data-skin=journal][data-tone=dark] .sw.on{background:var(--lav);border-color:var(--lav)}
 [data-theme=glass][data-skin=journal][data-tone=dark] .tab.on,[data-theme=glass][data-skin=journal][data-tone=dark] .seg .on{background:#3a3a42;box-shadow:inset 0 0 0 1px #4a4a53}
+
+[data-theme=glass][data-skin=journal] #sh.chat-pop .emo-sticky{background:#f8fbff}
+[data-theme=glass][data-skin=journal][data-tone=mint] #sh.chat-pop .emo-sticky{background:#fdfff6}
+[data-theme=glass][data-skin=journal][data-tone=dark] #sh.chat-pop .emo-sticky{background:#25252a}
