@@ -9,7 +9,7 @@
 (function(){
 'use strict';
 
-const PF=window.PF={open:false,tab:'base',cid:null,page:null,modal:null,confirm:null,lv:0,view:vPf};
+const PF=window.PF={open:false,tab:'base',cid:null,page:null,modal:null,confirm:null,lv:0,exp:{},fup:null,view:vPf};
 
 /* 基本資料欄位：t=text 直接輸入；t=page 點擊進入該欄位的分頁
  * 第 5 欄 form：solve／comm＝兩個輸入欄；level＝文字＋程度（五個圈圈） */
@@ -115,12 +115,22 @@ function pageBody(ct){
    +(items.length?items.map(it=>itemHtml(it,f)).join(''):'<div class="empty">還沒有記錄。<br>在上方輸入後按「新增」。</div>');
 }
 
+const fmt=t=>{const d=new Date(t);return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
+const PENCIL='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>';
 function findBody(ct){
   const fs=[...D(ct.id).finds].sort((a,b)=>b.t-a.t);
   return '<button type="button" class="btn s pf-addfind" data-a="pf:findadd">＋ 添加發現</button>'
-   +(fs.length?fs.map(x=>{const d=new Date(x.t),ds=(d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
-     return '<div class="card pf-find" data-a="pf:findedit" data-i="'+esc(x.id)+'"><div class="pf-lead2">我發現⋯⋯</div><div class="pf-ftxt">'+esc(x.text)+'</div>'
-      +((x.tags||[]).length?'<div class="pf-ftags">'+x.tags.map(t=>'<span class="pf-tg">#'+esc(t)+'</span>').join(' ')+'</div>':'')+'<div class="pf-fdate">'+ds+'</div></div>'}).join('')
+   +(fs.length?fs.map(x=>{
+     const open=!!PF.exp[x.id],fo=PF.fup===x.id,ups=Array.isArray(x.ups)?x.ups:[];
+     return '<div class="card pf-find'+(open?' open':'')+'">'
+      +'<button type="button" class="pf-fedit" data-a="pf:findedit" data-i="'+esc(x.id)+'" aria-label="編輯">'+PENCIL+'</button>'
+      +'<div class="pf-fmain" data-a="pf:fexp" data-i="'+esc(x.id)+'"><div class="pf-lead2">我發現⋯⋯</div><div class="pf-ftxt">'+esc(x.text)+'</div>'
+      +(open?'<div class="pf-fnote'+(x.note?'':' none')+'">'+(x.note?esc(x.note):'沒有詳細說明或備注')+'</div>':'')
+      +((x.tags||[]).length?'<div class="pf-ftags">'+x.tags.map(t=>'<span class="pf-tg">#'+esc(t)+'</span>').join(' ')+'</div>':'')+'</div>'
+      +'<div class="pf-ffoot"><button type="button" class="pf-fupb'+(fo?' on':'')+'" data-a="pf:fup" data-i="'+esc(x.id)+'">後續添加'+(ups.length?'（'+ups.length+'）':'')+'</button><span class="pf-fdate">'+fmt(x.t)+'</span></div>'
+      +(fo?'<div class="pf-fups"><div class="pf-fuadd"><textarea id="pffu" rows="2" placeholder="補充後來想到的內容" maxlength="1000"></textarea><button type="button" class="btn s" data-a="pf:fupadd" data-i="'+esc(x.id)+'">添加</button></div>'
+        +(ups.length?ups.map(u=>'<div class="pf-fu"><div class="pf-fut">'+esc(u.text)+'</div><div class="pf-fud">'+fmt(u.t)+'</div></div>').join(''):'<div class="pf-fuempty">還沒有補充內容</div>')+'</div>':'')
+      +'</div>'}).join('')
      :'<div class="empty">還沒有發現。<br>把你注意到的小事記下來吧。</div>');
 }
 
@@ -134,8 +144,9 @@ function modalHtml(){
   const m=PF.modal;if(!m)return '';
   return '<div class="pf-ov"><div class="pf-pop">'
    +'<div class="pf-lead">我發現⋯⋯</div>'
-   +'<div class="pf-ta"><div class="pf-hl" aria-hidden="true">'+hl(m.text)+'</div><textarea id="pfta" spellcheck="false" placeholder="輸入發現的事項並添加標籤（選填）&#10;標籤輸入成功字體會變色&#10;#標籤1 #標籤2 ">'+esc(m.text)+'</textarea></div>'
+   +'<div class="pf-ta"><div class="pf-hl" aria-hidden="true">'+hl(m.text)+'</div><textarea id="pfta" spellcheck="false" placeholder="發現的事&#10;可添加標籤，標籤輸入成功字體會變色&#10;#標籤1 #標籤2 ">'+esc(m.text)+'</textarea></div>'
    +'<div class="pf-fixed" id="pffixed">'+fixedHtml(m.text)+'</div>'
+   +'<textarea id="pfnote" class="pf-note" rows="3" maxlength="2000" placeholder="詳細說明或備注（選填）">'+esc(m.note||'')+'</textarea>'
    +'<div class="pf-newtag" id="pfnewtag" hidden><input id="pfnt" placeholder="新增固定標籤（不用打 #）" maxlength="20" autocomplete="off"><button type="button" class="btn s" data-a="pf:tagok">加入</button></div>'
    +'<div class="pf-acts">'+(m.id?'<button type="button" class="btn d" data-a="pf:mdel">刪除</button>':'')+'<span class="grow"></span><button type="button" class="btn" data-a="pf:mcancel">取消</button><button type="button" class="btn s" data-a="pf:msave">'+(m.id?'儲存':'添加')+'</button></div>'
    +'</div></div>';
@@ -155,7 +166,7 @@ function focusModal(){const t=document.querySelector('#pfta');if(t){t.focus();tr
 function act(a,i,el){
   const cid=curCid();
   switch(a){
-    case 'pf':PF.open=true;PF.tab='base';PF.page=null;PF.modal=null;PF.confirm=null;PF.lv=0;PF.cid=null;render();top0();return true;
+    case 'pf':PF.open=true;PF.exp={};PF.fup=null;PF.tab='base';PF.page=null;PF.modal=null;PF.confirm=null;PF.lv=0;PF.cid=null;render();top0();return true;
     case 'pf:back':if(PF.modal)PF.modal=null;else if(PF.page)PF.page=null;else PF.open=false;PF.confirm=null;PF.lv=0;render();top0();return true;
     case 'pf:tab':PF.tab=i==='find'?'find':'base';PF.page=null;R();return true;
     case 'pf:cat':PF.cid=i;R(true);return true;
@@ -174,21 +185,25 @@ function act(a,i,el){
       }
       (L[PF.page]=L[PF.page]||[]).unshift(it);PF.lv=0;save();R(true);const n=document.querySelector('#pfn0');if(n)n.focus();return true}
     case 'pf:del':PF.confirm={k:'item',id:i};R(true);return true;
-    case 'pf:findadd':PF.modal={id:null,text:''};R(true);focusModal();return true;
+    case 'pf:findadd':PF.modal={id:null,text:'',note:''};R(true);focusModal();return true;
     case 'pf:findedit':{const x=D(cid).finds.find(f=>f.id===i);if(!x)return true;
-      PF.modal={id:i,text:x.text+((x.tags||[]).length?' '+x.tags.map(t=>'#'+t).join(' ')+' ':'')};R(true);focusModal();return true}
+      PF.modal={id:i,text:x.text+((x.tags||[]).length?' '+x.tags.map(t=>'#'+t).join(' ')+' ':''),note:x.note||''};R(true);focusModal();return true}
+    case 'pf:fexp':PF.exp[i]=!PF.exp[i];R(true);return true;
+    case 'pf:fup':{PF.fup=PF.fup===i?null:i;R(true);if(PF.fup){const e=document.querySelector('#pffu');if(e)e.focus()}return true}
+    case 'pf:fupadd':{const e=document.querySelector('#pffu'),v=e&&e.value.trim();if(!v){if(e)e.focus();return true}
+      const x=D(cid).finds.find(f=>f.id===i);if(!x)return true;if(!Array.isArray(x.ups))x.ups=[];x.ups.push({id:uid(),text:v,t:Date.now()});save();R(true);const n=document.querySelector('#pffu');if(n)n.focus();return true}
     case 'pf:mcancel':PF.modal=null;R(true);return true;
-    case 'pf:msave':{const ta=document.querySelector('#pfta'),raw=ta?ta.value:PF.modal.text,text=stripTags(raw),tags=tagsOf(raw);
+    case 'pf:msave':{const ta=document.querySelector('#pfta'),raw=ta?ta.value:PF.modal.text,text=stripTags(raw),tags=tagsOf(raw),nt=document.querySelector('#pfnote'),note=(nt?nt.value:(PF.modal.note||'')).trim();
       if(!text){toast('請先輸入發現的內容');if(ta)ta.focus();return true}
       const F=D(cid).finds;
-      if(PF.modal.id){const x=F.find(f=>f.id===PF.modal.id);if(x){x.text=text;x.tags=tags}}
-      else F.push({id:uid(),text,tags,t:Date.now()});
+      if(PF.modal.id){const x=F.find(f=>f.id===PF.modal.id);if(x){x.text=text;x.tags=tags;x.note=note}}
+      else F.push({id:uid(),text,tags,note,t:Date.now()});
       PF.modal=null;save();R(true);return true}
     case 'pf:mdel':PF.confirm={k:'find',id:PF.modal.id};R(true);return true;
     case 'pf:cfno':PF.confirm=null;R(true);return true;
     case 'pf:cfyes':{const c=PF.confirm;PF.confirm=null;if(!c)return true;
       if(c.k==='item'){const L=D(cid).lists;L[PF.page]=(L[PF.page]||[]).filter(x=>x.id!==c.id)}
-      else{const F=D(cid).finds,k=F.findIndex(f=>f.id===c.id);if(k>=0)F.splice(k,1);PF.modal=null}
+      else{const F=D(cid).finds,k=F.findIndex(f=>f.id===c.id);if(k>=0)F.splice(k,1);delete PF.exp[c.id];if(PF.fup===c.id)PF.fup=null;PF.modal=null}
       save();R(true);return true}
     case 'pf:tag':{const ta=document.querySelector('#pfta');if(!ta)return true;let t=ta.value;
       if(tagsOf(t).includes(i))t=removeTag(t,i);
@@ -207,7 +222,7 @@ document.addEventListener('click',e=>{
   const A=t.closest('[data-a="pf"],[data-a^="pf:"]');
   if(!A){
     if(PF.open&&PF.confirm&&t.classList&&t.classList.contains('pf-cf')){PF.confirm=null;R(true);return}
-    if(PF.open&&PF.modal&&!PF.confirm&&t.classList&&t.classList.contains('pf-ov')){const ta=document.querySelector('#pfta');if(!ta||!ta.value.trim()){PF.modal=null;R(true)}}  // 點背景：內容空白才關閉，避免誤觸丟字
+    if(PF.open&&PF.modal&&!PF.confirm&&t.classList&&t.classList.contains('pf-ov')){const ta=document.querySelector('#pfta'),nt=document.querySelector('#pfnote');if((!ta||!ta.value.trim())&&(!nt||!nt.value.trim())){PF.modal=null;R(true)}}  // 點背景：內容空白才關閉，避免誤觸丟字
     return;
   }
   if(act(A.dataset.a,A.dataset.i,A)){e.stopPropagation();e.preventDefault()}
@@ -222,6 +237,7 @@ document.addEventListener('input',e=>{
   if(t.dataset.pfb){const B=D(cid).base,k=t.dataset.pfb,v=t.value.trim();if(v)B[k]=v;else delete B[k];later();return}
   if(t.dataset.pfi){const it=(D(cid).lists[PF.page]||[]).find(x=>x.id===t.dataset.pfi);if(it){it[t.dataset.pff||'text']=t.value;later()}auto(t);return}
   if(t.id==='pfta'&&PF.modal){PF.modal.text=t.value;modalSync()}
+  if(t.id==='pfnote'&&PF.modal)PF.modal.note=t.value;
 });
 document.addEventListener('change',e=>{   // 名字清空 → 回到聯絡人名字
   const t=e.target;if(!t||!t.dataset||!PF.open||t.dataset.pfb!=='name')return;
