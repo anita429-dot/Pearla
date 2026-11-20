@@ -40,7 +40,7 @@
 [data-theme=glass][data-skin=journal] .si{color:#5b78a3;background:#e3ecf8}
 [data-theme=glass][data-skin=journal] .dots i{background:#c9d7ea}
 [data-theme=glass][data-skin=journal] .dots i.on{background:var(--lav)}
-[data-theme=glass][data-skin=journal] .ci,[data-theme=glass][data-skin=journal] .emoji-edit{background:#f4f8fff0;border:1px solid #d3e0f0;border-radius:8px;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=journal] .ci{background:#f4f8fff0;border:1px solid #d3e0f0;border-radius:8px;-webkit-backdrop-filter:none;backdrop-filter:none}
 [data-theme=glass][data-skin=journal] .b{background:#fffffff2;border:1px solid #cfdcee;border-bottom:1.5px solid #bcd0ea;box-shadow:0 2px 6px #5b7aa622;-webkit-backdrop-filter:none;backdrop-filter:none}
 [data-theme=glass][data-skin=journal] .m.me .b{background:#dbe7f6;border-color:#b6cbe6;border-bottom:1.5px solid #9db9de;border-right:1.5px solid #9db9de}
 /* 膠帶 */
@@ -105,7 +105,7 @@
 [data-theme=glass][data-skin=journal][data-tone=mint] .si{color:#6f9a3a;background:#eef8d3}
 [data-theme=glass][data-skin=journal][data-tone=mint] .dots i{background:#d7eea7}
 [data-theme=glass][data-skin=journal][data-tone=mint] .dots i.on{background:var(--lav)}
-[data-theme=glass][data-skin=journal][data-tone=mint] .ci,[data-theme=glass][data-skin=journal][data-tone=mint] .emoji-edit{background:#f8fde6f0;border:1px solid #d7eea7;border-radius:8px;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=journal][data-tone=mint] .ci{background:#f8fde6f0;border:1px solid #d7eea7;border-radius:8px;-webkit-backdrop-filter:none;backdrop-filter:none}
 [data-theme=glass][data-skin=journal][data-tone=mint] .b{background:#fdfff6f2;border:1px solid #d7eea7;border-bottom:1.5px solid #c3e08e;box-shadow:0 2px 6px #6f9a3a22;-webkit-backdrop-filter:none;backdrop-filter:none}
 [data-theme=glass][data-skin=journal][data-tone=mint] .m.me .b{background:#eef8d3;border-color:#c3e08e;border-bottom:1.5px solid #c3e08e;border-right:1.5px solid #c3e08e}
 [data-theme=glass][data-skin=journal][data-tone=mint] .card.set,[data-theme=glass][data-skin=journal][data-tone=mint] .gi{position:relative}
@@ -141,7 +141,7 @@
 [data-theme=glass][data-skin=journal] .lp-item{background:#ffffffe6;border-color:#cfdcee;-webkit-backdrop-filter:none;backdrop-filter:none}
 [data-theme=glass][data-skin=journal] .lp-bar{background:#eaf1fa;border-color:#cfdcee}
 [data-theme=glass][data-skin=journal] .lp-bar i{background:linear-gradient(90deg,#a9c4e8,#6f93c2)}
-[data-theme=glass][data-skin=journal] .lp-stars{color:#6f93c2!important}
+
 [data-theme=glass][data-skin=journal][data-tone=mint] .lp-item{border-color:#d7eea7}
 [data-theme=glass][data-skin=journal][data-tone=mint] .lp-bar{border-color:#d7eea7}
 [data-theme=glass]:not([data-skin=journal]) .an-emo{color:#fff}
@@ -183,7 +183,7 @@
 [data-theme=glass][data-skin=journal][data-tone=dark] .cards-view .chip.on,[data-theme=glass][data-skin=journal][data-tone=dark] .cards-view .catwrap .chip.on{background:#303037}
 [data-theme=glass][data-skin=journal][data-tone=dark] .si{color:#b4b4be;background:#303037}
 [data-theme=glass][data-skin=journal][data-tone=dark] .dots i{background:#36363d}
-[data-theme=glass][data-skin=journal][data-tone=dark] .ci,[data-theme=glass][data-skin=journal][data-tone=dark] .emoji-edit{background:#2b2b31f0;border:1px solid #3a3a42}
+[data-theme=glass][data-skin=journal][data-tone=dark] .ci{background:#2b2b31f0;border:1px solid #3a3a42}
 [data-theme=glass][data-skin=journal][data-tone=dark] .b{background:#25252af2;border:1px solid #3a3a42;border-bottom:1.5px solid #4a4a53;box-shadow:0 2px 6px #00000036}
 [data-theme=glass][data-skin=journal][data-tone=dark] .m.me .b{background:#303037;border-color:#4a4a53;border-bottom:1.5px solid #4a4a53;border-right:1.5px solid #4a4a53}
 [data-theme=glass][data-skin=journal][data-tone=dark] .gm::before,[data-theme=glass][data-skin=journal][data-tone=dark] .gcard::before,[data-theme=glass][data-skin=journal][data-tone=dark] .card.set::before{background:linear-gradient(180deg,#36363d,#404048)}
@@ -208,7 +208,7 @@
 [data-theme=glass][data-skin=journal][data-tone=dark] .lp-item{background:#25252ae6;border-color:#3a3a42}
 [data-theme=glass][data-skin=journal][data-tone=dark] .lp-bar{background:#303037;border-color:#3a3a42}
 [data-theme=glass][data-skin=journal][data-tone=dark] .lp-bar i{background:linear-gradient(90deg,#404048,#50505a)}
-[data-theme=glass][data-skin=journal][data-tone=dark] .lp-stars{color:#b4b4be!important}
+
 [data-theme=glass][data-skin=journal][data-tone=dark] #sh.chat-pop .chat-pop-cats{background:#25252a}
 [data-theme=glass][data-skin=journal][data-tone=dark] body{background:#17171a;text-shadow:none}
 [data-theme=glass][data-skin=journal][data-tone=dark] #app{background:var(--jgrid)}

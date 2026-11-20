@@ -63,7 +63,7 @@
 [data-theme=glass] .lp-item{background:linear-gradient(#2b40611f,#2b40611f),#ffffff29;border-color:#ffffffa6;-webkit-backdrop-filter:blur(6px) saturate(1.2);backdrop-filter:blur(6px) saturate(1.2)}
 [data-theme=glass] .lp-bar{background:#ffffff26;border-color:#ffffff80}
 [data-theme=glass] .lp-bar i{background:linear-gradient(90deg,#c9dcf7,#ffffff)}
-[data-theme=glass] .lp-stars{color:#fff!important}
+
 [data-theme=glass] .settings-lock.on{background:linear-gradient(160deg,#6f94c7f2,#46699fee);border:1px solid #ffffff73;box-shadow:0 3px 10px #2d466e55}
 [data-theme=glass] .settings-lock:not(.on){background:linear-gradient(160deg,#a9c3e6f2,#7f9fcbee);border:1px solid #ffffff73;box-shadow:0 3px 10px #2d466e33}
 [data-theme=glass] #bn:not(.show),[data-theme=glass] #tt:not(.show){-webkit-backdrop-filter:none;backdrop-filter:none}
@@ -79,7 +79,9 @@
 [data-theme=glass] .b{background:linear-gradient(160deg,#ffffff47,#ffffff14);border:1px solid #ffffff80;border-bottom:1.5px solid #ffffffd0;border-radius:22px 22px 22px 4px;-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);box-shadow:0 4px 14px #3d5a8326,inset 0 1px 0 #ffffff80}
 [data-theme=glass] .m.me .b{background:linear-gradient(160deg,#7fa1cc66,#5f86b833);border-color:#ffffff73;border-bottom:1.5px solid #d6e5f8;border-right:1.5px solid #d6e5f8;border-radius:22px 22px 4px 22px}
 /* ── 霧海：字卡內容欄（字卡／拍一拍／顏文字／情緒／靈感拾取等清單列）內部稍微壓暗、透出的背景更模糊 ── */
-[data-theme=glass] .ci,[data-theme=glass] .emoji-edit{background:linear-gradient(#2b40611f,#2b40611f),#ffffff29;-webkit-backdrop-filter:blur(6px) saturate(1.2);backdrop-filter:blur(6px) saturate(1.2)}
+[data-theme=glass] .ci{background:linear-gradient(#2b40611f,#2b40611f),#ffffff29;-webkit-backdrop-filter:blur(6px) saturate(1.2);backdrop-filter:blur(6px) saturate(1.2)}
 [data-theme=glass] .card-add{-webkit-backdrop-filter:none;backdrop-filter:none;border-radius:0}
 [data-theme=glass] .cards-view .card{-webkit-backdrop-filter:blur(6px) saturate(1.2);backdrop-filter:blur(6px) saturate(1.2)}
 [data-theme=glass] #sh.chat-pop .chat-pop-cats{background:#6b7f9c}
+
+[data-theme=glass] #sh.chat-pop .emo-sticky{background:#6b7f9c}

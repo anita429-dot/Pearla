@@ -21,7 +21,7 @@
 [data-theme=glass][data-skin=moon] .acts2 .btn{background:linear-gradient(160deg,#8f6fc7f2,#68469fee);color:#fff;border:1px solid #ffffff66;box-shadow:0 3px 10px #462d6e44}
 [data-theme=glass][data-skin=moon] .b{background:linear-gradient(160deg,#ffffff47,#ffffff14);border:1px solid #ffffff80;border-bottom:1.5px solid #ffffffd0;border-radius:22px 22px 22px 4px;-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4)}
 [data-theme=glass][data-skin=moon] .m.me .b{background:linear-gradient(160deg,#9a7fcc66,#7f5fb833);border-color:#ffffff73;border-bottom:1.5px solid #e2d6f8;border-right:1.5px solid #e2d6f8;border-radius:22px 22px 4px 22px}
-[data-theme=glass][data-skin=moon] .ci,[data-theme=glass][data-skin=moon] .emoji-edit{background:linear-gradient(#402b611f,#402b611f),#ffffff29;-webkit-backdrop-filter:blur(6px) saturate(1.2);backdrop-filter:blur(6px) saturate(1.2)}
+[data-theme=glass][data-skin=moon] .ci{background:linear-gradient(#402b611f,#402b611f),#ffffff29;-webkit-backdrop-filter:blur(6px) saturate(1.2);backdrop-filter:blur(6px) saturate(1.2)}
 [data-theme=glass][data-skin=moon]{--pf-tag:#c8a9ff;--pf-dot:#fff}
 [data-theme=glass][data-skin=moon] .pf-chip.on{background:linear-gradient(#402b6147,#402b6147),#ffffff33;color:#fff;border-color:#fff}
 :root[data-theme=glass][data-skin=moon]{--ink:#f6f1ff;--soft:#f6f1ffcc;--tsh:#120a33b3;--line:#ffffff40;--lav:#b79cf5;--bg:#1d1741;--pk:#d9b8f4;--an-hot:#ffc2dc;--pf-tag:#d6c0ff;--tbi:url(../assets/moon/bg.webp)}
@@ -58,5 +58,16 @@ html[data-skin=moon] .sp-fog{opacity:.2}
 /* 月眠：導覽行與備忘錄改用專屬圖（assets/moon/nav-*.webp、memo-card.webp） */
 [data-skin=moon] .tab[data-t] img{width:46px;height:44px}
 [data-theme=glass][data-skin=moon] .memo-card>img{visibility:visible;filter:drop-shadow(0 6px 12px #0a0626aa)}
-[data-theme=glass][data-skin=moon] .memo-txt .ml{left:15%;width:60%;height:9.5%;font-size:4.8cqw;line-height:1.1;padding:0 0 .5cqw;color:#5a4a8a;text-shadow:none}
+[data-theme=glass][data-skin=moon] .memo-txt .ml{left:24%;width:42%;height:12.5%;font-size:5.4cqw;line-height:1.1;padding:0 0 .5cqw;color:#5a4a8a;text-shadow:none}
 [data-skin=moon] #bz .bzb{background:#2a1f5c;color:#f1eaff}
+
+/* 月眠：主頁按鈕下的字加橢圓外框，框內底色同雙人頭像框（--card 加一層 --mk 壓暗） */
+[data-theme=glass][data-skin=moon] .tile-label{background:var(--card);border:1.6px var(--bs,solid) var(--line);border-radius:999px;padding:1px 9px;box-shadow:inset 0 0 0 999px var(--mk);-webkit-backdrop-filter:blur(6px) saturate(1.2);backdrop-filter:blur(6px) saturate(1.2)}
+/* 月眠：數據移到紀念日下方（第 3 排第 1 欄），備忘錄縮小後靠右上移到數據旁邊 */
+[data-theme=glass][data-skin=moon] .pgp:first-child .grid .tile[data-a=data]{grid-column:1;grid-row:3}
+[data-theme=glass][data-skin=moon] .pgp:first-child .memo-card{width:70%;margin:-145px -18px 0 auto;pointer-events:none}
+/* 備忘錄觸碰範圍只留在圖片可見的邊緣內（圖四周的透明邊不會被點到） */
+[data-theme=glass][data-skin=moon] .memo-card>img{pointer-events:none}
+[data-theme=glass][data-skin=moon] .memo-card::after{content:"";position:absolute;left:7%;right:7.2%;top:7.4%;bottom:4.4%;pointer-events:auto;cursor:pointer}
+
+[data-theme=glass][data-skin=moon] #sh.chat-pop .emo-sticky{background:#2a1f55}

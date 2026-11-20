@@ -35,7 +35,7 @@
 [data-theme=glass][data-skin=cat] .si{color:#747474;background:#ebebeb}
 [data-theme=glass][data-skin=cat] .dots i{background:#d5d5d5}
 [data-theme=glass][data-skin=cat] .dots i.on{background:var(--lav)}
-[data-theme=glass][data-skin=cat] .ci,[data-theme=glass][data-skin=cat] .emoji-edit{background:#f8f8f8f0;border:1px solid #dedede;border-radius:8px;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=cat] .ci{background:#f8f8f8f0;border:1px solid #dedede;border-radius:8px;-webkit-backdrop-filter:none;backdrop-filter:none}
 [data-theme=glass][data-skin=cat] .b{background:#fffffff2;border:1px solid #dadada;border-bottom:1.5px solid #cdcdcd;box-shadow:0 2px 6px #76767622;-webkit-backdrop-filter:none;backdrop-filter:none}
 [data-theme=glass][data-skin=cat] .m.me .b{background:#e5e5e5;border-color:#c8c8c8;border-bottom:1.5px solid #b5b5b5;border-right:1.5px solid #b5b5b5}
 /* 備忘錄／經期：淡藍、不要虛線、轉角較方；每日留言：比備忘錄深的藍色 */
@@ -76,7 +76,7 @@
 [data-theme=glass][data-skin=cat] #sh.chat-pop .chat-pop-cats,[data-theme=glass][data-skin=cat] #sh.chat-pop .emo-sticky{background:#fffefc}
 [data-theme=glass][data-skin=cat] .b{background:#fff;border:1.5px solid #2d2d32;box-shadow:none}
 [data-theme=glass][data-skin=cat] .m.me .b{background:#e8e5e0;border:1.5px solid #2d2d32}
-[data-theme=glass][data-skin=cat] .ci,[data-theme=glass][data-skin=cat] .emoji-edit{background:#fffffff2;border:1.5px solid #2d2d32}
+[data-theme=glass][data-skin=cat] .ci{background:#fffffff2;border:1.5px solid #2d2d32}
 [data-theme=glass][data-skin=cat] .cards-view .chip.on,[data-theme=glass][data-skin=cat] .cards-view .catwrap .chip.on,[data-theme=glass][data-skin=cat] .an-chip.on,[data-theme=glass][data-skin=cat] .pf-chip.on{background:#2d2d32;color:#fff;border-color:#2d2d32}
 [data-theme=glass][data-skin=cat] .stab{text-shadow:0 2px 5px #fff}
 [data-theme=glass][data-skin=cat] .stabs{border-bottom:1.5px solid var(--line)}
@@ -101,3 +101,16 @@
 [data-theme=glass][data-skin=cat] .gcal-g .today{background:#2d2d32;color:#fff;box-shadow:none}
 [data-theme=glass][data-skin=cat] .gdm{background:#2d2d32;color:#fff}
 [data-theme=glass][data-skin=cat] .gdm svg{stroke:#fff}
+
+/* 黑貓備忘錄：點擊範圍只在圖片可見邊緣內，整體稍微往上移 */
+[data-theme=glass][data-skin=cat] .memo-card{margin-top:-6px;pointer-events:none}
+[data-theme=glass][data-skin=cat] .memo-card>img,[data-theme=glass][data-skin=cat] .memo-card .memo-txt{pointer-events:none}
+[data-theme=glass][data-skin=cat] .memo-card::after{content:"";position:absolute;left:4.8%;right:4.7%;top:0;bottom:4.6%;pointer-events:auto;cursor:pointer}
+
+/* 黑貓：返回鍵改成白底黑框黑箭頭 */
+[data-theme=glass][data-skin=cat] .ph2>.ib:first-child,[data-theme=glass][data-skin=cat] .kitchen-head .ib{background:#fffffff2;border:1.6px solid #2d2d32;color:#2d2d32;-webkit-backdrop-filter:none;backdrop-filter:none}
+
+/* 黑貓：大分類用黑白灰交替 */
+[data-theme=glass][data-skin=cat] .big-wrap.bt1{--bigtint:#2d2d3216}
+[data-theme=glass][data-skin=cat] .big-wrap.bt2{--bigtint:#2d2d3208}
+[data-theme=glass][data-skin=cat] .big-wrap.btu{--bigtint:#2d2d3230}

@@ -89,7 +89,6 @@ img{-webkit-user-drag:none;user-drag:none}
 .cal-art.moon .ca.t{font-size:3.7vw;font-size:3.9cqw}
 
 /* 未讀數字：貼在圖示的右上角 */
-.tile .nb.mbd{top:1px;right:auto;left:calc(50% + 14px);display:block;z-index:2}
 /* 下拉選單：字色、底色跟著主題，不會混成一色 */
 select{font:inherit;font-size:15px;color:var(--ink);background-color:var(--card);border:1.5px solid var(--line);border-radius:13px;padding:9px 10px;outline:none;max-width:100%}
 select option{color:#3d3a5c;background:#fff}
@@ -114,3 +113,54 @@ html[data-ff] body,html[data-ff] button,html[data-ff] input,html[data-ff] textar
 .catedit-row .mv{width:30px;height:34px;display:grid;place-items:center;padding:0;border:0;background:none;color:var(--soft)}
 .catedit-row.holding{border-style:solid;border-color:var(--lav)}
 .catedit-row.drag{position:relative;z-index:5;background:var(--bg);border-style:solid;border-color:var(--lav);box-shadow:0 10px 24px #3c366a33}
+
+/* 常用大分類 */
+.cards-top.big-top .stabs{margin-bottom:0}
+.cards-top.big-top .seg{margin:0 0 2px;border-top-left-radius:0;border-top-right-radius:0;border-top:0}
+.big-list{margin-top:8px}
+.big-wrap:first-child{border-radius:16px 16px 0 0}
+.big-wrap:last-child{border-radius:0 0 16px 16px}
+.big-wrap:only-child{border-radius:16px}
+.big-wrap{border-bottom:1px var(--bs,dashed) var(--line)}
+.big-wrap:last-child{border-bottom:none}
+.big-wrap .big-row{border-bottom:none;padding:13px 12px;gap:6px}
+.big-nm{font-weight:400;font-size:16px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.big-row .ib{width:32px;height:32px;display:grid;place-items:center;padding:0;border:0;background:none;color:var(--soft);flex:none}
+.big-chev{width:22px;text-align:center;color:var(--soft);flex:none}
+.big-ph{width:32px;flex:none}
+.big-body{padding:2px 12px 14px}
+.big-del{width:100%;margin-top:10px}
+.big-wrap.holding{background:#aca6e41f}
+.big-wrap.drag{position:relative;z-index:5;background:var(--bg);box-shadow:0 10px 24px #3c366a33}
+.big-list.bigdrag .big-body{display:none}
+
+.big-wrap{background:var(--bigtint,transparent)}
+.big-wrap.bt1{--bigtint:#aca6e433}
+.big-wrap.bt2{--bigtint:#aca6e414}
+.big-wrap.btu{--bigtint:#7f7a9a40}
+.big-stick{position:sticky;top:var(--bigtop,0px);z-index:7;margin:0;padding:0}
+.big-tintbox{background:var(--bigtint,transparent)}
+.big-tintbox .sbrow{padding:0 12px 8px}
+.big-list.bigdrag .big-stick{position:static}
+.big-list.bigdrag .big-tintbox>.sbrow{display:none}
+.big-newrow{display:flex;gap:8px;margin-top:10px}
+.big-newrow .btn{flex:1;width:auto;margin:0}
+.big-delrow{display:flex;align-items:center;gap:12px;justify-content:space-between;font-size:14px;line-height:1.5}
+.big-delrow .sw{flex:none}
+
+/* 大分類左滑：停用／刪除 */
+.big-swipe{position:relative;overflow:hidden}
+.big-swipe .big-row{position:relative;z-index:1;touch-action:pan-y;transform:translateX(0)}
+.big-acts{position:absolute;top:0;bottom:0;right:0;width:var(--w);display:flex;align-items:center;justify-content:center;gap:6px;padding:0 6px;box-sizing:border-box;opacity:var(--p,0);transform:translateX(calc((1 - var(--p,0)) * var(--w)))}
+.big-act{flex:1;height:38px;border:0;border-radius:10px;font:inherit;font-size:13px;color:#fff;cursor:pointer;padding:0;transform:scale(calc(.35 + .65 * var(--p,0)))}
+.big-act.off{background:#8d88a8}
+.big-act.del{background:#e5484d}
+.big-row.bigoff .big-nm{opacity:.5}
+.big-offtag{font-size:11px;color:var(--soft);border:1px solid var(--line);border-radius:999px;padding:1px 7px;margin-left:4px;flex:none}
+.big-list.bigdrag .big-acts{display:none}
+/* 返回鍵不要陰影 */
+.ph2>.ib:first-child,[data-theme] .ph2>.ib:first-child,.kitchen-head .ib{box-shadow:none!important}
+/* 大分類列的圓角跟著外框（各主題外框圓角不同，避免四角露出底色） */
+.big-wrap:first-child{border-top-left-radius:inherit;border-top-right-radius:inherit}
+.big-wrap:last-child{border-bottom-left-radius:inherit;border-bottom-right-radius:inherit}
+.big-wrap:only-child{border-radius:inherit}
