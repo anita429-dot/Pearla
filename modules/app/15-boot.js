@@ -25,3 +25,21 @@
   dailyTick();
   save();render();
 })();
+
+document.addEventListener('input',e=>{const t=e.target;if(t&&t.dataset&&t.dataset.pw!=null){const l=ensurePunct(),v=parseFloat(t.value);if(l[+t.dataset.pw]&&!isNaN(v)){l[+t.dataset.pw].w=Math.max(0,v);saveSoon()}}});
+
+/* ── 返回主頁時的閃爍：先預載並解碼圖示；圖示或字體還沒好時，先隱藏主頁最多 1.2 秒，避免出現擠在一起的 alt 文字和空白圖示 ── */
+(()=>{const keep=window.__artKeep=window.__artKeep||{};
+  const pre=u=>{if(keep[u])return;const im=new Image();im.decoding='sync';im.src=u;keep[u]=im;if(im.decode)im.decode().catch(()=>{})};
+  window.preloadArt=()=>{try{['anniversary','answer-book','daily','data','doodle','files','friends','gift-cabinet','group-chat','inspiration','kitchen','mailbox','mall','memo-card','period','plum-divination','records','study-progress','tomato-timer','tracking'].forEach(n=>pre(AS(n)))}catch(e){}};
+  window.artWait=()=>{const v=$('#v');if(!v||tab!=='home')return;const im=[...v.querySelectorAll('img')].filter(i=>!(i.complete&&i.naturalWidth)),fl=!!(document.fonts&&document.fonts.status==='loading');if(!im.length&&!fl)return;v.classList.add('art-wait');
+    const ps=im.map(i=>new Promise(r=>{i.addEventListener('load',r,{once:true});i.addEventListener('error',r,{once:true})}));if(fl)ps.push(document.fonts.ready);
+    Promise.race([Promise.all(ps),new Promise(r=>setTimeout(r,1200))]).then(()=>v.classList.remove('art-wait'))};
+  const r0=render;render=function(){const x=r0.apply(this,arguments);try{artWait()}catch(e){}return x};
+  const a0=applyTheme;applyTheme=function(){const x=a0.apply(this,arguments);try{preloadArt()}catch(e){}return x};
+  preloadArt();
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){preloadArt()}});
+})();
+
+/* 以聯絡人為第一個參數的函式：進入時切換到該聯絡人的設置 */
+(()=>{['fireA','fire','gen','roundQ','preRound','schedule','genLetter','dailyPick','stkRoll','patRoll','patMsg','qmPick','extStart','extDone','memSchedule','momNext','inspStep'].forEach(n=>{const f=window[n];if(typeof f!=='function'||f.__cx)return;const w=function(){const a=arguments;if(typeof a[0]==='string')ctxSet(a[0]);else if(a[0]&&typeof a[0]==='object'&&typeof a[0].cid==='string')ctxSet(a[0].cid);return f.apply(this,a)};w.__cx=1;try{window[n]=w}catch(e){}})})();

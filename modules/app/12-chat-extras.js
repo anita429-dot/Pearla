@@ -1,8 +1,25 @@
 
 /* ── 頭像：拖曳與縮放，讓圖片完整放進頭像框 ── */
 let avcS=null;
-function avCrop(f,id,back){const url=URL.createObjectURL(f),im=new Image();im.onload=()=>{const P=240,k0=Math.max(P/im.width,P/im.height);avcS={im,id,url,back,P,k0,k:k0,ox:(P-im.width*k0)/2,oy:(P-im.height*k0)/2,drag:null};
-  sheet('調整頭像'+(back&&back.n>1?'（'+back.i+'／'+back.n+'）':''),'<div id="avc" class="avc"><img id="avi" src="'+url+'" draggable="false" alt=""></div><input id="avz" type="range" min="100" max="400" value="100" style="width:100%;margin:12px 0 4px"><p class="hint" style="margin:0 0 8px;text-align:center">拖曳選擇要裁哪個位置當頭像，滑桿放大縮小；圖片會一直鋪滿頭像框</p><div style="display:flex;gap:8px"><button class="btn" data-a="'+(back?'avcx':'close')+'" style="flex:1;margin-top:0">取消</button><button class="btn s" data-a="avok" style="flex:1;margin-top:0">確定</button></div>',1);avcUI()};im.onerror=()=>toast('無法讀取這張圖片');im.src=url}
+/* 多選頭像：avM＝{files:[{f,url,im,k,ox,oy,k0,zoom,drop}],idx}；每張的裁剪位置各自保留，可左右切換 */
+let avM=null;
+function avLoad(it){return new Promise(res=>{if(it.im){res(true);return}const im=new Image();im.onload=()=>{const P=240,k0=Math.max(P/im.width,P/im.height);it.im=im;it.k0=k0;it.k=k0;it.ox=(P-im.width*k0)/2;it.oy=(P-im.height*k0)/2;it.zoom=100;res(true)};im.onerror=()=>res(false);im.src=it.url})}
+function avCrop(f,id,back){
+  if(id==='bk'&&back&&back.multi){avMulti(back.files);return}
+  const url=URL.createObjectURL(f),im=new Image();im.onload=()=>{const P=240,k0=Math.max(P/im.width,P/im.height);avcS={im,id,url,back,P,k0,k:k0,ox:(P-im.width*k0)/2,oy:(P-im.height*k0)/2,drag:null};
+  sheet('調整頭像','<div id="avc" class="avc"><img id="avi" src="'+url+'" draggable="false" alt=""></div><input id="avz" type="range" min="100" max="400" value="100" style="width:100%;margin:12px 0 4px"><p class="hint" style="margin:0 0 8px;text-align:center">拖曳選擇要裁哪個位置當頭像，滑桿放大縮小；圖片會一直鋪滿頭像框</p><div style="display:flex;gap:8px"><button class="btn" data-a="close" style="flex:1;margin-top:0">取消</button><button class="btn s" data-a="avok" style="flex:1;margin-top:0">確定</button></div>',1);avcUI()};im.onerror=()=>toast('無法讀取這張圖片');im.src=url}
+async function avMulti(files){avM={items:files.map(f=>({f,url:URL.createObjectURL(f),im:null})),idx:0};const ok=await avLoad(avM.items[0]);if(!ok){avMFree();toast('無法讀取這張圖片');return}avMShow()}
+function avMFree(){if(avM)avM.items.forEach(it=>{try{URL.revokeObjectURL(it.url)}catch(e){}});avM=null;avcS=null}
+function avMKeep(){return avM.items.filter(it=>!it.drop)}
+function avMStash(){const a=avcS,it=avM&&avM.items[avM.idx];if(!a||!it)return;it.k=a.k;it.ox=a.ox;it.oy=a.oy;const z=$('#avz');if(z)it.zoom=+z.value||100}
+async function avMShow(){const it=avM.items[avM.idx];await avLoad(it);const P=240,keep=avMKeep(),pos=avM.items.slice(0,avM.idx+1).filter(x=>!x.drop).length,lastIdx=(()=>{for(let n=avM.items.length-1;n>=0;n--)if(!avM.items[n].drop)return n;return -1})(),isLast=avM.idx>=lastIdx;
+  avcS={im:it.im,id:'bk',url:it.url,back:{multi:1},P,k0:it.k0,k:it.k,ox:it.ox,oy:it.oy,drag:null};
+  const prev=avM.items.slice(0,avM.idx).some(x=>!x.drop),next=avM.items.slice(avM.idx+1).some(x=>!x.drop);
+  sheet('調整頭像（'+pos+'／'+keep.length+'）','<div class="avc-wrap"><button type="button" class="avc-arr" data-a="avprev"'+(prev?'':' disabled')+' aria-label="上一張">‹</button><div id="avc" class="avc"><img id="avi" src="'+it.url+'" draggable="false" alt=""></div><button type="button" class="avc-arr" data-a="avnext"'+(next?'':' disabled')+' aria-label="下一張">›</button></div><input id="avz" type="range" min="100" max="400" value="'+(it.zoom||100)+'" style="width:100%;margin:12px 0 4px"><p class="hint" style="margin:0 0 8px;text-align:center">拖曳選擇要裁哪個位置當頭像，滑桿放大縮小；左右箭頭可以看上一張、下一張</p><div style="display:flex;gap:8px"><button class="btn" data-a="avskip" style="flex:1;margin-top:0">不要這張</button><button class="btn" data-a="avcancel" style="flex:1;margin-top:0">取消</button>'+(isLast?'<button class="btn s" data-a="avsaveall" style="flex:1.3;margin-top:0">儲存（'+keep.length+'）張頭像</button>':'<button class="btn s" data-a="avnext" style="flex:1;margin-top:0">下一張</button>')+'</div>',1);avcUI()}
+async function avMGo(d){avMStash();let n=avM.idx+d;while(n>=0&&n<avM.items.length&&avM.items[n].drop)n+=d;if(n<0||n>=avM.items.length)return;avM.idx=n;await avMShow()}
+function avMSave(){avMStash();const me=avScope==='me',ct=cur(),list=me?(S.meAvs=S.meAvs||[]):(ct.avs=ct.avs||[]);let n=0;
+  avMKeep().forEach(it=>{const P=240,O=256,r=O/P,c=document.createElement('canvas');c.width=c.height=O;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,O,O);x.drawImage(it.im,it.ox*r,it.oy*r,it.im.width*it.k*r,it.im.height*it.k*r);list.push(c.toDataURL('image/jpeg',.9));n++});
+  avMFree();save();avSheet();toast('已儲存 '+n+' 張頭像')}
 function avcUI(){const a=avcS,i=$('#avi');if(!a||!i)return;a.ox=Math.min(0,Math.max(a.P-a.im.width*a.k,a.ox));a.oy=Math.min(0,Math.max(a.P-a.im.height*a.k,a.oy));i.style.width=a.im.width*a.k+'px';i.style.height=a.im.height*a.k+'px';i.style.transform='translate('+a.ox+'px,'+a.oy+'px)'}
 document.addEventListener('pointerdown',e=>{if(!avcS||!e.target.closest('#avc'))return;avcS.drag={x:e.clientX,y:e.clientY,ox:avcS.ox,oy:avcS.oy};e.preventDefault()});
 document.addEventListener('pointermove',e=>{const a=avcS;if(!a||!a.drag)return;a.ox=a.drag.ox+e.clientX-a.drag.x;a.oy=a.drag.oy+e.clientY-a.drag.y;avcUI()});
@@ -27,9 +44,9 @@ function memoLines(text){const cv=memoLines.cv||(memoLines.cv=document.createEle
   while(out.length&&out[out.length-1]==='')out.pop();
   const n=memoM().lines.length;if(out.length>n){out=out.slice(0,n);let t=out[n-1];while(t&&m(t+'⋯⋯')>maxW)t=[...t].slice(0,-1).join('');out[n-1]=t+'⋯⋯'}
   return out}
-function memoSlots(){const L=memoLines(S.memo),ev=memoEvents(),sh=ev.length?1:0;return memoM().lines.map((y,i)=>sh&&i===0?'<div class="ml ml-ev" style="top:'+(y-memoM().h)+'%">'+ev.map(n=>'<span>'+esc(n)+'</span>').join('')+'</div>':'<div class="ml" style="top:'+(y-memoM().h)+'%">'+esc(L[i-sh]||'')+'</div>').join('')}
-function qaRecBody(x){if(x.t==='survey'&&x.qs)return x.qs.map((q,i)=>'<div class="ltx" style="margin-top:4px;font-weight:500">'+(i+1)+'. '+esc(q.q)+(q.multi?'（多選）':'')+'</div><div class="ltx" style="color:var(--soft);font-size:12.5px">'+q.o.map(esc).join(' ／ ')+'</div><div class="ltx">他的答案：'+(x.ans&&x.ans[i]?(x.ans[i].length?esc(x.ans[i].join(' ／ ')):'（沒有選擇答案）'):'等待回答中⋯')+'</div>').join('');
-  return '<div class="ltx" style="font-weight:500">'+esc(x.q)+'</div>'+(x.t!=='text'&&x.o.length?'<div class="ltx" style="color:var(--soft);font-size:12.5px">'+x.o.map(esc).join(' ／ ')+'</div>':'')+'<div class="ltx">他的答案：'+(x.ans?(x.ans.length?esc(x.ans.join(' ／ ')):'（沒有選擇答案）'):'等待回答中⋯')+'</div>'}
+function memoSlots(){const L=memoLines(S.memo),ev=memoEvents(),sh=ev.length?1:0;return memoM().lines.map((y,i)=>sh&&i===0?'<div class="ml ml-ev" style="top:'+(y-memoM().h)+'%">'+'提醒：'+ev.map(o=>'<span>'+esc(o.n)+'</span>距離'+o.d+'天').join('　')+'</div>':'<div class="ml" style="top:'+(y-memoM().h)+'%">'+esc(L[i-sh]||'')+'</div>').join('')}
+function qaRecBody(x){if(x.t==='survey'&&x.qs)return x.qs.map((q,i)=>'<div class="ltx" style="margin-top:4px;font-weight:500">'+(i+1)+'. '+esc(q.q)+(q.multi?'（多選）':'')+'</div><div class="ltx" style="color:var(--soft);font-size:calc(12.5px*var(--fz,1))">'+q.o.map(esc).join(' ／ ')+'</div><div class="ltx">他的答案：'+(x.ans&&x.ans[i]?(x.ans[i].length?esc(x.ans[i].join(' ／ ')):'（沒有選擇答案）'):'等待回答中⋯')+'</div>').join('');
+  return '<div class="ltx" style="font-weight:500">'+esc(x.q)+'</div>'+(x.t!=='text'&&x.o.length?'<div class="ltx" style="color:var(--soft);font-size:calc(12.5px*var(--fz,1))">'+x.o.map(esc).join(' ／ ')+'</div>':'')+'<div class="ltx">他的答案：'+(x.ans?(x.ans.length?esc(x.ans.join(' ／ ')):'（沒有選擇答案）'):'等待回答中⋯')+'</div>'}
 /* ── 紀錄 ── */
 const QTN={single:'單選題',multi:'多選題',text:'字卡回答',survey:'問卷'};
 function vRec(){const pg=recPage||'qa',head='<div class="stickh"><div class="ph2"><button class="ib" data-a="rback">‹</button><h1>紀錄</h1><span class="grow"></span><button class="btn" data-a="redit" style="width:auto;padding:6px 14px">'+(recEdit?'完成':'編輯')+'</button></div>',
@@ -42,17 +59,17 @@ function vRec(){const pg=recPage||'qa',head='<div class="stickh"><div class="ph2
       return recEdit?'<div class="ci pick'+(sel?' sel':'')+'" data-a="rcsel" data-i="'+k+'" style="align-items:flex-start;padding:8px 10px;cursor:pointer"><span class="ck '+(sel?'on':'')+'"></span>'+info+'</div>':'<div class="ci" style="align-items:flex-start;padding:8px 10px">'+info+'</div>'};
     return head+tabs+bar+(l.length?l.map(row).join(''):'<div class="empty">還沒有錄音。<br>在聊天室點右上角麥克風錄音並發送後，會記錄在這裡。</div>')}
   if(pg==='plum'){const l=[...(S.plum||[])].sort((a,b)=>b.t-a.t),bar=recEdit?'<div class="selbar">'+selAllHtml('pl',l.map(x=>x.id),recSel)+'<button class="btn d" data-a="pdelsel" style="border-style:solid">刪除所選（'+recSel.length+'）</button></div>':'';
-    const row=x=>{const r=x.r,m=x.meta,inner='<div class="ltt">'+ltime(x.t)+' · '+(m.mode==='num'?'報數排盤':'時間排盤')+'</div>'+(x.q?'<div class="ltx" style="color:var(--soft);font-size:12.5px">所問：'+esc(x.q.length>30?x.q.slice(0,30)+'⋯':x.q)+'</div>':'')+'<div class="ltx" style="font-weight:500">'+esc(r.benGua)+' → '+esc(r.bianGua)+'（互：'+esc(r.huGua)+'）</div><div class="ltx" style="color:var(--soft);font-size:12.5px">'+(m.mode==='num'?'數字 '+m.n1+'、'+m.n2:m.time)+' · 動爻'+MH_YAO[r.movingLine-1]+' · '+esc(r.overall.level)+'</div>';
+    const row=x=>{const r=x.r,m=x.meta,inner='<div class="ltt">'+ltime(x.t)+' · '+(m.mode==='num'?'報數排盤':'時間排盤')+'</div>'+(x.q?'<div class="ltx" style="color:var(--soft);font-size:calc(12.5px*var(--fz,1))">所問：'+esc(x.q.length>30?x.q.slice(0,30)+'⋯':x.q)+'</div>':'')+'<div class="ltx" style="font-weight:500">'+esc(r.benGua)+' → '+esc(r.bianGua)+'（互：'+esc(r.huGua)+'）</div><div class="ltx" style="color:var(--soft);font-size:calc(12.5px*var(--fz,1))">'+(m.mode==='num'?'數字 '+m.n1+'、'+m.n2:m.time)+' · 動爻'+MH_YAO[r.movingLine-1]+' · '+esc(r.overall.level)+'</div>';
       return recEdit?'<div class="lt pick'+(recSel.includes(x.id)?' sel':'')+'" data-a="psel" data-i="'+x.id+'"><span class="ck '+(recSel.includes(x.id)?'on':'')+'"></span>'+inner+'</div>':'<div class="lt" data-a="pview" data-i="'+x.id+'" style="cursor:pointer">'+inner+'</div>'};
     return head+tabs+bar+(l.length?l.map(row).join(''):'<div class="empty">還沒有梅花易數紀錄。<br>在主頁「梅花易數」排盤後，結果會記錄在這裡。</div>')}
   if(pg==='book'){const l=[...(S.book||[])].sort((a,b)=>b.t-a.t),bar=recEdit?'<div class="selbar">'+selAllHtml('bk',l.map(x=>x.id),recSel)+'<button class="btn d" data-a="bdelsel" style="border-style:solid">刪除所選（'+recSel.length+'）</button></div>':'';
-    const row=x=>{const inner='<div class="ltt">'+ltime(x.t)+' · '+(x.mode==='rand'?'隨機翻頁':'輸入數字')+'</div>'+(x.q?'<div class="ltx" style="color:var(--soft);font-size:12.5px">所問：'+esc(x.q.length>30?x.q.slice(0,30)+'⋯':x.q)+'</div>':'')+'<div class="ltx" style="font-weight:500">'+esc(x.a)+'</div><div class="ltx" style="color:var(--soft);font-size:12.5px">第 '+x.p+' 頁 · 數字 '+x.n+'</div>';
+    const row=x=>{const inner='<div class="ltt">'+ltime(x.t)+' · '+(x.mode==='rand'?'隨機翻頁':'輸入數字')+'</div>'+(x.q?'<div class="ltx" style="color:var(--soft);font-size:calc(12.5px*var(--fz,1))">所問：'+esc(x.q.length>30?x.q.slice(0,30)+'⋯':x.q)+'</div>':'')+'<div class="ltx" style="font-weight:500">'+esc(x.a)+'</div><div class="ltx" style="color:var(--soft);font-size:calc(12.5px*var(--fz,1))">第 '+x.p+' 頁 · 數字 '+x.n+'</div>';
       return recEdit?'<div class="lt pick'+(recSel.includes(x.id)?' sel':'')+'" data-a="bsel" data-i="'+x.id+'"><span class="ck '+(recSel.includes(x.id)?'on':'')+'"></span>'+inner+'</div>':'<div class="lt" data-a="bview" data-i="'+x.id+'" style="cursor:pointer">'+inner+'</div>'};
     return head+tabs+bar+(l.length?l.map(row).join(''):'<div class="empty">還沒有答案之書紀錄。<br>在主頁「答案之書」翻開答案後，結果會記錄在這裡。</div>')}
   const key=recFav==='m'?'fav':'tfav',it=[],seen=recSeen[key]=recSeen[key]||{};S.contacts.forEach(c=>ms(c.id).forEach(m=>{if(m[key]&&!m.qa)seen[c.id+':'+m.id]=1}));S.contacts.forEach(c=>ms(c.id).forEach(m=>{if(!m.qa&&(m[key]||seen[c.id+':'+m.id]))it.push([c,m])}));it.sort((a,b)=>b[1].t-a[1].t);recAllKeys=it.map(([c,m])=>c.id+':'+m.id+':'+key);
   const seg='<div class="seg"><button class="'+(recFav==='h'?'on':'')+'" data-a="rfs" data-i="h">他的收藏</button><button class="'+(recFav==='m'?'on':'')+'" data-a="rfs" data-i="m">我的收藏</button></div>';
   const fbar=recEdit?'<div class="selbar">'+selAllHtml('fav',recAllKeys,recSel)+'<button class="btn s" data-a="funsel">取消收藏所選（'+recSel.length+'）</button></div>':'';
-  const itemHtml=([c,m])=>{const k=c.id+':'+m.id+':'+key,sel=recSel.includes(k),body='<div class="grow" style="white-space:pre-wrap;word-break:break-word">'+(m.q?'<div class="qt">'+esc(m.q)+'</div>':'')+(m.img?'<img src="'+m.img+'" style="max-width:90px;max-height:90px;border-radius:8px;display:block">':'')+esc(m.x)+'<small>'+esc(c.name)+' · '+ltime(m.t)+'</small></div>';
+  const itemHtml=([c,m])=>{const k=c.id+':'+m.id+':'+key,sel=recSel.includes(k),body='<div class="grow" style="white-space:pre-wrap;word-break:break-word">'+qtHtml(m)+(m.img?'<img src="'+m.img+'" style="max-width:90px;max-height:90px;border-radius:8px;display:block">':'')+esc(m.x)+'<small>'+esc(c.name)+' · '+ltime(m.t)+'</small></div>';
     return recEdit?'<div class="ci pick'+(sel?' sel':'')+'" data-a="fsel" data-i="'+k+'" style="align-items:flex-start;padding:8px 10px;cursor:pointer"><span class="ck '+(sel?'on':'')+'"></span>'+body+'</div>':'<div class="ci" style="align-items:flex-start;padding:8px 10px">'+body+'<button class="ib" data-a="unf" data-i="'+k+'">'+(m[key]?'★':'☆')+'</button></div>'};
   return head+tabs+seg+fbar+(it.length?it.map(itemHtml).join(''):'<div class="empty">'+(recFav==='m'?'還沒有收藏任何訊息。<br>在聊天室點訊息旁的 ☆ 即可收藏。':'他還沒有收藏任何你的訊息。')+'</div>');}
 
@@ -76,7 +93,7 @@ function askSheet(keep){const Q=S.qa,sh=$('#sh'),old=$('.ask-body'),st=keep&&old
       if(qaEditMode)return '<div class="qcrow"><div class="qc pk'+(sel?' sel':'')+'" data-a="qcsel" data-i="'+c.id+'"><span class="ck '+(sel?'on':'')+'" style="position:absolute;top:10px;right:10px"></span><div class="qcq">'+esc(c.q)+'</div><div class="qco">'+opts+'</div></div></div>';
       return '<div class="qcrow"><div class="qc" data-a="qcpick" data-i="'+c.id+'"><button class="qcm" data-a="qcm" data-i="'+c.id+'">'+(c.multi?'多選':'單選')+'</button><div class="qcq">'+esc(c.q)+'</div><div class="qco">'+opts+'</div></div>'+(qcSel===c.id?'<div class="qcact"><div class="qmini"><button class="qm" data-a="qcmod" data-i="'+c.id+'">修改</button><button class="qm d" data-a="qcdel" data-i="'+c.id+'">刪除</button></div><button class="qsend" data-a="qcsend" data-i="'+c.id+'">發送</button></div>':'')+'</div>'};
     body='<div class="card set" style="padding:10px 12px;margin-bottom:10px">'+NS('card.time','回覆時間','秒')+'</div><div class="ask-top"><span>問題卡</span><span><button class="btn" data-a="qcadd">添加</button><button class="btn" data-a="qcedit">'+(qaEditMode?'完成':'編輯')+'</button></span></div>'+(qaEditMode?'<div class="selbar" style="margin:0 0 10px">'+selAllHtml('qc',(Q.cards||[]).map(c=>c.id),qcSels)+'<button class="btn d" data-a="qcdelsel" style="border-style:solid">刪除所選（'+qcSels.length+'）</button></div>':'')+(Q.cards.length?Q.cards.map(cardBox).join(''):'<div class="empty">還沒有問題卡。<br>點右上「添加」新增。</div>');}
-  const ov=qaAdd?'<div id="addov"><div class="box" data-keep="1"><h2 style="margin-bottom:10px">'+(qaAdd===true?'添加問題卡':'編輯問題卡')+'</h2><textarea rows="2" data-qd="aq" placeholder="想問什麼？" style="margin-bottom:10px">'+esc(qd.aq)+'</textarea><textarea rows="7" data-qd="ao" placeholder="答案選項；一行一個選項">'+esc(qd.ao)+'</textarea><button class="btn s" data-a="qcok">'+(qaAdd===true?'發送':'儲存')+'</button></div></div>':'';
+  const ov=qaAdd?'<div id="addov"><div class="box" data-keep="1"><h2 style="margin-bottom:10px">'+(qaAdd===true?'添加問題卡':'編輯問題卡')+'</h2><textarea rows="2" data-qd="aq" placeholder="想問什麼？" style="margin-bottom:10px">'+esc(qd.aq)+'</textarea><textarea rows="7" data-qd="ao" placeholder="答案選項；一行一個選項">'+esc(qd.ao)+'</textarea><button class="btn s" data-a="qcok">儲存</button></div></div>':'';
   const cf=qaConfirm?'<div id="cfov"><div class="box" data-keep="1"><h2 style="margin-bottom:6px">是否確認刪除？</h2><p class="hint" style="margin:0 0 8px">將刪除 '+qaConfirm.ids.length+' 張問題卡。</p><div style="display:flex;gap:8px"><button class="btn" data-a="qcfno" style="flex:1;margin-top:0">取消</button><button class="btn d" data-a="qcfok" style="flex:1;margin-top:0">確認刪除</button></div></div></div>':'';
   sh.innerHTML='<div class="box" data-keep="1">'+tabs+'<div class="ask-body">'+body+'</div>'+foot+'</div>'+ov+cf;
   sh.classList.remove('mid','chat-pop','sv');sh.classList.add('ask','show');const nb=$('.ask-body');if(nb&&st)nb.scrollTop=st}
@@ -101,16 +118,16 @@ function qaStep(cid,m){const a=m.qa,lg=S.qlog.find(x=>x.id===m.id),n=Date.now();
   if(a.t==='text'&&!a.cd){const T0=S.qa.text,lo0=Math.round(Math.min(T0.cmin,T0.cmax)),hi0=Math.round(Math.max(T0.cmin,T0.cmax)),k0=Math.max(1,lo0+ri(hi0-lo0+1));a.cd=k0;a.due=n+k0*STEP;return}
   a.done=true;
   if(a.t==='text'){const pl=cardPool(cid),T=S.qa.text,lo=Math.round(Math.min(T.cmin,T.cmax)),hi=Math.round(Math.max(T.cmin,T.cmax)),k=a.cd||Math.max(1,lo+ri(hi-lo+1));
-    if(pl.length){texts=Array.from({length:k},()=>pk(pl).text);const b=ms(cid).length;ms(cid).push({id:uid(),f:'ta',x:texts.join('\n'),t:n});notify(cid,b)}else ms(cid).push({id:uid(),f:'sys',x:'目前沒有可抽取的字卡',t:n})}
+    if(pl.length){texts=Array.from({length:k},()=>{const _k=pk(pl);cuse(cid,_k);return _k.text});const b=ms(cid).length;ms(cid).push({id:uid(),f:'ta',x:texts.join('\n'),t:n});notify(cid,b)}else ms(cid).push({id:uid(),f:'sys',x:'目前沒有可抽取的字卡',t:n})}
   else{a.sel=qaPick(a.t==='multi',a.o.length,a.mx);texts=a.sel.slice().sort((x,y)=>x-y).map(i=>a.o[i]);if(texts.length){const b=ms(cid).length;ms(cid).push({id:uid(),f:'ta',x:texts.join('\n'),t:n});notify(cid,b)}}
   if(lg){lg.ans=texts;lg.ats=n}}
 function qaTick(){if(!S||!S.qa)return;const n=Date.now();let ch=0;
-  S.contacts.forEach(c=>{const pend=ms(c.id).filter(m=>m.qa&&!m.qa.done);if(!pend.length)return;const m=pend[0],a=m.qa;
+  S.contacts.forEach(c=>{ctxSet(c.id);if(c.dnd)return;const pend=ms(c.id).filter(m=>m.qa&&!m.qa.done);if(!pend.length)return;const m=pend[0],a=m.qa;
     if(a.due==null){a.due=n+(a.t==='survey'?rnd2(a.tmin,a.tmax):(a.tm||0))*1000;ch=1;return}
     if(a.due>n)return;ch=1;qaStep(c.id,m)});
   if(ch){save();if(tab==='chat')paint();else if(tab==='contacts'&&!document.activeElement.isContentEditable)render();badge()}}
 setInterval(qaTick,1000);
-function qtBar(){const b=$('#qtb');if(!b)return;const on=qtDraft&&qtDraft.cid===S.cur;b.style.display=on?'flex':'none';b.innerHTML=on?'<span class="qtt">引用：'+esc(qtDraft.x)+'</span><button type="button" class="ib" data-a="qtx">✕</button>':''}
+function qtBar(){const b=$('#qtb');if(!b)return;const on=qtDraft&&qtDraft.cid===S.cur;b.style.display=on?'flex':'none';b.innerHTML=on?'<span class="qtt">引用：'+(qtDraft.img?'<img class="qt-img qt-bar" src="'+qtDraft.img+'" alt="">':'')+esc(qtDraft.x)+'</span><button type="button" class="ib" data-a="qtx">✕</button>':''}
 
 /* ── 錄音（語音訊息）：模式切換、錄音、試聽、發送 ── */
 let recMode=false,recSt='idle',recMR=null,recStream=null,recChunks=[],recT0=0,recTick=null,recData=null,recPrev=null,vAud=null,vAudId=null,rcState=null,recAC=null;
@@ -132,18 +149,29 @@ function recUI(){const o=$('#recbox');if(o)o.outerHTML=recBox()}
 function recCleanup(){clearInterval(recTick);recTick=null;if(recStream){recStream.getTracks().forEach(t=>t.stop());recStream=null}}
 function recClear(){if(recPrev){recPrev.pause();recPrev=null}if(recData&&recData.url)URL.revokeObjectURL(recData.url);recData=null;recChunks=[];if(recMR&&recMR.state!=='inactive'){recMR.onstop=null;try{recMR.stop()}catch(_){}}recMR=null;recCleanup();recSt='idle'}
 function recToggle(){
-  if(recMode){recClear();recMode=false}else{recMode=true;recSt='idle'}
+  if(recMode){recClear();recMode=false}else{recMode=true;recSt='idle';if(S.set.recSound&&!window.__micOK)micAsk().then(st=>{if(st){st.getTracks().forEach(t=>t.stop());window.__micOK=1}})}
   const hb=$('.chh [data-a=vrec]');if(hb)hb.classList.toggle('rec-on',recMode);
   const f=$('#f'),cur0=f&&f.querySelector('#in,#recbox');if(cur0)cur0.outerHTML=recMode?recBox():'<input id="in" placeholder="說點什麼…" autocomplete="off">';
 }
 function recTickStart(){recTick=setInterval(()=>{const t=$('#rec-t');if(!t||!$('#recbox')){recClear();return}const sec=(Date.now()-recT0)/1000;t.textContent=recFmt(sec);if(sec>=60)recStop()},250)}
+/* 麥克風權限：在使用者點擊時直接呼叫 getUserMedia，瀏覽器就會跳出「允許使用麥克風」的確認；被拒絕時顯示原因與開啟方式 */
+function micExplain(e){const n=e&&e.name||'',https=window.isSecureContext===false;let why;
+  if(https||!navigator.mediaDevices)why='目前的網址不是 https（或瀏覽器不支援），瀏覽器會直接禁止錄音。請用 https 網址開啟（例如放到 GitHub Pages、Netlify），或用 localhost 測試。';
+  else if(n==='NotAllowedError'||n==='SecurityError')why='麥克風權限被拒絕了。<br>iPhone：「設定 → Safari → 麥克風」改成「詢問」或「允許」；如果是加到主畫面的 App，請到「設定 → 隱私權與安全性 → 麥克風」確認有開，或清除網站資料後重新開啟。<br>電腦：點網址列左邊的鎖頭 → 麥克風 → 允許。';
+  else if(n==='NotFoundError'||n==='OverconstrainedError')why='找不到可用的麥克風。';
+  else if(n==='NotReadableError'||n==='AbortError')why='麥克風正被其他程式使用，請先關掉其他使用麥克風的 App 再試。';
+  else why='無法開啟麥克風（'+esc(n||'未知錯誤')+'）。';
+  sheet('需要麥克風權限','<p class="hint" style="margin:0 0 10px;line-height:1.7">'+why+'</p><button class="btn s" data-a="micretry">再試一次</button><button class="btn" data-a="close">關閉</button>',1)}
+async function micAsk(){if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){micExplain(null);return null}
+  let err=null;for(const c of [{audio:true},{audio:{channelCount:1}}]){try{return await navigator.mediaDevices.getUserMedia(c)}catch(e){err=e;if(e&&(e.name==='NotAllowedError'||e.name==='SecurityError'))break}}
+  micExplain(err);return null}
 async function recStart(){
   if(recSt==='rec')return;
   recClear();recMode=true;
   /* 收入聲音關閉：不真的錄音，只計算秒數 */
   if(!S.set.recSound){recMR=null;recT0=Date.now();recSt='rec';recUI();recTickStart();return}
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||typeof MediaRecorder==='undefined'){toast('這個瀏覽器不支援錄音');return}
-  try{recStream=await navigator.mediaDevices.getUserMedia({audio:{channelCount:1}})}catch(_){recSt='idle';recUI();toast('無法使用麥克風，請允許錄音權限');return}
+  recStream=await micAsk();if(!recStream){recSt='idle';recUI();return}
   const mt=recTypes();
   try{recMR=new MediaRecorder(recStream,Object.assign({audioBitsPerSecond:REC_BPS},mt?{mimeType:mt}:{}))}catch(_){recCleanup();toast('無法開始錄音');return}
   recChunks=[];const mr=recMR;mr.ondataavailable=e=>{if(e.data&&e.data.size)recChunks.push(e.data)};
@@ -181,7 +209,7 @@ function recDelAll(){if(vAud){vAud.pause();vAud=null;vAudId=null}Object.keys(S.m
 const rcBytesOf=m=>Math.round((m.audio.length-(m.audio.indexOf(',')+1))*.75);
 function rcTargets(){return recList().map(([c,m])=>m).filter(m=>(m.dur||0)>0&&rcBytesOf(m)/m.dur>REC_BPS/8*1.3)}
 function rcSheet(){const st=rcState;if(!st)return;const l=rcTargets(),tot=recList().length,sec=l.reduce((a,m)=>a+(m.dur||0),0),sz=l.reduce((a,m)=>a+rcBytesOf(m),0);
-  const info=st.busy?'<p class="hint" style="margin:8px 0">壓縮中 '+esc(st.prog||'')+'，請保持此頁面開著⋯</p>':st.res?'<p style="margin:8px 0;font-size:14px">'+esc(st.res)+'</p>':l.length?'<p style="margin:8px 0;font-size:14px">可壓縮 '+l.length+' 則（共 '+tot+' 則錄音），目前約 '+dFmt(sz)+'，預計需要 '+recFmt(sec)+'。</p>':'<p style="margin:8px 0;font-size:14px">沒有可再壓縮的錄音（共 '+tot+' 則）。</p>';
+  const info=st.busy?'<p class="hint" style="margin:8px 0">壓縮中 '+esc(st.prog||'')+'，請保持此頁面開著⋯</p>':st.res?'<p style="margin:8px 0;font-size:calc(14px*var(--fz,1))">'+esc(st.res)+'</p>':l.length?'<p style="margin:8px 0;font-size:calc(14px*var(--fz,1))">可壓縮 '+l.length+' 則（共 '+tot+' 則錄音），目前約 '+dFmt(sz)+'，預計需要 '+recFmt(sec)+'。</p>':'<p style="margin:8px 0;font-size:calc(14px*var(--fz,1))">沒有可再壓縮的錄音（共 '+tot+' 則）。</p>';
   sheet('壓縮現有錄音','<p class="hint" style="margin:0 0 6px">壓縮不可還原，音質會略降（語音仍清楚），建議先備份。</p>'+info+(l.length&&!st.busy&&!st.res?'<button class="btn d" data-a="rcgo">開始壓縮</button>':'')+'<button class="btn" data-a="bak">先去備份</button><button class="btn" data-a="close">關閉</button>',1)}
 function rcDecode(dataUrl,ac){const b64=dataUrl.slice(dataUrl.indexOf(',')+1),bin=atob(b64),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return new Promise((ok,no)=>{const p=ac.decodeAudioData(u.buffer,ok,no);if(p&&p.catch)p.catch(no)})}
 function rcEncode(ab,ac){return new Promise((ok,no)=>{try{const mt=recTypes(),dest=ac.createMediaStreamDestination(),mr=new MediaRecorder(dest.stream,Object.assign({audioBitsPerSecond:REC_BPS},mt?{mimeType:mt}:{})),ch=[],src=ac.createBufferSource();src.buffer=ab;src.connect(dest);
@@ -196,4 +224,4 @@ async function rcRun(){const st=rcState;if(!st||st.busy)return;const l=rcTargets
     try{const ab=await rcDecode(m.audio,recAC),nu=await rcEncode(ab,recAC);if(nu&&nu.length<m.audio.length*.9){saved+=m.audio.length-nu.length;m.audio=nu;done++}}catch(_){}}
   st.busy=false;save();dCalc();st.res='已壓縮 '+done+' 則，省下約 '+dFmt(Math.round(saved*.75))+'。';
   if(dataOpen)render();rcSheet()}
-function myMsg(m){sndMe();if(qtDraft&&qtDraft.cid===S.cur){m.q=qtDraft.x;qtDraft=null}if(rnd()*100<Math.max(0,Math.min(100,+S.set.favProb||0)))m.tfav=1;ms(S.cur).push(m);memSchedule(S.cur,m);return m}
+function myMsg(m){sndMe();if(qtDraft&&qtDraft.cid===S.cur){m.q=qtDraft.x;if(qtDraft.img)m.qi=qtDraft.img;qtDraft=null}if(rnd()*100<Math.max(0,Math.min(100,+S.set.favProb||0)))m.tfav=1;ms(S.cur).push(m);memSchedule(S.cur,m);return m}

@@ -499,11 +499,11 @@ function mhGuaBlock(lab,name,u,l,mark,mlab,isBen){const kw=mhKw(u,l),f=(MH_TXT[k
    +'<div style="margin-top:6px">'+gl('爻辭')+[5,4,3,2,1,0].map(i=>'<div'+((i+1===mark)?' style="color:#c0607f;font-weight:500"':'')+'>'+esc(yao[i])+((i+1===mark)?'　◀ '+mlab:'')+'</div>').join('')+(ex?'<div>'+esc(ex)+'</div>':'')+'</div>'
    +'<div style="margin-top:6px">'+gl(isBen?'卦辭白話':'白話')+'　'+esc(f[9])+'</div>'+((isBen&&mark)?'<div style="margin-top:6px">'+gl('動爻白話（'+MH_YAO[mark-1]+'）')+'　'+esc((MH_YT[kw-1]||'').split('|')[mark-1]||'')+'</div>':'')+'</div>'}
 function mhResultHtml(rec){const r=rec.r,m=rec.meta,mv=r.movingLine,o=r.originalLines,hl=[o[1],o[2],o[3],o[2],o[3],o[4]],sg=n=>(n>0?'+':'')+n;
-  const col=(lab,lines,name,u,l,ue,le,mark)=>'<div style="flex:1;min-width:0;text-align:center"><div class="hint" style="margin:0 0 4px">'+lab+'</div><div style="display:flex;justify-content:center;color:var(--ink)">'+mhSvg(lines,mark)+'</div><div style="font-weight:500;margin-top:4px;font-size:14px">'+esc(name)+'</div><div class="hint" style="margin:2px 0 0">第'+mhKw(u,l)+'卦</div><div class="hint" style="margin:0">上'+u+'（'+ue+'）</div><div class="hint" style="margin:0">下'+l+'（'+le+'）</div></div>';
+  const col=(lab,lines,name,u,l,ue,le,mark)=>'<div style="flex:1;min-width:0;text-align:center"><div class="hint" style="margin:0 0 4px">'+lab+'</div><div style="display:flex;justify-content:center;color:var(--ink)">'+mhSvg(lines,mark)+'</div><div style="font-weight:500;margin-top:4px;font-size:calc(14px*var(--fz,1))">'+esc(name)+'</div><div class="hint" style="margin:2px 0 0">第'+mhKw(u,l)+'卦</div><div class="hint" style="margin:0">上'+u+'（'+ue+'）</div><div class="hint" style="margin:0">下'+l+'（'+le+'）</div></div>';
   const row=(k,v)=>'<div style="margin:0 0 9px"><b style="font-weight:500">'+k+'</b><br><span style="color:var(--soft)">'+v+'</span></div>';
   const rem=n=>'餘 '+n+(n===0?'（取 8）':''),rem6=n=>'餘 '+n+(n===0?'（取 6）':'');
   const c=r.calculation;
-  const qline=(rec.q?'<div style="margin:0 0 10px;font-size:14px"><span style="color:var(--soft)">所問之事</span>　'+esc(rec.q)+'</div>':'')+(rec.note?'<div style="margin:0 0 10px;font-size:14px"><span style="color:var(--soft)">備注</span>　'+esc(rec.note)+'</div>':'');const head=m.mode==='num'?'報數排盤：數字一 '+m.n1+'、數字二 '+m.n2:'時間排盤：'+m.time+'（農曆'+m.ly+'年'+m.lmon+'月'+m.ld+'日 '+m.zh+'時）';
+  const qline=(rec.q?'<div style="margin:0 0 10px;font-size:calc(14px*var(--fz,1))"><span style="color:var(--soft)">所問之事</span>　'+esc(rec.q)+'</div>':'')+(rec.note?'<div style="margin:0 0 10px;font-size:calc(14px*var(--fz,1))"><span style="color:var(--soft)">備注</span>　'+esc(rec.note)+'</div>':'');const head=m.mode==='num'?'報數排盤：數字一 '+m.n1+'、數字二 '+m.n2:'時間排盤：'+m.time+'（農曆'+m.ly+'年'+m.lmon+'月'+m.ld+'日 '+m.zh+'時）';
   const how=m.mode==='num'?('數字一 '+m.n1+' ÷ 8 '+rem(c.upperRemainder)+' → 上卦「'+r.upperGua+'」；數字二 '+m.n2+' ÷ 8 '+rem(c.lowerRemainder)+' → 下卦「'+r.lowerGua+'」；兩數之和 '+c.sum+' ÷ 6 '+rem6(c.movingLineRemainder)+' → 動爻在'+MH_YAO[mv-1]+'。')
     :('年支 '+m.zy+'（'+m.yz+'）＋農曆月 '+(m.lmon.replace('閏',''))+'＋農曆日 '+m.ld+' ＝ '+m.sum+'，÷ 8 '+rem(c.upperRemainder)+' → 上卦「'+r.upperGua+'」；再加時支 '+m.zh+'（'+m.hz+'）＝ '+c.movingTotal+'，÷ 8 '+rem(c.lowerRemainder)+' → 下卦「'+r.lowerGua+'」；'+c.movingTotal+' ÷ 6 '+rem6(c.movingLineRemainder)+' → 動爻在'+MH_YAO[mv-1]+'。');
   const seasonTxt=m.season?(m.season+'季（'+(m.auto?'自動，依農曆'+m.lm+'月推算':'手動選擇')+'）'):'未提供（無法取得農曆月份，不判斷旺衰）';
@@ -511,7 +511,7 @@ function mhResultHtml(rec){const r=rec.r,m=rec.meta,mv=r.movingLine,o=r.original
   const sc=r.score;
   return qline+'<div class="hint" style="margin:0 0 10px">'+esc(head)+'</div>'
    +'<div style="display:flex;gap:6px;margin-bottom:12px">'+col('本卦',o,r.benGua,r.upperGua,r.lowerGua,r.upperElement,r.lowerElement,mv)+col('互卦',hl,r.huGua,r.huUpperGua,r.huLowerGua,r.huUpperElement,r.huLowerElement,0)+col('變卦',r.changedLines,r.bianGua,r.bianUpperGua,r.bianLowerGua,r.bianUpperElement,r.bianLowerElement,0)+'</div>'
-   +'<div style="font-size:14px;line-height:1.8">'
+   +'<div style="font-size:calc(14px*var(--fz,1));line-height:1.8">'
    +row('起卦',esc(how))
    +row('體用','體卦：'+esc(r.bodyGua)+'（'+r.bodySide+'，'+r.bodyElement+'）　用卦：'+esc(r.useGua)+'（'+r.useSide+'，'+r.useElement+'）<br>'+esc(r.relationType)+'：'+esc(r.relationDescription))
    +row('季節旺衰','季節：'+esc(seasonTxt)+'<br>'+esc(strength).replace(/&lt;br&gt;/g,'<br>'))

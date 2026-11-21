@@ -33,22 +33,22 @@ function gsheet(id){const g=grp(id);if(!g)return;gEditId=id;
   sheet('編輯群聊','<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">'+gAv(g)+'<input id="gname" value="'+esc(g.name)+'" placeholder="群聊名稱" style="flex:1;min-width:0"></div><p class="hint" style="margin:0 0 6px">點頭像可更換群聊照片；名稱留空會自動命名。</p><div class="sr" style="margin:6px 0"><span>群聊成員</span></div><div style="max-height:34vh;overflow:auto">'+(mem||'<div class="empty">還沒有聯絡人，請先到「聯絡人」新增。</div>')+'</div><button class="btn s" data-a="gdone">完成</button><button class="btn d" data-a="gdel" data-i="'+id+'">刪除群聊</button>',1)}
 function vGrpRoom(){const g=grp(grpRoom);if(!g){grpRoom=null;return vGrpList()}
   return '<div class="ch"><div class="chh"><button class="ib" data-a="grpback" aria-label="返回">‹</button>'+avh({id:g.id,av:g.av,name:g.name},'msgav')+'<div class="grow"><b style="font-weight:500">'+esc(g.name)+'</b><small class="chat-status">'+gMembers(g).length+' 位成員</small></div></div><div class="clw"><div id="cl" class="cl"></div><button id="tobot" class="tobot" type="button" data-a="tobot" aria-label="回到最新消息"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></button></div><form id="f"><input id="in" placeholder="說點什麼…" autocomplete="off"><button class="btn s" style="flex:none">送出</button></form></div>'}
-const gTyping=(gid,cid)=>{const k=gid+'|'+cid,R=S.rounds[k];return !!((R&&R.ph===2)||typingQ[k])};
+const gTyping=(gid,cid)=>{const k=gid+'|'+cid,R=S.rounds[k];return !!((R&&R.ph===2)||tqOn(typingQ[k]))};
 function paintG(){const l=$('#cl');if(!l||!grpRoom)return;const g=grp(grpRoom);if(!g)return;const a=ms(g.id);
   l.innerHTML=a.length?a.map(m=>{if(m.f==='sys')return '<div class="sys'+(m.pat?' pat':'')+'" id="m-'+m.id+'">'+esc(m.x)+'</div>';
     const c=m.f==='me'?{id:'me',av:S.meAv,name:S.me}:(S.contacts.find(x=>x.id===m.u)||{id:'x',name:'已退出的聯絡人',av:''});
-    return '<div class="m '+m.f+'" id="m-'+m.id+'">'+avh(c,'msgav')+'<div class="b'+(m.img?' media-b':'')+'">'+(m.f==='ta'?'<div class="gnm">'+esc(c.name)+'</div>':'')+(m.q?'<div class="qt">'+esc(m.q)+'</div>':'')+(m.img?'<img src="'+m.img+'">':'')+esc(m.x)+((m.star||(m.tags&&m.tags.length))?'<div class="msg-tags">'+(m.star?'<span class="mk" style="--mark:'+esc(S.set.starColor||S.ink||'#5f5b8d')+'">'+MK[S.set.mk||'star']+'</span>':'')+(m.tags||[]).map(t=>'<span class="tg">'+esc(t)+'</span>').join('')+'</div>':'')+'</div><div class="mt"><span>'+tm(m.t)+'</span></div></div>'}).join(''):'<div class="empty">還沒有訊息。<br>說點什麼，群裡的聯絡人會各自依字卡隨機回覆。</div>';
+    return '<div class="m '+m.f+'" id="m-'+m.id+'">'+avh(c,'msgav')+'<div class="b'+(m.img?' media-b':'')+'">'+(m.f==='ta'?'<div class="gnm">'+esc(c.name)+'</div>':'')+qtHtml(m)+(m.img?'<img src="'+m.img+'">':'')+esc(m.x)+((m.star||(m.tags&&m.tags.length))?'<div class="msg-tags">'+(m.star?'<span class="mk" style="--mark:'+esc(S.set.starColor||S.ink||'#5f5b8d')+'">'+MK[S.set.mk||'star']+'</span>':'')+(m.tags||[]).map(t=>'<span class="tg">'+esc(t)+'</span>').join('')+'</div>':'')+'</div><div class="mt"><span>'+tm(m.t)+'</span></div></div>'}).join(''):'<div class="empty">還沒有訊息。<br>說點什麼，群裡的聯絡人會各自依字卡隨機回覆。</div>';
   gMembers(g).filter(cid=>gTyping(g.id,cid)).forEach(cid=>{const c=S.contacts.find(x=>x.id===cid);l.insertAdjacentHTML('beforeend','<div class="sys typing"><span>'+esc(c.name)+'正在輸入</span><span class="td">⋯</span></div>')});
   const bot=()=>{l.scrollTop=l.scrollHeight};bot();requestAnimationFrame(bot);l.querySelectorAll('img').forEach(im=>{if(!im.complete)im.addEventListener('load',bot,{once:true})})}
 function gSend(v){const g=grp(grpRoom);if(!g)return;sndMe();const m={id:uid(),f:'me',x:v,t:Date.now()};if(rnd()*100<Math.max(0,Math.min(100,+S.set.favProb||0)))m.tfav=1;ms(g.id).push(m);
-  gMembers(g).forEach(cid=>{const key=g.id+'|'+cid,R=S.rounds[key],now=Date.now();if(R){const add=Math.min(1500,12000-R.ext);R.due+=add;R.ext+=add;R.qx=v;return}S.rounds[key]={due:now+PRE,ext:0,ph:1,qx:v,lock:0,readAt:now+1000}});
+  gMembers(g).forEach(cid=>{if(isDnd(cid))return;const key=g.id+'|'+cid,R=S.rounds[key],now=Date.now();if(R){const add=Math.min(1500,12000-R.ext);R.due+=add;R.ext+=add;R.qx=v;return}S.rounds[key]={due:now+PRE,ext:0,ph:1,qx:v,lock:0,readAt:now+1000}});
   save();paintG()}
-function gTick(key,R,n){const[gid,cid]=key.split('|'),g=grp(gid);if(!g||!g.members.includes(cid)||!S.contacts.some(c=>c.id===cid)){delete S.rounds[key];return}
+function gTick(key,R,n){const[gid,cid]=key.split('|'),g=grp(gid);if(!g||!g.members.includes(cid)||!S.contacts.some(c=>c.id===cid)||isDnd(cid)){delete S.rounds[key];return}
   if(R.ph===1){const s=S.set,hit=p=>rnd()*100<p;if(hit(s.ghost)){delete S.rounds[key];return}const a=Math.round(Math.min(s.cmin,s.cmax)),b=Math.round(Math.max(s.cmin,s.cmax)),mn=Math.max(0,+s.rmin||0)*1000,mx=Math.max(mn,(+s.rmax||0)*1000);R.ph=2;R.n=a+ri(b-a+1);const pre=preRound(cid,s.pat,'');R.pm=pre.pm;R.sm=pre.sm;R.pre=1;R.due=n+pre.ms+mn+rnd()*(mx-mn)}
   else{delete S.rounds[key];fireG(g,cid,R)}}
 function fireG(g,cid,R){const s=S.set,pm=R.pre?R.pm:patRoll(cid,s.pat),q=roundQ(cid,'',R.n,pm,{mid:g.id,skipSys:1,sm:R.pre?R.sm:undefined});if(!q.length)return;sendG(g.id,cid,q)}
-function sendG(gid,cid,q){const key=gid+'|'+cid;if(q.findIndex(m=>m.f==='ta')>0)typingQ[key]=1;
-  const send=m=>{if(!grp(gid))return;if(m.f==='ta')delete typingQ[key];m.t=Date.now();m.u=cid;const b=ms(gid).length;ms(gid).push(m);gNotify(gid,b,cid);save();if(tab==='home'&&grpRoom===gid)paintG();else if(tab==='home'&&grpOpen&&!grpRoom)render()};
+function sendG(gid,cid,q){const key=gid+'|'+cid;typeHold(key,q,0);
+  const send=m=>{if(!grp(gid))return;m.t=Date.now();m.u=cid;const b=ms(gid).length;ms(gid).push(m);gNotify(gid,b,cid);save();if(tab==='home'&&grpRoom===gid)paintG();else if(tab==='home'&&grpOpen&&!grpRoom)render()};
   q.forEach(m=>{const d=m._rd||0;delete m._rd;d?setTimeout(()=>send(m),d):send(m)})}
 function gNotify(gid,b,cid){if(tab==='home'&&grpRoom===gid)return;const g=grp(gid),c=S.contacts.find(x=>x.id===cid);if(!g||!c)return;S.un[gid]=(S.un[gid]||0)+(ms(gid).length-b);updateGrpBadge();banner(g.name+'：'+c.name+'發送了一條消息')}
 
@@ -63,12 +63,12 @@ function dCalc(){
     {id:'chat',name:'私聊聊天紀錄',size:Math.max(0,dSize(pick(cids))-recBytes()),clear:1,risk:1},
     {id:'rec',name:'錄音',size:recBytes(),clear:1,risk:1,label:'錄音'},
     {id:'grp',name:'群聊（含聊天紀錄）',size:dSize({g:(S.groups||[]).map(g=>({...g,av:''})),m:pick(gids)}),clear:1,risk:1,label:'群聊聊天紀錄'},
-    {id:'card',name:'字卡',size:cd(k=>k==='card')},
-    {id:'emoji',name:'表情包',size:cd(k=>k==='emoji')},
-    {id:'pat',name:'拍一拍',size:cd(k=>k==='pat')},
-    {id:'kao',name:'顏文字',size:cd(k=>k==='kao')},
-    {id:'ins',name:'靈感拾取字卡',size:cd(k=>k==='mem'||k==='ext')},
-    {id:'oth',name:'其他分類（情緒、心意、emoji 等）',size:cd(k=>!['card','emoji','pat','kao','mem','ext'].includes(k))},
+    {id:'card',name:'常用字卡',size:cd(k=>k==='card'),clear:1,risk:1},
+    {id:'emoji',name:'表情包',size:cd(k=>k==='emoji'),clear:1,risk:1},
+    {id:'pat',name:'拍一拍',size:cd(k=>k==='pat'),clear:1,risk:1},
+    {id:'kao',name:'顏文字',size:cd(k=>k==='kao'),clear:1,risk:1},
+    {id:'ins',name:'靈感拾取字卡',size:cd(k=>k==='mem'||k==='ext'),clear:1,risk:1},
+    {id:'oth',name:'其他分類（情緒、心意、emoji 等）',size:cd(k=>!['card','emoji','pat','kao','mem','ext'].includes(k)),clear:1,risk:1},
     {id:'insp',name:'靈感拾取紀錄',size:dSize(S.insp),clear:1},
     {id:'plum',name:'梅花易數紀錄',size:dSize(S.plum),clear:1},
     {id:'book',name:'答案之書紀錄',size:dSize(S.book),clear:1},
@@ -81,7 +81,7 @@ function dCalc(){
 function vData(){if(!dCache)dCalc();const{items,total}=dCache,mx=Math.max(1,...items.map(i=>i.size));
   return '<div class="ph2"><button class="ib" data-a="dback">‹</button><h1>數據</h1></div>'
    +'<div class="card"><div class="sr"><span>Pearla 目前佔用</span><b style="font-weight:500">'+dFmt(total)+'</b></div><div id="dq" class="hint" style="margin:6px 0 0">正在讀取瀏覽器可用空間⋯</div><p class="hint" style="margin:8px 0 0">大小是依目前資料估算的，實際占用會略有出入。圖片（頭像、表情包、背景）通常佔最多。</p></div>'
-   +'<div class="card" style="margin-top:12px"><h3 style="margin:0 0 8px;font-weight:500">各功能佔用</h3>'+items.map(i=>'<div style="margin:0 0 12px"><div class="sr" style="margin:0 0 4px;align-items:center"><span>'+esc(i.name)+'</span><span style="display:flex;align-items:center;gap:8px"><span style="color:var(--soft);font-size:13px">'+dFmt(i.size)+'</span>'+(i.clear?'<button class="btn" data-a="dclr" data-i="'+i.id+'" style="width:auto;margin:0;padding:4px 10px;font-size:12px">清除</button>':'')+'</span></div><div class="dbar"><i style="width:'+Math.max(i.size?2:0,Math.round(i.size/mx*100))+'%"></i></div></div>').join('')+'<div style="margin:0 0 4px"><div class="sr" style="margin:0 0 4px;align-items:center"><span>字體</span><span style="display:flex;align-items:center;gap:8px"><span id="dfs" style="color:var(--soft);font-size:13px">⋯</span><button class="btn" data-a="fntsel" style="width:auto;margin:0;padding:4px 10px;font-size:12px">選擇</button></span></div></div></div>'
+   +'<div class="card" style="margin-top:12px"><h3 style="margin:0 0 8px;font-weight:500">各功能佔用</h3>'+items.map(i=>'<div style="margin:0 0 12px"><div class="sr" style="margin:0 0 4px;align-items:center"><span>'+esc(i.name)+'</span><span style="display:flex;align-items:center;gap:8px"><span style="color:var(--soft);font-size:calc(13px*var(--fz,1))">'+dFmt(i.size)+'</span>'+(i.clear?'<button class="btn" data-a="dclr" data-i="'+i.id+'" style="width:auto;margin:0;padding:4px 10px;font-size:calc(12px*var(--fz,1))">清除</button>':'')+'</span></div><div class="dbar"><i style="width:'+Math.max(i.size?2:0,Math.round(i.size/mx*100))+'%"></i></div></div>').join('')+'<div style="margin:0 0 4px"><div class="sr" style="margin:0 0 4px;align-items:center"><span>字體</span><span style="display:flex;align-items:center;gap:8px"><span id="dfs" style="color:var(--soft);font-size:calc(13px*var(--fz,1))">⋯</span><button class="btn" data-a="fntsel" style="width:auto;margin:0;padding:4px 10px;font-size:calc(12px*var(--fz,1))">選擇</button></span></div></div></div>'
    +'<div class="card" style="margin-top:12px"><h3 style="margin:0 0 8px;font-weight:500">圖片壓縮</h3><button class="btn s" style="width:100%;margin:0" data-a="icopen">壓縮現有圖片</button><button class="btn" style="width:100%;margin:8px 0 0" data-a="icset">圖片自動壓縮設定（目前：'+(S.set.imgc?'開':'關')+'）</button><p class="hint" style="margin:8px 0 0">先掃描、顯示預計省下多少，確認後才會真正壓縮。GIF 動圖與有透明背景的圖不會被處理。</p></div>'
    +'<div class="card" style="margin-top:12px"><h3 style="margin:0 0 8px;font-weight:500">錄音壓縮</h3><button class="btn s" style="width:100%;margin:0" data-a="rcopen">壓縮現有錄音</button><p class="hint" style="margin:8px 0 0">新的錄音會直接用較低的位元率儲存（語音約每分鐘 180 KB）。已存在的舊錄音可以重新編碼變小，但需要即時重播一遍，所以花的時間約等於錄音總長度。</p></div>'
    +'<div class="card" style="margin-top:12px"><h3 style="margin:0 0 8px;font-weight:500">暫存</h3><button class="btn" style="width:100%;margin:0" data-a="dtmp">清除暫存</button><p class="hint" style="margin:8px 0 0">取消排隊中、還沒發出的回覆與靈感拾取任務，不會刪除任何聊天紀錄、字卡或設定。這個小程式沒有另外的程式快取，所以沒有需要清的檔案快取。</p></div>'
@@ -96,7 +96,9 @@ function dClear(id){const ids=S.contacts.map(c=>c.id),gs=S.groups||[];
   else if(id==='plum')S.plum=[];
   else if(id==='book')S.book=[];
   else if(id==='mail')S.letters=[];
-  else if(id==='qlog')S.qlog=[]}
+  else if(id==='qlog')S.qlog=[]
+  else if(DKIND[id]){const f=DKIND[id],kindOf=new Map(S.cats.map(c=>[c.id,kc(c)])),gone=new Set(S.cats.filter(c=>f(kc(c))).map(c=>c.id));S.cards=S.cards.filter(k=>!gone.has(k.cat));S.cats=S.cats.filter(c=>!gone.has(c.id));if(id==='card'){S.bigs=[];S.cuse={}}selCat=null;bigOpen=null;delMode=false;selC=[]}}
+const DKIND={card:k=>k==='card',emoji:k=>k==='emoji',pat:k=>k==='pat',kao:k=>k==='kao',ins:k=>k==='mem'||k==='ext',oth:k=>!['card','emoji','pat','kao','mem','ext'].includes(k)};
 
 /* ── 圖片壓縮 ── */
 let icState=null;
@@ -112,7 +114,7 @@ function icTargets(sc){const t=[],add=(kind,get,set)=>{const u=get();if(typeof u
   return t}
 function icSheet(){const st=icState;if(!st)return;const all={bg:icTargets({bg:1}),img:icTargets({img:1}),msg:icTargets({msg:1})},fm=a=>a.length+' 張 · '+dFmt(a.reduce((x,y)=>x+y.len,0));
   const row=(k,n)=>'<div class="lt pick gmem'+(st.scope[k]?' sel':'')+'" data-a="ictg" data-i="'+k+'"><span style="flex:1;min-width:0">'+n+'<br><small style="color:var(--soft)">'+fm(all[k])+'</small></span><span class="ck '+(st.scope[k]?'on':'')+'"></span></div>';
-  const info=st.busy?'<p class="hint" style="margin:8px 0">掃描中 '+esc(st.prog||'')+'⋯</p>':st.res?'<p style="margin:8px 0;font-size:14px">'+(st.res.list.length?'可壓縮 '+st.res.list.length+' 張（共掃描 '+st.res.total+' 張），預計省下約 '+dFmt(st.res.saved):'沒有可再壓縮的圖片（共掃描 '+st.res.total+' 張）')+'</p>':'';
+  const info=st.busy?'<p class="hint" style="margin:8px 0">掃描中 '+esc(st.prog||'')+'⋯</p>':st.res?'<p style="margin:8px 0;font-size:calc(14px*var(--fz,1))">'+(st.res.list.length?'可壓縮 '+st.res.list.length+' 張（共掃描 '+st.res.total+' 張），預計省下約 '+dFmt(st.res.saved):'沒有可再壓縮的圖片（共掃描 '+st.res.total+' 張）')+'</p>':'';
   sheet('壓縮現有圖片','<p class="hint" style="margin:0 0 6px">壓縮不可還原，建議先備份。掃描時不會改動任何圖片。</p>'+row('bg','背景')+row('img','表情包')+row('msg','聊天與信件中的圖片')
    +'<div class="seg" style="margin:10px 0 4px">'+['std','hi'].map(k=>'<button class="'+(st.level===k?'on':'')+'" data-a="iclv" data-i="'+k+'">'+IC_LV[k].n+'</button>').join('')+'</div><p class="hint" style="margin:0 0 4px">標準：表情包最長邊 720px、畫質 78%；強力：540px、畫質 65%（背景保留較大尺寸）。</p>'+info
    +(st.res&&st.res.list.length?'<button class="btn d" data-a="icgo">套用壓縮</button>':'<button class="btn s" data-a="icscan"'+(st.busy?' disabled':'')+'>'+(st.busy?'掃描中⋯':'開始掃描')+'</button>')+'<button class="btn" data-a="bak">先去備份</button><button class="btn" data-a="close">關閉</button>',1)}

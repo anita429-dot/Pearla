@@ -1,6 +1,14 @@
 
 
 /* ── 事件 ── */
+/* ── 按下後移開再放開：不觸發點擊（必須在同一個按鈕上按下並放開才生效）── */
+(()=>{const SEL='button,[data-a],[data-t],[data-c],a,label,summary,.tab,.stab';let dn=null;
+document.addEventListener('pointerdown',e=>{dn=(e.pointerType==='mouse'&&e.button!==0)?null:{el:e.target&&e.target.closest?e.target.closest(SEL):null,x:e.clientX,y:e.clientY}},true);
+document.addEventListener('pointercancel',()=>{dn=null},true);
+document.addEventListener('click',e=>{if(!dn||e.detail===0||!e.isTrusted){dn=null;return}const d=dn;dn=null;if(!d.el||!d.el.isConnected)return;
+  const up=document.elementFromPoint(e.clientX,e.clientY),ue=up&&up.closest?up.closest(SEL):null;
+  if(ue!==d.el&&!(ue&&d.el.contains(ue))&&!(ue&&ue.contains(d.el))){e.stopImmediatePropagation();e.preventDefault()}},true)})();
+
 document.addEventListener('click',e=>{
   {const A0=e.target.closest('.pager [data-a]');if(A0&&tab==='home'){const pg=A0.closest('.pager');homeSnap={l:pg.scrollLeft,t:$('#v').scrollTop}}}
   const T=e.target.closest('[data-t]');
@@ -14,7 +22,7 @@ document.addEventListener('click',e=>{
   const cat=S.cats.find(c=>c.id===selCat);
   switch(a){
     case 'close':closeSheet();break;
-    case 'mail':mailRepEdit=null;mailOpen=true;mailTab='w';mailEdit=false;mailSel=[];mailReplyId=null;mailKeep={};render();$('#v').scrollTop=0;crabMailRun();break;
+    case 'mail':mailRepEdit=null;mailOpen=true;mailTab='w';mailEdit=false;mailSel=[];mailReplyId=null;mailKeep={};render();$('#v').scrollTop=0;break;
     case 'mback':mailRepEdit=null;mailOpen=false;mailEdit=false;mailSel=[];mailReplyId=null;mailKeep={};if(notifBack){notifBack=false;const CT=$('[data-t="chat"]');if(CT){CT.click();break}}render();break;
     case 'mtab':mailRepEdit=null;mailTab=i;mailEdit=false;mailSel=[];mailReplyId=null;render();break;
     case 'lnew':sheet('寫信給 '+esc(cur().name),'<textarea id="lt" rows="8" placeholder="寫點什麼…"></textarea><button class="btn s" data-a="lsend">寄出</button><button class="btn" data-a="close">取消</button>',1);break;
@@ -62,18 +70,22 @@ document.addEventListener('click',e=>{
     case 'bgx':askChange('背景圖片',i,()=>{if(i==='all'){S.bgAll='';S.bgs={};S.bg=''}else{delete S.bgs[i];if(i==='home')S.bg=''}save();render()},1);break;
     case 'mk':S.set.mk=i;save();render();break;
     case 'bat':{const c=S.cats.find(x=>x.id===selCat);if(!c)break;sheet('一鍵添加','<div style="position:relative"><textarea id="bt" rows="9"></textarea><div id="bph" class="phd">'+(batchCats(c)?'一行就是一個字卡\n\n【分類1】\n第一個字卡\n第二個字卡\n【分類2】\n第一個字卡':kind==='other'?'一行就是一個字卡':'添加到此分類\n一行就是一個字卡')+'</div></div><button class="btn s" data-a="bok" data-i="'+c.id+'">添加</button><button class="btn" data-a="close">取消</button>',1);break}
-    case 'bok':{const c=S.cats.find(x=>x.id===i);if(!c)break;const ents=[];let tg={id:c.id};
-      $('#bt').value.split('\n').map(x=>x.trim()).filter(Boolean).forEach(l=>{let num='',t=l;const m=t.match(NUMRE);if(m){num=parseInt(m[0],10)+'.';t=t.slice(m[0].length).trim()}
-        const cm=batchCats(c)&&t.match(/^【(.+?)】$/);if(cm){const nm=cm[1].trim(),g=S.cats.find(x=>x.sc===c.sc&&kc(x)===kc(c)&&x.own===c.own&&x.name===nm);tg=g?{id:g.id}:{newName:nm}}else if(t)ents.push({cat:tg.id||null,newName:tg.newName||null,text:t,num})});
+    case 'bok':{const c=S.cats.find(x=>x.id===i);if(!c)break;const ents=[];
+      /* 分成區塊：每個【分類】一塊；分類或字卡都有編號時，依編號排序後加入 */
+      const blocks=[{tg:{id:c.id},hn:null,L:[]}];
+      $('#bt').value.split('\n').map(x=>x.trim()).filter(Boolean).forEach(l=>{let num='',ni=null,t=l;const m=t.match(NUMRE);if(m){ni=parseInt(m[0],10);num=ni+'.';t=t.slice(m[0].length).trim()}
+        const cm=batchCats(c)&&(m?l:t).match(/^【(.+?)】$/);if(cm){let nm=cm[1].trim(),hn=null;const hm=nm.match(NUMRE);if(hm){hn=parseInt(hm[0],10);nm=nm.slice(hm[0].length).trim()}const g=S.cats.find(x=>x.sc===c.sc&&kc(x)===kc(c)&&x.own===c.own&&x.name===nm);blocks.push({tg:g?{id:g.id}:{newName:nm},hn,L:[]})}else if(t)blocks[blocks.length-1].L.push({text:t,num,ni})});
+      const hb=blocks.slice(1);if(hb.length>1&&hb.every(b=>b.hn!=null)){const k=hb.map((b,ix)=>({b,ix})).sort((x,y)=>(x.b.hn-y.b.hn)||(x.ix-y.ix)).map(z=>z.b);blocks.splice(1,blocks.length-1,...k)}
+      blocks.forEach(b=>{sortByNum(b.L).forEach(o=>ents.push({cat:b.tg.id||null,newName:b.tg.newName||null,text:o.text,num:o.num}))});
       if(!ents.length){toast('還沒有輸入內容');break}addEntries(ents,c);break}
     case 'dupkeep':{const d=pendDup;pendDup=null;if(d)addCommit(d.all,d.base);break}
-    case 'dupdel':{const d=pendDup;pendDup=null;if(d)addCommit(d.keep,d.base);break}
+    case 'dupdel':{const d=pendDup;pendDup=null;if(d){const ds=new Set(d.olds||[]);S.cards=S.cards.filter(k=>!ds.has(k.id));addCommit(d.keep,d.base)}break}
     case 'dl':{(async()=>{const done=busy('正在產生備份檔，請稍候⋯');try{await new Promise(r=>setTimeout(r,60));const fn='pearla-backup-'+new Date().toISOString().slice(0,10)+'.json',d=typeof claude!=='undefined'?await claude.use('downloads'):null;if(!d){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:'application/json'}));a.download=fn;document.body.appendChild(a);a.click();a.remove();return toast('已下載備份檔')}await d.save({filename:fn,data:JSON.stringify(S)});toast('已儲存備份檔')}catch(x){if(!x||x.code!=='declined')toast('下載失敗，請改用複製文字')}finally{done()}})();break}
     case 'fimp':pick(f=>{const r=new FileReader();r.onload=()=>impText(r.result);r.readAsText(f)},'.json,.txt,application/json,text/plain');break;
     case 'sndtest':playSnd(S.set[i]);break;
     case 'dark':toggleDark();break;
     case 'sw':S.set[i]=S.set[i]?0:1;if(i==='lpOn'&&window.LPE)LPE.toggled(S.set.lpOn);if(i==='aon')resetA();else save();render();break;
-    case 'help':sheet('回覆設置說明','<div style="font-size:14px;line-height:1.9"><p style="margin:0 0 8px"><b>回覆條數</b>：這一輪對方會發幾則訊息（在「條數最少～最多」之間隨機）。</p><p style="margin:0 0 8px"><b>一條回覆裡的字卡</b>：每一則訊息裡放幾張字卡併在一起（在「最少～最多」之間隨機）。</p><p style="margin:0 0 8px">例如：回覆條數 2、一條裡 3 張字卡，對方就會發 2 則訊息，每則由 3 張字卡組成。</p><p style="margin:0 0 8px"><b>時間</b>：回覆（或主動發送）的時間，會在「最短～最長」之間隨機。</p><p style="margin:0"><b>機率</b>：已讀不回、拍一拍、表情包每一輪各擲一次；引用消息、情緒標籤以外的標籤、emoji、顏文字則是每則訊息各擲一次（情緒標籤一輪最多出現一次）；一條回覆全部抽完後，等 3 秒才換下一條，字卡一律從字卡抽取。</p></div>',1);break;
+    case 'help':sheet('回覆設置說明','<div style="font-size:calc(14px*var(--fz,1));line-height:1.9"><p style="margin:0 0 8px"><b>回覆條數</b>：這一輪對方會發幾則訊息（在「條數最少～最多」之間隨機）。</p><p style="margin:0 0 8px"><b>一條回覆裡的字卡</b>：每一則訊息裡放幾張字卡併在一起（在「最少～最多」之間隨機）。</p><p style="margin:0 0 8px">例如：回覆條數 2、一條裡 3 張字卡，對方就會發 2 則訊息，每則由 3 張字卡組成。</p><p style="margin:0 0 8px"><b>時間</b>：回覆（或主動發送）的時間，會在「最短～最長」之間隨機。</p><p style="margin:0"><b>機率</b>：已讀不回、拍一拍、表情包每一輪各擲一次；引用消息、情緒標籤以外的標籤、emoji、顏文字則是每則訊息各擲一次（情緒標籤一輪最多出現一次）；一條回覆全部抽完後，等 3 秒才換下一條，字卡一律從字卡抽取。</p></div>',1);break;
     case 'shelp':{const r=SETS.flatMap(t=>t[1]).find(x=>x[2]===i);sheet(r[0],'<p class="hint" style="margin:0">'+esc(r[1])+'</p>',1);break}
     case 'stab':sTab=+i;sQ='';sPage=null;render();break;
     case 'ren':break;
@@ -83,15 +95,20 @@ document.addEventListener('click',e=>{
     case 'addccancel':addContact=false;render();break;
     case 'del':{const c=S.contacts.find(x=>x.id===cid);sheet('刪除聯絡人','<p class="hint" style="margin:0">將刪除「'+esc(c.name)+'」與其聊天紀錄。建議先備份。</p><button class="btn" data-a="bak">先去備份</button><button class="btn d" data-a="delcf" data-i="'+c.id+'">永久刪除</button><button class="btn" data-a="close">取消</button>');break}
     case 'delcf':{const c=S.contacts.find(x=>x.id===i);sheet('確認刪除','<p class="hint" style="margin:0">確定要刪除「'+esc(c.name)+'」嗎？此操作無法復原。</p><button class="btn d" data-a="delok" data-i="'+c.id+'">刪除</button><button class="btn" data-a="close">取消</button>',1);break}
-    case 'delok':{S.contacts=S.contacts.filter(c=>c.id!==i);delete S.msgs[i];delete S.rounds[i];(S.groups||[]).forEach(g=>{g.members=g.members.filter(x=>x!==i)});Object.keys(S.rounds).forEach(k=>{if(k.endsWith('|'+i))delete S.rounds[k]});S.letters=(S.letters||[]).filter(l=>l.cid!==i);delete S.lnext[i];if(S.lround)delete S.lround[i];delete S.remClock[i];delete S.un[i];if(S.dlog)delete S.dlog[i];{const dead=S.cats.filter(c=>c.own===i).map(c=>c.id);S.cats=S.cats.filter(c=>c.own!==i);S.cards=S.cards.filter(k=>!dead.includes(k.cat))}S.cats.forEach(c=>c.as=c.as.filter(x=>x!==i));S.ipend=(S.ipend||[]).filter(p=>p.cid!==i);['mem','ext','ev'].forEach(k=>{S.insp[k]=(S.insp[k]||[]).filter(r=>r.cid!==i)});if(!S.contacts.length)S.contacts.push({id:uid(),name:'名字'});if(S.cur===i)S.cur=S.contacts[0].id;save();closeSheet();render();break}
+    case 'delok':{S.contacts=S.contacts.filter(c=>c.id!==i);if(S.cuse)delete S.cuse[i];if(S.cset)delete S.cset[i];delete S.msgs[i];delete S.rounds[i];(S.groups||[]).forEach(g=>{g.members=g.members.filter(x=>x!==i)});Object.keys(S.rounds).forEach(k=>{if(k.endsWith('|'+i))delete S.rounds[k]});S.letters=(S.letters||[]).filter(l=>l.cid!==i);delete S.lnext[i];if(S.lround)delete S.lround[i];delete S.remClock[i];delete S.un[i];if(S.dlog)delete S.dlog[i];{const dead=S.cats.filter(c=>c.own===i).map(c=>c.id);S.cats=S.cats.filter(c=>c.own!==i);S.cards=S.cards.filter(k=>!dead.includes(k.cat))}S.cats.forEach(c=>c.as=c.as.filter(x=>x!==i));S.ipend=(S.ipend||[]).filter(p=>p.cid!==i);['mem','ext','ev'].forEach(k=>{S.insp[k]=(S.insp[k]||[]).filter(r=>r.cid!==i)});if(!S.contacts.length)S.contacts.push({id:uid(),name:'名字'});if(S.cur===i)S.cur=S.contacts[0].id;save();closeSheet();render();break}
     case 'pat':closeSheet();ms(S.cur).push(patMsg(S.cur,true));save();paint();break;
-    case 'poke':{const cid=S.cur;if(pokeBusy[cid])break;pokeBusy[cid]=1;if(tab==='chat')paint();const av=S.set.avatarSend,wait=Math.max(0,(av===undefined||av===null||av===''||isNaN(+av))?6:+av)*1000;setTimeout(()=>{pokeBusy[cid]=0;try{if(S.contacts.some(c=>c.id===cid)){fireA(cid);save()}}finally{if(tab==='chat'&&S.cur===cid)paint()}},wait);break;}
+    case 'poke':{const cid=S.cur;if(pokeBusy[cid])break;pokeBusy[cid]=1;if(tab==='chat')paint();const av=S.set.avatarSend,wait=Math.max(0,(av===undefined||av===null||av===''||isNaN(+av))?6:+av)*1000;setTimeout(()=>{pokeBusy[cid]=0;try{if(S.contacts.some(c=>c.id===cid)&&!isDnd(cid)&&!(rnd()*100<Math.max(0,Math.min(100,+S.set.acancel||0)))){fireA(cid);save()}}finally{if(tab==='chat'&&S.cur===cid)paint()}},wait);break;}
     case 'avt':pick(f=>avCrop(f,i));break;
     case 'avok':{const a=avcS;if(!a)break;const bk=a.back;const c=document.createElement('canvas'),O=256,r=O/a.P;c.width=c.height=O;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,O,O);x.drawImage(a.im,a.ox*r,a.oy*r,a.im.width*a.k*r,a.im.height*a.k*r);const u=c.toDataURL('image/jpeg',.9);if(bk){const me=avScope==='me',ct=cur(),list=me?(S.meAvs=S.meAvs||[]):(ct.avs=ct.avs||[]);list.push(u);try{URL.revokeObjectURL(a.url)}catch(e){}avcS=null;if(bk.rest.length)avCrop(bk.rest[0],'bk',{n:bk.n,i:bk.i+1,rest:bk.rest.slice(1)});else{save();avSheet()}break}if(a.id==='me'){S.meAv=u;(S.meAvs=S.meAvs||[]).push(u)}else{const ct=S.contacts.find(z=>z.id===a.id)||(S.groups||[]).find(z=>z.id===a.id);if(ct){ct.av=u;if(S.contacts.includes(ct))(ct.avs=ct.avs||[]).push(u)}}try{URL.revokeObjectURL(a.url)}catch(e){}avcS=null;save();closeSheet();render();if(gEditId&&a.id===gEditId&&(S.groups||[]).some(g=>g.id===gEditId))gsheet(gEditId);break}
     
     
     case 'theme':{const k=validTheme(i);if(curTheme()===k)break;pickTheme(k);break}
     case 'tone':{const t=THEME_DEFS.journal.tones.some(x=>x[0]===i)?i:'blue';if(curTheme()==='journal'){S.jtone=t;S.ink='';S.line='';applyTheme();save();render();break}pickTheme('journal',t);break}
+    case 'punadd':{const t=($('#punt')||{}).value.trim(),w=parseFloat(($('#punw')||{}).value);if(!t){toast('請輸入標點符號');break}const l=ensurePunct();if(l.some(p=>p.t===t)){toast('已經有這個標點了');break}l.push({t,w:isNaN(w)?10:Math.max(0,w)});save();const y=$('#v').scrollTop;render();$('#v').scrollTop=y;break}
+    case 'pundel':{const l=ensurePunct();l.splice(+i,1);save();const y=$('#v').scrollTop;render();$('#v').scrollTop=y;break}
+    case 'ctone':{const T=THEME_DEFS.cat.tones,t=T.some(x=>x[0]===i)?i:T[0][0];if(curTheme()==='cat'){S.dmPrev=null;S.jtone=t;S.ink='';S.line='';applyTheme();save();render();break}pickTheme('cat',t);break}
+    case 'thmoon':{const th=validTheme(i),cur=darkKey(th),nm=(THEMES.find(t=>t[0]===th)||[])[1]||'';sheet('深色模式（'+esc(nm)+'）','<p class="hint" style="margin:0 0 10px">在主頁按右上角的月亮時，「'+esc(nm)+'」會切換成下面選的深色模式。</p>'+DARKS.map(d=>'<button type="button" class="btn font-opt'+(d[0]===cur?' on':'')+'" data-a="thmoonpick" data-i="'+th+'|'+d[0]+'">'+d[1]+'</button>').join('')+'<button class="btn" data-a="close">關閉</button>',1);break}
+    case 'thmoonpick':{const [th,k]=i.split('|');if(!DARKS.some(d=>d[0]===k)||!THEME_DEFS[th])break;S.darkPick=S.darkPick||{};S.darkPick[th]=k;save();thmoonRefresh(th);break}
     case 'tcx':askChange('字體','all',()=>{S.ink='';applyTheme();save();render()},1);break;
     case 'scx':askChange('字體陰影','all',()=>{S.shadow='';applyTheme();save();render()},1);break;
     case 'lcx':askChange('外框顏色','all',()=>{S.line='';document.documentElement.style.removeProperty('--line');save();render()},1);break;
@@ -102,7 +119,8 @@ document.addEventListener('click',e=>{
     case 'psc':pScope=i;patSheet();break;
     case 'pgo':{const k=S.cards.find(x=>x.id===i);if(k){ms(S.cur).push(patMsg(S.cur,true,k.text));save();closeSheet();paint()}break}
     case 'psd':{const v=$('#pt').value.trim();if(v){ms(S.cur).push(patMsg(S.cur,true,v));save();closeSheet();paint()}break}
-    case 'psv':{const v=(parseCardLines($('#pt').value)[0]||{}).text;if(!v)break;let g=S.cats.find(c=>kc(c)==='pat'&&c.sc===pScope);if(!g){g={id:uid(),sc:pScope,kind:'pat',name:'預設',on:1,as:pScope==='e'?[S.cur]:[]};S.cats.push(g)}S.cards.push({id:uid(),cat:g.id,text:v,on:1});save();moreSheet();toast('已存入拍一拍');break}
+    case 'psv':{const v=(parseCardLines($('#pt').value)[0]||{}).text;if(!v)break;let g=S.cats.find(c=>kc(c)==='pat'&&c.sc===pScope);if(!g){g={id:uid(),sc:pScope,kind:'pat',name:'預設',on:1,as:pScope==='e'?[S.cur]:[]};S.cats.push(g)}S.cards.push({id:uid(),cat:g.id,text:v,on:1});save();patSheet();toast('已存入拍一拍');break}
+    case 'micretry':{closeSheet();micAsk().then(st=>{if(st){st.getTracks().forEach(t=>t.stop());window.__micOK=1;toast('已取得麥克風權限，可以錄音了',2200)}});break}
     case 'vrec':recToggle();break; case 'recgo':recStart();break; case 'recstop':recStop();break; case 'recplay':recPreview();break; case 'recdel':recClear(true);recUI();break; case 'vplay':vPlay(i,A,S.cur);break;
     case 'qa':toast('問答功能待設計');break;
     case 'more':mTab='interact';moreSheet();break;
@@ -110,6 +128,10 @@ document.addEventListener('click',e=>{
     case 'tobot':{const l=$('#cl');if(l)l.scrollTo({top:l.scrollHeight,behavior:'smooth'});break}
     case 'lstar':{const L=S.letters.find(x=>x.id===i);if(L){L.star=!L.star;save();A.textContent=L.star?'★':'☆';A.classList.toggle('on',!!L.star)}break}
     case 'ek':{const k=S.cards.find(x=>x.id===i),inp=$('#in');if(k&&inp){inp.value=(inp.value||'')+(k.text||'');closeSheet();inp.focus();try{inp.setSelectionRange(inp.value.length,inp.value.length)}catch(x){}}break}
+    case 'cdnd':{const c=S.contacts.find(x=>x.id===i);if(!c)break;c.dnd=c.dnd?0:1;if(c.dnd){delete S.rounds[c.id];Object.keys(S.rounds).forEach(k=>{if(k.endsWith('|'+c.id))delete S.rounds[k]});S.ipend=(S.ipend||[]).filter(p=>p.cid!==c.id);delete typingQ[c.id]}save();const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y;toast(c.dnd?c.name+' 已開啟免打擾，所有功能暫停':c.name+' 已關閉免打擾，功能恢復',2400);break}
+    case 'cinfo':conInfoSheet(i);break;
+    case 'cicover':{const c=S.contacts.find(x=>x.id===i);if(!c)break;pick(f=>rd(f,1000,u=>{c.cover=u;save();conInfoSheet(c.id)}));break}
+    case 'cicdel':{const c=S.contacts.find(x=>x.id===i);if(!c)break;c.cover='';save();conInfoSheet(c.id);break}
     case 'cstar':{const c=S.contacts.find(x=>x.id===i);if(!c)break;c.star=!c.star;save();A.textContent=c.star?'★':'☆';A.classList.toggle('on',!!c.star);if(c.star)toast('標記為重要聯絡人',5000);break}
     case 'redit':{recEdit=!recEdit;recSel=[];const st=$('#v').scrollTop;render();$('#v').scrollTop=st;break}
     case 'qsel':{recSel=recSel.includes(i)?recSel.filter(x=>x!==i):recSel.concat(i);const st=$('#v').scrollTop;render();$('#v').scrollTop=st;break}
@@ -159,7 +181,15 @@ document.addEventListener('click',e=>{
     case 'ecj':{const h=document.getElementById('eh-'+i),bx=document.querySelector('#sh .box');if(h&&bx){const st=bx.querySelector('.chat-pop-cats');bx.scrollTo({top:h.offsetTop-(st?st.offsetHeight:0)-8,behavior:'smooth'})}break}
     case 'avopen':avScope='ta';avSheet();break;
     case 'avsc':avScope=i;avSheet();break;
-    case 'avadd':pick(fs=>{fs=[].slice.call(fs);if(fs.length)avCrop(fs[0],'bk',{n:fs.length,i:1,rest:fs.slice(1)})},'image/*',true);break;
+    case 'avadd':pick(fs=>{fs=[].slice.call(fs);if(fs.length)avMulti(fs)},'image/*',true);break;
+    case 'avprev':avMGo(-1);break;
+    case 'avnext':avMGo(1);break;
+    case 'avcancel':{if(!avM)break;avMStash();sheet('這次操作不儲存','<p class="hint" style="margin:0 0 6px">取消後，這次選的頭像都不會儲存。</p><div class="confirm-btns"><button class="btn" data-a="avback">回去繼續</button><button class="btn d" data-a="avcancelok">確定不儲存</button></div>',1);break}
+    case 'avback':avMShow();break;
+    case 'avcancelok':avMFree();avSheet();break;
+    case 'avskip':{if(!avM)break;avMStash();sheet('不要這張？','<p class="hint" style="margin:0 0 6px">這張不會儲存。</p><div class="confirm-btns"><button class="btn" data-a="avback">回去</button><button class="btn s" data-a="avskipok">不要這張</button></div>',1);break}
+    case 'avskipok':{if(!avM)break;avM.items[avM.idx].drop=1;const k=avMKeep();if(!k.length){avMFree();avSheet();toast('沒有要儲存的頭像');break}let n=avM.idx;while(n<avM.items.length&&avM.items[n].drop)n++;if(n>=avM.items.length){n=avM.idx;while(n>=0&&avM.items[n].drop)n--}avM.idx=n;avMShow();break}
+    case 'avsaveall':avMSave();break;
     case 'avcx':{const a=avcS;if(a){try{URL.revokeObjectURL(a.url)}catch(e){}}avcS=null;save();avSheet();break}
     case 'avuse':{const me=avScope==='me',ct=cur(),list=me?(S.meAvs||[]):(ct.avs||[]),u=list[+i];if(!u)break;if(me)S.meAv=u;else ct.av=u;save();render();avSheet();toast('已更換頭像');break}
     case 'avdel':{const me=avScope==='me',ct=cur(),list=me?(S.meAvs||[]):(ct.avs||[]);list.splice(+i,1);save();avSheet();break}
@@ -169,7 +199,7 @@ document.addEventListener('click',e=>{
     case 'cimg':pick(fs=>{let d=0;fs.forEach(f=>rdSquare(f,900,u=>{if(selCat)S.cards.push({id:uid(),cat:selCat,text:'',img:u,on:1});if(++d===fs.length){save();render()}}))},'image/*',true);break;
     case 'kind':{const was=INS(kind);if(i==='insp'){if(!was)kind='mem';scope='e'}else{kind=i;if(was||(i!=='pat'&&scope==='m'))scope='s';if(i==='card')scope='e'}selCat=null;delMode=false;selC=[];oPage=null;cq='';render();break}
     case 'fv':{const m=ms(S.cur).find(x=>x.id===i);if(m){m.fav=!m.fav;save();A.classList.toggle('f',!!m.fav);A.textContent=m.fav?'★':'☆'}break}
-    case 'qt':{const m=ms(S.cur).find(x=>x.id===i);if(m){qtDraft={cid:S.cur,id:m.id,x:m.x||(m.audio?'[語音]':'[表情包]')};qtBar();const l=$('#cl');if(l)l.scrollTop=l.scrollHeight;const inp=$('#in');if(inp)inp.focus()}break}
+    case 'qt':{const m=ms(S.cur).find(x=>x.id===i);if(m){qtDraft={cid:S.cur,id:m.id,x:m.x||(m.audio?'[語音]':(m.img?'':'[表情包]')),img:m.img||''};qtBar();const l=$('#cl');if(l)l.scrollTop=l.scrollHeight;const inp=$('#in');if(inp)inp.focus()}break}
     case 'medt':{const m=ms(S.cur).find(x=>x.id===i);if(m&&m.f==='me'&&!m.img)ask('編輯訊息',m.x||'',v=>{const old=m.x;['mem','ext','ev'].forEach(k=>(S.insp[k]||[]).forEach(r=>{if(r.sid===m.id||(!r.sid&&r.mt===m.t&&r.src===old))r.edited=1}));m.x=v;m.edited=1;save();paint()});break}
     case 'mdelm':sheet('刪除訊息','<p class="hint" style="margin:0">是否刪除這則訊息？</p><button class="btn d" data-a="mdelmok" data-i="'+i+'">刪除</button><button class="btn" data-a="close">取消</button>',1);break;
     case 'mdelmok':{const a=ms(S.cur),k=a.findIndex(x=>x.id===i);if(k>=0&&a[k].f==='me'){a.splice(k,1);if(qtDraft&&qtDraft.id===i){qtDraft=null;qtBar()}save()}closeSheet();paint();break}
@@ -189,6 +219,8 @@ document.addEventListener('click',e=>{
     case 'bigrenok':{const b=bigsAll().find(x=>x.id===i),v=($('#ai')||{}).value||'';closeSheet();if(b&&!b.un){b.name=v.trim();save();render()}break}
     case 'bignew':ask('新增大分類名稱','',v=>{const n={id:uid(),sc:scope,own:scope==='e'?S.cur:undefined,name:v};bigsAll().push(n);bigOpen=n.id;selCat=null;save();render()});break;
     case 'bigdel':{const b=bigsAll().find(x=>x.id===i);if(!b||b.un)break;bigDelAll=true;bigDelSheet(i);break}
+    case 'bigclr':{const b=bigsAll().find(x=>x.id===i);if(!b||!b.un)break;sheet('是否確認清空【'+esc(bigName(b))+'】？','<p class="hint" style="margin:0 0 4px">會清空裡面所有的分類和字卡，無法復原。</p><div class="confirm-btns"><button class="btn" data-a="close">取消</button><button class="btn d" data-a="bigclrok" data-i="'+i+'">確認清空</button></div>',1);break}
+    case 'bigclrok':{closeSheet();const b=bigsAll().find(x=>x.id===i);if(!b||!b.un)break;const sm=S.cats.filter(x=>x.sc===scope&&kc(x)==='card'&&(scope!=='e'||x.own===S.cur)&&bigOf(x)===b.id),ids=new Set(sm.map(x=>x.id));S.cards=S.cards.filter(k=>!ids.has(k.cat));S.cats=S.cats.filter(c=>!ids.has(c.id));selCat=null;delMode=false;selC=[];if(bigOpen===i)bigOpen=null;save();render();toast('已清空');break}
     case 'bigoff':{const sm=S.cats.filter(x=>x.sc===scope&&kc(x)==='card'&&(scope!=='e'||x.own===S.cur)&&bigOf(x)===i),b=bigsAll().find(x=>x.id===i);if(!b)break;if(!sm.length){toast('這個大分類還沒有小分類');break}const anyOn=sm.some(x=>x.on);sm.forEach(x=>{x.on=anyOn?0:1});save();render();toast(anyOn?'已停用「'+bigName(b)+'」裡的小分類':'已啟用「'+bigName(b)+'」裡的小分類');break}
     case 'bigdsw':{bigDelAll=!bigDelAll;bigDelSheet(i);break}
     case 'bigdelok':{closeSheet();const b=bigsAll().find(x=>x.id===i);if(!b||b.un)break;const ids=S.cats.filter(c=>c.big===b.id&&!c.un).map(c=>c.id);if(bigDelAll){S.cards=S.cards.filter(k=>!ids.includes(k.cat));S.cats=S.cats.filter(c=>!ids.includes(c.id))}else S.cats.forEach(c=>{if(c.big===b.id)delete c.big});S.bigs=S.bigs.filter(x=>x.id!==b.id);bigOpen=null;selCat=null;delMode=false;selC=[];save();render();toast(bigDelAll?'已刪除大分類和裡面的內容':'已刪除，小分類與字卡移到「未分類」');break}
@@ -215,7 +247,7 @@ document.addEventListener('click',e=>{
     case 'gdelok':{S.groups=S.groups.filter(g=>g.id!==i);delete S.msgs[i];delete S.un[i];Object.keys(S.rounds).forEach(k=>{if(k.startsWith(i+'|'))delete S.rounds[k]});if(S.gdef===i)S.gdef='';if(grpRoom===i)grpRoom=null;save();closeSheet();render();toast('已刪除');break}
     case 'data':dataOpen=true;dCalc();render();$('#v').scrollTop=0;break;
     case 'dback':dataOpen=false;render();break;
-    case 'dclr':{const it=dCache&&dCache.items.find(x=>x.id===i);if(!it)break;const nm=it.label||it.name;sheet('是否確認清除【'+esc(nm)+'】？',(it.risk?'<p class="hint" style="margin:0 0 4px">這會永久刪除這些資料，無法復原，建議先備份。</p><button class="btn" data-a="bak">先去備份</button>':'<p class="hint" style="margin:0 0 4px">只會清除紀錄，不影響字卡與設定。</p>')+'<div class="confirm-btns"><button class="btn" data-a="close">取消</button><button class="btn d" data-a="dclrok" data-i="'+i+'">確認清除</button></div>',1);break}
+    case 'dclr':{const it=dCache&&dCache.items.find(x=>x.id===i);if(!it)break;const nm=it.label||it.name;sheet('是否確認清除【'+esc(nm)+'】？',(it.risk?'<p class="hint" style="margin:0 0 4px">'+(['card','emoji','pat','kao','ins','oth'].includes(it.id)?'會清除這個項目的所有分類和字卡，':'')+'這會永久刪除這些資料，無法復原，建議先備份。</p><button class="btn" data-a="bak">先去備份</button>':'<p class="hint" style="margin:0 0 4px">只會清除紀錄，不影響字卡與設定。</p>')+'<div class="confirm-btns"><button class="btn" data-a="close">取消</button><button class="btn d" data-a="dclrok" data-i="'+i+'">確認清除</button></div>',1);break}
     case 'dclrok':{dClear(i);save();dCalc();closeSheet();render();toast('已清除');break}
     case 'dtmp':sheet('是否確認清除暫存？','<p class="hint" style="margin:0 0 4px">會取消排隊中、尚未發出的回覆與靈感拾取任務，不影響任何資料。</p><div class="confirm-btns"><button class="btn" data-a="close">取消</button><button class="btn d" data-a="dtmpok">確認清除</button></div>',1);break;
     case 'dtmpok':{S.ipend=[];S.rounds={};S.next={};Object.keys(typingQ).forEach(k=>delete typingQ[k]);save();closeSheet();render();toast('已清除暫存');break}
@@ -248,15 +280,15 @@ document.addEventListener('click',e=>{
     case 'perrecdelok':{const p=S.per,g=perGroups().find(x=>x.s===i);if(g){p.days=p.days.filter(k=>!(pDiff(k,g.s)>=0&&pDiff(k,g.e)<=0));delete p.ended[g.s];if(p.live&&p.live.s===g.s)p.live=null;save()}closeSheet();perPaint();toast('已刪除紀錄');break}
     case 'perapply':{const st=perStat();if(st.cyc){S.per.cycle=st.cyc;S.per.len=st.len;save();const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y;toast('已套用平均週期與經期天數')}break}
     case 'perclear':{if(S.per.days.length&&confirm('確定要清除所有經期紀錄嗎？')){S.per.days=[];S.per.live=null;S.per.ended={};perEdit=false;save();const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y;toast('已清除經期紀錄')}break}
-    case 'mom':momOpen=true;render();$('#v').scrollTop=0;break;
-    case 'momback':momOpen=false;momPlacing=null;if(notifBack){notifBack=false;const CT=$('[data-t="chat"]');if(CT){CT.click();break}}render();break;
+    case 'mom':momOpen=true;momTab='ct';momCD=null;render();$('#v').scrollTop=0;break;
+    case 'momback':momOpen=false;momPlacing=null;momCD=null;if(notifBack){notifBack=false;const CT=$('[data-t="chat"]');if(CT){CT.click();break}}render();break;
     case 'momcover':{if(!S.momCover){pick(f=>rd(f,1000,u=>{S.momCover=u;save();render()}));break}sheet('朋友圈封面','<button class="btn s" style="width:100%;margin:0 0 8px" data-a="momcpick">更換圖片</button><button class="btn d" style="width:100%;margin:0 0 8px" data-a="momcdel">移除封面</button><button class="btn" style="width:100%;margin:0" data-a="close">取消</button>',1);break}
     case 'momcpick':closeSheet();pick(f=>rd(f,1000,u=>{S.momCover=u;save();render()}));break;
     case 'momcdel':S.momCover='';save();closeSheet();render();break;
     case 'momsig':sheet('個性簽名','<input class="mh-in" id="momsigin" type="text" maxlength="40" placeholder="寫下你的簽名" value="'+esc(S.momSig||'')+'"><p class="hint" style="margin:6px 2px 10px">最多 40 字，留空則清除簽名。</p><button class="btn s" style="width:100%;margin:0 0 8px" data-a="momsigok">儲存</button><button class="btn" style="width:100%;margin:0" data-a="close">取消</button>',1);setTimeout(()=>{const e=$('#momsigin');if(e)e.focus()},50);break;
     case 'momsigok':{const e=$('#momsigin');S.momSig=e?e.value.trim().slice(0,40):S.momSig;save();closeSheet();render();break}
     case 'cmsw':{const m=cmo(cur());m[i]=m[i]?0:1;if(i==='on')delete S.mst[cur().id];save();render();break}
-    case 'momtab':momTab=i;render();break;
+    case 'momtab':momTab=i;momCD=null;render();break;
     case 'momstk':S.momStk=S.momStk===0?1:0;save();render();break;
     case 'mompost':momDraft={x:'',items:[]};momCompose();break;
     case 'mpkopen':momPicker();break;
@@ -272,12 +304,15 @@ document.addEventListener('click',e=>{
     case 'mompedit':{const p=S.moments.find(q=>q.id===i);if(!p)break;momDraft={x:p.x||'',items:(p.wall&&p.wall.items?p.wall.items.map(o=>Object.assign({},o)):[]),edit:p.id};momCompose();break}
     case 'momdelask':sheet('刪除貼文','<p class="hint" style="margin:0 0 10px">確定要刪除這則貼文嗎？刪除後無法復原。</p><button class="btn d" data-a="momdel" data-i="'+i+'">確認刪除</button><button class="btn" data-a="close">取消</button>',1);break;
     case 'momcx':{const p=S.moments.find(q=>q.id===i);if(!p)break;p.cmx=p.cmx?0:1;save();{const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}break}
-    case 'momlike':{const p=S.moments.find(q=>q.id===i);if(!p)break;p.likes=Array.isArray(p.likes)?p.likes:[];if(p.liked){p.liked=0;const k=p.likes.indexOf(S.me);if(k>=0)p.likes.splice(k,1)}else{p.liked=1;p.likes.push(S.me)}save();render();break}
+    case 'momlike':{const p=S.moments.find(q=>q.id===i);if(!p)break;p.likes=Array.isArray(p.likes)?p.likes:[];if(p.liked){p.liked=0;const k=p.likes.indexOf(S.me);if(k>=0)p.likes.splice(k,1)}else{p.liked=1;p.likes.push(S.me);momPop=p.id;setTimeout(()=>{momPop=null},700)}save();{const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}break}
     case 'momfav':{const p=S.moments.find(q=>q.id===i);if(!p)break;p.fav=p.fav?0:1;save();render();break}
-    case 'momcmt':sheet('留言','<input class="mh-in" id="momcin" type="text" maxlength="100" placeholder="寫下留言…" autocomplete="off"><div style="display:flex;gap:8px;margin-top:10px"><button class="btn" data-a="close" style="flex:1;margin:0">取消</button><button class="btn s" data-a="momcsend" data-i="'+i+'" style="flex:1;margin:0">送出</button></div>',1);setTimeout(()=>{const e2=$('#momcin');if(e2)e2.focus()},50);break;
-    case 'momcsend':{const e2=$('#momcin'),x=e2?e2.value.trim():'',p=S.moments.find(q=>q.id===i);if(!x){toast('還沒有內容');break}if(p){p.cmts=Array.isArray(p.cmts)?p.cmts:[];const m={id:uid(),n:S.me,x};p.cmts.push(m);mcmUser(p,m,p.cid)}save();closeSheet();render();break}
-    case 'momrep':{const[pid,mid]=i.split('|'),p=S.moments.find(q=>q.id===pid),t=p&&(p.cmts||[]).find(q=>q.id===mid);if(!t)break;sheet('回覆 '+esc(t.n),'<input class="mh-in" id="momcin" type="text" maxlength="100" placeholder="回覆 '+esc(t.n)+'…" autocomplete="off"><div style="display:flex;gap:8px;margin-top:10px"><button class="btn" data-a="close" style="flex:1;margin:0">取消</button><button class="btn s" data-a="momrsend" data-i="'+i+'" style="flex:1;margin:0">送出</button></div>',1);setTimeout(()=>{const e2=$('#momcin');if(e2)e2.focus()},50);break}
-    case 'momrsend':{const[pid,mid]=i.split('|'),e2=$('#momcin'),x=e2?e2.value.trim():'',p=S.moments.find(q=>q.id===pid),t=p&&(p.cmts||[]).find(q=>q.id===mid);if(!x){toast('還沒有內容');break}if(p&&t){const m={id:uid(),n:S.me,x,rt:t.n,rid:t.id};p.cmts.push(m);if(t.cid)mcmUser(p,m,t.cid)}save();closeSheet();render();break}
+    case 'momcmt':{if(momCD&&momCD.pid===i&&!momCD.rid){momCD=null}else momCD={pid:i,x:''};momCFocus();break}
+    case 'momrep':{const[pid,mid]=i.split('|'),p=S.moments.find(q=>q.id===pid),t=p&&(p.cmts||[]).find(q=>q.id===mid);if(!t)break;momCD={pid,rid:mid,rt:t.n,rcid:t.cid,x:''};momCFocus();break}
+    case 'momcrx':{if(momCD){momCD.rid=null;momCD.rt=null;momCD.rcid=null}momCFocus();break}
+    case 'momcimgx':{if(momCD)momCD.img='';momCFocus();break}
+    case 'momcemo':{if(!momCD)break;momCSync();const l=pool('emoji',S.cur);sheet('選擇表情包',(l.length?'<div class="mom-pg t-emoji">'+l.map(k=>'<button data-a="momcpick" data-i="'+k.id+'">'+(k.img?'<img src="'+k.img+'" alt="">':esc(k.text))+'</button>').join('')+'</div>':'<div class="empty">這裡還沒有表情包。<br>到「字卡」頁新增。</div>')+'<button class="btn" data-a="close">取消</button>',0);break}
+    case 'momcpick':{const k=S.cards.find(x=>x.id===i);if(!k||!momCD)break;if(k.img)momCD.img=k.img;else momCD.x=(momCD.x||'')+k.text;closeSheet();momCFocus();break}
+    case 'momcsend':{momCSync();const d=momCD,p=d&&S.moments.find(q=>q.id===i);if(!p)break;const x=(d.x||'').trim();if(!x&&!d.img){toast('還沒有內容');break}p.cmts=Array.isArray(p.cmts)?p.cmts:[];const m={id:uid(),n:S.me,x};if(d.img)m.img=d.img;if(d.rid){m.rt=d.rt;m.rid=d.rid;p.cmts.push(m);if(d.rcid)mcmUser(p,m,d.rcid)}else{p.cmts.push(m);mcmUser(p,m,p.cid)}momCD=null;save();{const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}break}
     case 'momdel':S.moments=S.moments.filter(p=>p.id!==i);S.mrep=S.mrep.filter(r=>r.pid!==i);S.mcm=(S.mcm||[]).filter(r=>r.pid!==i);save();closeSheet();render();break;
     case 'mstk':{const p=S.moments.find(q=>q.id===i);if(!p||!p.wall){toast('這則貼文沒有貼圖牆');break}momStkPost=i;stkPicker();break}
     case 'mstktab':momSK=i;stkPicker();break;
@@ -304,11 +339,12 @@ document.addEventListener('click',e=>{
     case 'mhgo':mhGo();break;
     case 'mhcopy':{if(!mhRes){toast('請先排盤');break}const r=mhRes.r,mv=r.movingLine,yl=mv===1?'初爻':mv===6?'上爻':'第'+MH_YAO[mv-1],q=(mhQ||'').trim(),t=(q?q+' ':'')+r.benGua+yl+' 互卦'+r.huGua+' 變卦'+r.bianGua,ok=()=>toast('已複製'),fb=()=>{const ta=document.createElement('textarea');ta.value=t;ta.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';document.body.appendChild(ta);ta.select();let d=false;try{d=document.execCommand('copy')}catch(x){}ta.remove();d?ok():toast('複製失敗，請手動選取')};try{navigator.clipboard.writeText(t).then(ok,fb)}catch(x){fb()}break}
     case 'mhsave':{if(!mhRes){toast('請先排盤');break}S.plum=S.plum||[];const ex=S.plum.find(x=>x.id===mhRes.id);if(ex){ex.q=mhQ.trim();ex.note=mhNote.trim();save();toast('已更新紀錄');break}S.plum.push({...mhRes,q:mhQ.trim(),note:mhNote.trim()});if(S.plum.length>300)S.plum.splice(0,S.plum.length-300);save();toast('已保存到紀錄');break}
-    case 'pview':{const x=(S.plum||[]).find(p=>p.id===i);if(x)sheet('梅花易數',mhResultHtml(x)+'<div class="sheet-foot"><button class="btn" data-a="close">關閉</button></div>',1);break}
+    case 'pview':{const x=(S.plum||[]).find(p=>p.id===i);if(x)sheet('梅花易數',mhResultHtml(x)+'<div class="sheet-foot pv-foot"><button class="btn" data-a="pcopy" data-i="'+x.id+'">複製問題與卦象</button><button class="btn" data-a="close">關閉</button></div>',1);break}
+    case 'pcopy':{const x=(S.plum||[]).find(p=>p.id===i);if(!x||!x.r)break;const r=x.r,mv=r.movingLine,yl=mv===1?'初爻':mv===6?'上爻':'第'+MH_YAO[mv-1],q=(x.q||'').trim(),t=(q?q+' ':'')+r.benGua+yl+' 互卦'+r.huGua+' 變卦'+r.bianGua,ok=()=>toast('已複製'),fb=()=>{const ta=document.createElement('textarea');ta.value=t;ta.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';document.body.appendChild(ta);ta.select();let d=false;try{d=document.execCommand('copy')}catch(e2){}ta.remove();d?ok():toast('複製失敗，請手動選取')};try{navigator.clipboard.writeText(t).then(ok,fb)}catch(e2){fb()}break}
     case 'psel':{recSel=recSel.includes(i)?recSel.filter(x=>x!==i):recSel.concat(i);const st=$('#v').scrollTop;render();$('#v').scrollTop=st;break}
     case 'pdelsel':{if(!recSel.length){toast('請先選擇紀錄');break}sheet('是否確認刪除？','<p class="hint" style="margin:0 0 4px">將刪除所選的 '+recSel.length+' 筆梅花易數紀錄。</p><button class="btn d" data-a="pdelok">確認刪除</button><button class="btn" data-a="close">取消</button>',1);break}
     case 'pdelok':{S.plum=(S.plum||[]).filter(x=>!recSel.includes(x.id));recSel=[];recEdit=false;save();closeSheet();render();break}
-    case 'gonotice':{const fromChat=tab==='chat';const T=$('[data-t="home"]');if(T)T.click();notifBack=fromChat;closeSheet();$('#bn').classList.remove('show');if(i==='mail'){mailOpen=true;mailTab='r';mailEdit=false;mailSel=[];mailReplyId=null;mailKeep={};render();$('#v').scrollTop=0;crabMailRun()}else if(i==='mom'){momOpen=true;momTab='ct';render();$('#v').scrollTop=0}break}
+    case 'gonotice':{const fromChat=tab==='chat';const T=$('[data-t="home"]');if(T)T.click();notifBack=fromChat;closeSheet();$('#bn').classList.remove('show');if(i==='mail'){mailOpen=true;mailTab='r';mailEdit=false;mailSel=[];mailReplyId=null;mailKeep={};render();$('#v').scrollTop=0}else if(i==='mom'){momOpen=true;momTab='ct';render();$('#v').scrollTop=0}break}
     case 'calopen':calOpen=true;calY=0;calSel='';calTab='day';calPicked=false;remEdit=false;remSel=[];evEdit=false;evSel=[];closeSheet();render();$('#v').scrollTop=0;break;
     case 'calback':calOpen=false;render();break;
     case 'calprev':calM--;if(calM<0){calM=11;calY--}render();break;
@@ -334,8 +370,9 @@ document.addEventListener('click',e=>{
     case 'evopen':{const e=(S.evlog||[]).find(x=>x.id===i);if(!e)break;sheet('編輯事件','<div class="cal2-k" style="margin-top:0">'+fmtD(e.date)+'</div><div class="cal2-k">事件名</div><input id="ev-name" class="cal2-in" maxlength="30" value="'+esc(e.name)+'"><div class="cal2-k">備注</div><textarea id="ev-note" class="cal2-in" rows="2" maxlength="200">'+esc(e.note||'')+'</textarea><button class="btn s" data-a="evsave" data-i="'+e.id+'">儲存</button><button class="btn d" data-a="evdel1" data-i="'+e.id+'">刪除這筆事件</button><button class="btn" data-a="close">取消</button>');break}
     case 'evsave':{const e=(S.evlog||[]).find(x=>x.id===i);if(e){e.name=(($('#ev-name')||{}).value||'').trim()||'提醒';e.note=(($('#ev-note')||{}).value||'').trim();save()}closeSheet();render();break}
     case 'evdel1':{const e=(S.evlog||[]).find(x=>x.id===i);if(e){S.evdel=S.evdel||[];S.evdel.push(e.rid+'|'+e.date);S.evlog=S.evlog.filter(x=>x.id!==i);save()}closeSheet();render();break}
-    case 'remok':{const tk=localDayKey(new Date());remDue().forEach(x=>{x.r.shown=tk});save();closeSheet();break}
-    case 'remlater':closeSheet();break;
+    case 'remok':{const tk=localDayKey(new Date());remDue().forEach(x=>{x.r.shown=tk;delete x.r.later;delete x.r.tmr});save();closeSheet();break}
+    case 'remlater':{const s=S.set,ms2=(Math.max(0,+s.calLaterH||0)*60+Math.max(0,+s.calLaterM||0))*60000||5*3600000,nw=Date.now();remPending().forEach(x=>{x.r.later=nw+ms2});save();closeSheet();remAskSess=false;toast('稍後會再提醒你',1800);break}
+    case 'remtmr':{const tm2=localDayKey(addD(todayNoon(),1));remPending().forEach(x=>{x.r.tmr=tm2;delete x.r.later});save();closeSheet();remAskSess=false;toast('明天會再提醒你',1800);break}
     case 'fontopen':fontTarget=null;fontSheet();break;
     case 'thfont':fontTarget=i;fontSheet();break;
     case 'fntsel':fontScan().then(l=>{fntSel=[];fntSheet(l)});break;
@@ -370,7 +407,7 @@ document.addEventListener('click',e=>{
     case 'pm':{cat.as=cat.as.includes(i)?cat.as.filter(x=>x!==i):cat.as.concat(i);A.classList.toggle('on');save();break}
     case 'ct':{const k=S.cards.find(x=>x.id===i);k.on=k.on?0:1;save();render();break}
     case 'cx':S.cards=S.cards.filter(k=>k.id!==i);save();render();break;
-    case 'cadd':{const ents=parseCardLines($('#nc').value).map(o=>({cat:selCat,newName:null,text:o.text,num:o.num}));if(!ents.length)break;addEntries(ents,S.cats.find(x=>x.id===selCat));break}
+    case 'cadd':{const ents=sortByNum(parseCardLines($('#nc').value)).map(o=>({cat:selCat,newName:null,text:o.text,num:o.num}));if(!ents.length)break;addEntries(ents,S.cats.find(x=>x.id===selCat));break}
     case 'me':ask('你的名稱',S.me,v=>{S.me=v;save();render()});break;
     case 'bak':bak();break;
     case 'copy':{const done=busy('正在產生備份，請稍候⋯');let t='';const mk=()=>(t=JSON.stringify(S)),kb=()=>{const k=t.length/1024;return k>1024?(k/1024).toFixed(1)+'MB':Math.ceil(k)+'KB'},ok=()=>{done();toast('已複製備份（'+kb()+'）')},fb=()=>{if(!t)mk();const ta=document.createElement('textarea');ta.value=t;ta.style.cssText='position:fixed;left:-9999px;top:0;opacity:0';document.body.appendChild(ta);ta.select();let fin=false;try{fin=document.execCommand('copy')}catch(x){}ta.remove();done();fin?toast('已複製備份（'+kb()+'）'):toast('資料太大無法複製，請改用「下載備份檔」')};

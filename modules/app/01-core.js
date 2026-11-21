@@ -30,6 +30,31 @@ function def(){
     pend:[],dailies:{},todayMoodBy:{},locked:true};
 }
 const cur=()=>S.contacts.find(c=>c.id===S.cur)||S.contacts[0];
+/* ── 每個聯絡人的設置分開 ──
+   S.set 是一層代理：沒有被改過的設定沿用共用預設（base），在某位聯絡人底下改過的設定存到 S.cset[聯絡人id]，
+   讀取時依「目前的聯絡人」（排程裡用 ctxSet(id) 切換；其餘情況用 S.cur）取值。通知聲音、背景、學習進度等全域設定不分開。 */
+const GLOBAL_SET=new Set(['ntMeOn','ntMeSnd','ntTaOn','ntTaSnd','ntCurOn','ntCurSnd','ntOthOn','ntOthSnd','ntStarOn','ntStarSnd','penSnd','penVol','imgc','keepBg','keepFont','wi','starColor','calLaterH','calLaterM','lpOn','lpT1','lpT2','lpProb','lpRmin','lpRmax','momNotify','letterNotify','letterBadge','recSound','mood','heart','intent']);
+let __cx=null;
+function ctxSet(cid){if(typeof cid==='string'){if(cid.indexOf('|')>0)cid=cid.split('|').pop();__cx=cid}else __cx=null;if(!ctxSet.q){ctxSet.q=1;queueMicrotask(()=>{__cx=null;ctxSet.q=0})}}
+const ctxId=()=>__cx||(S&&S.cur);
+function makeSet(raw,owner){if(raw&&raw.__raw)raw=raw.__raw;
+  const ov=(create)=>{const id=ctxId();if(!id||!owner.contacts||!owner.contacts.some(c=>c.id===id))return null;owner.cset=owner.cset&&typeof owner.cset==='object'?owner.cset:{};return owner.cset[id]||(create?(owner.cset[id]={}):null)};
+  return new Proxy(raw,{
+    get(t,k,r){if(k==='toJSON')return()=>t;if(k==='__raw')return t;
+      if(typeof k==='string'&&!GLOBAL_SET.has(k)){const o=ov(false);if(o&&Object.prototype.hasOwnProperty.call(o,k))return o[k];
+        const v=Reflect.get(t,k,r);if(v&&typeof v==='object'){const oo=ov(true);if(oo){oo[k]=JSON.parse(JSON.stringify(v));return oo[k]}}return v}
+      return Reflect.get(t,k,r)},
+    set(t,k,v){if(typeof k==='string'&&!GLOBAL_SET.has(k)){const o=ov(true);if(o){o[k]=v;return true}}t[k]=v;return true},
+    deleteProperty(t,k){if(typeof k==='string'&&!GLOBAL_SET.has(k)){const o=ov(false);if(o&&k in o)delete o[k]}return Reflect.deleteProperty(t,k)},
+    has(t,k){const o=typeof k==='string'&&!GLOBAL_SET.has(k)?ov(false):null;return (o&&k in o)||Reflect.has(t,k)}})}
+/* 免打擾：時間照樣跑，但判定、機率、功能都不會觸發 */
+/* 字卡使用次數：S.cuse[聯絡人][字卡id]；第一次升級時依聊天紀錄回推 */
+const cuse=(cid,k)=>{if(!S||!k||!k.id)return;const u=(S.cuse=S.cuse||{}),m=(u[cid]=u[cid]||{});m[k.id]=(m[k.id]||0)+1};
+function backfillUse(o){o.cuse={};const cats=o.cats||[],kd=id=>{const g=cats.find(c=>c.id===id);return g?(g.kind||'card'):null};
+  (o.contacts||[]).forEach(c=>{const mine=(o.cards||[]).filter(k=>{if(!k||!k.text)return false;const g=cats.find(x=>x.id===k.cat);if(!g)return false;if(!['card','mem','ext'].includes(g.kind||'card'))return false;return g.sc==='s'||g.own===c.id||(!g.own&&(g.as||[]).includes(c.id))}).sort((a,b)=>b.text.length-a.text.length);
+    if(!mine.length)return;const cnt={};((o.msgs||{})[c.id]||[]).forEach(m=>{if(!m||m.f!=='ta'||!m.x||m.img)return;let s=String(m.x);mine.forEach(k=>{let i;while((i=s.indexOf(k.text))>=0){cnt[k.id]=(cnt[k.id]||0)+1;s=s.slice(0,i)+'\u0001'+s.slice(i+k.text.length)}})});o.cuse[c.id]=cnt})}
+const qtHtml=m=>(m.q||m.qi)?'<div class="qt'+(m.qi?' qti':'')+'">'+(m.qi?'<img class="qt-img" src="'+m.qi+'" alt="">':'')+esc(m.q||'')+'</div>':'';
+const isDnd=cid=>{const c=S&&S.contacts&&S.contacts.find(x=>x.id===cid);return !!(c&&c.dnd)};
 const CMD={on:0,prob:50,wall:1,tmin:1200,tmax:MOM_TMAX_DEF};
 const cmo=c=>(c.ms=Object.assign({},CMD,c.ms||{}));
 const sget=k=>k.startsWith('cm.')?cmo(cur())[k.slice(3)]:S.set[k];
@@ -70,14 +95,14 @@ const THEME_DEFS={
  journal:{name:'手帳',swatch:'repeating-linear-gradient(0deg,transparent 0 6px,#b4c8e266 6px 7px),repeating-linear-gradient(90deg,transparent 0 6px,#b4c8e266 6px 7px),linear-gradient(135deg,#f4f8fd,#dbe7f6)',family:'glass',skin:'journal',tones:[['blue','淺藍','#cfe0f5'],['mint','青提','#a7d36b'],['dark','黑灰','#3a3a42']],ink:{blue:'#4b5b78',mint:'#55732f',dark:'#e8e8ed'},line:{blue:'#b9cbe3',mint:'#d7eea7',dark:'#3a3a42'},shadow:'#6b7a90'},
  pixel:{name:'像素',swatch:'repeating-linear-gradient(0deg,#2a1f5c26 0 1px,transparent 1px 3px),linear-gradient(135deg,#fbfaff,#f00f2d 55%,#5b8fd9)',family:'glass',skin:'pixel',ink:'#2a1f5c',line:'#2a1f5c',shadow:'#6b7a90'},
  moon:{name:'月眠',swatch:'linear-gradient(160deg,#2a1f5c,#5b45a8 55%,#e9dfff)',family:'glass',skin:'moon',img:1,ink:'#f6f1ff',line:'#ffffff',shadow:'#120a33',dir:'assets/moon/',nav:1,art:MOONI,memo:{lines:[46,58.5,71],h:12.5,w:42,fs:.054}},
- cat:{name:'黑貓',swatch:'linear-gradient(135deg,#fbfaf8,#d9d5cf 55%,#2d2d32)',family:'glass',skin:'cat',img:1,cssCal:1,ink:'#26262b',line:'#2d2d32',shadow:'#ffffff',dir:'assets/cat/',nav:1,art:CATI,memo:{lines:[49.5,62,74.5,87],h:12.5,w:72,fs:.056}}
+ cat:{name:'黑貓',swatch:'linear-gradient(135deg,#fbfaf8,#d9d5cf 55%,#2d2d32)',family:'glass',skin:'cat',img:1,cssCal:1,tones:[['light','淺色','#fbfaf8'],['dark','深色','#2d2d32']],ink:{light:'#26262b',dark:'#e8e8ed'},line:{light:'#2d2d32',dark:'#4a4a53'},shadow:'#ffffff',dir:'assets/cat/',nav:1,art:CATI,memo:{lines:[49.5,62,74.5,87],h:12.5,w:72,fs:.056}}
 };
 const validTheme=k=>Object.prototype.hasOwnProperty.call(THEME_DEFS,k)?k:'lav';
 const curTheme=()=>validTheme(S&&S.theme);
 const curDef=()=>THEME_DEFS[curTheme()];
 const isG=()=>!!S&&curDef().family==='glass';
 const AS=n=>{const d=curDef();return((d.art&&d.art[n])?d.dir:'assets/clay/')+n+'.webp'};
-const tonePick=v=>(v&&typeof v==='object')?(S&&v[S.jtone]!=null?v[S.jtone]:v.blue):v;
+const tonePick=v=>(v&&typeof v==='object')?(S&&v[S.jtone]!=null?v[S.jtone]:(v.blue!=null?v.blue:v.light)):v;
 const themeInk=()=>tonePick(curDef().ink);
 const themeShadow=()=>curDef().shadow;
 const themeLine=()=>tonePick(curDef().line);
@@ -135,7 +160,7 @@ const pool=(kd,cid)=>S.cards.filter(k=>{const g=S.cats.find(c=>c.id===k.cat);ret
 const pk=a=>a[ri(a.length)];
 
 function toast(t,d=3000){const e=$('#tt');e.textContent=t;e.classList.add('show');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),d)}
-function sheet(title,html,mid){$('#sh').innerHTML='<div class="box" data-keep="1"><h2>'+title+'</h2>'+html+'</div>';$('#sh').classList.toggle('mid',!!mid);$('#sh').classList.remove('chat-pop','ask','emo','sv','more');$('#sh').classList.add('show')}
+function sheet(title,html,mid){$('#sh').innerHTML='<div class="box" data-keep="1"><h2>'+title+'</h2>'+html+'</div>';$('#sh').classList.toggle('mid',!!mid);$('#sh').classList.remove('chat-pop','ask','emo','sv','more','coninfo');$('#sh').classList.add('show')}
 function closeSheet(){$('#sh').classList.remove('show');if(catDirty){catDirty=false;setTimeout(()=>{try{render()}catch(e){}},0)}}
 function ask(title,val,cb){askCb=cb;sheet(title,'<input id="ai" value="'+esc(val)+'"><button class="btn s" data-a="askok">確定</button><button class="btn" data-a="close">取消</button>',1)}
 
@@ -143,9 +168,17 @@ function closeDaily(){const d=$('#daily-pop');if(d)d.classList.remove('show')}
 function positionDailyPopover(d){const trigger=$('.daily-message-trigger'),box=d&&d.querySelector('.daily-box');if(!trigger||!box)return;const r=trigger.getBoundingClientRect(),w=Math.min(360,window.innerWidth-24),left=Math.max(12,Math.min(r.left+r.width/2-w/2,window.innerWidth-w-12)),top=Math.max(8,Math.min(r.bottom+7,window.innerHeight-box.offsetHeight-12));d.style.setProperty('--daily-pop-left',Math.round(left)+'px');d.style.setProperty('--daily-pop-top',Math.round(top)+'px')}function openDaily(){const d=$('#daily-pop');if(!d)return;const day=localDayKey(new Date()),dy=dly(S.cur),a=(dy.day===day&&Array.isArray(dy.items))?dy.items:[],dailyReady=!!(dy.day===day&&dy.done&&a.length),enabled=!!S.set&&S.set.dailyMoodOn!==0&&S.set.dailyMoodOn!==false,m=enabled?todayMood():null,mv=m?esc((m.emoji||'')+(m.text||'')):!enabled?'已關閉':dailyReady?'沒有啟用的心情':'';d.innerHTML='<div class="daily-box"><div class="daily-mood-row"><div class="daily-title">今日心情</div><div class="daily-mood-value">'+mv+'</div></div><div class="daily-section"><div class="daily-title">每日留言</div>'+(a.length?'<div class="daily-copy">'+a.map(x=>esc(x)).join(' ')+'</div>':'<div class="daily-copy">他今天還沒留言</div>')+'</div></div>';d.classList.add('show');requestAnimationFrame(()=>positionDailyPopover(d))}
 function dailyPick(cid){cid=cid||S.cur;const s=S.set||{},cards=cardPool(cid).filter(k=>k.text),kao=pool('kao',cid).filter(k=>k.text),emoji=pool('emj',cid).filter(k=>k.text),hit=p=>rnd()*100<(+p||0);const all=[];const n=Math.max(1,Math.min(20,ri(Math.max(1,(+s.dailyMax||1)-(+s.dailyMin||1)+1))+(+s.dailyMin||1)));
   /* 每張字卡：字卡抽取 → emoji判定 → 選擇emoji → 顏文字判定 → 選擇顏文字（機率各自獨立） */
-  for(let i=0;i<n;i++){const base=cards.length?cards:(kao.length?kao:emoji);if(!base.length)break;let x=pk(base).text;if(cards.length){if(emoji.length&&hit(s.dailyEmoji)){const z=pk(emoji).text;x=rnd()<.5?z+' '+x:x+' '+z}if(kao.length&&hit(s.dailyKao)){const z=pk(kao).text;x=rnd()<.5?z+' '+x:x+' '+z}}all.push(x)}return all}
+  for(let i=0;i<n;i++){const base=cards.length?cards:(kao.length?kao:emoji);if(!base.length)break;const _k=pk(base);if(cards.length)cuse(cid,_k);let x=_k.text;if(cards.length){if(emoji.length&&hit(s.dailyEmoji)){const z=pk(emoji).text;x=rnd()<.5?z+' '+x:x+' '+z}if(kao.length&&hit(s.dailyKao)){const z=pk(kao).text;x=rnd()<.5?z+' '+x:x+' '+z}}all.push(x)}return all}
 /* 每日留言紀錄（給日曆用）：S.dlog[聯絡人][日期]={items,mood,reply}；S.dmine[日期]={x,mood} */
 function dlogPut(cid,day,items,mood,at){S.dlog=S.dlog||{};const L=S.dlog[cid]=S.dlog[cid]||{},r=L[day]=L[day]||{};if(items&&items.length){r.items=items.slice();if(!r.t)r.t=at||Date.now()}if(mood)r.mood={emoji:mood.emoji||'',text:mood.text||''}}
 function dlogSync(){const day=localDayKey(new Date());(S.contacts||[]).forEach(c=>{const D=dly(c.id);if(D.day===day&&D.done&&Array.isArray(D.items)&&D.items.length){let m=null;try{m=todayMood(c.id)}catch(e){}dlogPut(c.id,day,D.items,m,D.at)}})}
 function dly(cid){S.dailies=S.dailies||{};return S.dailies[cid]||(S.dailies[cid]={day:'',base:0,next:0,done:false,items:[]})}
-function dailyTick(){if(!S||!S.set||!S.set.dailyOn)return;const now=Date.now(),day=localDayKey(new Date(now)),hold=!!(window.LPE&&LPE.busy&&LPE.busy());let ch=0;(S.contacts||[]).forEach(c=>{const D=dly(c.id);if(D.day!==day){if(D.day&&D.done&&Array.isArray(D.items)&&D.items.length)dlogPut(c.id,D.day,D.items,null,D.at);Object.assign(D,{day,base:now,next:0,done:false,items:[]});ch=1}if(D.done||hold)return;const win=Math.max(1000,inspRand(S.set.dailyWmin==null?600:S.set.dailyWmin,S.set.dailyWmax==null?10800:S.set.dailyWmax));if(D.next&&now<D.next)return;ch=1;if(rnd()*100<Math.max(0,Math.min(100,+S.set.dailyProb||0))){const items=dailyPick(c.id);if(items.length){D.items=items;D.done=true;D.at=now;D.next=0;if(S.set.dailyMoodOn!==0&&S.set.dailyMoodOn!==false){D.moodAt=now+Math.max(0,+S.set.moodSel||0)*1000;if(S.todayMoodBy)delete S.todayMoodBy[c.id]}return}}D.next=now+win});dlogSync();if(ch)save()}
+function dailyTick(){if(!S||!S.set)return;const now=Date.now(),day=localDayKey(new Date(now)),hold=!!(window.LPE&&LPE.busy&&LPE.busy());let ch=0;(S.contacts||[]).forEach(c=>{ctxSet(c.id);const D=dly(c.id);if(D.day!==day){if(D.day&&D.done&&Array.isArray(D.items)&&D.items.length)dlogPut(c.id,D.day,D.items,null,D.at);Object.assign(D,{day,base:now,next:0,done:false,items:[]});ch=1}if(D.done||hold||!S.set.dailyOn)return;const win=Math.max(1000,inspRand(S.set.dailyWmin==null?600:S.set.dailyWmin,S.set.dailyWmax==null?10800:S.set.dailyWmax));if(D.next&&now<D.next)return;ch=1;if(!c.dnd&&rnd()*100<Math.max(0,Math.min(100,+S.set.dailyProb||0))){const items=dailyPick(c.id);if(items.length){D.items=items;D.done=true;D.at=now;D.next=0;if(S.set.dailyMoodOn!==0&&S.set.dailyMoodOn!==false){D.moodAt=now+Math.max(0,+S.set.moodSel||0)*1000;if(S.todayMoodBy)delete S.todayMoodBy[c.id]}return}}D.next=now+win});dlogSync();if(ch)save()}
+/* ── 刪除確認框：真正執行刪除的按鈕要連按兩次（第一次變成「再按一次確認」，3.5 秒內再按才執行） ── */
+(()=>{const OK=new Set(['an:cfyes','bdelok','bigclrok','bigdelok','cdelok','cdlok','dclrok','delcf','delok','dupdel','evdelok','gdelok','idelok','ldelok','mdelmok','mdelok','mdrm','mldelok','momdel','pdelok','perrecdelok','avcancelok','pf:cfyes','qcfok','qdelok','rdelok','remdelok','stkdelok','dtmpok']);
+let armed=null,tm=null;
+const disarm=()=>{if(armed&&armed.isConnected&&armed.dataset.orig){armed.textContent=armed.dataset.orig;armed.classList.remove('armed')}armed=null;clearTimeout(tm)};
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('button[data-a]');
+  if(!b||!OK.has(b.dataset.a)){if(armed)disarm();return}
+  if(armed===b){armed=null;clearTimeout(tm);return}
+  e.stopImmediatePropagation();e.preventDefault();disarm();armed=b;b.dataset.orig=b.textContent;b.textContent='再按一次確認';b.classList.add('armed');tm=setTimeout(disarm,3500)},true)})();

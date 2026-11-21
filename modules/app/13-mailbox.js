@@ -8,7 +8,7 @@ function genLetter(cid){const s=S.set,cards=cardPool(cid).filter(k=>k.text);if(!
   const a=Math.round(Math.min(s.lcmin,s.lcmax)),b=Math.round(Math.max(s.lcmin,s.lcmax)),n=Math.max(1,a+ri(b-a+1)),hit=p=>rnd()*100<(+p||0),
     stk=pool('emoji',cid).filter(k=>k.img),emj=pool('emj',cid).filter(k=>k.text),kao=pool('kao',cid).filter(k=>k.text),max=Math.max(0,Math.round(+s.lemomax||0)),imgs=[],lines=[];let ms=0;
   /* 每張字卡：字卡抽取 → emoji判定 → 選擇emoji → 顏文字判定 → 選擇顏文字 → 表情包貼圖；每個步驟 0.5 秒 */
-  for(let i=0;i<n;i++){ms+=STEP;let x=pk(cards).text;const wrap=z=>{x=rnd()<.5?z+' '+x:x+' '+z};
+  for(let i=0;i<n;i++){ms+=STEP;const _k=pk(cards);cuse(cid,_k);let x=_k.text;const wrap=z=>{x=rnd()<.5?z+' '+x:x+' '+z};
     if(+s.lemj>0){ms+=STEP;if(emj.length&&hit(s.lemj)){ms+=STEP;wrap(pk(emj.map(k=>k.text)))}}
     if(+s.lkao>0){ms+=STEP;if(kao.length&&hit(s.lkao)){ms+=STEP;wrap(pk(kao.map(k=>k.text)))}}
     if(+s.lemo>0&&stk.length&&imgs.length<max){ms+=STEP;if(hit(s.lemo)){ms+=STEP;imgs.push(pk(stk).img)}}
@@ -249,175 +249,12 @@ const PenSound = (() => {
   };
 })();
 
-// crab-mail.js — Pearla 重要信件：螃蟹送信動畫（獨立模組，尚未接入主程式）
-// 用法（點信箱、且有重要信件時）：
-//   CrabMail.show({
-//     content: '信件內容文字',
-//     onSave: () => { /* 這裡寫保存信件的動作，可回傳 Promise */ },
-//     skipAnimation: false,   // true＝略過螃蟹，直接顯示信件
-//   });
-// 流程：螃蟹從右邊走到中間 → 點信件，螃蟹往左走出去 → 再點信件打開
-//       → 打開後只有「保存信件」有反應，按了保存才會關閉。
-const CrabMail = (() => {
-  const CSS = `
-  .cm-overlay{position:fixed;inset:0;z-index:9999;background:rgba(80,60,110,.38);
-    touch-action:none;overflow:hidden;-webkit-user-select:none;user-select:none}
-  .cm-wrap{position:absolute;left:50%;top:36%;width:160px;margin-left:-80px;
-    display:flex;flex-direction:column;align-items:center}
-  .cm-in{animation:cm-in 2.6s ease-out forwards}
-  .cm-out{animation:cm-out 2.2s ease-in forwards}
-  @keyframes cm-in{from{transform:translateX(calc(50vw + 120px))}to{transform:translateX(0)}}
-  @keyframes cm-out{from{transform:translateX(0)}to{transform:translateX(calc(-50vw - 120px))}}
-  .cm-env{width:96px;height:66px;margin-bottom:-16px;cursor:pointer;position:relative;z-index:1}
-  .cm-env-fixed{position:fixed;margin:0}
-  .cm-pulse{animation:cm-pulse 1s ease-in-out infinite alternate}
-  @keyframes cm-pulse{from{transform:scale(1)}to{transform:scale(1.1)}}
-  .cm-crab{width:160px;height:120px;display:block;position:relative;z-index:2;pointer-events:none}
-  .cm-walking .cm-crab{animation:cm-bob .4s ease-in-out infinite alternate}
-  .cm-walking .legsA{animation:cm-legA .3s ease-in-out infinite alternate}
-  .cm-walking .legsB{animation:cm-legB .3s ease-in-out infinite alternate}
-  .legsA,.legsB{transform-origin:80px 75px}
-  @keyframes cm-bob{from{transform:translateY(0) rotate(-1.5deg)}to{transform:translateY(-4px) rotate(1.5deg)}}
-  @keyframes cm-legA{from{transform:rotate(-9deg)}to{transform:rotate(9deg)}}
-  @keyframes cm-legB{from{transform:rotate(9deg)}to{transform:rotate(-9deg)}}
-  .cm-card{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-    width:86vw;max-width:420px;max-height:72vh;display:flex;flex-direction:column;
-    background:#fffaf6;border:2px solid #b9a0d4;border-radius:18px;padding:18px;
-    box-shadow:0 8px 30px rgba(80,60,110,.3);touch-action:pan-y}
-  .cm-text{overflow-y:auto;white-space:pre-wrap;word-break:break-word;font-size:16px;
-    line-height:1.7;color:#5a4670;-webkit-user-select:text;user-select:text}
-  .cm-save{margin-top:14px;padding:11px;border:0;border-radius:12px;font-size:16px;
-    background:#e9a3c0;color:#fff;cursor:pointer}
-  .cm-save:disabled{opacity:.6}`;
-
-  const ENV_SVG = `<svg viewBox="0 0 96 66" width="96" height="66">
-    <rect x="3" y="3" width="90" height="60" rx="6" fill="#fff5f7" stroke="#8f6fae" stroke-width="3"/>
-    <path d="M5 8 L48 38 L91 8" fill="none" stroke="#8f6fae" stroke-width="3" stroke-linejoin="round"/>
-    <circle cx="48" cy="38" r="7" fill="#f29ab0" stroke="#8f6fae" stroke-width="2"/></svg>`;
-
-  const CRAB_SVG = `<svg class="cm-crab" viewBox="0 0 160 120">
-    <g class="legsA" stroke="#9b7bb8" stroke-width="5" stroke-linecap="round" fill="none">
-      <path d="M48 76 L22 88 L14 108"/><path d="M58 88 L38 104 L34 116"/>
-      <path d="M108 74 L132 70 L144 82"/></g>
-    <g class="legsB" stroke="#9b7bb8" stroke-width="5" stroke-linecap="round" fill="none">
-      <path d="M52 66 L26 70 L16 82"/><path d="M102 88 L122 104 L126 116"/>
-      <path d="M112 76 L138 88 L146 108"/></g>
-    <g stroke="#8f6fae" stroke-width="3" fill="#f6a5b9">
-      <path d="M52 60 Q30 54 34 32" fill="none" stroke-width="5" stroke="#9b7bb8" stroke-linecap="round"/>
-      <path d="M108 60 Q130 54 126 32" fill="none" stroke-width="5" stroke="#9b7bb8" stroke-linecap="round"/>
-      <ellipse cx="33" cy="26" rx="12" ry="14"/><ellipse cx="127" cy="26" rx="12" ry="14"/>
-      <ellipse cx="80" cy="76" rx="40" ry="28"/></g>
-    <g stroke="#9b7bb8" stroke-width="3" stroke-linecap="round"><path d="M68 52 L66 40"/><path d="M92 52 L94 40"/></g>
-    <circle cx="66" cy="38" r="6" fill="#fff" stroke="#8f6fae" stroke-width="2"/>
-    <circle cx="94" cy="38" r="6" fill="#fff" stroke="#8f6fae" stroke-width="2"/>
-    <circle cx="66" cy="38" r="2.5" fill="#5a4670"/><circle cx="94" cy="38" r="2.5" fill="#5a4670"/>
-    <path d="M72 82 Q80 90 88 82" fill="none" stroke="#8f6fae" stroke-width="3" stroke-linecap="round"/></svg>`;
-
-  let styled = false;
-  function addStyle() {
-    if (styled) return;
-    const s = document.createElement('style');
-    s.textContent = CSS;
-    document.head.appendChild(s);
-    styled = true;
-  }
-
-  function show({ content = '', onSave = null, skipAnimation = false } = {}) {
-    addStyle();
-    return new Promise((resolve) => {
-      let state = 'enter'; // enter → hold → taking → ready → open
-      const overlay = document.createElement('div');
-      overlay.className = 'cm-overlay';
-      // 蓋住整個畫面，底下的按鈕都點不到
-      overlay.addEventListener('click', (e) => e.stopPropagation());
-
-      const env = document.createElement('div');
-      env.className = 'cm-env';
-      env.innerHTML = ENV_SVG;
-
-      const wrap = document.createElement('div');
-      wrap.className = 'cm-wrap cm-walking cm-in';
-      wrap.appendChild(env);
-      wrap.insertAdjacentHTML('beforeend', CRAB_SVG);
-      overlay.appendChild(wrap);
-      document.body.appendChild(overlay);
-
-      function placeEnvFixed(left, top) {
-        overlay.appendChild(env);
-        env.classList.add('cm-env-fixed', 'cm-pulse');
-        env.style.left = left + 'px';
-        env.style.top = top + 'px';
-      }
-
-      function openLetter() {
-        state = 'open';
-        env.remove();
-        const card = document.createElement('div');
-        card.className = 'cm-card';
-        const text = document.createElement('div');
-        text.className = 'cm-text';
-        text.textContent = content; // 用純文字顯示，避免信件內容被當成程式
-        const btn = document.createElement('button');
-        btn.className = 'cm-save';
-        btn.textContent = '保存信件';
-        let saving = false;
-        btn.addEventListener('click', async () => {
-          if (saving) return;
-          saving = true;
-          btn.disabled = true;
-          try { if (onSave) await onSave(); } finally {
-            overlay.remove();
-            resolve();
-          }
-        });
-        card.append(text, btn);
-        overlay.appendChild(card);
-      }
-
-      env.addEventListener('click', () => {
-        if (state === 'hold') {
-          state = 'taking';
-          const r = env.getBoundingClientRect();
-          placeEnvFixed(r.left, r.top);
-          wrap.className = 'cm-wrap cm-walking cm-out';
-        } else if (state === 'ready') {
-          openLetter();
-        }
-      });
-
-      wrap.addEventListener('animationend', (e) => {
-        if (e.target !== wrap) return;
-        if (state === 'enter') {
-          state = 'hold';
-          wrap.classList.remove('cm-walking');
-          env.classList.add('cm-pulse');
-        } else if (state === 'taking') {
-          wrap.remove();
-          state = 'ready';
-        }
-      });
-
-      if (skipAnimation) {
-        wrap.remove();
-        placeEnvFixed(window.innerWidth / 2 - 48, window.innerHeight * 0.38);
-        state = 'ready';
-      }
-    });
-  }
-
-  return { show };
-})();
-
 /* 寫信音效：信箱的寫信 / 回信輸入框打字時沙沙聲（設置-信箱設置-效果 可開關、調音量） */
 function penSync(){PenSound.setEnabled(!!(S&&S.set&&S.set.penSnd));PenSound.setVolume(S&&S.set&&S.set.penVol!=null?(+S.set.penVol||0)/100:.5)}
 document.addEventListener('input',e=>{const t=e.target;if(t&&t.matches&&t.matches('input[data-pvol]')){const v=Math.max(0,Math.min(100,+t.value||0));S.set.penVol=v;const l=document.getElementById('pvl');if(l)l.textContent=v+'%';penSync();saveSoon()}},true);
 document.addEventListener('change',e=>{const t=e.target;if(t&&t.matches&&t.matches('input[data-pvol]')){penSync();PenSound.preview()}},true);
 ['pointerdown','focusin'].forEach(ev=>document.addEventListener(ev,e=>{if(e.target.matches&&e.target.matches('#lt,#lrt')){penSync();PenSound.unlock(e.target)}},true));
 document.addEventListener('input',e=>{if(e.target.matches&&e.target.matches('#lt,#lrt')&&1){penSync();PenSound.play(e.target)}},true);document.addEventListener('focusout',e=>{if(e.target.matches&&e.target.matches('#lt,#lrt'))PenSound.stop()},true);
-/* 重要聯繫人來信：點信箱時，依序播放尚未看過的重要聯絡人來信 */
-async function crabMailRun(){if(!S.set.crabMail||window.__crabBusy)return;const imp=c=>S.contacts.some(x=>x.id===c&&x.star),list=(S.letters||[]).filter(x=>x.from==='ta'&&!x.seen&&imp(x.cid)).sort((a,b)=>a.t-b.t);if(!list.length)return;
-  window.__crabBusy=1;try{for(let i=0;i<list.length;i++){const L=list[i];await CrabMail.show({content:(cname(L.cid)+' 寄來的信\n\n')+L.text,skipAnimation:i>0,onSave:()=>{L.seen=1;save()}})}}finally{window.__crabBusy=0}
-  updateMailBadge();if(mailOpen&&tab==='home'){const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}}
 function vMail(){const c=cur(),all=[...(S.letters||[])].sort((x,y)=>y.t-x.t);
   const head='<div class="stickh"><div class="ph2"><button class="ib" data-a="mback">‹</button><h1>信箱</h1><span class="grow"></span><button class="btn" data-a="medit" style="width:auto;padding:6px 14px">'+(mailEdit?'完成':'編輯')+'</button></div><div class="seg mail-seg">'+[['w','寫信與回信'],['r','收到的信'],['i','重要信件']].map(([k,n])=>'<button class="'+(mailTab===k?'on':'')+'" data-a="mtab" data-i="'+k+'">'+n+'</button>').join('')+'</div></div>';
   const bar=mailEdit?'<div class="selbar">'+selAllHtml('mail',mailIds(),mailSel)+'<button class="btn d" data-a="mdelsel" style="border-style:solid">刪除所選（'+mailSel.length+'）</button></div>':'';
@@ -436,11 +273,11 @@ const lrand=(a,b)=>{const lo=Math.max(1,+a||1)*1000,hi=Math.max(lo,(+b||0)*1000)
 function letterNote(cid,x){try{const c=S.contacts.find(z=>z.id===cid);if(!c)return;if(S.set.letterNotify){ms(cid).push({id:uid(),f:'sys',x,t:Date.now(),go:'mail'});banner(x,6000,'mail');if(tab==='chat'&&S.cur===cid)paint()}}catch(e){}}
 function letterTick(){if(!S||!S.set)return;const s=S.set,now=Date.now();S.letters=S.letters||[];S.lnext=S.lnext||{};S.lpend=S.lpend||[];let ch=0,shown=0,arrived=0;
   /* 信件的抽取流程要花時間，抽完才送達 */
-  {const due=S.lpend.filter(p=>p.due<=now);if(due.length){S.lpend=S.lpend.filter(p=>p.due>now);ch=1;const gc={};due.forEach(p=>{if(!S.contacts.some(c=>c.id===p.cid))return;if(p.k==='n'){S.letters.push(Object.assign({},p.L,{nt:1}));gc[p.cid]=(gc[p.cid]||0)+1}else{const L=S.letters.find(x=>x.id===p.lid);if(L){L.reply={t:now,text:p.text,imgs:p.imgs};L.rnt=1;letterNote(L.cid,cname(L.cid)+' 回信了')}}arrived=1;if(mailOpen)shown=1});Object.keys(gc).forEach(cid=>{const c=S.contacts.find(z=>z.id===cid);if(c)letterNote(cid,gc[cid]>1?c.name+' 寄來 '+gc[cid]+' 封信':c.name+' 寄來一封信')})}}
-  S.letters.forEach(L=>{if(L.from==='me'&&L.rdue&&L.rdue<=now){L.rdue=0;ch=1;if(!S.contacts.some(c=>c.id===L.cid))return;const g=genLetter(L.cid);if(g)S.lpend.push({k:'r',cid:L.cid,lid:L.id,text:g.text,imgs:g.imgs,due:now+g.ms})}});
+  {const due=S.lpend.filter(p=>p.due<=now);if(due.length){S.lpend=S.lpend.filter(p=>p.due>now);ch=1;const gc={};due.forEach(p=>{ctxSet(p.cid);if(!S.contacts.some(c=>c.id===p.cid)||isDnd(p.cid))return;if(p.k==='n'){S.letters.push(Object.assign({},p.L,{nt:1}));gc[p.cid]=(gc[p.cid]||0)+1}else{const L=S.letters.find(x=>x.id===p.lid);if(L){L.reply={t:now,text:p.text,imgs:p.imgs};L.rnt=1;letterNote(L.cid,cname(L.cid)+' 回信了')}}arrived=1;if(mailOpen)shown=1});Object.keys(gc).forEach(cid=>{const c=S.contacts.find(z=>z.id===cid);if(c)letterNote(cid,gc[cid]>1?c.name+' 寄來 '+gc[cid]+' 封信':c.name+' 寄來一封信')})}}
+  S.letters.forEach(L=>{if(L.from==='me'&&L.rdue&&L.rdue<=now){L.rdue=0;ch=1;ctxSet(L.cid);if(!S.contacts.some(c=>c.id===L.cid)||isDnd(L.cid))return;const g=genLetter(L.cid);if(g)S.lpend.push({k:'r',cid:L.cid,lid:L.id,text:g.text,imgs:g.imgs,due:now+g.ms})}});
   /* 關閉程式期間錯過的寄信時間點，開啟後依序補算（每個時間點各判定一次，仍受每日上限限制） */
-  S.lround=S.lround||{};const lmx=Math.max(+s.lwmin||0,+s.lwmax||0,1)*1000;S.contacts.forEach(c=>{let tt=S.lnext[c.id];if(!tt){S.lround[c.id]=now;S.lnext[c.id]=now+lrand(s.lwmin,s.lwmax);ch=1;return}if(tt>now)return;ch=1;let g=0,got=0,rs=S.lround[c.id]||(tt-Math.max(0,+s.lwmin||0)*1000);
-    while(tt<=now&&g++<500){if(rnd()*100<Math.max(0,Math.min(100,+s.lwrite||0))){const day=localDayKey(new Date(tt)),cnt=S.letters.filter(l=>l.cid===c.id&&l.from==='ta'&&localDayKey(new Date(l.t))===day).length+S.lpend.filter(p=>p.k==='n'&&p.cid===c.id&&localDayKey(new Date(p.L.t))===day).length;
+  S.lround=S.lround||{};const lmx=Math.max(+s.lwmin||0,+s.lwmax||0,1)*1000;S.contacts.forEach(c=>{ctxSet(c.id);let tt=S.lnext[c.id];if(!tt){S.lround[c.id]=now;S.lnext[c.id]=now+lrand(s.lwmin,s.lwmax);ch=1;return}if(tt>now)return;ch=1;let g=0,got=0,rs=S.lround[c.id]||(tt-Math.max(0,+s.lwmin||0)*1000);
+    while(tt<=now&&g++<500){if(!c.dnd&&rnd()*100<Math.max(0,Math.min(100,+s.lwrite||0))){const day=localDayKey(new Date(tt)),cnt=S.letters.filter(l=>l.cid===c.id&&l.from==='ta'&&localDayKey(new Date(l.t))===day).length+S.lpend.filter(p=>p.k==='n'&&p.cid===c.id&&localDayKey(new Date(p.L.t))===day).length;
         if(cnt<Math.max(0,Math.round(+s.lday||0))){const gl=genLetter(c.id);if(gl){S.lpend.push({k:'n',cid:c.id,L:{id:uid(),cid:c.id,from:'ta',t:tt,text:gl.text,imgs:gl.imgs},due:now+gl.ms});got++}}}
       /* 最長時間結束後才開始下一輪，這一輪內只會有一次主動寫信流程 */rs+=lmx;tt=rs+lrand(s.lwmin,s.lwmax)}
     S.lround[c.id]=rs;S.lnext[c.id]=tt});

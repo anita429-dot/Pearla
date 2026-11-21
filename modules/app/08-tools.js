@@ -12,12 +12,22 @@ function acx(){try{if(!AC||AC.state==='closed'){const C=window.AudioContext||win
   return AC}catch(e){return null}}
 function acUnlock(){const a=acx();if(!a)return;if(!acUnl){try{const b=a.createBuffer(1,1,22050),sr=a.createBufferSource();sr.buffer=b;sr.connect(a.destination);sr.start(0);acUnl=true}catch(e){}}}
 ['touchend','pointerup','click'].forEach(ev=>document.addEventListener(ev,acUnlock,{passive:true,capture:true}));
-document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&AC&&AC.state!=='running'){try{const p=AC.resume();if(p&&p.catch)p.catch(()=>{})}catch(e){}}});
+const acWake=()=>{if(document.visibilityState!=='visible'||!AC)return;try{if(AC.state!=='running'){const p=AC.resume();if(p&&p.catch)p.catch(()=>{});setTimeout(()=>{if(AC&&AC.state!=='running')acRebuild()},500)}}catch(e){acRebuild()}};
+document.addEventListener('visibilitychange',acWake);window.addEventListener('pageshow',acWake);window.addEventListener('focus',acWake);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&AC){try{AC.__t=Date.now()}catch(e){}}});
 ['pointerdown','touchstart','keydown'].forEach(ev=>document.addEventListener(ev,()=>{acx()},{passive:true}));
 const SND=[['bubble','泡泡'],['drop','水滴'],['ding','叮咚'],['chime','風鈴'],['tap','輕敲'],['bird','小鳥'],['marimba','馬林巴'],['soft','柔和提示']];
 function sTone(a,t,f0,f1,dur,vol,type){const o=a.createOscillator(),g=a.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f0,t);if(f1)o.frequency.exponentialRampToValueAtTime(f1,t+dur);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+0.012);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+dur+0.03)}
 function sNoise(a,t,dur,vol,hp){const n=Math.max(1,Math.floor(a.sampleRate*dur)),buf=a.createBuffer(1,n,a.sampleRate),d=buf.getChannelData(0);for(let i=0;i<n;i++)d[i]=(Math.random()*2-1)*(1-i/n);const s=a.createBufferSource();s.buffer=buf;const f=a.createBiquadFilter();f.type='highpass';f.frequency.value=hp;const g=a.createGain();g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);s.connect(f);f.connect(g);g.connect(a.destination);s.start(t)}
-function playSnd(k){try{if(!k||k==='none')return;const a=acx();if(!a)return;if(a.state==='running')playSnd0(k,a);else{const p=a.resume();if(p&&p.then)p.then(()=>{if(a.state==='running')playSnd0(k,a)}).catch(()=>{})}}catch(e){}}
+/* iOS 回到前景後，AudioContext 可能停在 suspended / interrupted，或 resume 後仍沒有輸出：
+   先 resume；0.35 秒內沒變成 running 就丟掉舊的、重建一個再播（建立在使用者互動後解鎖過的頁面上通常可行） */
+function acRebuild(){try{if(AC)try{AC.close()}catch(e){}AC=null;acUnl=false}catch(e){}return acx()}
+function playSnd(k){try{if(!k||k==='none')return;let a=acx();if(!a)return;
+  const go=x=>{try{playSnd0(k,x);const s=x.createBufferSource();s.buffer=x.createBuffer(1,1,22050);s.connect(x.destination);s.start(0)}catch(e){}};
+  if(a.state==='running'&&(a.__t==null||Date.now()-a.__t<1500||document.visibilityState==='visible')){go(a);return}
+  let done=false;const tryRun=x=>{try{const p=x.resume();if(p&&p.then)p.then(()=>{if(!done&&x.state==='running'){done=true;go(x)}}).catch(()=>{})}catch(e){}};
+  tryRun(a);
+  setTimeout(()=>{if(done)return;const b=acRebuild();if(!b)return;if(b.state==='running'){done=true;go(b)}else{try{const p=b.resume();if(p&&p.then)p.then(()=>{if(!done&&b.state==='running'){done=true;go(b)}}).catch(()=>{})}catch(e){}}},350)}catch(e){}}
 function playSnd0(k,a){try{const t=a.currentTime+0.02;
   switch(k){
   case 'bubble':sTone(a,t,300,820,0.13,0.3);sTone(a,t+0.15,420,1000,0.09,0.16);sTone(a,t+0.34,1900,320,0.045,0.3);sNoise(a,t+0.34,0.07,0.22,2600);break;
@@ -51,9 +61,9 @@ function vPomo(){const p=S.pomo;pmToday();const R=96,C=2*Math.PI*R,tot=pmDur(p)|
   const SW=(k,l2)=>'<div class="sr" style="align-items:center"><span>'+l2+'</span><button class="sw '+(p[k]?'on':'')+'" data-a="pomosw" data-i="'+k+'"></button></div>';
   const NI=(k,l2,u,mx)=>'<div class="sr" style="align-items:center"><span>'+l2+'</span><span><input type="number" inputmode="numeric" data-pm="'+k+'" min="1" max="'+mx+'" value="'+p[k]+'" style="width:56px;text-align:right;padding:6px 4px"> '+u+'</span></div>';
   return '<div class="ph2"><button class="ib" data-a="pomoback">‹</button><h1>番茄鐘</h1></div>'
-  +'<div class="card" style="text-align:center"><div style="font-size:14px;color:var(--soft);margin-bottom:6px">'+PM_NAME[p.ph]+(p.run?'中':(l<tot?'（已暫停）':''))+'</div>'
+  +'<div class="card" style="text-align:center"><div style="font-size:calc(14px*var(--fz,1));color:var(--soft);margin-bottom:6px">'+PM_NAME[p.ph]+(p.run?'中':(l<tot?'（已暫停）':''))+'</div>'
   +'<div class="pm-wrap"><svg viewBox="0 0 220 220" width="220" height="220"><circle cx="110" cy="110" r="'+R+'" fill="none" stroke="var(--bub)" stroke-width="10"/><circle id="pmArc" cx="110" cy="110" r="'+R+'" fill="none" stroke="var(--lav)" stroke-width="10" stroke-linecap="round" transform="rotate(-90 110 110)" stroke-dasharray="'+C.toFixed(2)+'" style="stroke-dashoffset:'+(C*(1-l/tot)).toFixed(2)+'"/></svg><div class="pm-t" id="pmT">'+pmFmt(l)+'</div></div>'
-  +'<div class="pm-dots">'+dots+'</div><div style="font-size:13px;color:var(--soft);margin:2px 0 12px">今天完成 '+p.n+' 個番茄</div>'
+  +'<div class="pm-dots">'+dots+'</div><div style="font-size:calc(13px*var(--fz,1));color:var(--soft);margin:2px 0 12px">今天完成 '+p.n+' 個番茄</div>'
   +'<div style="display:flex;gap:8px"><button class="btn" data-a="pomoreset" style="flex:1;margin:0">重置</button><button class="btn s" data-a="pomogo" style="flex:2;margin:0">'+(p.run?'暫停':(l<tot?'繼續':'開始'))+'</button><button class="btn" data-a="pomoskip" style="flex:1;margin:0">跳過</button></div></div>'
   +'<div class="card set"><h3>番茄鐘設置</h3>'+NI('foc','專注時間','分鐘',180)+NI('brk','休息時間','分鐘',60)+NI('lng','長休息時間','分鐘',120)+NI('cyc','幾輪後長休息','輪',12)+SW('auto','自動進入下一階段')+SW('snd','提示音')+'</div>'}
 document.addEventListener('input',e=>{const t=e.target;if(!t||!t.dataset||!t.dataset.pm||!S||!S.pomo)return;const p=S.pomo,k=t.dataset.pm,v=Math.max(1,Math.min(+t.max||999,Math.round(+t.value)||0));if(!v)return;const full=!p.run&&p.left===pmDur(p);p[k]=v;if(full)p.left=pmDur(p);pmPaint();saveSoon()});
@@ -141,9 +151,9 @@ function perRecHtml(){const g=perGroups().slice().reverse(),p=S.per,len=pLen();
   if(!g.length)return '<h3>經期紀錄</h3><div class="per-empty" style="padding:6px 0">還沒有經期紀錄</div>';
   const fm=k=>{const d=pD(k);return d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()};
   return '<h3>經期紀錄</h3>'+g.map(x=>{const on=p.live&&p.live.s===x.s,tag=on?'進行中':(p.ended[x.s]&&x.n<len?'提前結束':'');
-    return '<div class="sr per-rec" style="align-items:center"><span><b style="font-weight:500">'+fm(x.s)+(x.n>1?' – '+pFmt(x.e):'')+'</b><small style="display:block;color:var(--soft);font-size:12px">'+x.n+' 天'+(tag?'　'+tag:'')+'</small></span><button class="btn" data-a="perrecdel" data-i="'+x.s+'" style="margin:0;padding:6px 12px;font-size:12px">刪除</button></div>'}).join('')}
+    return '<div class="sr per-rec" style="align-items:center"><span><b style="font-weight:500">'+fm(x.s)+(x.n>1?' – '+pFmt(x.e):'')+'</b><small style="display:block;color:var(--soft);font-size:calc(12px*var(--fz,1))">'+x.n+' 天'+(tag?'　'+tag:'')+'</small></span><button class="btn" data-a="perrecdel" data-i="'+x.s+'" style="margin:0;padding:6px 12px;font-size:calc(12px*var(--fz,1))">刪除</button></div>'}).join('')}
 function perAvgHtml(){const s=perStat();if(!s.cyc||(s.cyc===S.per.cycle&&s.len===S.per.len))return '';
-  return '<div class="sr" style="align-items:center"><span style="color:var(--soft);font-size:12px">依紀錄：平均週期 '+s.cyc+' 天、經期 '+s.len+' 天</span><button class="btn" data-a="perapply" style="margin:0;padding:5px 10px;font-size:12px">套用</button></div>'}
+  return '<div class="sr" style="align-items:center"><span style="color:var(--soft);font-size:calc(12px*var(--fz,1))">依紀錄：平均週期 '+s.cyc+' 天、經期 '+s.len+' 天</span><button class="btn" data-a="perapply" style="margin:0;padding:5px 10px;font-size:calc(12px*var(--fz,1))">套用</button></div>'}
 function perPaint(){const a=$('#perSum'),b=$('#perCal'),c=$('#perAvg'),d=$('#perRec');if(a)a.innerHTML=perSumHtml();if(b)b.innerHTML=perCalHtml();if(c)c.innerHTML=perAvgHtml();if(d)d.innerHTML=perRecHtml()}
 function vPer(){const p=S.per;
   const NI=(k,l2,u,mn,mx)=>'<div class="sr" style="align-items:center"><span>'+l2+'</span><span><input type="number" inputmode="numeric" data-per="'+k+'" min="'+mn+'" max="'+mx+'" value="'+p[k]+'" style="width:56px;text-align:right;padding:6px 4px"> '+u+'</span></div>';
@@ -151,7 +161,7 @@ function vPer(){const p=S.per;
   +'<div class="card" id="perSum">'+perSumHtml()+'</div>'
   +'<div class="card" id="perCal" style="margin-top:12px">'+perCalHtml()+'</div>'
   +'<div class="card set" style="margin-top:12px"><h3>經期設置</h3>'+NI('cycle','幾天來一次經期（週期）','天',15,60)+NI('len','經期持續天數（預測用）','天',1,15)+'<div id="perAvg" style="margin-top:8px">'+perAvgHtml()+'</div>'
-  +'<div class="sr" style="align-items:center;margin-top:12px"><span style="color:var(--soft);font-size:12px">排卵日以「下次經期前 14 天」推算，易孕期為排卵日前 5 天到後 1 天。</span></div>'
+  +'<div class="sr" style="align-items:center;margin-top:12px"><span style="color:var(--soft);font-size:calc(12px*var(--fz,1))">排卵日以「下次經期前 14 天」推算，易孕期為排卵日前 5 天到後 1 天。</span></div>'
   +'<button class="btn" data-a="perclear" style="width:100%;margin:12px 0 0">清除所有經期紀錄</button></div>'
   +'<p class="hint">預測只依你填的週期推算，每個人的週期會有變動，僅供參考，不能當作避孕或醫療依據。</p>'
   +'<div class="card set" id="perRec" style="margin-top:12px">'+perRecHtml()+'</div>'}
