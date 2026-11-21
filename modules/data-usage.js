@@ -18,11 +18,11 @@ const ROWS=[
   ['shop','商城',''],
   ['gift','禮物櫃','']
 ];
-const FREQ=['未使用','偶爾','常用','很常用'];
+const FREQ=['未使用','偶爾','常用','很常用'],RATE=['困難','有點難','一般','好上手','簡單'];
 
 const LP=window.LP={open:false,rows:ROWS,view:vLp,set:setRow,data:data};
 
-function data(id){const d=(S.lp&&S.lp[id])||{};return{on:d.on!==false,p:d.p==null?30:Math.max(0,Math.min(100,+d.p||0)),f:Number.isInteger(d.f)?Math.max(0,Math.min(3,d.f)):-1}}
+function data(id){const d=(S.lp&&S.lp[id])||{};return{on:d.on!==false,p:d.p==null?30:Math.max(0,Math.min(100,+d.p||0)),f:Number.isInteger(d.f)?Math.max(0,Math.min(3,d.f)):-1,r:Number.isInteger(d.r)?Math.max(0,Math.min(4,d.r)):-1}}
 /* 之後各功能要回報進度時呼叫：LP.set('chat',{p:35,f:2}) */
 function setRow(id,v){if(!S.lp||typeof S.lp!=='object')S.lp={};S.lp[id]=Object.assign(S.lp[id]||{},v);try{save()}catch(e){}}
 
@@ -30,7 +30,7 @@ function row(r){
   const d=data(r[0]);
   return '<div class="lp-item'+(d.on?'':' off')+'"><div class="lp-top"><span class="lp-name">'+esc(r[1])+(r[2]?'<small>（'+esc(r[2])+'）</small>':'')+'</span><button type="button" class="sw'+(d.on?' on':'')+'" data-a="lp:sw" data-i="'+r[0]+'" aria-label="'+esc(r[1])+'"></button></div>'
    +'<div class="lp-pr"><span class="lp-pl">熟練度</span><div class="lp-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+d.p+'"><i style="width:'+d.p+'%"></i></div><span class="lp-pct">'+d.p+'%</span></div>'
-   +'<div class="lp-meta"><span>使用頻率　<b>'+(d.f<0?'—':FREQ[d.f])+'</b></span></div></div>';
+   +'<div class="lp-meta"><span>使用頻率　<b>'+(d.f<0?'—':FREQ[d.f])+'</b></span><span>評價　<b>'+(d.r<0?'—':RATE[d.r])+'</b></span></div></div>';
 }
 function vLp(){
   return '<div class="ph2"><button class="ib" data-a="lp:back">‹</button><h1>學習進度</h1></div>'+ROWS.map(row).join('');
@@ -70,27 +70,32 @@ function judge(n,now){const L=LSt(),p=Math.max(0,Math.min(100,+S.set.lpProb||0))
   L.mid='';
   if(n===1){L.ph='w2';L.due=now+sec('lpT2',1800);notice('決定晚點再看看學習進度');save()}
   else{L.ph='';notice('決定不改變學習進度');save();if(typeof dailyTick==='function')setTimeout(dailyTick,500)}}
+/* 每一欄的流程：修改熟練條 → 10 秒後隨機選擇評價（最後一步）→ 下一欄 */
 function stepRow(now){const L=LSt();
   while(L.idx<L.list.length&&!LP.data(L.list[L.idx]).on){L.idx++}
-  if(L.idx<L.list.length){const id=L.list[L.idx],d=LP.data(id),delta=[-20,-10,0,10,20][ri(5)];LP.set(id,{p:Math.max(0,Math.min(100,d.p+delta))});L.idx++;if(LP.open)render()}
+  if(L.idx<L.list.length){const id=L.list[L.idx],d=LP.data(id),delta=[-20,-10,0,10,20][ri(5)];LP.set(id,{p:Math.max(0,Math.min(100,d.p+delta))});L.rid=id;L.idx++;L.ph='rate';L.due=now+10000;if(LP.open)render();save();return}
+  afterRow(now)}
+function rateRow(now){const L=LSt();if(L.rid&&LP.data(L.rid).on!==false)LP.set(L.rid,{r:ri(5)});L.rid='';L.ph='rows';if(LP.open)render();afterRow(now)}
+function afterRow(now){const L=LSt();
   while(L.idx<L.list.length&&!LP.data(L.list[L.idx]).on){L.idx++}
   if(L.idx>=L.list.length){L.ph='';dropNotice();L.list=[];save();if(typeof dailyTick==='function')setTimeout(dailyTick,500);return}
   showRow();L.due=rowDue();save()}
 function tick(){try{
   if(!S||!S.set||!S.contacts)return;const L=LSt(),now=Date.now();
-  if(!S.set.lpOn){if(L.ph){if(L.ph==='rows')dropNotice();L.ph='';L.mid='';save();if(typeof dailyTick==='function')setTimeout(dailyTick,500)}return}
+  if(!S.set.lpOn){if(L.ph){if(L.ph==='rows'||L.ph==='rate')dropNotice();L.ph='';L.mid='';save();if(typeof dailyTick==='function')setTimeout(dailyTick,500)}return}
   const tk=dk(),sun=new Date().getDay()===0;
   if(!L.ph&&sun&&L.week!==tk&&(!L.from||tk>=L.from)){const c=cur();if(c){L.week=tk;L.ph='w1';L.cid=c.id;L.idx=0;L.mid='';L.list=[];L.due=now+sec('lpT1',600);notice('正在選擇要不要更改學習進度');save();return}}
   if(L.ph==='dwait'){L.ph='';save();return}   // 舊版殘留狀態
   if(L.ph==='w1'&&now>=L.due)judge(1,now);
   else if(L.ph==='w2'&&now>=L.due)judge(2,now);
   else if(L.ph==='rows'&&now>=L.due)stepRow(now);
+  else if(L.ph==='rate'&&now>=L.due)rateRow(now);
 }catch(e){}}
 /* 今天是禮拜日、學習進度開著，且今天的流程還沒開始或還沒結束 → 每日留言先等 */
 function busy(){try{if(!S||!S.set||!S.set.lpOn||!S.contacts||!S.contacts.length)return false;const L=LSt();
   if(L.ph&&L.ph!=='dwait')return L.week===dk();   // 跨過午夜才結束的流程，不再擋隔天的每日留言
   const tk=dk();return new Date().getDay()===0&&L.week!==tk&&(!L.from||tk>=L.from)}catch(e){return false}}
-window.LPE={tick,busy,toggled(on){const L=LSt();if(L.ph==='rows')dropNotice();L.ph='';L.mid='';L.list=[];if(on)L.from=nextSun();save()}};
+window.LPE={tick,busy,toggled(on){const L=LSt();if(L.ph==='rows'||L.ph==='rate')dropNotice();L.ph='';L.mid='';L.list=[];if(on)L.from=nextSun();save()}};
 setInterval(tick,3000);
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')setTimeout(tick,300)});
 setTimeout(tick,2500);

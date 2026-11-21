@@ -142,7 +142,7 @@ function fixedHtml(text){
 }
 function modalHtml(){
   const m=PF.modal;if(!m)return '';
-  return '<div class="pf-ov"><div class="pf-pop">'
+  return '<div class="pf-ov"><div class="pf-pop box" data-keep="1">'
    +'<div class="pf-lead">我發現⋯⋯</div>'
    +'<div class="pf-ta"><div class="pf-hl" aria-hidden="true">'+hl(m.text)+'</div><textarea id="pfta" spellcheck="false" placeholder="發現的事&#10;可添加標籤，標籤輸入成功字體會變色&#10;#標籤1 #標籤2 ">'+esc(m.text)+'</textarea></div>'
    +'<div class="pf-fixed" id="pffixed">'+fixedHtml(m.text)+'</div>'
