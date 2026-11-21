@@ -27,7 +27,7 @@
 [data-theme=glass][data-skin=journal] #sh{background:#3b4f7040}
 [data-theme=glass][data-skin=journal] .box,[data-theme=glass][data-skin=journal] #daily-pop .daily-box,[data-theme=glass][data-skin=journal] #sh.chat-pop .box,[data-theme=glass][data-skin=journal] #bn,[data-theme=glass][data-skin=journal] #tt{background:#f8fbfff5;border:1px solid #cfdcee;color:var(--ink);box-shadow:0 8px 24px #3d5a8330;-webkit-backdrop-filter:none;backdrop-filter:none}
 [data-theme=glass][data-skin=journal] #sh.mid .box{border:1px solid #cfdcee}
-[data-theme=glass][data-skin=journal] .brand{font-family:"Snell Roundhand","Apple Chancery","Segoe Script","Brush Script MT",cursive;font-style:normal;font-weight:400;letter-spacing:.06em;font-size:22px;color:var(--soft)}
+[data-theme=glass][data-skin=journal] .brand{font-family:"Snell Roundhand","Apple Chancery","Segoe Script","Brush Script MT",cursive;font-style:normal;font-weight:400;letter-spacing:.06em;font-size:calc(22px*var(--fz,1));color:var(--soft)}
 [data-theme=glass][data-skin=journal] .gcal-h{font-family:"Snell Roundhand","Apple Chancery","Segoe Script","Brush Script MT",cursive;font-style:normal;font-size:9cqw}
 [data-theme=glass][data-skin=journal] .gi,[data-theme=glass][data-skin=journal] .gdm{background:#ffffffe0;border:1px solid #cfdcee;border-radius:12px;box-shadow:0 3px 8px #5b7aa62b;-webkit-backdrop-filter:none;backdrop-filter:none}
 [data-theme=glass][data-skin=journal] .gm,[data-theme=glass][data-skin=journal] .gcard{background:#ffffffe6;border:1px solid #cfdcee;border-radius:12px;box-shadow:0 3px 10px #5b7aa62b;-webkit-backdrop-filter:none;backdrop-filter:none}
@@ -92,7 +92,7 @@
 [data-theme=glass][data-skin=journal][data-tone=mint] #sh{background:#3a4d1f40}
 [data-theme=glass][data-skin=journal][data-tone=mint] .box,[data-theme=glass][data-skin=journal][data-tone=mint] #daily-pop .daily-box,[data-theme=glass][data-skin=journal][data-tone=mint] #sh.chat-pop .box,[data-theme=glass][data-skin=journal][data-tone=mint] #bn,[data-theme=glass][data-skin=journal][data-tone=mint] #tt{background:#fdfff6f5;border:1px solid #d7eea7;color:var(--ink);box-shadow:0 8px 24px #6f9a3a30;-webkit-backdrop-filter:none;backdrop-filter:none}
 [data-theme=glass][data-skin=journal][data-tone=mint] #sh.mid .box{border:1px solid #d7eea7}
-[data-theme=glass][data-skin=journal][data-tone=mint] .brand{font-family:"Snell Roundhand","Apple Chancery","Segoe Script","Brush Script MT",cursive;font-style:normal;font-weight:400;letter-spacing:.06em;font-size:22px;color:var(--soft)}
+[data-theme=glass][data-skin=journal][data-tone=mint] .brand{font-family:"Snell Roundhand","Apple Chancery","Segoe Script","Brush Script MT",cursive;font-style:normal;font-weight:400;letter-spacing:.06em;font-size:calc(22px*var(--fz,1));color:var(--soft)}
 [data-theme=glass][data-skin=journal][data-tone=mint] .gcal-h{font-family:"Snell Roundhand","Apple Chancery","Segoe Script","Brush Script MT",cursive;font-style:normal;font-size:9cqw}
 [data-theme=glass][data-skin=journal][data-tone=mint] .gi,[data-theme=glass][data-skin=journal][data-tone=mint] .gdm{background:#fdfff6e0;border:1px solid #d7eea7;border-radius:12px;box-shadow:0 3px 8px #6f9a3a2b;-webkit-backdrop-filter:none;backdrop-filter:none}
 [data-theme=glass][data-skin=journal][data-tone=mint] .gm,[data-theme=glass][data-skin=journal][data-tone=mint] .gcard{background:#fdfff6e6;border:1px solid #d7eea7;border-radius:12px;box-shadow:0 3px 10px #6f9a3a2b;-webkit-backdrop-filter:none;backdrop-filter:none}

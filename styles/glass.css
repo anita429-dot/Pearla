@@ -20,7 +20,7 @@
 [data-theme=glass] .box,[data-theme=glass] #daily-pop .daily-box{background:#eaf1f9e0;border:1px solid #ffffffb3;border-bottom:none}
 [data-theme=glass] #sh.mid .box{border-bottom:1px solid #ffffffb3}
 [data-theme=glass] .b{box-shadow:0 2px 10px #3d5a8326}
-[data-theme=glass] .brand{font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;font-style:italic;font-weight:500;letter-spacing:.22em;font-size:17px}
+[data-theme=glass] .brand{font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;font-style:italic;font-weight:500;letter-spacing:.22em;font-size:calc(17px*var(--fz,1))}
 [data-theme=glass] .tile .ti{filter:hue-rotate(-115deg) saturate(.8) brightness(1.03)}
 /* ── 霧海：主頁圖示改為半透明方框＋簡筆畫 ── */
 [data-theme=glass] .tile .ti{display:none}
