@@ -71,3 +71,7 @@ html[data-skin=moon] .sp-fog{opacity:.2}
 [data-theme=glass][data-skin=moon] .memo-card::after{content:"";position:absolute;left:7%;right:7.2%;top:7.4%;bottom:4.4%;pointer-events:auto;cursor:pointer}
 
 [data-theme=glass][data-skin=moon] #sh.chat-pop .emo-sticky{background:#2a1f55}
+
+/* 月眠：備忘錄、經期卡片的陰影被橫向分頁容器（overflow）在上下邊切成一條直線 → 容器上下各多留 32px 空間（用負邊界抵銷，版面不動），陰影就能完整暈開 */
+[data-theme=glass][data-skin=moon] .pager{padding-top:32px;padding-bottom:32px;margin-top:-32px;margin-bottom:-32px}
+[data-theme=glass][data-skin=moon] .tile.art>img,[data-theme=glass][data-skin=moon] .memo-card>img{filter:drop-shadow(0 5px 9px #0a062688)}

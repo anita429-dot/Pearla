@@ -550,7 +550,7 @@ mark{background:#aca6e455;color:inherit;border-radius:3px;padding:0 1px}
 .mw-c img{width:100%;height:100%;object-fit:contain;display:block}
 .mw-i{height:calc(var(--c)*2);display:flex}
 .mw-i img{height:100%;width:auto;max-width:100%;object-fit:contain;border-radius:8px;display:block}
-.mom-stk{position:absolute;width:calc(var(--c)*.46);height:calc(var(--c)*.46);transform:translate(-50%,-50%);display:grid;place-items:center;font-size:calc(var(--c)*.36);line-height:1;z-index:3;pointer-events:none;filter:drop-shadow(0 1px 2px #3c366a40)}
+.mom-stk{position:absolute;width:calc(var(--c)*.391);height:calc(var(--c)*.391);transform:translate(-50%,-50%);display:grid;place-items:center;font-size:calc(var(--c)*.306);line-height:1;z-index:3;pointer-events:none;filter:drop-shadow(0 1px 2px #3c366a40)}
 .mom-stk img{width:100%;height:100%;object-fit:contain;display:block}
 .mom-stk.mine{pointer-events:auto;cursor:pointer}
 .mom-wall.nostk .mom-stk{display:none}

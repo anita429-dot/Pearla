@@ -257,3 +257,82 @@ html[data-ff] body,html[data-ff] button,html[data-ff] input,html[data-ff] textar
 .memo-card,.memo-card *,.couple .en,.couple .en *{--fz:1}
 .lp-meta{display:flex;flex-wrap:wrap;gap:4px 18px}
 .cset-note{margin:-2px 2px 10px;padding:7px 10px;border-radius:10px;background:var(--bub);color:var(--soft)}
+/* 聯絡人訊息的操作鍵（含引用）放在訊息靠右的上方 */
+.m:not(.me) .mact{left:auto;right:0}
+
+/* 聊天室可以點按的通知：不要外框 */
+html[data-theme] .sys.go,.sys.go{border:0!important;padding:3px 12px}
+/* 導航欄稍微加高、圖示加大 */
+.tabs{padding:5px 2px}
+.tab img{width:47px;height:47px}
+[data-theme=glass]:not([data-nav]) .tab .gt{width:47px;height:47px}
+.tab .gt svg{width:29px;height:29px}
+.lp-call{width:100%;margin:14px 0 8px}
+.dm-toggle.mute-toggle{right:44px}
+.lc-imgs{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 2px}
+.lc-imgs span{position:relative}
+.lc-imgs img{display:block;max-width:76px;max-height:76px;border-radius:8px;border:1.2px solid var(--line)}
+.lc-imgs button{position:absolute;top:-7px;right:-7px;width:20px;height:20px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--soft);font-size:13px;line-height:1;padding:0;display:grid;place-items:center;cursor:pointer}
+.lc-row{display:flex;align-items:center;gap:8px;margin:8px 0 2px}
+.lc-emo{width:38px;height:38px;display:grid;place-items:center;padding:0}
+.lc-emo svg{width:22px;height:22px}
+.lc-kao{display:flex;flex-wrap:wrap;gap:8px;max-height:46vh;overflow-y:auto;margin-bottom:6px}
+.lc-kao .btn{width:auto;margin:0;padding:8px 12px}
+/* 霧海／月眠：大分類的卡片若有 backdrop-filter，標題裡的 fixed 背景會變成相對於卡片而不是視窗，上拉後就會穿幫（變透明）→ 去掉卡片與大分類的模糊 */
+[data-theme=glass] .big-list,[data-theme=glass] .big-wrap{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+
+/* ── 朋友圈留言：一則一欄，回覆放在同一欄 ── */
+.mom-cols{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.mom-col{padding:7px 10px;border-radius:10px;background:var(--bub);font-size:calc(12.5px*var(--fz,1));line-height:1.65;color:var(--soft)}
+.mom-cl{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.mom-ct{min-width:0;flex:1;word-break:break-word}
+.mom-ct b{font-weight:500;color:var(--ink)}
+.mom-rpb{flex:none;margin-top:1px;border:1.1px solid var(--line);background:var(--card);color:var(--soft);border-radius:999px;padding:0 10px;height:22px;font-size:calc(11px*var(--fz,1));line-height:20px;cursor:pointer}
+.mom-reps{margin:5px 0 0 8px;padding-left:9px;border-left:2px solid var(--line);display:flex;flex-direction:column;gap:4px}
+.mom-reps .mom-rpb{height:20px;line-height:18px;padding:0 8px}
+.mom-col .mom-cx{margin:4px 0 0 8px;font-weight:500}
+.mom-cbox{margin-top:8px}
+
+/* 重複字卡 */
+.dup-g{display:flex;gap:6px;margin:0 0 8px}
+.dup-s{flex:1;min-width:0;text-align:left;border:1.2px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:6px 8px;display:flex;flex-direction:column;gap:2px;font-size:calc(13px*var(--fz,1))}
+.dup-s .dup-k{font-size:calc(11px*var(--fz,1));color:var(--soft)}
+.dup-s .dup-t{word-break:break-word;line-height:1.5}
+.dup-s .dup-m{font-size:calc(11px*var(--fz,1));color:var(--soft)}
+.dup-s.del{border-color:#d98b9b;background:#d98b9b22}
+.dup-s.del .dup-t{text-decoration:line-through;color:#bf7181}
+.dup-s.del .dup-m{color:#bf7181}
+
+/* 表情浮窗：最近使用 */
+#sh.chat-pop.emo .chat-pop-cats button.emo-recent{flex:0 0 34px;width:34px;min-width:34px;height:34px;padding:0;display:grid;place-items:center;border-radius:8px}
+
+/* 聊天室搜尋浮窗（在搜尋鍵下方） */
+.chh{position:relative}
+.chs-pop{position:absolute;right:0;top:calc(100% - 2px);z-index:12;width:min(280px,calc(100vw - 40px));padding:10px;border-radius:14px;border:1.3px var(--bs,dashed) var(--line);background:var(--bg);box-shadow:0 8px 25px #3c366a22}
+.chs-pop input{width:100%;box-sizing:border-box;margin:0 0 8px}
+.chs-b{display:flex;gap:8px}.chs-b .btn{flex:1;margin:0}
+.chs-pop .hint{margin:8px 0 0}
+
+/* 資料卡：設定鈕、配色變數、表情包排行台 */
+.ci-gear{position:absolute;right:6px;top:86px;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--soft);display:grid;place-items:center;padding:0;cursor:pointer;z-index:3}
+#sh.coninfo .ci-scroll{background:var(--ci-topbg,var(--bub))}
+#sh.coninfo .ci-top span{color:var(--ci-topink,var(--ink))}
+.ci-frame{position:relative;overflow:hidden;margin:0 auto;border-radius:12px;border:1.5px var(--bs,dashed) var(--line);touch-action:none;background:var(--card)}
+.ci-frame img{position:absolute;left:0;top:0;max-width:none;user-select:none;-webkit-user-drag:none}
+.ci-right h3{flex:none;margin:0 0 6px;font-size:calc(13.5px*var(--fz,1));font-weight:500;color:var(--ink)}
+.ci-rbox{flex:1;min-height:0;overflow-y:auto;border:1.2px var(--bs,dashed) var(--line);border-radius:12px;background:var(--ci-rankbg,var(--bub));padding:8px 6px;display:flex;flex-direction:column;gap:10px}
+.ci-pod{display:flex;align-items:flex-end;justify-content:center;gap:3px}
+.ci-pod .pc{flex:1;min-width:0;display:flex;flex-direction:column;align-items:stretch}
+.ci-pod .pi,.ci-low .pi{display:flex;flex-direction:column;align-items:center;gap:1px;min-height:50px;justify-content:flex-end}
+.ci-pod img,.ci-low img{width:100%;max-width:46px;aspect-ratio:1;object-fit:contain;display:block}
+.ci-pod b,.ci-low b{font-weight:500;font-size:calc(11px*var(--fz,1));color:color-mix(in srgb,var(--lav) 65%,var(--ink))}
+.ci-no{font-size:calc(14px*var(--fz,1));color:var(--soft);padding:12px 0}
+.ci-pod .base{display:grid;place-items:center;border:1.2px solid var(--line);border-bottom:0;border-radius:7px 7px 0 0;background:var(--card);color:var(--soft);font-size:calc(13px*var(--fz,1));margin-top:2px}
+.ci-pod .p1 .base{height:44px}.ci-pod .p2 .base{height:32px}.ci-pod .p3 .base{height:22px}
+.ci-low{display:flex;gap:3px;border-top:1px var(--bs,dashed) var(--line);padding-top:8px}
+.ci-low .lc{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px}
+.ci-low i{font-style:normal;font-size:calc(11px*var(--fz,1));color:var(--soft)}
+
+.cal2-mo{position:absolute;left:2px;right:2px;bottom:11px;display:flex;justify-content:space-between;align-items:center;font-size:calc(10px*var(--fz,1));line-height:1;pointer-events:none}
+.cal2-mo b{font-weight:400;min-width:1em;text-align:center}
+.cal2-dots{bottom:2px}

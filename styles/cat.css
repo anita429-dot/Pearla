@@ -93,7 +93,7 @@
 [data-skin=cat] .tab[data-t] img{width:44px;height:42px}
 /* 黑貓：備忘錄、經期卡（白色格子在圖的下半部） */
 [data-theme=glass][data-skin=cat] .memo-card>img{visibility:visible;filter:drop-shadow(0 3px 0 #2d2d3222)}
-[data-theme=glass][data-skin=cat] .memo-txt .ml{left:12%;width:72%;height:12.5%;font-size:5.6cqw;line-height:1.1;padding:0 0 .6cqw;color:var(--ink);text-shadow:none}
+[data-theme=glass][data-skin=cat] .memo-txt .ml{left:20%;width:68%;height:12.5%;font-size:5.6cqw;line-height:1.1;padding:0 0 .6cqw;color:var(--ink);text-shadow:none}
 [data-theme=glass][data-skin=cat] .per-txt{left:13%;top:44%;width:72%;height:46%;color:var(--ink);text-shadow:none}
 [data-theme=glass][data-skin=cat] .per-txt small,[data-theme=glass][data-skin=cat] .per-txt b{color:var(--ink);opacity:1}
 [data-theme=glass][data-skin=cat] .ml-ev span{border-color:#2d2d32}
@@ -191,3 +191,13 @@
 [data-theme=glass][data-skin=cat][data-tone=dark] .memo-txt .ml,[data-theme=glass][data-skin=cat][data-tone=dark] .per-txt *{color:var(--ink)}
 [data-theme=glass][data-skin=cat][data-tone=dark] #app{background:var(--jgrid)}
 [data-theme=glass][data-skin=cat][data-tone=dark] body{background:#303037}
+
+/* 黑貓深色（修正）：背景跟淺色版一樣（主頁空白、字卡頁點狀格紋），只是換成黑色；字體陰影全黑；白貓調暗一點 */
+:root[data-theme=glass][data-skin=cat][data-tone=dark]{--tsh:#000000cc;--jgrid:radial-gradient(circle,#44444c 1px,transparent 1.4px) 0 0/18px 18px,linear-gradient(180deg,#2c2c32,#1a1a1e)}
+[data-theme=glass][data-skin=cat][data-tone=dark] #app{background:linear-gradient(180deg,#2c2c32,#1a1a1e)}
+[data-theme=glass][data-skin=cat][data-tone=dark] .stab{text-shadow:0 2px 5px #000}
+[data-theme=glass][data-skin=cat][data-tone=dark] *{text-shadow:none}
+[data-theme=glass][data-skin=cat][data-tone=dark] .stab,[data-theme=glass][data-skin=cat][data-tone=dark] h1,[data-theme=glass][data-skin=cat][data-tone=dark] .ph2 h1{text-shadow:0 2px 5px #000}
+[data-theme=glass][data-skin=cat][data-tone=dark] .tile>img,[data-theme=glass][data-skin=cat][data-tone=dark] .tile.art>img,[data-theme=glass][data-skin=cat][data-tone=dark] .tab[data-t] img{filter:invert(1) brightness(.8) drop-shadow(0 3px 0 #000000aa)}
+[data-theme=glass][data-skin=cat][data-tone=dark] .tile .ti{filter:invert(1) brightness(.8) drop-shadow(0 3px 0 #000000aa)}
+[data-theme=glass][data-skin=cat][data-tone=dark] .memo-card>img{filter:invert(1) brightness(.8) drop-shadow(0 3px 0 #000000aa)}
