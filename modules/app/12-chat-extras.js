@@ -100,7 +100,10 @@ function askSheet(keep){const Q=S.qa,sh=$('#sh'),old=$('.ask-body'),st=keep&&old
 function surveySheet(){const Q=S.qa.survey,sh=$('#sh'),NS=(k,l)=>'<div class="ask-set"><span>'+l+'</span><span><input type="number" inputmode="numeric" data-qs="survey.'+k+'" value="'+Q[k]+'"> 秒</span></div>';
   sh.innerHTML='<div class="box" data-keep="1"><h2 style="margin:0 0 8px">問卷</h2><div class="ask-body"><div class="tw"><textarea rows="12" data-qd="sv" placeholder="/第一個問題&#10;答案選項a&#10;答案選項b&#10;/第二個問題&#10;答案選項a&#10;答案選項b&#10;答案選項c&#10;/第三個問題/多選2&#10;答案選項a&#10;答案選項b&#10;答案選項c">'+esc(qd.sv)+'</textarea><button type="button" class="tx" data-a="qclr" data-i="sv" aria-label="清除">×</button></div><p class="hint" style="margin:0 0 6px">問題前面加「/」；多選題在問題後加「/多選數字」，數字是最多能選幾個，沒填就是有幾個選項最多選幾個（也可能一個都不選）。</p>'+NS('tmin','每一題選擇答案的時間最短')+NS('tmax','每一題選擇答案的時間最長')+'</div><div class="ask-foot"><button class="btn s" data-a="svsend">發送</button></div></div>';
   sh.classList.remove('mid','chat-pop');sh.classList.add('ask','sv','show')}
-function qaSend(sp){const cid=S.cur,id=uid(),now=Date.now(),first=!ms(cid).some(m=>m.qa&&!m.qa.done),a={t:sp.t,src:sp.src||'',q:sp.q,o:sp.o||[],sel:null,done:false,tm:sp.time||0,mx:sp.mx||0};
+/* 單選題固定多兩個選項：第一個「我在忙，沒有選」、最後一個「我不想回答」，機率和其他選項一樣 */
+const QA_BUSY='我在忙，沒有選',QA_NO='我不想回答';
+const qaFix=o=>{o=(o||[]).filter(x=>x!==QA_BUSY&&x!==QA_NO);return [QA_BUSY].concat(o,[QA_NO])};
+function qaSend(sp){sp=Object.assign({},sp);if(sp.t==='single')sp.o=qaFix(sp.o);else if(sp.t==='survey'&&Array.isArray(sp.qs))sp.qs=sp.qs.map(q=>q.multi?q:Object.assign({},q,{o:qaFix(q.o)}));const cid=S.cur,id=uid(),now=Date.now(),first=!ms(cid).some(m=>m.qa&&!m.qa.done),a={t:sp.t,src:sp.src||'',q:sp.q,o:sp.o||[],sel:null,done:false,tm:sp.time||0,mx:sp.mx||0};
   if(sp.t==='survey'){a.qs=sp.qs;a.qi=0;a.sel=[];a.tmin=sp.tmin;a.tmax=sp.tmax}
   a.due=first?now+(sp.t==='survey'?rnd2(a.tmin,a.tmax):a.tm)*1000:null;
   ms(cid).push({id,f:'me',x:sp.q,t:now,qa:a});S.qlog.push({id,cid,cn:cur().name,t:sp.t,src:a.src,q:sp.q,o:a.o,qs:sp.qs||null,ts:now,ans:null,ats:null});save();closeSheet();paint()}
@@ -149,7 +152,7 @@ function recUI(){const o=$('#recbox');if(o)o.outerHTML=recBox()}
 function recCleanup(){clearInterval(recTick);recTick=null;if(recStream){recStream.getTracks().forEach(t=>t.stop());recStream=null}}
 function recClear(){if(recPrev){recPrev.pause();recPrev=null}if(recData&&recData.url)URL.revokeObjectURL(recData.url);recData=null;recChunks=[];if(recMR&&recMR.state!=='inactive'){recMR.onstop=null;try{recMR.stop()}catch(_){}}recMR=null;recCleanup();recSt='idle'}
 function recToggle(){
-  if(recMode){recClear();recMode=false}else{recMode=true;recSt='idle';if(S.set.recSound&&!window.__micOK)micAsk().then(st=>{if(st){st.getTracks().forEach(t=>t.stop());window.__micOK=1}})}
+  if(recMode){recClear();recMode=false}else{recMode=true;recSt='idle'}
   const hb=$('.chh [data-a=vrec]');if(hb)hb.classList.toggle('rec-on',recMode);
   const f=$('#f'),cur0=f&&f.querySelector('#in,#recbox');if(cur0)cur0.outerHTML=recMode?recBox():'<input id="in" placeholder="說點什麼…" autocomplete="off">';
 }
@@ -161,7 +164,24 @@ function micExplain(e){const n=e&&e.name||'',https=window.isSecureContext===fals
   else if(n==='NotFoundError'||n==='OverconstrainedError')why='找不到可用的麥克風。';
   else if(n==='NotReadableError'||n==='AbortError')why='麥克風正被其他程式使用，請先關掉其他使用麥克風的 App 再試。';
   else why='無法開啟麥克風（'+esc(n||'未知錯誤')+'）。';
-  sheet('需要麥克風權限','<p class="hint" style="margin:0 0 10px;line-height:1.7">'+why+'</p><button class="btn s" data-a="micretry">再試一次</button><button class="btn" data-a="close">關閉</button>',1)}
+  sheet('需要麥克風權限','<p class="hint" style="margin:0 0 10px;line-height:1.7">'+why+'</p><p class="hint" style="margin:0 0 10px;font-size:calc(12px*var(--fz,1))">錯誤代碼：'+esc((e&&e.name)||'無')+(e&&e.message?'（'+esc(String(e.message).slice(0,80))+'）':'')+'</p><button class="btn s" data-a="micretry">再試一次</button><button class="btn" data-a="mictest">測試麥克風</button><button class="btn" data-a="close">關閉</button>',1)}
+/* 測試麥克風：真的呼叫 getUserMedia，回報實際結果；瀏覽器回報的權限狀態只當參考（iOS Safari 的 Permissions API 常與實際不符） */
+async function micTest(){
+  const out=[];let st=null;const show=(t,done)=>sheet('測試麥克風','<div style="font-size:calc(13.5px*var(--fz,1));line-height:1.8">'+t+'</div>'+(done?'<button class="btn s" data-a="mictest">再測一次</button>':'')+'<button class="btn" data-a="close">關閉</button>',1);
+  show('正在要求麥克風⋯⋯');
+  let perm='（此瀏覽器不提供）';try{if(navigator.permissions&&navigator.permissions.query){const p=await navigator.permissions.query({name:'microphone'});perm=p.state}}catch(e){}
+  out.push('瀏覽器回報的權限狀態：'+esc(perm)+'（僅供參考）');
+  out.push('安全環境（https）：'+(window.isSecureContext?'是':'否'));
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){out.push('<b>結果：這個瀏覽器沒有 getUserMedia，無法錄音。</b>');show(out.join('<br>'),1);return}
+  try{st=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){out.push('<b>結果：實際無法取得麥克風</b><br>錯誤：'+esc(e&&e.name||'')+(e&&e.message?'（'+esc(String(e.message).slice(0,80))+'）':''));show(out.join('<br>'),1);return}
+  const tr=st.getAudioTracks()[0];out.push('<b>實際取得麥克風：成功</b>');
+  if(tr){out.push('裝置：'+esc(tr.label||'（未提供名稱）'));out.push('狀態：'+esc(tr.readyState)+(tr.muted?'，目前被靜音':'')+(tr.enabled===false?'，已停用':''))}
+  show(out.join('<br>')+'<br>正在偵測聲音，請對著手機說話 3 秒⋯⋯');
+  let peak=0;try{const AC=window.AudioContext||window.webkitAudioContext,ac=new AC(),src=ac.createMediaStreamSource(st),an=ac.createAnalyser();an.fftSize=1024;src.connect(an);if(ac.state==='suspended')await ac.resume();const buf=new Uint8Array(an.fftSize),t0=Date.now();
+    await new Promise(res=>{const iv=setInterval(()=>{an.getByteTimeDomainData(buf);let m=0;for(let i=0;i<buf.length;i++)m=Math.max(m,Math.abs(buf[i]-128));peak=Math.max(peak,m/128);if(Date.now()-t0>3000){clearInterval(iv);res()}},60)});try{ac.close()}catch(e){}}catch(e){out.push('無法偵測音量：'+esc(e&&e.name||''))}
+  st.getTracks().forEach(t=>t.stop());window.__micOK=1;
+  out.push(peak>0.04?'<b>有收到聲音</b>（最大音量約 '+Math.round(peak*100)+'%）':'<b>沒有偵測到聲音</b>（最大音量 '+Math.round(peak*100)+'%）：權限正常，但可能沒說話、麥克風被遮住或被其他 App 佔用');
+  show(out.join('<br>'),1)}
 async function micAsk(){if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){micExplain(null);return null}
   let err=null;for(const c of [{audio:true},{audio:{channelCount:1}}]){try{return await navigator.mediaDevices.getUserMedia(c)}catch(e){err=e;if(e&&(e.name==='NotAllowedError'||e.name==='SecurityError'))break}}
   micExplain(err);return null}
@@ -185,7 +205,7 @@ function recStop(){
   if(!recMR){recData={url:null,dataUrl:'',dur:Math.max(1,(Date.now()-recT0)/1000)};recSt='ready';recUI();return}
   recSt='saving';try{recMR.stop()}catch(_){recSt='idle'}recUI()}
 function recPreview(){if(!recData||!recData.url)return;if(recPrev&&!recPrev.paused){recPrev.pause();recUI();return}
-  if(!recPrev){recPrev=new Audio(recData.url);recPrev.onended=()=>{recUI()}}recPrev.currentTime=0;recPrev.play().then(recUI).catch(()=>toast('無法播放錄音'))}
+  if(!recPrev){recPrev=new Audio(recData.url);recPrev.onended=()=>{recUI()}}recPrev.muted=isMuted();recPrev.currentTime=0;recPrev.play().then(recUI).catch(()=>toast('無法播放錄音'))}
 function recSend(){
   if(recSt==='rec'){toast('請先按停止錄音');return}
   if(recSt!=='ready'||!recData){toast(recSt==='saving'?'錄音處理中，請稍候':'請先錄音');return}
@@ -197,7 +217,7 @@ function vReset(id,svg){document.querySelectorAll('[data-pl="'+id+'"]').forEach(
 function vPlay(id,btn,cid){const m=ms(cid||S.cur).find(x=>x.id===id);if(!m||!m.audio)return;
   if(vAud&&vAudId===id&&!vAud.paused){vAud.pause();vReset(id,PLAY_SVG);return}
   if(vAud){vAud.pause();vReset(vAudId,PLAY_SVG)}
-  vAud=new Audio(m.audio);vAudId=id;vAud.onended=()=>vReset(id,PLAY_SVG);
+  vAud=new Audio(m.audio);vAud.muted=isMuted();vAudId=id;vAud.onended=()=>vReset(id,PLAY_SVG);
   vReset(id,PAUSE_SVG);vAud.play().catch(()=>{vReset(id,PLAY_SVG);toast('無法播放語音')})}
 /* 錄音資料：列表、容量、刪除（聊天室該則訊息只剩「語音」） */
 function recList(){const it=[];S.contacts.forEach(c=>ms(c.id).forEach(m=>{if(m.audio)it.push([c,m])}));it.sort((a,b)=>b[1].t-a[1].t);return it}

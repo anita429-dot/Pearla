@@ -54,7 +54,12 @@ function gNotify(gid,b,cid){if(tab==='home'&&grpRoom===gid)return;const g=grp(gi
 
 /* ── 數據：各功能佔用空間 ── */
 let dataOpen=false,dCache=null;
-const dSize=x=>{try{return new Blob([JSON.stringify(x)]).size}catch(e){return 0}};
+/* 空的容器（[]、{}、{c:[],k:[]}…）算 0 B，不再留下 JSON 外框的 15 B */
+const dEmpty=x=>{if(x==null||x===''||x===false)return true;if(Array.isArray(x))return x.every(dEmpty);if(typeof x==='object')return Object.keys(x).every(k=>dEmpty(x[k]));return false};
+const dSize=x=>{try{if(dEmpty(x))return 0;return new Blob([JSON.stringify(x)]).size}catch(e){return 0}};
+/* 朋友圈貼紙：貼在貼圖牆上的貼紙各存一份圖片，數據頁另外列出並可壓縮 */
+const momStkList=()=>{const l=[];(S.moments||[]).forEach(p=>{if(p&&p.wall&&Array.isArray(p.wall.st))p.wall.st.forEach(t=>{if(t&&typeof t.img==='string'&&t.img.startsWith('data:image/'))l.push(t)})});return l};
+const momStkBytes=()=>momStkList().reduce((a,t)=>a+t.img.length,0);
 const dFmt=n=>n<1024?n+' B':n<1048576?(n/1024).toFixed(1)+' KB':(n/1048576).toFixed(2)+' MB';
 function dCalc(){
   const cids=new Set(S.contacts.map(c=>c.id)),gids=new Set((S.groups||[]).map(g=>g.id)),pick=set=>{const o={};Object.keys(S.msgs).forEach(k=>{if(set.has(k))o[k]=S.msgs[k]});return o};
@@ -73,6 +78,8 @@ function dCalc(){
     {id:'plum',name:'梅花易數紀錄',size:dSize(S.plum),clear:1},
     {id:'book',name:'答案之書紀錄',size:dSize(S.book),clear:1},
     {id:'mail',name:'信箱',size:dSize(S.letters),clear:1,risk:1},
+    {id:'mom',name:'朋友圈',size:Math.max(0,dSize({m:S.moments,r:S.mrep,c:S.mcm})-momStkBytes()),clear:1,risk:1,label:'朋友圈貼文、留言與貼紙'},
+    {id:'mstk',name:'朋友圈貼紙',size:momStkBytes(),stk:1},
     {id:'qlog',name:'問答紀錄',size:dSize(S.qlog),clear:1},
     {id:'img',name:'頭像與背景',size:dSize({a:S.contacts.map(c=>c.av),m:S.meAv,mc:S.momCover,g:(S.groups||[]).map(g=>g.av),b:S.bgs,ba:S.bgAll})}
   ];
@@ -81,7 +88,7 @@ function dCalc(){
 function vData(){if(!dCache)dCalc();const{items,total}=dCache,mx=Math.max(1,...items.map(i=>i.size));
   return '<div class="ph2"><button class="ib" data-a="dback">‹</button><h1>數據</h1></div>'
    +'<div class="card"><div class="sr"><span>Pearla 目前佔用</span><b style="font-weight:500">'+dFmt(total)+'</b></div><div id="dq" class="hint" style="margin:6px 0 0">正在讀取瀏覽器可用空間⋯</div><p class="hint" style="margin:8px 0 0">大小是依目前資料估算的，實際占用會略有出入。圖片（頭像、表情包、背景）通常佔最多。</p></div>'
-   +'<div class="card" style="margin-top:12px"><h3 style="margin:0 0 8px;font-weight:500">各功能佔用</h3>'+items.map(i=>'<div style="margin:0 0 12px"><div class="sr" style="margin:0 0 4px;align-items:center"><span>'+esc(i.name)+'</span><span style="display:flex;align-items:center;gap:8px"><span style="color:var(--soft);font-size:calc(13px*var(--fz,1))">'+dFmt(i.size)+'</span>'+(i.clear?'<button class="btn" data-a="dclr" data-i="'+i.id+'" style="width:auto;margin:0;padding:4px 10px;font-size:calc(12px*var(--fz,1))">清除</button>':'')+'</span></div><div class="dbar"><i style="width:'+Math.max(i.size?2:0,Math.round(i.size/mx*100))+'%"></i></div></div>').join('')+'<div style="margin:0 0 4px"><div class="sr" style="margin:0 0 4px;align-items:center"><span>字體</span><span style="display:flex;align-items:center;gap:8px"><span id="dfs" style="color:var(--soft);font-size:calc(13px*var(--fz,1))">⋯</span><button class="btn" data-a="fntsel" style="width:auto;margin:0;padding:4px 10px;font-size:calc(12px*var(--fz,1))">選擇</button></span></div></div></div>'
+   +'<div class="card" style="margin-top:12px"><h3 style="margin:0 0 8px;font-weight:500">各功能佔用</h3>'+items.map(i=>'<div style="margin:0 0 12px"><div class="sr" style="margin:0 0 4px;align-items:center"><span>'+esc(i.name)+'</span><span style="display:flex;align-items:center;gap:8px"><span style="color:var(--soft);font-size:calc(13px*var(--fz,1))">'+dFmt(i.size)+'</span>'+(i.clear?'<button class="btn" data-a="dclr" data-i="'+i.id+'" style="width:auto;margin:0;padding:4px 10px;font-size:calc(12px*var(--fz,1))">清除</button>':'')+(i.stk?'<button class="btn" data-a="dstkc" style="width:auto;margin:0;padding:4px 10px;font-size:calc(12px*var(--fz,1))">壓縮</button>':'')+'</span></div><div class="dbar"><i style="width:'+Math.max(i.size?2:0,Math.round(i.size/mx*100))+'%"></i></div></div>').join('')+'<div style="margin:0 0 4px"><div class="sr" style="margin:0 0 4px;align-items:center"><span>字體</span><span style="display:flex;align-items:center;gap:8px"><span id="dfs" style="color:var(--soft);font-size:calc(13px*var(--fz,1))">⋯</span><button class="btn" data-a="fntsel" style="width:auto;margin:0;padding:4px 10px;font-size:calc(12px*var(--fz,1))">選擇</button></span></div></div></div>'
    +'<div class="card" style="margin-top:12px"><h3 style="margin:0 0 8px;font-weight:500">圖片壓縮</h3><button class="btn s" style="width:100%;margin:0" data-a="icopen">壓縮現有圖片</button><button class="btn" style="width:100%;margin:8px 0 0" data-a="icset">圖片自動壓縮設定（目前：'+(S.set.imgc?'開':'關')+'）</button><p class="hint" style="margin:8px 0 0">先掃描、顯示預計省下多少，確認後才會真正壓縮。GIF 動圖與有透明背景的圖不會被處理。</p></div>'
    +'<div class="card" style="margin-top:12px"><h3 style="margin:0 0 8px;font-weight:500">錄音壓縮</h3><button class="btn s" style="width:100%;margin:0" data-a="rcopen">壓縮現有錄音</button><p class="hint" style="margin:8px 0 0">新的錄音會直接用較低的位元率儲存（語音約每分鐘 180 KB）。已存在的舊錄音可以重新編碼變小，但需要即時重播一遍，所以花的時間約等於錄音總長度。</p></div>'
    +'<div class="card" style="margin-top:12px"><h3 style="margin:0 0 8px;font-weight:500">暫存</h3><button class="btn" style="width:100%;margin:0" data-a="dtmp">清除暫存</button><p class="hint" style="margin:8px 0 0">取消排隊中、還沒發出的回覆與靈感拾取任務，不會刪除任何聊天紀錄、字卡或設定。這個小程式沒有另外的程式快取，所以沒有需要清的檔案快取。</p></div>'
@@ -96,28 +103,48 @@ function dClear(id){const ids=S.contacts.map(c=>c.id),gs=S.groups||[];
   else if(id==='plum')S.plum=[];
   else if(id==='book')S.book=[];
   else if(id==='mail')S.letters=[];
+  else if(id==='mom'){S.moments=[];S.mrep=[];S.mcm=[]}
   else if(id==='qlog')S.qlog=[]
   else if(DKIND[id]){const f=DKIND[id],kindOf=new Map(S.cats.map(c=>[c.id,kc(c)])),gone=new Set(S.cats.filter(c=>f(kc(c))).map(c=>c.id));S.cards=S.cards.filter(k=>!gone.has(k.cat));S.cats=S.cats.filter(c=>!gone.has(c.id));if(id==='card'){S.bigs=[];S.cuse={}}selCat=null;bigOpen=null;delMode=false;selC=[]}}
 const DKIND={card:k=>k==='card',emoji:k=>k==='emoji',pat:k=>k==='pat',kao:k=>k==='kao',ins:k=>k==='mem'||k==='ext',oth:k=>!['card','emoji','pat','kao','mem','ext'].includes(k)};
 
+
+/* ── 朋友圈貼紙壓縮：貼紙在牆上只有約 40px 大，存成最長邊 144px 的 webp（保留透明）就夠清楚 ── */
+const STK_MAX=144,stkCache=new Map();
+function stkRecompress(u,max){max=max||STK_MAX;if(stkCache.has(u))return Promise.resolve(stkCache.get(u));
+  return new Promise(res=>{const m=/^data:image\/(\w+)/.exec(u);if(!m||m[1]==='gif'||m[1]==='svg'){res(null);return}const im=new Image();
+    im.onload=()=>{try{const sc=Math.min(1,max/Math.max(im.width,im.height)),w=Math.max(1,Math.round(im.width*sc)),h=Math.max(1,Math.round(im.height*sc)),c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(im,0,0,w,h);
+      let o=c.toDataURL('image/webp',.82);if(o.indexOf('data:image/webp')!==0)o=c.toDataURL('image/png');const r=o.length<u.length*.9?o:null;stkCache.set(u,r);res(r)}catch(e){res(null)}};im.onerror=()=>res(null);im.src=u})}
+/* 新放上去的貼紙：先照原圖存，背景再壓縮後換掉 */
+function stkShrink(t){if(!t||typeof t.img!=='string'||!t.img)return;stkRecompress(t.img).then(n=>{if(n&&t.img!==n){t.img=n;try{save()}catch(e){}}})}
+let stkcSt=null;
+function stkcSheet(){const st=stkcSt;if(!st)return;const l=momStkList(),by=l.reduce((a,t)=>a+t.img.length,0);
+  const info=st.busy?'<p class="hint" style="margin:8px 0">掃描中 '+esc(st.prog||'')+'⋯</p>':st.res?'<p style="margin:8px 0;font-size:calc(14px*var(--fz,1))">'+(st.res.list.length?'可壓縮 '+st.res.list.length+' 張，預計省下約 '+dFmt(st.res.saved):'沒有可再壓縮的貼紙')+'</p>':'';
+  sheet('壓縮朋友圈貼紙','<p class="hint" style="margin:0 0 6px">目前貼在朋友圈上的貼紙共 '+l.length+' 張，約 '+dFmt(by)+'。貼紙只會縮小圖片尺寸（最長邊 '+STK_MAX+'px），保留透明背景，看起來幾乎不變。壓縮不可還原，建議先備份。</p>'+info
+   +(st.res&&st.res.list.length?'<button class="btn d" data-a="stkgo">套用壓縮</button>':'<button class="btn s" data-a="stkscan"'+(st.busy?' disabled':'')+'>'+(st.busy?'掃描中⋯':'開始掃描')+'</button>')+'<button class="btn" data-a="bak">先去備份</button><button class="btn" data-a="close">關閉</button>',1)}
+async function stkcScan(){const st=stkcSt;st.busy=true;st.res=null;stkcSheet();const ts=momStkList(),list=[];let n=0;
+  for(const t of ts){n++;const nu=await stkRecompress(t.img);if(nu)list.push({t,nu});if(n%3===0){st.prog=n+'/'+ts.length;stkcSheet()}}
+  st.res={list,saved:list.reduce((a,x)=>a+x.t.img.length-x.nu.length,0)};st.busy=false;stkcSheet()}
+
 /* ── 圖片壓縮 ── */
 let icState=null;
-const IC_LV={std:{n:'標準',bg:[900,.7],img:[720,.78]},hi:{n:'強力',bg:[720,.6],img:[540,.65]}};
+const IC_LV={std:{n:'標準',bg:[900,.7],img:[720,.78],av:[192,.8]},hi:{n:'強力',bg:[720,.6],img:[540,.65],av:[144,.68]}};
 function imgRecompress(u,max,q){return new Promise(res=>{const m=/^data:image\/(\w+)/.exec(u);if(!m||m[1]==='gif'||m[1]==='svg'){res(null);return}const im=new Image();
   im.onload=()=>{try{const sc=Math.min(1,max/Math.max(im.width,im.height)),w=Math.max(1,Math.round(im.width*sc)),h=Math.max(1,Math.round(im.height*sc)),c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');
     if(m[1]==='png'||m[1]==='webp'){x.drawImage(im,0,0,w,h);const d=x.getImageData(0,0,w,h).data;for(let i=3;i<d.length;i+=4)if(d[i]<250){res(null);return}}
     x.fillStyle='#fff';x.fillRect(0,0,w,h);x.drawImage(im,0,0,w,h);res(c.toDataURL('image/jpeg',q))}catch(e){res(null)}};im.onerror=()=>res(null);im.src=u})}
-function icTargets(sc){const t=[],add=(kind,get,set)=>{const u=get();if(typeof u==='string'&&u.startsWith('data:image/')&&u.length>30000)t.push({kind,set,len:u.length,u})};
+function icTargets(sc){const t=[],add=(kind,get,set)=>{const u=get();if(typeof u==='string'&&u.startsWith('data:image/')&&u.length>(kind==='av'?9000:30000))t.push({kind,set,len:u.length,u})};
+  if(sc.av){(S.contacts||[]).forEach(c=>{if(c.av)add('av',()=>c.av,v=>{c.av=v});(c.avs||[]).forEach((u,i)=>add('av',()=>c.avs[i],v=>{c.avs[i]=v}));if(c.cover)add('av',()=>c.cover,v=>{c.cover=v})});if(S.meAv)add('av',()=>S.meAv,v=>{S.meAv=v});(S.meAvs||[]).forEach((u,i)=>add('av',()=>S.meAvs[i],v=>{S.meAvs[i]=v}))}
   if(sc.bg){if(S.bgAll)add('bg',()=>S.bgAll,v=>{S.bgAll=v});Object.keys(S.bgs||{}).forEach(k=>add('bg',()=>S.bgs[k],v=>{S.bgs[k]=v}))}
   if(sc.img)S.cards.forEach(k=>{if(k.img)add('img',()=>k.img,v=>{k.img=v})});
   if(sc.msg){Object.keys(S.msgs).forEach(id=>(S.msgs[id]||[]).forEach(m=>{if(m.img)add('img',()=>m.img,v=>{m.img=v})}));(S.letters||[]).forEach(L=>(L.imgs||[]).forEach((u,i)=>add('img',()=>L.imgs[i],v=>{L.imgs[i]=v})))}
   return t}
-function icSheet(){const st=icState;if(!st)return;const all={bg:icTargets({bg:1}),img:icTargets({img:1}),msg:icTargets({msg:1})},fm=a=>a.length+' 張 · '+dFmt(a.reduce((x,y)=>x+y.len,0));
+function icSheet(){const st=icState;if(!st)return;const all={bg:icTargets({bg:1}),img:icTargets({img:1}),msg:icTargets({msg:1}),av:icTargets({av:1})},fm=a=>a.length+' 張 · '+dFmt(a.reduce((x,y)=>x+y.len,0));
   const row=(k,n)=>'<div class="lt pick gmem'+(st.scope[k]?' sel':'')+'" data-a="ictg" data-i="'+k+'"><span style="flex:1;min-width:0">'+n+'<br><small style="color:var(--soft)">'+fm(all[k])+'</small></span><span class="ck '+(st.scope[k]?'on':'')+'"></span></div>';
   const info=st.busy?'<p class="hint" style="margin:8px 0">掃描中 '+esc(st.prog||'')+'⋯</p>':st.res?'<p style="margin:8px 0;font-size:calc(14px*var(--fz,1))">'+(st.res.list.length?'可壓縮 '+st.res.list.length+' 張（共掃描 '+st.res.total+' 張），預計省下約 '+dFmt(st.res.saved):'沒有可再壓縮的圖片（共掃描 '+st.res.total+' 張）')+'</p>':'';
-  sheet('壓縮現有圖片','<p class="hint" style="margin:0 0 6px">壓縮不可還原，建議先備份。掃描時不會改動任何圖片。</p>'+row('bg','背景')+row('img','表情包')+row('msg','聊天與信件中的圖片')
+  sheet('壓縮現有圖片','<p class="hint" style="margin:0 0 6px">壓縮不可還原，建議先備份。掃描時不會改動任何圖片。</p>'+row('bg','背景')+row('img','表情包')+row('av','頭像（含聯絡人背景卡片）')+row('msg','聊天與信件中的圖片')
    +'<div class="seg" style="margin:10px 0 4px">'+['std','hi'].map(k=>'<button class="'+(st.level===k?'on':'')+'" data-a="iclv" data-i="'+k+'">'+IC_LV[k].n+'</button>').join('')+'</div><p class="hint" style="margin:0 0 4px">標準：表情包最長邊 720px、畫質 78%；強力：540px、畫質 65%（背景保留較大尺寸）。</p>'+info
    +(st.res&&st.res.list.length?'<button class="btn d" data-a="icgo">套用壓縮</button>':'<button class="btn s" data-a="icscan"'+(st.busy?' disabled':'')+'>'+(st.busy?'掃描中⋯':'開始掃描')+'</button>')+'<button class="btn" data-a="bak">先去備份</button><button class="btn" data-a="close">關閉</button>',1)}
-async function icScan(){const st=icState;st.busy=true;st.res=null;icSheet();const lv=IC_LV[st.level],ts=icTargets({bg:st.scope.bg,img:st.scope.img,msg:st.scope.msg}),cache=new Map(),list=[];let n=0;
-  for(const t of ts){n++;const p=t.kind==='bg'?lv.bg:lv.img,key=p.join('/')+t.u;let nu=cache.get(key);if(nu===undefined){nu=await imgRecompress(t.u,p[0],p[1]);cache.set(key,nu)}if(nu&&nu.length<t.len*.9)list.push({t,nu});if(n%2===0){st.prog=n+'/'+ts.length;icSheet()}}
+async function icScan(){const st=icState;st.busy=true;st.res=null;icSheet();const lv=IC_LV[st.level],ts=icTargets({bg:st.scope.bg,img:st.scope.img,msg:st.scope.msg,av:st.scope.av}),cache=new Map(),list=[];let n=0;
+  for(const t of ts){n++;const p=t.kind==='bg'?lv.bg:t.kind==='av'?lv.av:lv.img,key=p.join('/')+t.u;let nu=cache.get(key);if(nu===undefined){nu=await imgRecompress(t.u,p[0],p[1]);cache.set(key,nu)}if(nu&&nu.length<t.len*.9)list.push({t,nu});if(n%2===0){st.prog=n+'/'+ts.length;icSheet()}}
   st.res={list,total:ts.length,saved:list.reduce((a,x)=>a+x.t.len-x.nu.length,0)};st.busy=false;icSheet()}

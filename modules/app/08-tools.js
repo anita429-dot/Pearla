@@ -22,7 +22,7 @@ function sNoise(a,t,dur,vol,hp){const n=Math.max(1,Math.floor(a.sampleRate*dur))
 /* iOS 回到前景後，AudioContext 可能停在 suspended / interrupted，或 resume 後仍沒有輸出：
    先 resume；0.35 秒內沒變成 running 就丟掉舊的、重建一個再播（建立在使用者互動後解鎖過的頁面上通常可行） */
 function acRebuild(){try{if(AC)try{AC.close()}catch(e){}AC=null;acUnl=false}catch(e){}return acx()}
-function playSnd(k){try{if(!k||k==='none')return;let a=acx();if(!a)return;
+function playSnd(k){try{if(!k||k==='none'||isMuted())return;let a=acx();if(!a)return;
   const go=x=>{try{playSnd0(k,x);const s=x.createBufferSource();s.buffer=x.createBuffer(1,1,22050);s.connect(x.destination);s.start(0)}catch(e){}};
   if(a.state==='running'&&(a.__t==null||Date.now()-a.__t<1500||document.visibilityState==='visible')){go(a);return}
   let done=false;const tryRun=x=>{try{const p=x.resume();if(p&&p.then)p.then(()=>{if(!done&&x.state==='running'){done=true;go(x)}}).catch(()=>{})}catch(e){}};
@@ -49,7 +49,7 @@ const pmDur=p=>(p.ph==='foc'?p.foc:p.ph==='brk'?p.brk:p.lng)*60000;
 const pmLeft=()=>{const p=S.pomo;return p.run?Math.max(0,p.end-Date.now()):p.left};
 const pmFmt=ms=>{const s=Math.ceil(ms/1000);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
 function pmToday(){const d=new Date(),k=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();if(S.pomo.day!==k){S.pomo.day=k;S.pomo.n=0}}
-function pmChime(){try{const a=acx();if(!a)return;const go=()=>[[660,0],[880,.22],[1320,.44]].forEach(([f,d])=>{const o=a.createOscillator(),g=a.createGain(),t=a.currentTime+.02+d;o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(.25,t+.03);g.gain.exponentialRampToValueAtTime(.0001,t+.5);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.55)});if(a.state==='running')go();else{const p=a.resume();if(p&&p.then)p.then(go).catch(()=>{})}}catch(e){}}
+function pmChime(){try{if(isMuted())return;const a=acx();if(!a)return;const go=()=>[[660,0],[880,.22],[1320,.44]].forEach(([f,d])=>{const o=a.createOscillator(),g=a.createGain(),t=a.currentTime+.02+d;o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(.25,t+.03);g.gain.exponentialRampToValueAtTime(.0001,t+.5);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.55)});if(a.state==='running')go();else{const p=a.resume();if(p&&p.then)p.then(go).catch(()=>{})}}catch(e){}}
 function pmDone(){const p=S.pomo;pmToday();const was=p.ph;
   if(was==='foc'){p.n++;p.idx++;p.ph=(p.idx%Math.max(1,p.cyc)===0)?'lng':'brk'}else p.ph='foc';
   p.left=pmDur(p);if(p.snd)pmChime();toast(was==='foc'?'專注完成，休息一下吧':'休息結束，準備開始專注',2200);

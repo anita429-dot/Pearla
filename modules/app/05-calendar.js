@@ -67,11 +67,14 @@ function calEvBody(){const list=(S.evlog||[]).slice().sort((a,b)=>a.date<b.date?
   list.forEach(e=>{const sel=evSel.includes(e.id),d=pdk(e.date),L=lunOf(d),info='<div class="grow" style="min-width:0"><b style="font-weight:500">'+esc(e.name)+'</b><small class="cal2-sub">'+fmtD(e.date)+(L?'（農曆'+lunMName(L.m,L.leap)+lunDName(L.d)+'）':'')+(e.date>tk?'・即將到來':'')+'</small>'+(e.note?'<small class="cal2-sub">'+esc(e.note)+'</small>':'')+'</div>';
     h+=evEdit?'<div class="ci cal2-row" data-a="evsel" data-i="'+e.id+'" style="cursor:pointer"><span class="ck '+(sel?'on':'')+'"></span>'+info+'</div>':'<div class="ci cal2-row" data-a="evopen" data-i="'+e.id+'" style="cursor:pointer">'+info+'</div>'});
   return h+'</div>'}
+/* 日期下方的小心情：左邊他的（目前聯絡人）、右邊我的，只顯示 emoji */
+function calMoodRow(k){const h=S.dlog&&S.dlog[S.cur]&&S.dlog[S.cur][k]&&S.dlog[S.cur][k].mood,he=h&&h.emoji?h.emoji:'',mi=S.dmine&&S.dmine[k]&&S.dmine[k].mood?moodSplit(S.dmine[k].mood)[0]:'';
+  return (he||mi)?'<span class="cal2-mo"><b>'+he+'</b><b>'+mi+'</b></span>':''}
 function vCal(){calInit();dlogSync();
   const first=new Date(calY,calM,1),dim=new Date(calY,calM+1,0).getDate(),lead=first.getDay(),today=localDayKey(new Date());
   let cells='';for(let i=0;i<lead;i++)cells+='<span class="cal2-d o"></span>';
   for(let d=1;d<=dim;d++){const k=calKey(calY,calM,d),dt=new Date(calY,calM,d,12),L=lunOf(dt),has=calDayData(k).length,me=S.dmine&&S.dmine[k]&&(S.dmine[k].x||S.dmine[k].mood),ev=evOnDay(k).length;
-    cells+='<button type="button" class="cal2-d'+(k===today?' today':'')+(k===calSel?' sel':'')+(L&&L.d===1?' l1':'')+(L&&L.d===15?' l15':'')+'" data-a="calsel" data-i="'+k+'"><span class="cal2-n">'+d+'</span><span class="cal2-lu">'+lunText(dt)+'</span><span class="cal2-dots">'+(has?'<i></i>':'')+(me?'<i class="me"></i>':'')+(ev?'<i class="ev"></i>':'')+'</span></button>'}
+    cells+='<button type="button" class="cal2-d'+(k===today?' today':'')+(k===calSel?' sel':'')+(L&&L.d===1?' l1':'')+(L&&L.d===15?' l15':'')+'" data-a="calsel" data-i="'+k+'"><span class="cal2-n">'+d+'</span><span class="cal2-lu">'+lunText(dt)+'</span>'+calMoodRow(k)+'<span class="cal2-dots">'+(has?'<i></i>':'')+(me?'<i class="me"></i>':'')+(ev?'<i class="ev"></i>':'')+'</span></button>'}
   const head='<div class="cal2-bar"><button type="button" class="btn" data-a="calprev" style="width:auto;margin:0;padding:6px 14px">‹</button><b>'+calY+' 年 '+(calM+1)+' 月</b><button type="button" class="btn" data-a="calnext" style="width:auto;margin:0;padding:6px 14px">›</button></div>';
   const wk='<div class="cal2-grid">'+WDN.map(x=>'<span class="cal2-w">'+x+'</span>').join('')+cells+'</div>'+(LUN?'<div class="cal2-lg"><i class="l1"></i>農曆初一、十五</div>':'');
   const tabs='<div class="stabs cal2-tabs">'+[['day','當日'],['rem','提醒'],['ev','事件紀錄']].map(([k,n])=>'<button type="button" class="stab '+(calTab===k?'on':'')+'" data-a="caltab" data-i="'+k+'">'+n+'</button>').join('')+'</div>';

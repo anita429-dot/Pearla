@@ -17,16 +17,30 @@ function momWall(p){const w=p.wall;if(!w)return '';
   return '<div class="mom-wall'+(S.momStk===0?' nostk':'')+(pl?' placing':'')+'"><div class="mw-in"'+(pl?' data-a="momplace" data-i="'+p.id+'"':'')+'>'+rows+sk+'</div></div>'}
 const MI_H=f=>'<svg viewBox="0 0 24 24" fill="'+(f?'currentColor':'none')+'" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.2C5.2 15.5 3.6 11.2 5.8 8.3c1.8-2.3 4.9-2 6.2.3 1.3-2.3 4.4-2.6 6.2-.3 2.2 2.9.6 7.2-6.2 11.9Z"/></svg>',MI_S='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 3 10.5 13.5"/><path d="M21 3l-6.5 18-4-7.5L3 9.5z"/></svg>';
 const MI={edit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>',del:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg>',face:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.5 14c1.8 2 5.2 2 7 0"/><circle cx="9" cy="10" r=".6" fill="currentColor"/><circle cx="15" cy="10" r=".6" fill="currentColor"/></svg>'};
-const momCm=(m,pid)=>'<div'+(m.id&&m.cid&&pid?' class="mom-rp" data-a="momrep" data-i="'+pid+'|'+m.id+'"':'')+'><b style="font-weight:500">'+esc(m.n)+'</b>'+(m.rt?' 回覆 <b style="font-weight:500">'+esc(m.rt)+'</b>':'')+'：'+esc(m.x||'')+(m.img?'<img class="mom-cimg" src="'+m.img+'" alt="">':'')+'</div>';
-function momCSync(){const e=$('#momcin');if(e&&momCD)momCD.x=e.value}
-function momCFocus(){const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y;const e=$('#momcin');if(e&&momCD){try{e.focus({preventScroll:true});const n=e.value.length;e.setSelectionRange(n,n);const r=e.getBoundingClientRect(),vr=v.getBoundingClientRect();if(r.bottom>vr.bottom-8)v.scrollTop+=r.bottom-vr.bottom+80}catch(x){}}}
-function momCBox(p){if(!momCD||momCD.pid!==p.id)return '';
-  return '<div class="mom-cbox">'+(momCD.rt?'<div class="mom-cto"><span>回覆 '+esc(momCD.rt)+'</span><button type="button" data-a="momcrx" aria-label="取消回覆">×</button></div>':'')+(momCD.img?'<div class="mom-cpv"><img src="'+momCD.img+'" alt=""><button type="button" data-a="momcimgx" aria-label="移除表情包">×</button></div>':'')+
-  '<div class="mom-crow"><button type="button" class="mom-cem" data-a="momcemo" aria-label="選擇表情包">'+MI.face+'</button><input class="mom-cin" id="momcin" type="text" maxlength="100" enterkeyhint="send" placeholder="'+(momCD.rt?'回覆 '+esc(momCD.rt)+'…':'寫下留言…')+'" autocomplete="off" value="'+esc(momCD.x||'')+'"><button type="button" class="mom-csend" data-a="momcsend" data-i="'+p.id+'" aria-label="送出留言">'+MI_S+'</button></div></div>'}
+/* ── 留言：一則一欄；回覆放在該留言下方、同一欄；每一欄、每條回覆都有「回覆」鍵 ── */
+const momRootId=(cm,m)=>{let c=m,g=0;while(c&&c.rid&&g++<60){const up=cm.find(x=>x.id===c.rid);if(!up)break;c=up}return c.id};
+function momThreads(cm){const roots=[],by={};cm.forEach(m=>{if(momRootId(cm,m)===m.id){roots.push(m);by[m.id]=[]}});cm.forEach(m=>{const r=momRootId(cm,m);if(r!==m.id&&by[r])by[r].push(m)});return roots.map(r=>({root:r,rep:by[r.id]}))}
+const momLine=(m,pid,isRep)=>'<div class="mom-cl'+(isRep?' rp':'')+'"><div class="mom-ct"><b>'+esc(m.n)+'</b>'+(isRep&&m.rt?' 回覆 <b>'+esc(m.rt)+'</b>':'')+'：'+esc(m.x||'')+(m.img?'<img class="mom-cimg" src="'+m.img+'" alt="">':'')+'</div>'+(m.id&&pid?'<button type="button" class="mom-rpb" data-a="momrep" data-i="'+pid+'|'+m.id+'">回覆</button>':'')+'</div>';
+function momCols(p){const cm=Array.isArray(p.cmts)?p.cmts:[];if(!cm.length)return '';p.cxs=p.cxs&&typeof p.cxs==='object'?p.cxs:{};
+  return '<div class="mom-cols">'+momThreads(cm).map(t=>{const rid=t.root.id,open=!!p.cxs[rid],reps=t.rep,show=open?reps:reps.slice(0,1);
+    return '<div class="mom-col">'+momLine(t.root,p.id,0)+(show.length?'<div class="mom-reps">'+show.map(m=>momLine(m,p.id,1)).join('')+'</div>':'')+(reps.length>1?'<button type="button" class="mom-cx" data-a="momcx" data-i="'+p.id+'|'+rid+'">'+(open?'收起留言':'展開留言（共 '+reps.length+' 條回覆）')+'</button>':'')+'</div>'}).join('')+'</div>'}
+/* ── 留言草稿：每則貼文各自一份，輸入框一直在留言下方，重畫畫面也不會掉內容 ── */
+let momDr={};
+const momDrOf=pid=>momDr[pid]||(momDr[pid]={x:'',img:'',rid:null,rt:null,rcid:null});
+const momOwner=p=>p.cid==='me'?S.cur:p.cid;
+function momCSync(){document.querySelectorAll('.mom-cin').forEach(e=>{const p=e.dataset.pid;if(p)momDrOf(p).x=e.value})}
+/* 點留言圖示／回覆鍵＝點該貼文的輸入框：捲到輸入框的位置並開始輸入 */
+function momFocusIn(pid){const v=$('#v'),e=document.querySelector('.mom-cin[data-pid="'+pid+'"]');if(!e)return;
+  try{e.focus({preventScroll:true});const n=e.value.length;e.setSelectionRange(n,n)}catch(x){}
+  const go=()=>{try{const box=e.closest('.mom-cbox')||e,r=box.getBoundingClientRect(),vr=v.getBoundingClientRect(),room=Math.min(vr.height*.45,260);if(r.bottom>vr.bottom-room||r.top<vr.top+8)v.scrollTop+=r.bottom-(vr.bottom-room)}catch(x){}};go();setTimeout(go,350)}
+function momCRender(pid){const v=$('#v'),y=v.scrollTop;momCSync();render();v.scrollTop=y;momFocusIn(pid)}
+function momCBox(p){const d=momDrOf(p.id);
+  return '<div class="mom-cbox">'+(d.rt?'<div class="mom-cto"><span>回覆 '+esc(d.rt)+'</span><button type="button" data-a="momcrx" data-i="'+p.id+'" aria-label="取消回覆">×</button></div>':'')+(d.img?'<div class="mom-cpv"><img src="'+d.img+'" alt=""><button type="button" data-a="momcimgx" data-i="'+p.id+'" aria-label="移除表情包">×</button></div>':'')+
+  '<div class="mom-crow"><button type="button" class="mom-cem" data-a="momcemo" data-i="'+p.id+'" aria-label="選擇表情包">'+MI.face+'</button><input class="mom-cin" data-pid="'+p.id+'" type="text" maxlength="100" enterkeyhint="send" placeholder="'+(d.rt?'回覆 '+esc(d.rt)+'…':'寫下留言…')+'" autocomplete="off" value="'+esc(d.x||'')+'"><button type="button" class="mom-csend" data-a="momcsend" data-i="'+p.id+'" aria-label="送出留言">'+MI_S+'</button></div></div>'}
 function momPost(p){const me=p.cid==='me',c=me?{id:'me',av:S.meAv,name:S.me}:S.contacts.find(x=>x.id===p.cid);if(!c)return '';const im=Array.isArray(p.imgs)?p.imgs.slice(0,9):[],likes=Array.isArray(p.likes)?p.likes:[],cm=Array.isArray(p.cmts)?p.cmts:[];
   const top='<button class="mom-top" data-a="'+(me?'mompedit':'momdelask')+'" data-i="'+p.id+'" aria-label="'+(me?'編輯貼文':'刪除貼文')+'">'+(me?MI.edit:MI.del)+'</button>';
   const acts='<div class="mom-acts"><button class="mom-ic mom-heart'+(p.liked?' lk':'')+(p.liked&&momPop===p.id?' pop':'')+'" data-a="momlike" data-i="'+p.id+'" aria-label="點贊">'+MI_H(p.liked)+'</button><button class="mom-ic" data-a="momcmt" data-i="'+p.id+'" aria-label="留言"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.7 8.7 0 0 1-3.6-.8L4 20l1.4-3.4A7.2 7.2 0 0 1 4 11.5 7.5 7.5 0 0 1 12 4a7.5 7.5 0 0 1 8 7.5z"/><path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01"/></svg></button><button class="mom-ic" data-a="mstk" data-i="'+p.id+'" aria-label="貼紙">'+MI.face+'</button><button class="mom-ic'+(p.fav?' fv':'')+'" data-a="momfav" data-i="'+p.id+'" aria-label="收藏">'+(p.fav?'★':'☆')+'</button></div>';
-  return '<div class="mom-post">'+top+'<div class="mom-hd">'+avh(c,'msgav')+'<div><div class="mom-nm">'+esc(c.name)+'</div><div class="mom-time">'+ltime(p.t)+(p.edited?' · 已編輯':'')+'</div></div></div><div class="mom-bd">'+(p.x?'<div class="mom-tx">'+esc(p.x)+'</div>':'')+(im.length?'<div class="mom-imgs'+(im.length===1?' one':'')+'">'+im.map(u=>'<img src="'+u+'" alt="">').join('')+'</div>':'')+momWall(p)+acts+((likes.length||cm.length)?'<div class="mom-re">'+(likes.length?'<span class="mom-lk">'+MI_H(1)+likes.map(esc).join('、')+'</span>':'')+(p.cmx?cm:cm.slice(0,3)).map(m=>momCm(m,p.id)).join('')+(cm.length>3?'<button type="button" class="mom-cx" data-a="momcx" data-i="'+p.id+'">'+(p.cmx?'收起留言':'展開留言（共 '+cm.length+' 條）')+'</button>':'')+'</div>':'')+momCBox(p)+'</div></div>'}
+  return '<div class="mom-post">'+top+'<div class="mom-hd">'+avh(c,'msgav')+'<div><div class="mom-nm">'+esc(c.name)+'</div><div class="mom-time">'+ltime(p.t)+(p.edited?' · 已編輯':'')+'</div></div></div><div class="mom-bd">'+(p.x?'<div class="mom-tx">'+esc(p.x)+'</div>':'')+(im.length?'<div class="mom-imgs'+(im.length===1?' one':'')+'">'+im.map(u=>'<img src="'+u+'" alt="">').join('')+'</div>':'')+momWall(p)+acts+(likes.length?'<div class="mom-re"><span class="mom-lk">'+MI_H(1)+likes.map(esc).join('、')+'</span></div>':'')+momCols(p)+momCBox(p)+'</div></div>'}
 function vMom(){
   const head='<div class="ph2"><button class="ib" data-a="momback">‹</button><h1>朋友圈</h1><span class="grow"></span><span class="mom-stksw">貼紙<button class="sw '+(S.momStk===0?'':'on')+'" data-a="momstk" aria-label="顯示或隱藏貼紙"></button></span></div>';
   const sig=S.momSig||'',cv=S.momCover;
@@ -43,9 +57,18 @@ function momCompose(){const d=momDraft;sheet(d.edit?'編輯貼文':'發布貼文
 function momPvHtml(){const it=(momDraft&&momDraft.items||[]).filter(o=>o.k==='s');return it.length?it.map(o=>'<span class="mom-pvc">'+(o.img?'<img src="'+o.img+'" alt="">':esc(o.x||''))+'</span>').join(''):'<small>選擇的表情包會顯示在這裡</small>'}
 function momPicker(){momSync();const T=[['kao','顏文字'],['emj','emoji'],['emoji','表情包']],l=pool(momPK,S.cur);
   sheet('選擇內容','<div class="mom-pv" id="mompv">'+momPvHtml()+'</div><div class="stabs">'+T.map(([k,n])=>'<button class="stab '+(momPK===k?'on':'')+'" data-a="mpktab" data-i="'+k+'">'+n+'</button>').join('')+'</div>'+(l.length?'<div class="mom-pg mom-pgs t-'+momPK+'">'+l.map(k=>'<button data-a="mpkadd" data-i="'+k.id+'">'+(k.img?'<img src="'+k.img+'" alt="">':esc(k.text))+'</button>').join('')+'</div>':'<div class="empty">這裡還沒有內容。<br>到「字卡」頁新增。</div>')+'<button class="btn s" data-a="mpkdone">完成</button>',0)}
-function stkPicker(){const p=S.moments.find(x=>x.id===momStkPost);if(!p)return;const oc=p.cid==='me'?S.cur:p.cid,l=pool(momSK,oc);
-  sheet('選擇貼紙','<div class="stabs">'+[['emoji','表情包'],['emj','emoji']].map(([k,n])=>'<button class="stab '+(momSK===k?'on':'')+'" data-a="mstktab" data-i="'+k+'">'+n+'</button>').join('')+'</div>'+(l.length?'<div class="mom-pg t-'+(momSK==='emj'?'emj':'emoji')+'">'+l.map(k=>'<button data-a="mstkpick" data-i="'+k.id+'">'+(k.img?'<img src="'+k.img+'" alt="">':esc(k.text))+'</button>').join('')+'</div>':'<div class="empty">這裡還沒有內容。<br>到「字卡」頁新增。</div>')+'<button class="btn" data-a="close">取消</button>',0)}
-function momRefresh(){if(tab!=='home'||!momOpen||momPlacing||$('#sh').classList.contains('show')||(document.activeElement&&(document.activeElement.id==='momsigin'||document.activeElement.classList.contains('mom-cin'))))return;const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}
+/* 表情包／貼紙浮窗：與聊天室的表情浮窗相同（分頁＋分類晶片）；留言沒有顏文字，貼紙多了 emoji */
+let momEmo=null;
+const MEMO_TABS={c:[['s','共用表情包','emoji','s'],['e','他的專屬表情包','emoji','e']],s:[['s','共用表情包','emoji','s'],['e','他的專屬表情包','emoji','e'],['es','共用 emoji','emj','s'],['ee','他的專屬 emoji','emj','e']]};
+function momEmoOpen(ctx,pid){const p=S.moments.find(x=>x.id===pid);if(!p)return;momEmo={ctx,pid,oc:momOwner(p),scope:'s',cat:null};momEmoSheet()}
+function momEmoSheet(){const E=momEmo;if(!E)return;const tabs=MEMO_TABS[E.ctx],t=tabs.find(x=>x[0]===E.scope)||tabs[0];E.scope=t[0];
+  const l=pool(t[2],E.oc).filter(k=>{const g=S.cats.find(c=>c.id===k.cat);return g&&g.sc===t[3]});
+  const cs=S.cats.filter(g=>l.some(k=>k.cat===g.id)),cur1=cs.find(g=>g.id===E.cat)||cs[0];E.cat=cur1?cur1.id:null;
+  const item=k=>'<button data-a="'+(k.img?'mes':'mek')+'" data-i="'+k.id+'">'+(k.img?'<img src="'+k.img+'">':esc(k.text))+'</button>';
+  const chips=cs.length>1?'<div class="emo-cats">'+cs.map(g=>'<button type="button" class="'+(g.id===E.cat?'on':'')+'" data-a="mecsw" data-i="'+g.id+'">'+esc(g.name)+'</button>').join('')+'</div>':'';
+  const body=cur1?'<div class="eg chat-eg">'+l.filter(k=>k.cat===cur1.id).map(item).join('')+'</div>':'';
+  chatSheet('<div class="emo-sticky"><div class="chat-pop-cats">'+tabs.map(([k,n])=>'<button class="'+(E.scope===k?'on':'')+'" data-a="mesw" data-i="'+k+'">'+n+'</button>').join('')+'</div>'+(l.length?chips:'')+'</div>'+(l.length?body:'<div class="empty">這裡還沒有內容。<br>到「字卡」頁新增。</div>'));$('#sh').classList.add('emo')}
+function momRefresh(){if(tab!=='home'||!momOpen||momPlacing||$('#sh').classList.contains('show')||(document.activeElement&&(document.activeElement.id==='momsigin'||document.activeElement.classList.contains('mom-cin'))))return;const v=$('#v'),y=v.scrollTop;momCSync();render();v.scrollTop=y}
 const momPos=()=>+(6+rnd()*88).toFixed(1),momHit=p=>rnd()*100<Math.max(0,Math.min(100,+p||0)),momRange=(a,b)=>{a=Math.max(0,Math.round(+a||0));b=Math.max(a,Math.round(+b||0));return a+ri(b-a+1)};
 /* ── 聯絡人發布朋友圈：字卡 → 表情包 → 貼紙，全部完成後一起發布 ── */
 function momNext(cid,n){const c=S.contacts.find(x=>x.id===cid);if(!c)return;const m=cmo(c),old=S.mst[cid],mx=Math.max(+m.tmin||0,+m.tmax||0,1)*1000,rs=old&&old.rs?Math.max(n,old.rs+mx):n;/* 一輪從 rs 開始；最長時間結束後（rs+最長）才開始下一輪 */S.mst[cid]={ph:'j',rs,due:rs+inspRand(m.tmin,m.tmax)}}
@@ -58,7 +81,7 @@ function momAfterCards(cid,st,n){const c=S.contacts.find(x=>x.id===cid),text=st.
   st.d.text=text;st.d.items=[];st.d.st=[];st.ph='e';st.due=n+inspRand(S.set.mwEmin,S.set.mwEmax)+STEP}
 function momTick(){if(!S||!S.mst)return false;const n=Date.now(),s=S.set;let ch=false;
   Object.keys(S.mst).forEach(id=>{const c=S.contacts.find(x=>x.id===id);if(!c||!cmo(c).on){delete S.mst[id];ch=true}});
-  S.contacts.forEach(c=>{ctxSet(c.id);const m=cmo(c);if(!m.on)return;const cid=c.id,st=S.mst[cid];
+  S.contacts.forEach(c=>{try{ctxSet(c.id);const m=cmo(c);if(!m.on)return;const cid=c.id,st=S.mst[cid];
     if(!st){momNext(cid,n);ch=true;return}if(st.due>n)return;ch=true;
     if(c.dnd){momNext(cid,n);return}
     switch(st.ph){
@@ -67,17 +90,17 @@ function momTick(){if(!S||!S.mst)return false;const n=Date.now(),s=S.set;let ch=
       case 's':{const k=st.q.shift(),items=pool(k,cid);let ex=0;if(items.length&&momHit(s[k==='emj'?'mpemj':'mpkao'])){const z=pk(items).text;st.d.cur.t=rnd()<.5?z+' '+st.d.cur.t:st.d.cur.t+' '+z;ex=STEP}momNextQ(cid,st,n+ex);break}
       case 'e':{const em=pool('emoji',cid);let ex=0;if(em.length&&momHit(s.mwEp)){const k=momRange(s.mwNmin,s.mwNmax);for(let i=0;i<k;i++)st.d.items.push(Object.assign({k:'s'},mItem(pk(em))));ex=STEP}st.ph='k';st.due=n+ex+inspRand(s.mwSmin,s.mwSmax)+STEP;break}
       case 'k':{const sp=stkPool(cid);if(sp.length&&momHit(s.mwSp)){const k=momRange(s.mwKmin,s.mwKmax);st.d.pend=Array.from({length:k},()=>mItem(pk(sp)));if(st.d.pend.length){st.ph='p';st.due=n+STEP+Math.max(0,+s.mwPlace||0)*1000+STEP;break}}momFinish(cid,st.d.text,st.d,n);break}
-      case 'p':st.d.st=st.d.pend.map(o=>({id:uid(),img:o.img,x:o.x,px:momPos(),py:momPos(),by:cid,t:n}));momFinish(cid,st.d.text,st.d,n);break;
-      default:momNext(cid,n)}});
+      case 'p':st.d.st=st.d.pend.map(o=>({id:uid(),img:o.img,x:o.x,px:momPos(),py:momPos(),by:cid,t:n}));st.d.st.forEach(stkShrink);momFinish(cid,st.d.text,st.d,n);break;
+      default:momNext(cid,n)}}catch(err){try{console.error('momTick',err);momNext(c.id,Date.now())}catch(e){}ch=true}});
   return ch}
 /* ── 貼圖回覆：使用者貼貼紙後，聯絡人判定是否回覆貼紙 ── */
 function mrepSchedule(p){const s=S.set;if(!s.srOn||!p)return;const oc=p.cid==='me'?S.cur:p.cid;S.mrep.push({id:uid(),cid:oc,pid:p.id,ph:'j',due:Date.now()+Math.max(0,+s.srJudge||0)*1000})}
 function mrepTick(){if(!S||!S.mrep||!S.mrep.length)return false;const n=Date.now(),s=S.set;let ch=false;const keep=[];
-  S.mrep.forEach(r=>{const post=S.moments.find(x=>x.id===r.pid);if(!post||!post.wall||!S.contacts.some(c=>c.id===r.cid)){ch=true;return}
+  S.mrep.forEach(r=>{try{const post=S.moments.find(x=>x.id===r.pid);if(!post||!post.wall||!S.contacts.some(c=>c.id===r.cid)){ch=true;return}
     if(r.due>n){keep.push(r);return}ch=true;ctxSet(r.cid);if(isDnd(r.cid))return;
     if(r.ph==='j'){if(momHit(s.srProb)){r.ph='c';r.due=n+inspRand(s.srMin,s.srMax);keep.push(r)}return}
     if(r.ph==='c'){const sp=stkPool(r.cid);if(!sp.length)return;r.q=Array.from({length:momRange(s.srNmin,s.srNmax)},()=>mItem(pk(sp)));if(!r.q.length)return;r.ph='p';r.due=n+STEP+Math.max(0,+s.srPlace||0)*1000+STEP;keep.push(r);return}
-    if(r.ph==='p'){const o=r.q.shift();post.wall.st=post.wall.st||[];post.wall.st.push({id:uid(),img:o.img,x:o.x,px:momPos(),py:momPos(),by:r.cid,t:n});if(r.q.length){r.due=n+STEP+STEP;keep.push(r)}}});
+    if(r.ph==='p'){const o=r.q.shift();post.wall.st=post.wall.st||[];{const t0={id:uid(),img:o.img,x:o.x,px:momPos(),py:momPos(),by:r.cid,t:n};post.wall.st.push(t0);stkShrink(t0)}if(r.q.length){r.due=n+STEP+STEP;keep.push(r)}}}catch(err){console.error('mrepTick',err);ch=true}});
   S.mrep=keep;return ch}
 /* ── 聯絡人留言：主動留言（其他聯絡人的貼文）／回覆留言（其他聯絡人的留言） ── */
 const MCM_GAP=1500;
@@ -94,16 +117,20 @@ function mcmBuild(j,n){const cf=mcmCfg(j.k),cid=j.cid,pl=cardPool(cid);if(!pl.le
     out.push({x,at:off});off+=MCM_GAP}
   const em=pool('emoji',cid);if(em.length&&cf.ep>0){off+=STEP;if(momHit(cf.ep)){off+=STEP;const e=mItem(pk(em));out.push({x:e.x,img:e.img,at:off})}}
   let prev=n-MCM_GAP;out.forEach(o=>{o.at=Math.max(o.at==null?0:o.at,prev+MCM_GAP);prev=o.at});return out}
-function mcmSend(j,o,post){const c=S.contacts.find(x=>x.id===j.cid);if(!c)return;post.cmts=Array.isArray(post.cmts)?post.cmts:[];const m={id:uid(),cid:j.cid,n:c.name,x:o.x||'',img:o.img||''};if(j.k!=='p'){m.rt=j.to;m.rid=j.mid}post.cmts.push(m);if(j.k==='p')mcmReply(post,m)}
+/* 朋友圈通知：和信箱一樣放頂部通知窗，也在該聯絡人的聊天室留一條系統提示 */
+function momNote(cid,x){try{if(S.set.momNotify===0)return;ms(cid).push({id:uid(),f:'sys',x,t:Date.now(),go:'mom'});banner(x,6000,'mom');if(tab==='chat'&&S.cur===cid)paint()}catch(e){}}
+function mcmSend(j,o,post){const c=S.contacts.find(x=>x.id===j.cid);if(!c)return;post.cmts=Array.isArray(post.cmts)?post.cmts:[];const m={id:uid(),cid:j.cid,n:c.name,x:o.x||'',img:o.img||''};if(j.k!=='p'){m.rt=j.to;m.rid=j.mid;/* 回覆出現在該留言同一欄；有新回覆就讓該欄的展開鈕保持原狀 */}post.cmts.push(m);
+  if(!j.nt){j.nt=1;const ow=post.cid==='me'?S.me:((S.contacts.find(z=>z.id===post.cid)||{}).name||'');let x;if(j.k==='p')x=c.name+' 在'+(post.cid==='me'?'你':ow)+'的朋友圈留言了';else x=j.to===S.me?c.name+' 回覆了你的留言':c.name+' 回覆了'+j.to+'的留言';momNote(j.cid,x)}
+  if(j.k==='p')mcmReply(post,m)}
 function mcmTick(){if(!S||!S.mcm||!S.mcm.length)return false;const n=Date.now(),s=S.set;let ch=false;const list=S.mcm;S.mcm=[];const keep=S.mcm;
-  list.forEach(j=>{const post=S.moments.find(x=>x.id===j.pid);if(!post||!S.contacts.some(c=>c.id===j.cid)||!(j.k==='p'?s.cmOn:s.crOn)){ch=true;return}
+  list.forEach(j=>{try{const post=S.moments.find(x=>x.id===j.pid);if(!post||!S.contacts.some(c=>c.id===j.cid)||!(j.k==='p'?s.cmOn:s.crOn)){ch=true;return}
     if(j.due>n){keep.push(j);return}ch=true;ctxSet(j.cid);if(isDnd(j.cid))return;
     if(j.ph==='j'){const cf=mcmCfg(j.k);if(momHit(cf.prob)){j.ph='w';j.due=n+inspRand(cf.tmin,cf.tmax);keep.push(j)}return}
     if(j.ph==='w'){j.q=mcmBuild(j,n);if(j.q.length){j.ph='s';j.due=j.q[0].at;keep.push(j)}return}
-    if(j.ph==='s'){do{const o=j.q.shift();mcmSend(j,o,post)}while(j.q.length&&j.q[0].at<=n);if(j.q.length){j.due=j.q[0].at;keep.push(j)}}});
+    if(j.ph==='s'){do{const o=j.q.shift();mcmSend(j,o,post)}while(j.q.length&&j.q[0].at<=n);if(j.q.length){j.due=j.q[0].at;keep.push(j)}}}catch(err){console.error('mcmTick',err);ch=true}});
   return ch}
 function resumeTick(){try{const a=momTick(),b=mrepTick(),c=mcmTick();if(a||b||c){save();momRefresh()}}catch(x){}try{letterTick()}catch(x){}}
 setInterval(()=>{try{const a=momTick(),b=mrepTick(),c=mcmTick();if(a||b||c){save();momRefresh()}}catch(x){}},1000);
 document.addEventListener('input',e=>{if(e.target.id==='momsigin'){S.momSig=e.target.value.slice(0,40);saveSoon()}});
-document.addEventListener('input',e=>{if(e.target.classList&&e.target.classList.contains('mom-cin')&&momCD)momCD.x=e.target.value});
+document.addEventListener('input',e=>{const t=e.target;if(t.classList&&t.classList.contains('mom-cin')&&t.dataset.pid)momDrOf(t.dataset.pid).x=t.value});
 document.addEventListener('keydown',e=>{const t=e.target;if(e.key==='Enter'&&!e.isComposing&&t.classList&&t.classList.contains('mom-cin')){e.preventDefault();const b=t.closest('.mom-cbox').querySelector('.mom-csend');if(b)b.click()}});

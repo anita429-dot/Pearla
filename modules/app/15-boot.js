@@ -43,3 +43,5 @@ document.addEventListener('input',e=>{const t=e.target;if(t&&t.dataset&&t.datase
 
 /* 以聯絡人為第一個參數的函式：進入時切換到該聯絡人的設置 */
 (()=>{['fireA','fire','gen','roundQ','preRound','schedule','genLetter','dailyPick','stkRoll','patRoll','patMsg','qmPick','extStart','extDone','memSchedule','momNext','inspStep'].forEach(n=>{const f=window[n];if(typeof f!=='function'||f.__cx)return;const w=function(){const a=arguments;if(typeof a[0]==='string')ctxSet(a[0]);else if(a[0]&&typeof a[0]==='object'&&typeof a[0].cid==='string')ctxSet(a[0].cid);return f.apply(this,a)};w.__cx=1;try{window[n]=w}catch(e){}})})();
+
+(()=>{const r1=render;render=function(){const x=r1.apply(this,arguments);try{applyAutoInk()}catch(e){}return x}})();

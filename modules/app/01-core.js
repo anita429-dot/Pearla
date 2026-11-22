@@ -14,11 +14,19 @@ let S,db,tab='home',scope='e',kind='card',selCat=null,askCb=null,jump=null,catDi
 
 /* ── IndexedDB ── */
 const idb=()=>new Promise(r=>{try{const q=indexedDB.open('pearla',1);q.onupgradeneeded=()=>q.result.createObjectStore('kv');q.onsuccess=()=>{db=q.result;r()};q.onerror=()=>r()}catch(e){r()}});
-const load=()=>new Promise(r=>{if(!db)return r(null);try{const q=db.transaction('kv').objectStore('kv').get('s');q.onsuccess=()=>r(q.result||null);q.onerror=()=>r(null)}catch(e){r(null)}});
-const save=()=>{try{db&&db.transaction('kv','readwrite').objectStore('kv').put(JSON.parse(JSON.stringify(S)),'s')}catch(e){}};
+let myRev=0,saveWarnAt=0;
+const load=()=>new Promise(r=>{if(!db)return r(null);try{const tx=db.transaction('kv'),st=tx.objectStore('kv'),q=st.get('s'),g=st.get('rev');g.onsuccess=()=>{myRev=+g.result||0};q.onsuccess=()=>r(q.result||null);q.onerror=()=>r(null)}catch(e){r(null)}});
+/* 儲存：成功與否都會確認。背景中的視窗若發現別的視窗已存了較新的資料，不會覆蓋，改為重新讀取；儲存失敗會提醒 */
+function saveFail(err){try{console.error('Pearla save failed',err)}catch(e){}const n=Date.now();if(n-saveWarnAt<20000)return;saveWarnAt=n;if(typeof toast==='function')toast('⚠ 儲存失敗（可能是儲存空間已滿）：請先到「設置→數據」備份並清理',6000)}
+async function reloadFromDb(){try{const o=await load();if(!o||!Array.isArray(o.contacts)||!o.contacts.length)return;S=mig(Object.assign(def(),o,{tags:o.tags}));applyTheme();render();toast('已同步另一個視窗的最新資料',2500)}catch(e){}}
+function syncCheck(){if(!db)return;try{const q=db.transaction('kv').objectStore('kv').get('rev');q.onsuccess=()=>{if((+q.result||0)>myRev)reloadFromDb()}}catch(e){}}
+const save=()=>{try{if(!db||!S)return;const snap=JSON.parse(JSON.stringify(S)),tx=db.transaction('kv','readwrite'),st=tx.objectStore('kv'),g=st.get('rev');let conflict=false;
+  g.onsuccess=()=>{const r=+g.result||0;if(r>myRev&&document.hidden){conflict=true;tx.abort();return}const nr=Math.max(Date.now(),r+1,myRev+1);st.put(snap,'s');st.put(nr,'rev');myRev=nr};
+  tx.onabort=()=>{if(conflict)setTimeout(reloadFromDb,0);else saveFail(tx.error)};
+  tx.onerror=()=>{}}catch(e){saveFail(e)}};
 /* 關閉／切到背景前立刻存檔，流程進度（排程時間）不會因為 300ms 的延遲存檔而遺失；回到畫面時馬上補跑到期的流程 */
 ['pagehide','beforeunload'].forEach(ev=>addEventListener(ev,()=>{try{if(S)save()}catch(e){}}));
-document.addEventListener('visibilitychange',()=>{try{if(!S)return;if(document.hidden)save();else resumeTick()}catch(e){}});
+document.addEventListener('visibilitychange',()=>{try{if(!S)return;if(document.hidden)save();else{syncCheck();resumeTick()}}catch(e){}});
 addEventListener('pageshow',()=>{try{if(S)resumeTick()}catch(e){}});
 
 function def(){
@@ -33,7 +41,7 @@ const cur=()=>S.contacts.find(c=>c.id===S.cur)||S.contacts[0];
 /* ── 每個聯絡人的設置分開 ──
    S.set 是一層代理：沒有被改過的設定沿用共用預設（base），在某位聯絡人底下改過的設定存到 S.cset[聯絡人id]，
    讀取時依「目前的聯絡人」（排程裡用 ctxSet(id) 切換；其餘情況用 S.cur）取值。通知聲音、背景、學習進度等全域設定不分開。 */
-const GLOBAL_SET=new Set(['ntMeOn','ntMeSnd','ntTaOn','ntTaSnd','ntCurOn','ntCurSnd','ntOthOn','ntOthSnd','ntStarOn','ntStarSnd','penSnd','penVol','imgc','keepBg','keepFont','wi','starColor','calLaterH','calLaterM','lpOn','lpT1','lpT2','lpProb','lpRmin','lpRmax','momNotify','letterNotify','letterBadge','recSound','mood','heart','intent']);
+const GLOBAL_SET=new Set(['muted','autoInk','ntMeOn','ntMeSnd','ntTaOn','ntTaSnd','ntCurOn','ntCurSnd','ntOthOn','ntOthSnd','ntStarOn','ntStarSnd','penSnd','penVol','imgc','keepBg','keepFont','wi','starColor','calLaterH','calLaterM','lpOn','lpT1','lpT2','lpProb','lpRmin','lpRmax','momNotify','dailyNotify','letterNotify','letterBadge','recSound','mood','heart','intent']);
 let __cx=null;
 function ctxSet(cid){if(typeof cid==='string'){if(cid.indexOf('|')>0)cid=cid.split('|').pop();__cx=cid}else __cx=null;if(!ctxSet.q){ctxSet.q=1;queueMicrotask(()=>{__cx=null;ctxSet.q=0})}}
 const ctxId=()=>__cx||(S&&S.cur);
@@ -53,6 +61,7 @@ const cuse=(cid,k)=>{if(!S||!k||!k.id)return;const u=(S.cuse=S.cuse||{}),m=(u[ci
 function backfillUse(o){o.cuse={};const cats=o.cats||[],kd=id=>{const g=cats.find(c=>c.id===id);return g?(g.kind||'card'):null};
   (o.contacts||[]).forEach(c=>{const mine=(o.cards||[]).filter(k=>{if(!k||!k.text)return false;const g=cats.find(x=>x.id===k.cat);if(!g)return false;if(!['card','mem','ext'].includes(g.kind||'card'))return false;return g.sc==='s'||g.own===c.id||(!g.own&&(g.as||[]).includes(c.id))}).sort((a,b)=>b.text.length-a.text.length);
     if(!mine.length)return;const cnt={};((o.msgs||{})[c.id]||[]).forEach(m=>{if(!m||m.f!=='ta'||!m.x||m.img)return;let s=String(m.x);mine.forEach(k=>{let i;while((i=s.indexOf(k.text))>=0){cnt[k.id]=(cnt[k.id]||0)+1;s=s.slice(0,i)+'\u0001'+s.slice(i+k.text.length)}})});o.cuse[c.id]=cnt})}
+const isMuted=()=>!!(S&&S.set&&S.set.muted);
 const qtHtml=m=>(m.q||m.qi)?'<div class="qt'+(m.qi?' qti':'')+'">'+(m.qi?'<img class="qt-img" src="'+m.qi+'" alt="">':'')+esc(m.q||'')+'</div>':'';
 const isDnd=cid=>{const c=S&&S.contacts&&S.contacts.find(x=>x.id===cid);return !!(c&&c.dnd)};
 const CMD={on:0,prob:50,wall:1,tmin:1200,tmax:MOM_TMAX_DEF};
@@ -95,7 +104,7 @@ const THEME_DEFS={
  journal:{name:'手帳',swatch:'repeating-linear-gradient(0deg,transparent 0 6px,#b4c8e266 6px 7px),repeating-linear-gradient(90deg,transparent 0 6px,#b4c8e266 6px 7px),linear-gradient(135deg,#f4f8fd,#dbe7f6)',family:'glass',skin:'journal',tones:[['blue','淺藍','#cfe0f5'],['mint','青提','#a7d36b'],['dark','黑灰','#3a3a42']],ink:{blue:'#4b5b78',mint:'#55732f',dark:'#e8e8ed'},line:{blue:'#b9cbe3',mint:'#d7eea7',dark:'#3a3a42'},shadow:'#6b7a90'},
  pixel:{name:'像素',swatch:'repeating-linear-gradient(0deg,#2a1f5c26 0 1px,transparent 1px 3px),linear-gradient(135deg,#fbfaff,#f00f2d 55%,#5b8fd9)',family:'glass',skin:'pixel',ink:'#2a1f5c',line:'#2a1f5c',shadow:'#6b7a90'},
  moon:{name:'月眠',swatch:'linear-gradient(160deg,#2a1f5c,#5b45a8 55%,#e9dfff)',family:'glass',skin:'moon',img:1,ink:'#f6f1ff',line:'#ffffff',shadow:'#120a33',dir:'assets/moon/',nav:1,art:MOONI,memo:{lines:[46,58.5,71],h:12.5,w:42,fs:.054}},
- cat:{name:'黑貓',swatch:'linear-gradient(135deg,#fbfaf8,#d9d5cf 55%,#2d2d32)',family:'glass',skin:'cat',img:1,cssCal:1,tones:[['light','淺色','#fbfaf8'],['dark','深色','#2d2d32']],ink:{light:'#26262b',dark:'#e8e8ed'},line:{light:'#2d2d32',dark:'#4a4a53'},shadow:'#ffffff',dir:'assets/cat/',nav:1,art:CATI,memo:{lines:[49.5,62,74.5,87],h:12.5,w:72,fs:.056}}
+ cat:{name:'黑貓',swatch:'linear-gradient(135deg,#fbfaf8,#d9d5cf 55%,#2d2d32)',family:'glass',skin:'cat',img:1,cssCal:1,tones:[['light','淺色','#fbfaf8'],['dark','深色','#2d2d32']],ink:{light:'#26262b',dark:'#e8e8ed'},line:{light:'#2d2d32',dark:'#4a4a53'},shadow:{light:'#ffffff',dark:'#000000'},dir:'assets/cat/',nav:1,art:CATI,memo:{lines:[56.5,66.5,79,91.5],h:12,w:66,fs:.056}}
 };
 const validTheme=k=>Object.prototype.hasOwnProperty.call(THEME_DEFS,k)?k:'lav';
 const curTheme=()=>validTheme(S&&S.theme);
@@ -104,7 +113,7 @@ const isG=()=>!!S&&curDef().family==='glass';
 const AS=n=>{const d=curDef();return((d.art&&d.art[n])?d.dir:'assets/clay/')+n+'.webp'};
 const tonePick=v=>(v&&typeof v==='object')?(S&&v[S.jtone]!=null?v[S.jtone]:(v.blue!=null?v.blue:v.light)):v;
 const themeInk=()=>tonePick(curDef().ink);
-const themeShadow=()=>curDef().shadow;
+const themeShadow=()=>tonePick(curDef().shadow);
 const themeLine=()=>tonePick(curDef().line);
 const FONTS=[
  {g:'常用',id:'sys',name:'系統常用字體',stack:'"PingFang TC","Hiragino Sans","Microsoft JhengHei",system-ui,sans-serif'},
@@ -141,19 +150,20 @@ function applyTheme(){paintTabs();const de=document.documentElement;de.dataset.t
 function chatSheet(html){sheet('',html,0);$('#sh').classList.add('chat-pop')}
 function moreSheet(){let b='';
   if(mTab==='interact')b='<div class="chat-pop-cats"><button class="on" data-a="mt" data-i="interact">互動</button><button data-a="mt" data-i="tool">工具</button></div><div class="chat-pop-grid sm"><button class="pop-action" data-a="patopen"><span class="pat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 11V6.5a1.5 1.5 0 0 1 3 0V11"/><path d="M10 10V4.8a1.5 1.5 0 0 1 3 0V11"/><path d="M13 10V6a1.5 1.5 0 0 1 3 0v6"/><path d="M16 11V8.5a1.5 1.5 0 0 1 3 0v5.2c0 4.1-2.4 6.3-6.3 6.3h-1.2c-2.3 0-3.5-1.1-4.7-2.6L4 14.3a1.5 1.5 0 0 1 2.3-1.9L7 13.1"/></svg></span><small>拍一拍</small></button><button class="pop-action" data-a="avopen"><span class="pat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.8 20c.6-3.6 3.5-5.6 7.2-5.6s6.6 2 7.2 5.6"/></svg></span><small>頭像</small></button><button class="pop-action" data-a="feedopen"><span class="pat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 3v18"/><path d="M17 21V3c-2.2 1.2-3.5 3.8-3.5 7 0 1.6.9 2.5 3.5 2.5"/></svg></span><small>餵食</small></button></div>';
-  else b='<div class="chat-pop-cats"><button data-a="mt" data-i="interact">互動</button><button class="on" data-a="mt" data-i="tool">工具</button></div><div class="chat-pop-grid sm"><button class="pop-action" data-a="qn"><span class="pat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4.5" width="14" height="16" rx="2"/><path d="M9 4.5h6V7H9z"/><path d="M8.5 11.5l1.2 1.2 2-2.2M13.5 12h2.5M8.5 16.5l1.2 1.2 2-2.2M13.5 17h2.5"/></svg></span><small>問卷</small></button><button class="pop-action" data-a="askopen"><span class="pat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5h16v11H11l-5.5 3v-3H4z"/><path d="M10 9.5a2 2 0 1 1 2.8 1.8c-.6.3-.8.7-.8 1.2M12 14.3v.1"/></svg></span><small>問問他</small></button></div>';
+  else b='<div class="chat-pop-cats"><button data-a="mt" data-i="interact">互動</button><button class="on" data-a="mt" data-i="tool">工具</button></div><div class="chat-pop-grid sm"><button class="pop-action" data-a="qn"><span class="pat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4.5" width="14" height="16" rx="2"/><path d="M9 4.5h6V7H9z"/><path d="M8.5 11.5l1.2 1.2 2-2.2M13.5 12h2.5M8.5 16.5l1.2 1.2 2-2.2M13.5 17h2.5"/></svg></span><small>問卷</small></button><button class="pop-action" data-a="askopen"><span class="pat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5h16v11H11l-5.5 3v-3H4z"/><path d="M10 9.5a2 2 0 1 1 2.8 1.8c-.6.3-.8.7-.8 1.2M12 14.3v.1"/></svg></span><small>問問他</small></button><button class="pop-action" data-a="hidenote"><span class="pat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>'+(S.hideNote?'<path d="M4 4l16 16"/>':'')+'</svg></span><small>'+(S.hideNote?'顯示通知':'隱藏通知')+'</small></button></div>';
   chatSheet(b);$('#sh').classList.add('more')
 }
 function patSheet(){const l=(pScope==='m'?S.cards.filter(k=>{const g=S.cats.find(c=>c.id===k.cat);return k.on&&g&&g.on&&kc(g)==='pat'&&g.sc==='m'}):pool('pat',S.cur)).filter(k=>{const g=S.cats.find(c=>c.id===k.cat);return g&&g.sc===pScope});chatSheet('<div class="chat-pop-cats"><button class="'+(pScope==='s'?'on':'')+'" data-a="psc" data-i="s">共用拍一拍</button><button class="'+(pScope==='e'?'on':'')+'" data-a="psc" data-i="e">專屬拍一拍</button><button class="'+(pScope==='m'?'on':'')+'" data-a="psc" data-i="m">我的拍一拍</button></div>'+(l.length?l.map(k=>'<button class="pop-row" data-a="pgo" data-i="'+k.id+'">'+esc(k.text)+'</button>').join(''):'<div class="empty">這裡還沒有拍一拍。<br>到「字卡」頁新增，或在下方直接輸入。</div>')+'<div class="add"><input id="pt" placeholder="輸入拍一拍文字…"><button class="btn" data-a="psv" style="flex:none;width:auto;margin:0">存入</button><button class="btn s" data-a="psd" style="flex:none;width:auto;margin:0">發送</button></div>')}
 let avScope='ta';
 function avSheet(){const me=avScope==='me',ct=cur(),list=me?(S.meAvs=S.meAvs||[]):(ct.avs=ct.avs||[]),now=me?S.meAv:ct.av;
   chatSheet('<div class="chat-pop-cats"><button class="'+(me?'':'on')+'" data-a="avsc" data-i="ta">他的頭像</button><button class="'+(me?'on':'')+'" data-a="avsc" data-i="me">我的頭像</button></div><div class="av-grid">'+list.map((u,n)=>'<div class="av-it'+(u===now?' on':'')+'"><button type="button" class="av-pick" data-a="avuse" data-i="'+n+'"><img src="'+u+'" alt=""></button><button type="button" class="av-x" data-a="avdel" data-i="'+n+'" aria-label="刪除">✕</button></div>').join('')+'<button type="button" class="av-add" data-a="avadd" aria-label="新增備用頭像">＋</button></div>'+(list.length?'':'<p class="hint" style="margin:8px 2px 0;text-align:center">按「＋」添加圖片作為備用頭像，點一下就能直接換。</p>'));$('#sh').classList.add('more')}
-function emoSheet(){const type=(emoScope==='kao'||emoScope==='kao-e')?'kao':'emoji',scopeKey=(emoScope==='e'||emoScope==='kao-e')?'e':'s',l=pool(type,S.cur).filter(k=>{const g=S.cats.find(c=>c.id===k.cat);return g&&g.sc===scopeKey});const tabs=[['kao','顏文字'],['kao-e','他的專屬顏文字'],['s','共用表情包'],['e','他的專屬表情包']];
-  const cs=S.cats.filter(g=>l.some(k=>k.cat===g.id)),item=k=>'<button data-a="'+(k.img?'es':'ek')+'" data-i="'+k.id+'">'+(k.img?'<img src="'+k.img+'">':esc(k.text))+'</button>';
+const recEmoPush=id=>{if(!id)return;S.recEmo=[id].concat((S.recEmo||[]).filter(x=>x!==id)).slice(0,20)};
+function emoSheet(){const rec=emoScope==='recent',type=(emoScope==='kao'||emoScope==='kao-e')?'kao':'emoji',scopeKey=(emoScope==='e'||emoScope==='kao-e')?'e':'s',l=rec?(S.recEmo||[]).map(id=>S.cards.find(k=>k.id===id)).filter(Boolean).slice(0,20):pool(type,S.cur).filter(k=>{const g=S.cats.find(c=>c.id===k.cat);return g&&g.sc===scopeKey});const tabs=[['kao','顏文字'],['kao-e','他的專屬顏文字'],['s','共用表情包'],['e','他的專屬表情包']];
+  const cs=rec?[]:S.cats.filter(g=>l.some(k=>k.cat===g.id)),item=k=>'<button data-a="'+(k.img?'es':'ek')+'" data-i="'+k.id+'">'+(k.img?'<img src="'+k.img+'">':esc(k.text))+'</button>';
   const cur1=cs.find(g=>g.id===emoCat)||cs[0];emoCat=cur1?cur1.id:null;
   const chips=cs.length>1?'<div class="emo-cats">'+cs.map(g=>'<button type="button" class="'+(g.id===emoCat?'on':'')+'" data-a="ecsw" data-i="'+g.id+'">'+esc(g.name)+'</button>').join('')+'</div>':'';
-  const body=cur1?'<div class="eg chat-eg">'+l.filter(k=>k.cat===cur1.id).map(item).join('')+'</div>':'';
-  chatSheet('<div class="emo-sticky"><div class="chat-pop-cats">'+tabs.map(([k,n])=>'<button class="'+(emoScope===k?'on':'')+'" data-a="esw" data-i="'+k+'">'+n+'</button>').join('')+'</div>'+(l.length?chips:'')+'</div>'+(l.length?body:'<div class="empty">這裡還沒有內容。<br>到「字卡」頁新增。</div>'));$('#sh').classList.add('emo')}
+  const body=rec?'<div class="eg chat-eg">'+l.map(item).join('')+'</div>':cur1?'<div class="eg chat-eg">'+l.filter(k=>k.cat===cur1.id).map(item).join('')+'</div>':'';
+  chatSheet('<div class="emo-sticky"><div class="chat-pop-cats"><button class="emo-recent'+(rec?' on':'')+'" data-a="esw" data-i="recent" aria-label="最近使用"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg></button>'+tabs.map(([k,n])=>'<button class="'+(emoScope===k?'on':'')+'" data-a="esw" data-i="'+k+'">'+n+'</button>').join('')+'</div>'+(l.length?chips:'')+'</div>'+(l.length?body:'<div class="empty">'+(rec?'還沒有最近使用的表情。<br>送出表情包或顏文字後會出現在這裡（最多 20 個）。':'這裡還沒有內容。<br>到「字卡」頁新增。')+'</div>'));$('#sh').classList.add('emo')}
 const scOff=(kd,sc,cid)=>{const ct=S.contacts.find(c=>c.id===cid);return !!(ct&&ct.scOff&&ct.scOff[kd+':'+sc])};
 const cardPool=cid=>pool('card',cid).concat(pool('mem',cid),pool('ext',cid));
 const pool=(kd,cid)=>S.cards.filter(k=>{const g=S.cats.find(c=>c.id===k.cat);return k.on&&g&&g.on&&kc(g)===kd&&(g.sc==='s'||g.own===cid||(!g.own&&g.as.includes(cid)))&&!scOff(kd,g.sc,cid)});
@@ -175,7 +185,7 @@ function dlogSync(){const day=localDayKey(new Date());(S.contacts||[]).forEach(c
 function dly(cid){S.dailies=S.dailies||{};return S.dailies[cid]||(S.dailies[cid]={day:'',base:0,next:0,done:false,items:[]})}
 function dailyTick(){if(!S||!S.set)return;const now=Date.now(),day=localDayKey(new Date(now)),hold=!!(window.LPE&&LPE.busy&&LPE.busy());let ch=0;(S.contacts||[]).forEach(c=>{ctxSet(c.id);const D=dly(c.id);if(D.day!==day){if(D.day&&D.done&&Array.isArray(D.items)&&D.items.length)dlogPut(c.id,D.day,D.items,null,D.at);Object.assign(D,{day,base:now,next:0,done:false,items:[]});ch=1}if(D.done||hold||!S.set.dailyOn)return;const win=Math.max(1000,inspRand(S.set.dailyWmin==null?600:S.set.dailyWmin,S.set.dailyWmax==null?10800:S.set.dailyWmax));if(D.next&&now<D.next)return;ch=1;if(!c.dnd&&rnd()*100<Math.max(0,Math.min(100,+S.set.dailyProb||0))){const items=dailyPick(c.id);if(items.length){D.items=items;D.done=true;D.at=now;D.next=0;if(S.set.dailyMoodOn!==0&&S.set.dailyMoodOn!==false){D.moodAt=now+Math.max(0,+S.set.moodSel||0)*1000;if(S.todayMoodBy)delete S.todayMoodBy[c.id]}return}}D.next=now+win});dlogSync();if(ch)save()}
 /* ── 刪除確認框：真正執行刪除的按鈕要連按兩次（第一次變成「再按一次確認」，3.5 秒內再按才執行） ── */
-(()=>{const OK=new Set(['an:cfyes','bdelok','bigclrok','bigdelok','cdelok','cdlok','dclrok','delcf','delok','dupdel','evdelok','gdelok','idelok','ldelok','mdelmok','mdelok','mdrm','mldelok','momdel','pdelok','perrecdelok','avcancelok','pf:cfyes','qcfok','qdelok','rdelok','remdelok','stkdelok','dtmpok']);
+(()=>{const OK=new Set(['an:cfyes','bdelok','bigclrok','bigdelok','cdelok','cdlok','dclrok','evdelok','gdelok','idelok','ldelok','mdelmok','mdelok','mdrm','mldelok','momdel','pdelok','perrecdelok','avcancelok','pf:cfyes','qcfok','qdelok','rdelok','remdelok','stkdelok','dtmpok']);
 let armed=null,tm=null;
 const disarm=()=>{if(armed&&armed.isConnected&&armed.dataset.orig){armed.textContent=armed.dataset.orig;armed.classList.remove('armed')}armed=null;clearTimeout(tm)};
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('button[data-a]');
