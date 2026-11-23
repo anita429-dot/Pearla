@@ -1,6 +1,6 @@
 /* 霧海系共用（data-theme=glass）：霧海、手帳、像素、月眠都建立在這之上 */
 /* ── 主題：霧海（霧面玻璃，只改顏色與質感，不動版面） ── */
-:root[data-theme=glass]{--bs:solid;--ink:#ffffff;--soft:#ffffffd1;--tsh:#6b7a9099;--line:#ffffff47;--lav:#7fa1cc;--bg:#e8eff8;--card:#ffffff29;--bub:#ffffff40;--me:#bcd4f066;--pk:#9db9de}
+:root[data-theme=glass]{--bs:solid;--ink:#ffffff;--soft:#ffffffd1;--tsh:#3b4a66b8;--line:#ffffff47;--lav:#7fa1cc;--bg:#e8eff8;--card:#ffffff29;--bub:#ffffff40;--me:#bcd4f066;--pk:#9db9de}
 [data-theme=glass] body{background:#7f86a8;text-shadow:0 1px 6px var(--tsh)}
 [data-theme=glass] #app{background:url(../assets/glass/bg-dusk.webp) center/cover no-repeat,radial-gradient(ellipse 70% 9% at 22% 10%,#ffffff70,transparent 70%),radial-gradient(ellipse 60% 7% at 80% 17%,#ffffff5c,transparent 70%),radial-gradient(ellipse 80% 8% at 40% 27%,#ffffff45,transparent 70%),linear-gradient(180deg,#8497b3 0%,#a9b9cf 20%,#cdd9e7 38%,#dbe5ef 40%,#8aa2c0 41%,#7c95b5 56%,#9db3cd 78%,#cfdbe8 100%)}
 [data-theme=glass] .card,[data-theme=glass] .tabs,[data-theme=glass] .row,[data-theme=glass] .seg,[data-theme=glass] .tile,[data-theme=glass] .btn:not(.s),[data-theme=glass] .chip,[data-theme=glass] .theme-opt,[data-theme=glass] .ci,[data-theme=glass] .ib{border:1px solid #ffffffa6}

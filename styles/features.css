@@ -336,3 +336,66 @@ html[data-theme] .sys.go,.sys.go{border:0!important;padding:3px 12px}
 .cal2-mo{position:absolute;left:2px;right:2px;bottom:11px;display:flex;justify-content:space-between;align-items:center;font-size:calc(10px*var(--fz,1));line-height:1;pointer-events:none}
 .cal2-mo b{font-weight:400;min-width:1em;text-align:center}
 .cal2-dots{bottom:2px}
+
+/* 表情浮窗：最近使用鍵跟旁邊的鍵同高；顏文字依長度排成一排排、高度減半；分頁鍵兩行置中 */
+#sh.chat-pop.emo .chat-pop-cats{align-items:stretch}
+#sh.chat-pop.emo .chat-pop-cats button.emo-recent{height:auto;align-self:stretch}
+#sh.chat-pop.emo .chat-pop-cats button{display:flex;align-items:center;justify-content:center;text-align:center}
+.chat-eg.kao,.chat-eg.mix{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chat-eg.kao button.ki,.chat-eg.mix button.ki{width:auto;max-width:100%;aspect-ratio:auto;height:34px;padding:0 12px;border:1.2px solid var(--line);border-radius:10px;background:var(--card);font-size:calc(15px*var(--fz,1));white-space:nowrap}
+.chat-eg.mix button:not(.ki){width:calc((100% - 18px)/4);flex:none}
+/* 資料卡：排行外框只到排名數字下方；資料卡設定切到非目前分類時開關不吃點擊 */
+.ci-rbox{flex:none}
+.ci-right{justify-content:flex-start}
+.seg button:not(.on) .sw{pointer-events:none}
+
+/* 朋友圈：頁面上直接發文 */
+.mom-new{padding:10px 12px;margin:0 0 12px}
+.mom-new .mh-in{width:100%;box-sizing:border-box;margin:0}
+.mom-new .mom-dr{margin-top:8px}
+.mom-ntools{display:flex;justify-content:flex-end;align-items:center;gap:6px;margin-top:6px}
+.mom-ntools .ib{width:36px;height:36px;display:grid;place-items:center;padding:0}
+.mom-ntools .mn-send{color:var(--lav)}
+
+/* 聊天室：圖片預覽、圖示按鈕 */
+.cpv{display:flex;flex-wrap:wrap;gap:8px;padding:0 4px}
+.cpv:not(:empty){padding:6px 4px 2px}
+.cpv-i{position:relative;width:62px;height:62px;border:1.2px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card)}
+.cpv-i img{width:100%;height:100%;object-fit:cover;display:block}
+.cpv-i b{position:absolute;top:0;right:0;width:20px;height:20px;display:grid;place-items:center;background:#0006;color:#fff;border-radius:0 0 0 8px;font-size:calc(13px*var(--fz,1));font-weight:400;cursor:pointer}
+#f .send-ib{color:var(--lav);flex:none}
+.b.pic img,.b.media-b.pic img{max-height:280px;max-width:min(240px,100%);border-radius:12px}
+
+/* 月曆：心情排在日期農曆下方（不再絕對定位而與其他文字重疊） */
+.cal2-mo{position:static;width:100%;box-sizing:border-box;padding:0 4px;margin-top:1px;font-size:calc(11px*var(--fz,1));left:auto;right:auto;bottom:auto}
+.cal2-dots{bottom:1px}
+.cal2-dots i{width:4px;height:4px}
+.cal2-kt{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.cal2-kt .cal2-tm{margin:0;font-size:calc(11px*var(--fz,1));color:var(--soft);font-weight:400}
+.daily-none{opacity:.6}
+
+/* 黏土主題：主頁圖示依內容面積統一視覺大小 */
+[data-theme=lav] .tile img.ti[src$="/inspiration.webp"]{width:53.7px;height:54.3px}
+[data-theme=lav] .tile img.ti[src$="/group-chat.webp"]{width:53.7px;height:54.3px}
+[data-theme=lav] .tile img.ti[src$="/friends.webp"]{width:55.0px;height:53.6px}
+[data-theme=lav] .tile img.ti[src$="/records.webp"]{width:58.3px;height:53.4px}
+[data-theme=lav] .tile img.ti[src$="/anniversary.webp"]{width:61.6px;height:53.2px}
+[data-theme=lav] .tile img.ti[src$="/study-progress.webp"]{width:57.5px;height:52.7px}
+[data-theme=lav] .tile img.ti[src$="/data.webp"]{width:53.6px;height:54.4px}
+[data-theme=lav] .tile img.ti[src$="/tomato-timer.webp"]{width:54.7px;height:53.3px}
+[data-theme=lav] .tile img.ti[src$="/plum-divination.webp"]{width:62.5px;height:52.4px}
+[data-theme=lav] .tile img.ti[src$="/answer-book.webp"]{width:54.9px;height:53.4px}
+[data-theme=lav] .tile img.ti[src$="/kitchen.webp"]{width:55.3px;height:53.9px}
+[data-theme=lav] .tile img.ti[src$="/doodle.webp"]{width:53.4px;height:54.9px}
+[data-theme=lav] .tile img.ti[src$="/tracking.webp"]{width:53.9px;height:55.3px}
+[data-theme=lav] .tile img.ti[src$="/mall.webp"]{width:53.0px;height:55.9px}
+[data-theme=lav] .tile img.ti[src$="/gift-cabinet.webp"]{width:52.0px;height:56.7px}
+[data-theme=lav] .tile img.ti[src$="/mailbox.webp"]{width:57.4px;height:50.8px}
+[data-theme=lav] .tile img.ti[src$="/files.webp"]{width:56.4px;height:51.7px}
+[data-theme=lav] .tile .ti{flex:none}
+
+/* 導覽行再高一些 */
+.tabs{padding:9px 2px}
+/* 備忘錄靠下（月眠主題用自己的位置，不受影響） */
+html:not([data-skin=moon]) .pgp:first-child{display:flex;flex-direction:column}
+html:not([data-skin=moon]) .pgp:first-child .memo-card{margin-top:auto;margin-bottom:6px}

@@ -155,7 +155,7 @@ input[type=range]{padding:0;border:none;background:none;accent-color:var(--lav)}
 #sh.mid{align-items:center;padding:0 24px}
 #sh.mid .box{border-radius:22px;border-bottom:1.5px var(--bs,dashed) var(--line);max-width:360px}
 #sh.chat-pop{align-items:flex-end;background:transparent;pointer-events:none}
-#sh.chat-pop .box{pointer-events:auto;position:absolute;bottom:70px;width:calc(100% - 48px);max-width:350px;height:210px;min-height:210px;max-height:210px;overflow-y:auto;border:1.3px var(--bs,dashed) var(--line);border-radius:15px;padding:8px;background:var(--bg);box-shadow:0 8px 25px #3c366a22}
+#sh.chat-pop .box{pointer-events:auto;position:absolute;bottom:var(--pop-b,70px);width:calc(100% - 48px);max-width:350px;height:210px;min-height:210px;max-height:210px;overflow-y:auto;border:1.3px var(--bs,dashed) var(--line);border-radius:15px;padding:8px;background:var(--bg);box-shadow:0 8px 25px #3c366a22}
 #sh.chat-pop .box h2{display:none}
 .chat-pop-cats{display:flex;gap:4px;overflow-x:auto;border-bottom:1.2px var(--bs,dashed) var(--line);padding-bottom:5px;margin-bottom:5px}
 .chat-pop-cats button{border:1.1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 7px;font-size:calc(11px*var(--fz,1));color:var(--soft);white-space:nowrap}
