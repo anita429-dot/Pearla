@@ -149,10 +149,12 @@ function recBox(){
   else info='<span class="rec-dot"></span><span>點右側麥克風開始錄音</span>';
   return '<div id="recbox" class="rec-box'+(live?' live':'')+'"><div class="rec-info">'+info+'</div><button type="button" class="rec-mic" data-a="'+(live?'recstop':'recgo')+'" aria-label="'+(live?'停止錄音':'開始錄音')+'">'+(live?STOP_SVG:MIC_SVG)+'</button></div>'}
 function recUI(){const o=$('#recbox');if(o)o.outerHTML=recBox()}
-function recCleanup(){clearInterval(recTick);recTick=null;if(recStream){recStream.getTracks().forEach(t=>t.stop());recStream=null}}
+function recCleanup(){clearInterval(recTick);recTick=null;if(recStream){recStream.getTracks().forEach(t=>t.stop());recStream=null}micSession(0)}
 function recClear(){if(recPrev){recPrev.pause();recPrev=null}if(recData&&recData.url)URL.revokeObjectURL(recData.url);recData=null;recChunks=[];if(recMR&&recMR.state!=='inactive'){recMR.onstop=null;try{recMR.stop()}catch(_){}}recMR=null;recCleanup();recSt='idle'}
 function recToggle(){
-  if(recMode){recClear();recMode=false}else{recMode=true;recSt='idle'}
+  if(recMode){recClear();recMode=false}else{recMode=true;recSt='idle';
+    /* 點錄音鍵就直接請求麥克風權限（會跳出系統的「是否允許使用麥克風」） */
+    if(S.set.recSound&&!window.__micOK)micAsk().then(st=>{if(st){st.getTracks().forEach(t=>t.stop());micSession(0);window.__micOK=1}})}
   const hb=$('.chh [data-a=vrec]');if(hb)hb.classList.toggle('rec-on',recMode);
   const f=$('#f'),cur0=f&&f.querySelector('#in,#recbox');if(cur0)cur0.outerHTML=recMode?recBox():'<input id="in" placeholder="說點什麼…" autocomplete="off">';
 }
@@ -173,18 +175,20 @@ async function micTest(){
   out.push('瀏覽器回報的權限狀態：'+esc(perm)+'（僅供參考）');
   out.push('安全環境（https）：'+(window.isSecureContext?'是':'否'));
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){out.push('<b>結果：這個瀏覽器沒有 getUserMedia，無法錄音。</b>');show(out.join('<br>'),1);return}
-  try{st=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){out.push('<b>結果：實際無法取得麥克風</b><br>錯誤：'+esc(e&&e.name||'')+(e&&e.message?'（'+esc(String(e.message).slice(0,80))+'）':''));show(out.join('<br>'),1);return}
+  micSession(1);try{st=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){micSession(0);out.push('<b>結果：實際無法取得麥克風</b><br>錯誤：'+esc(e&&e.name||'')+(e&&e.message?'（'+esc(String(e.message).slice(0,80))+'）':''));show(out.join('<br>'),1);return}
   const tr=st.getAudioTracks()[0];out.push('<b>實際取得麥克風：成功</b>');
   if(tr){out.push('裝置：'+esc(tr.label||'（未提供名稱）'));out.push('狀態：'+esc(tr.readyState)+(tr.muted?'，目前被靜音':'')+(tr.enabled===false?'，已停用':''))}
   show(out.join('<br>')+'<br>正在偵測聲音，請對著手機說話 3 秒⋯⋯');
   let peak=0;try{const AC=window.AudioContext||window.webkitAudioContext,ac=new AC(),src=ac.createMediaStreamSource(st),an=ac.createAnalyser();an.fftSize=1024;src.connect(an);if(ac.state==='suspended')await ac.resume();const buf=new Uint8Array(an.fftSize),t0=Date.now();
     await new Promise(res=>{const iv=setInterval(()=>{an.getByteTimeDomainData(buf);let m=0;for(let i=0;i<buf.length;i++)m=Math.max(m,Math.abs(buf[i]-128));peak=Math.max(peak,m/128);if(Date.now()-t0>3000){clearInterval(iv);res()}},60)});try{ac.close()}catch(e){}}catch(e){out.push('無法偵測音量：'+esc(e&&e.name||''))}
-  st.getTracks().forEach(t=>t.stop());window.__micOK=1;
+  st.getTracks().forEach(t=>t.stop());micSession(0);window.__micOK=1;
   out.push(peak>0.04?'<b>有收到聲音</b>（最大音量約 '+Math.round(peak*100)+'%）':'<b>沒有偵測到聲音</b>（最大音量 '+Math.round(peak*100)+'%）：權限正常，但可能沒說話、麥克風被遮住或被其他 App 佔用');
   show(out.join('<br>'),1)}
+/* iOS：只要 App 播過音效，音訊工作階段就是「播放」類別，之後 getUserMedia 會報 InvalidStateError（AudioSession category is not compatible with audio capture）→ 取麥克風前先切到可錄音的類別，用完還原 */
+function micSession(on){try{if(navigator.audioSession)navigator.audioSession.type=on?'play-and-record':'auto'}catch(e){}}
 async function micAsk(){if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){micExplain(null);return null}
-  let err=null;for(const c of [{audio:true},{audio:{channelCount:1}}]){try{return await navigator.mediaDevices.getUserMedia(c)}catch(e){err=e;if(e&&(e.name==='NotAllowedError'||e.name==='SecurityError'))break}}
-  micExplain(err);return null}
+  micSession(1);let err=null;for(const c of [{audio:true},{audio:{channelCount:1}}]){try{return await navigator.mediaDevices.getUserMedia(c)}catch(e){err=e;if(e&&(e.name==='NotAllowedError'||e.name==='SecurityError'))break}}
+  micSession(0);micExplain(err);return null}
 async function recStart(){
   if(recSt==='rec')return;
   recClear();recMode=true;

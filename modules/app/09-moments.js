@@ -41,6 +41,12 @@ function momPost(p){const me=p.cid==='me',c=me?{id:'me',av:S.meAv,name:S.me}:S.c
   const top='<button class="mom-top" data-a="'+(me?'mompedit':'momdelask')+'" data-i="'+p.id+'" aria-label="'+(me?'編輯貼文':'刪除貼文')+'">'+(me?MI.edit:MI.del)+'</button>';
   const acts='<div class="mom-acts"><button class="mom-ic mom-heart'+(p.liked?' lk':'')+(p.liked&&momPop===p.id?' pop':'')+'" data-a="momlike" data-i="'+p.id+'" aria-label="點贊">'+MI_H(p.liked)+'</button><button class="mom-ic" data-a="momcmt" data-i="'+p.id+'" aria-label="留言"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-8 7.5 8.7 8.7 0 0 1-3.6-.8L4 20l1.4-3.4A7.2 7.2 0 0 1 4 11.5 7.5 7.5 0 0 1 12 4a7.5 7.5 0 0 1 8 7.5z"/><path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01"/></svg></button><button class="mom-ic" data-a="mstk" data-i="'+p.id+'" aria-label="貼紙">'+MI.face+'</button><button class="mom-ic'+(p.fav?' fv':'')+'" data-a="momfav" data-i="'+p.id+'" aria-label="收藏">'+(p.fav?'★':'☆')+'</button></div>';
   return '<div class="mom-post">'+top+'<div class="mom-hd">'+avh(c,'msgav')+'<div><div class="mom-nm">'+esc(c.name)+'</div><div class="mom-time">'+ltime(p.t)+(p.edited?' · 已編輯':'')+'</div></div></div><div class="mom-bd">'+(p.x?'<div class="mom-tx">'+esc(p.x)+'</div>':'')+(im.length?'<div class="mom-imgs'+(im.length===1?' one':'')+'">'+im.map(u=>'<img src="'+u+'" alt="">').join('')+'</div>':'')+momWall(p)+acts+(likes.length?'<div class="mom-re"><span class="mom-lk">'+MI_H(1)+likes.map(esc).join('、')+'</span></div>':'')+momCols(p)+momCBox(p)+'</div></div>'}
+/* ── 我的空間：直接在頁面上發文（不用另外按「發布貼文」跳浮窗） ── */
+let momNew={x:'',items:[]};
+const MI_IMG='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="15" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4.5 18 5-5 3.5 3.5 2.5-2.5 4 4"/></svg>';
+const momNewPv=()=>momNew.items.map((o,n)=>'<div class="mom-dc'+(o.k==='i'?' mom-dc-photo':'')+'">'+(o.img?'<img src="'+o.img+'" alt="">':esc(o.x||''))+'<b data-a="mnrm" data-i="'+n+'" aria-label="移除">×</b></div>').join('');
+const momNewHtml=()=>'<div class="card mom-new"><textarea class="mh-in" id="momntx" rows="3" maxlength="500" placeholder="寫點什麼…" style="resize:none">'+esc(momNew.x)+'</textarea><div class="mom-dr" id="momnpv">'+momNewPv()+'</div><div class="mom-ntools"><button type="button" class="ib" data-a="mnemo" aria-label="顏文字、emoji、表情包">'+MI.face+'</button><button type="button" class="ib" data-a="mnimg" aria-label="圖片">'+MI_IMG+'</button><button type="button" class="ib mn-send" data-a="mnsend" aria-label="發布">'+MI_S+'</button></div></div>';
+document.addEventListener('input',e=>{if(e.target.id==='momntx')momNew.x=e.target.value});
 function vMom(){
   const head='<div class="ph2"><button class="ib" data-a="momback">‹</button><h1>朋友圈</h1><span class="grow"></span><span class="mom-stksw">貼紙<button class="sw '+(S.momStk===0?'':'on')+'" data-a="momstk" aria-label="顯示或隱藏貼紙"></button></span></div>';
   const sig=S.momSig||'',cv=S.momCover;
@@ -48,7 +54,7 @@ function vMom(){
   const bar=momPlacing?'<div class="mom-bar"><span>點一下貼圖牆，把貼紙放在想要的位置</span><button class="btn" data-a="momcancel">取消</button></div>':'';
   const tabs='<div class="cards-top mom-sticky"><div class="stabs">'+[['me','我的空間'],['ct','聯絡人貼文']].map(([k,n])=>'<button class="stab '+(momTab===k?'on':'')+'" data-a="momtab" data-i="'+k+'">'+n+'</button>').join('')+'</div></div>';
   const all=[...(S.moments||[])].sort((x,y)=>y.t-x.t);let body;
-  if(momTab==='me'){const l=all.filter(p=>p.cid==='me');body='<div class="mom-pubrow"><button class="btn s" data-a="mompost">發布貼文</button></div>'+(l.length?'<div class="card" style="padding:4px 14px">'+l.map(momPost).join('')+'</div>':'<div class="empty">你還沒有發布過貼文。</div>')}
+  if(momTab==='me'){const l=all.filter(p=>p.cid==='me');body=momNewHtml()+(l.length?'<div class="card" style="padding:4px 14px">'+l.map(momPost).join('')+'</div>':'<div class="empty">你還沒有發布過貼文。</div>')}
   else{const l=all.filter(p=>p.cid!=='me'&&S.contacts.some(c=>c.id===p.cid));if(l.some(p=>!p.seen)){l.forEach(p=>{p.seen=1});saveSoon()}body=l.length?'<div class="card" style="padding:4px 14px">'+l.map(momPost).join('')+'</div>':'<div class="empty">還沒有朋友圈貼文。<br>聯絡人發布的貼文會顯示在這裡。</div>'}
   return head+bar+cover+tabs+body}
 /* 發布貼文（我的空間） */
@@ -59,10 +65,10 @@ function momPicker(){momSync();const T=[['kao','顏文字'],['emj','emoji'],['em
   sheet('選擇內容','<div class="mom-pv" id="mompv">'+momPvHtml()+'</div><div class="stabs">'+T.map(([k,n])=>'<button class="stab '+(momPK===k?'on':'')+'" data-a="mpktab" data-i="'+k+'">'+n+'</button>').join('')+'</div>'+(l.length?'<div class="mom-pg mom-pgs t-'+momPK+'">'+l.map(k=>'<button data-a="mpkadd" data-i="'+k.id+'">'+(k.img?'<img src="'+k.img+'" alt="">':esc(k.text))+'</button>').join('')+'</div>':'<div class="empty">這裡還沒有內容。<br>到「字卡」頁新增。</div>')+'<button class="btn s" data-a="mpkdone">完成</button>',0)}
 /* 表情包／貼紙浮窗：與聊天室的表情浮窗相同（分頁＋分類晶片）；留言沒有顏文字，貼紙多了 emoji */
 let momEmo=null;
-const MEMO_TABS={c:[['s','共用表情包','emoji','s'],['e','他的專屬表情包','emoji','e']],s:[['s','共用表情包','emoji','s'],['e','他的專屬表情包','emoji','e'],['es','共用 emoji','emj','s'],['ee','他的專屬 emoji','emj','e']]};
-function momEmoOpen(ctx,pid){const p=S.moments.find(x=>x.id===pid);if(!p)return;momEmo={ctx,pid,oc:momOwner(p),scope:'s',cat:null};momEmoSheet()}
+const MEMO_TABS={n:[['k','顏文字','kao','s'],['ke','他的專屬<br>顏文字','kao','e'],['s','共用<br>表情包','emoji','s'],['e','他的專屬<br>表情包','emoji','e'],['m','emoji','emj','']],c:[['s','共用<br>表情包','emoji','s'],['e','他的專屬<br>表情包','emoji','e']],s:[['s','共用<br>表情包','emoji','s'],['e','他的專屬<br>表情包','emoji','e'],['es','共用 emoji','emj','s'],['ee','他的專屬 emoji','emj','e']]};
+function momEmoOpen(ctx,pid){let oc=S.cur;if(ctx!=='n'){const p=S.moments.find(x=>x.id===pid);if(!p)return;oc=momOwner(p)}momEmo={ctx,pid,oc,scope:ctx==='n'?'k':'s',cat:null};momEmoSheet()}
 function momEmoSheet(){const E=momEmo;if(!E)return;const tabs=MEMO_TABS[E.ctx],t=tabs.find(x=>x[0]===E.scope)||tabs[0];E.scope=t[0];
-  const l=pool(t[2],E.oc).filter(k=>{const g=S.cats.find(c=>c.id===k.cat);return g&&g.sc===t[3]});
+  const l=pool(t[2],E.oc).filter(k=>{const g=S.cats.find(c=>c.id===k.cat);return g&&(!t[3]||g.sc===t[3])});E.type=t[2];
   const cs=S.cats.filter(g=>l.some(k=>k.cat===g.id)),cur1=cs.find(g=>g.id===E.cat)||cs[0];E.cat=cur1?cur1.id:null;
   const item=k=>'<button data-a="'+(k.img?'mes':'mek')+'" data-i="'+k.id+'">'+(k.img?'<img src="'+k.img+'">':esc(k.text))+'</button>';
   const chips=cs.length>1?'<div class="emo-cats">'+cs.map(g=>'<button type="button" class="'+(g.id===E.cat?'on':'')+'" data-a="mecsw" data-i="'+g.id+'">'+esc(g.name)+'</button>').join('')+'</div>':'';
@@ -100,7 +106,7 @@ function mrepTick(){if(!S||!S.mrep||!S.mrep.length)return false;const n=Date.now
     if(r.due>n){keep.push(r);return}ch=true;ctxSet(r.cid);if(isDnd(r.cid))return;
     if(r.ph==='j'){if(momHit(s.srProb)){r.ph='c';r.due=n+inspRand(s.srMin,s.srMax);keep.push(r)}return}
     if(r.ph==='c'){const sp=stkPool(r.cid);if(!sp.length)return;r.q=Array.from({length:momRange(s.srNmin,s.srNmax)},()=>mItem(pk(sp)));if(!r.q.length)return;r.ph='p';r.due=n+STEP+Math.max(0,+s.srPlace||0)*1000+STEP;keep.push(r);return}
-    if(r.ph==='p'){const o=r.q.shift();post.wall.st=post.wall.st||[];{const t0={id:uid(),img:o.img,x:o.x,px:momPos(),py:momPos(),by:r.cid,t:n};post.wall.st.push(t0);stkShrink(t0)}if(r.q.length){r.due=n+STEP+STEP;keep.push(r)}}}catch(err){console.error('mrepTick',err);ch=true}});
+    if(r.ph==='p'){const o=r.q.shift();post.wall.st=post.wall.st||[];{const t0={id:uid(),img:o.img,x:o.x,px:momPos(),py:momPos(),by:r.cid,t:n};post.wall.st.push(t0);stkShrink(t0);try{save()}catch(e){}}if(r.q.length){r.due=n+STEP+STEP;keep.push(r)}}}catch(err){console.error('mrepTick',err);ch=true}});
   S.mrep=keep;return ch}
 /* ── 聯絡人留言：主動留言（其他聯絡人的貼文）／回覆留言（其他聯絡人的留言） ── */
 const MCM_GAP=1500;
@@ -121,9 +127,12 @@ function mcmBuild(j,n){const cf=mcmCfg(j.k),cid=j.cid,pl=cardPool(cid);if(!pl.le
 function momNote(cid,x){try{if(S.set.momNotify===0)return;ms(cid).push({id:uid(),f:'sys',x,t:Date.now(),go:'mom'});banner(x,6000,'mom');if(tab==='chat'&&S.cur===cid)paint()}catch(e){}}
 function mcmSend(j,o,post){const c=S.contacts.find(x=>x.id===j.cid);if(!c)return;post.cmts=Array.isArray(post.cmts)?post.cmts:[];const m={id:uid(),cid:j.cid,n:c.name,x:o.x||'',img:o.img||''};if(j.k!=='p'){m.rt=j.to;m.rid=j.mid;/* 回覆出現在該留言同一欄；有新回覆就讓該欄的展開鈕保持原狀 */}post.cmts.push(m);
   if(!j.nt){j.nt=1;const ow=post.cid==='me'?S.me:((S.contacts.find(z=>z.id===post.cid)||{}).name||'');let x;if(j.k==='p')x=c.name+' 在'+(post.cid==='me'?'你':ow)+'的朋友圈留言了';else x=j.to===S.me?c.name+' 回覆了你的留言':c.name+' 回覆了'+j.to+'的留言';momNote(j.cid,x)}
+  try{save()}catch(e){}
   if(j.k==='p')mcmReply(post,m)}
 function mcmTick(){if(!S||!S.mcm||!S.mcm.length)return false;const n=Date.now(),s=S.set;let ch=false;const list=S.mcm;S.mcm=[];const keep=S.mcm;
-  list.forEach(j=>{try{const post=S.moments.find(x=>x.id===j.pid);if(!post||!S.contacts.some(c=>c.id===j.cid)||!(j.k==='p'?s.cmOn:s.crOn)){ch=true;return}
+  list.forEach(j=>{try{const post=S.moments.find(x=>x.id===j.pid);if(!post||!S.contacts.some(c=>c.id===j.cid)){ch=true;return}
+    /* 用這個任務所屬聯絡人的設定判斷（以前用的是「目前選到的聯絡人」的設定，點到別的聯絡人時回覆就被丟掉） */
+    ctxSet(j.cid);if(!(j.k==='p'?s.cmOn:s.crOn)){ch=true;return}
     if(j.due>n){keep.push(j);return}ch=true;ctxSet(j.cid);if(isDnd(j.cid))return;
     if(j.ph==='j'){const cf=mcmCfg(j.k);if(momHit(cf.prob)){j.ph='w';j.due=n+inspRand(cf.tmin,cf.tmax);keep.push(j)}return}
     if(j.ph==='w'){j.q=mcmBuild(j,n);if(j.q.length){j.ph='s';j.due=j.q[0].at;keep.push(j)}return}

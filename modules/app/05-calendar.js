@@ -46,7 +46,7 @@ function calDayBody(){
   let det='<div class="cal2-box"><h3>'+y+' 年 '+m+' 月 '+d+' 日'+(lunOf(pdk(calSel))?'　農曆'+(()=>{const L=lunOf(pdk(calSel));return lunMName(L.m,L.leap)+lunDName(L.d)})():'')+'</h3>';
   if(!rows.length)det+='<div class="cal2-v" style="color:var(--soft)">這天沒有聯絡人的每日留言。</div>';
   rows.forEach(({c,r})=>{const mo=r.mood&&(r.mood.emoji||r.mood.text)?esc((r.mood.emoji||'')+(r.mood.text||'')):'';
-    det+='<div class="cal2-ct"><div class="cal2-nm">'+esc(c.name)+(r.t?'<small class="cal2-tm">留言時間 '+calHM(r.t)+'</small>':'')+'</div>'+(mo?'<div class="cal2-k">今日心情</div><div class="cal2-v">'+mo+'</div>':'')+'<div class="cal2-k">每日留言</div><div class="cal2-v">'+r.items.map(x=>esc(x)).join(' ')+'</div>'
+    det+='<div class="cal2-ct"><div class="cal2-nm">'+esc(c.name)+'</div>'+(mo?'<div class="cal2-k">今日心情</div><div class="cal2-v">'+mo+'</div>':'')+'<div class="cal2-k cal2-kt"><span>每日留言</span>'+(r.t?'<small class="cal2-tm">留言時間 '+calHM(r.t)+'</small>':'')+'</div><div class="cal2-v">'+r.items.map(x=>esc(x)).join(' ')+'</div>'
       +(r.reply?'<div class="cal2-k">我的回覆（已回覆）</div><div class="cal2-v cal2-re">'+esc(r.reply.x)+'</div>':'<div class="cal2-k">回覆這則留言（只能回覆一次）</div><textarea class="cal2-in" id="cal-re-'+c.id+'" rows="2" maxlength="200" placeholder="寫下你的回覆"></textarea><button type="button" class="btn s" data-a="calreply" data-i="'+c.id+'" style="margin:6px 0 0">回覆</button>')+'</div>'});
   det+='</div>';
   if(evs.length)det+='<div class="cal2-box"><h3>當日事件</h3>'+evs.map(e=>'<div class="cal2-ct"><div class="cal2-nm">'+esc(e.name)+'</div>'+(e.note?'<div class="cal2-v" style="color:var(--soft)">'+esc(e.note)+'</div>':'')+'</div>').join('')+'</div>';
@@ -68,7 +68,7 @@ function calEvBody(){const list=(S.evlog||[]).slice().sort((a,b)=>a.date<b.date?
     h+=evEdit?'<div class="ci cal2-row" data-a="evsel" data-i="'+e.id+'" style="cursor:pointer"><span class="ck '+(sel?'on':'')+'"></span>'+info+'</div>':'<div class="ci cal2-row" data-a="evopen" data-i="'+e.id+'" style="cursor:pointer">'+info+'</div>'});
   return h+'</div>'}
 /* 日期下方的小心情：左邊他的（目前聯絡人）、右邊我的，只顯示 emoji */
-function calMoodRow(k){const h=S.dlog&&S.dlog[S.cur]&&S.dlog[S.cur][k]&&S.dlog[S.cur][k].mood,he=h&&h.emoji?h.emoji:'',mi=S.dmine&&S.dmine[k]&&S.dmine[k].mood?moodSplit(S.dmine[k].mood)[0]:'';
+function calMoodRow(k){const h=S.dlog&&S.dlog[S.cur]&&S.dlog[S.cur][k]&&S.dlog[S.cur][k].mood,he=h?(typeof h==='string'?moodSplit(h)[0]:(h.emoji||'')):'',mi=S.dmine&&S.dmine[k]&&S.dmine[k].mood?moodSplit(S.dmine[k].mood)[0]:'';
   return (he||mi)?'<span class="cal2-mo"><b>'+he+'</b><b>'+mi+'</b></span>':''}
 function vCal(){calInit();dlogSync();
   const first=new Date(calY,calM,1),dim=new Date(calY,calM+1,0).getDate(),lead=first.getDay(),today=localDayKey(new Date());
