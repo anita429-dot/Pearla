@@ -1,10 +1,10 @@
 /* 功能頁樣式：日曆頁、通知、彈窗等（各主題共用） */
 /* 日曆頁 */
 .cal2-bar{display:flex;align-items:center;justify-content:space-between;margin:2px 0 10px}
-.cal2-bar b{font-weight:500;font-size:16px;color:var(--ink)}
+.cal2-bar b{font-weight:500;font-size:calc(16px*var(--fz,1));color:var(--ink)}
 .cal2-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-.cal2-w{text-align:center;font-size:12px;color:var(--soft);padding:4px 0}
-.cal2-d{position:relative;aspect-ratio:1;border:1.5px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);font:inherit;font-size:13px;display:flex;align-items:flex-start;justify-content:center;padding:5px 0 0;cursor:pointer}
+.cal2-w{text-align:center;font-size:calc(12px*var(--fz,1));color:var(--soft);padding:4px 0}
+.cal2-d{position:relative;aspect-ratio:1;border:1.5px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);font:inherit;font-size:calc(13px*var(--fz,1));display:flex;align-items:flex-start;justify-content:center;padding:5px 0 0;cursor:pointer}
 .cal2-d.o{visibility:hidden;pointer-events:none}
 .cal2-d.today{box-shadow:inset 0 0 0 1.5px var(--lav)}
 .cal2-d.sel{background:var(--lav);color:#fff;border-color:var(--lav)}
@@ -13,14 +13,14 @@
 .cal2-dots i.me{background:var(--lav)}
 .cal2-d.sel .cal2-dots i{background:#fff}
 .cal2-box{margin-top:12px;padding:12px 14px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink)}
-.cal2-box h3{margin:0 0 8px;font-size:14px;font-weight:500}
+.cal2-box h3{margin:0 0 8px;font-size:calc(14px*var(--fz,1));font-weight:500}
 .cal2-ct{padding:8px 0;border-top:1px var(--bs,dashed) var(--line)}
 .cal2-ct:first-of-type{border-top:0;padding-top:0}
-.cal2-nm{font-size:14px;font-weight:500}
-.cal2-k{font-size:11.5px;color:var(--soft);margin-top:8px}
-.cal2-v{font-size:14px;line-height:1.7;word-break:break-word;white-space:pre-wrap}
+.cal2-nm{font-size:calc(14px*var(--fz,1));font-weight:500}
+.cal2-k{font-size:calc(11.5px*var(--fz,1));color:var(--soft);margin-top:8px}
+.cal2-v{font-size:calc(14px*var(--fz,1));line-height:1.7;word-break:break-word;white-space:pre-wrap}
 .cal2-re{color:var(--soft)}
-.cal2-in{width:100%;box-sizing:border-box;margin-top:4px;font:inherit;font-size:14px;padding:8px 10px;border-radius:12px;resize:vertical}
+.cal2-in{width:100%;box-sizing:border-box;margin-top:4px;font:inherit;font-size:calc(14px*var(--fz,1));padding:8px 10px;border-radius:12px;resize:vertical}
 /* 長按不選取、不出現儲存圖片選單 */
 img,svg,.av,.ti,.cal-big,.daily-message-trigger,[style*="url("]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 img{-webkit-user-drag:none;user-drag:none}
@@ -28,6 +28,385 @@ img{-webkit-user-drag:none;user-drag:none}
 .sys.go{cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 #bn.show[data-a]{cursor:pointer;pointer-events:auto}
 #bz{position:fixed;inset:0;z-index:80;display:grid;place-items:center;background:#0000004d}
-#bz .bzb{display:flex;align-items:center;gap:12px;padding:16px 22px;border-radius:16px;background:#fff;color:#333;box-shadow:0 8px 30px #0003;font-size:15px}
+#bz .bzb{display:flex;align-items:center;gap:12px;padding:16px 22px;border-radius:16px;background:#fff;color:#333;box-shadow:0 8px 30px #0003;font-size:calc(15px*var(--fz,1))}
 #bz .bzs{width:20px;height:20px;border:3px solid currentColor;border-top-color:transparent;border-radius:50%;animation:bzs .8s linear infinite}
 @keyframes bzs{to{transform:rotate(360deg)}}
+
+/* 月曆：農曆、提醒、事件紀錄 */
+.cal2-d{flex-direction:column;align-items:center;justify-content:flex-start;gap:0;padding-top:3px}
+.cal2-n{line-height:1.15}
+.cal2-lu{font-size:calc(9px*var(--fz,1));line-height:1.1;color:var(--soft);margin-top:1px}
+.cal2-d.sel .cal2-lu{color:#fff}
+.cal2-d.l1,.cal2-d.l15{border-color:#e48aa6}
+.cal2-dots i.ev{background:#e0a34a}
+.cal2-lg{display:flex;align-items:center;gap:6px;justify-content:flex-end;font-size:calc(11px*var(--fz,1));color:var(--soft);margin:6px 2px 0}
+.cal2-lg i{width:12px;height:12px;border-radius:4px;border:1.5px solid;display:inline-block;margin-left:8px}
+.cal2-lg i.l1{border-color:#e48aa6}
+.cal2-tabs{margin-top:14px}
+.cal2-tm{font-weight:400;color:var(--soft);font-size:calc(11.5px*var(--fz,1));margin-left:8px}
+.cal2-moods{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 4px}
+.cal2-mc{border:1.3px solid var(--line);border-radius:999px;background:var(--bg);color:var(--ink);font:inherit;font-size:calc(13px*var(--fz,1));padding:4px 10px;cursor:pointer}
+.cal2-mc.on{background:var(--lav);border-color:var(--lav);color:#fff}
+.cal2-mc.add{border-style:dashed;color:var(--soft)}
+.cal2-tools{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.cal2-tools .btn{width:auto;margin:0;padding:6px 12px;font-size:calc(13px*var(--fz,1));flex:none}
+.cal2-row{display:flex;align-items:center;gap:8px}
+.cal2-row.off{opacity:.55}
+.cal2-row .grow{flex:1}
+.cal2-sub{display:block;color:var(--soft);font-size:calc(12px*var(--fz,1));line-height:1.5;word-break:break-word}
+.cal2-row .sw{flex:none;margin:0}
+.rem-ed{flex:none;border:0;background:transparent;color:var(--soft);font-size:calc(17px*var(--fz,1));padding:2px 4px;cursor:pointer}
+.rem-lrow{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.rem-lrow .cal2-in{width:auto;margin:0}
+.rem-lrow #rm-ly{width:86px}
+.rem-leap{display:flex;align-items:center;gap:4px;font-size:calc(13px*var(--fz,1));color:var(--ink)}
+.ml-ev{white-space:nowrap;overflow:hidden}
+.ml-ev span{display:inline-block;border:1px solid currentColor;border-radius:5px;padding:0 5px;margin-right:4px;line-height:1.3}
+
+/* 主頁月曆（黏土／月眠）：圖上疊月曆數字與年／月 */
+.cal-art{display:block;position:relative;container-type:inline-size}
+.cal-art img{width:100%;height:auto;display:block}
+.cal-art .ca{position:absolute;transform:translate(-50%,-50%);font-size:3.6vw;font-size:5.2cqw;font-weight:600;line-height:1;color:var(--ca-ink,#7468b0);pointer-events:none;font-variant-numeric:tabular-nums}
+.cal-art .ca.t{font-size:3.2vw;font-size:4.6cqw;white-space:nowrap}
+.cal-art .ca.today{width:8.4cqw;height:8.4cqw;display:grid;place-items:center;border-radius:50%;background:#aca6e4;color:#fff}
+[data-theme=glass][data-skin=moon] .cal-art{--ca-ink:#5b45a8}
+[data-theme=glass][data-skin=moon] .cal-art .ca.today{background:#7c63c9}
+[data-theme=lav] .cal-big{width:90%;margin-left:auto;margin-right:auto}
+/* 黏土主題：漸變背景、主頁圖示不要虛線外框、雙人頭像卡實線 */
+[data-theme=lav] #app{background:linear-gradient(165deg,#fdf9ff 0%,#f1ecff 36%,#e7ebff 64%,#fdeaf2 100%)}
+[data-theme=lav] #v.cards-view{background-color:transparent}
+[data-theme=lav] .tile{border-color:transparent}
+[data-theme=lav] .card.couple{border-style:solid}
+/* 心情 */
+.cal2-pick{width:auto;margin:6px 0 8px;padding:6px 14px;font-size:calc(13px*var(--fz,1))}
+.cal2-mrow{display:flex;gap:8px}
+.cal2-mrow .cal2-in{margin-top:0}
+.cal2-em{width:58px;flex:none;text-align:center;padding-left:6px;padding-right:6px}
+#calpop{position:fixed;inset:0;z-index:70;background:transparent}
+.calpop-box{position:absolute;max-width:min(340px,calc(100vw - 24px));max-height:50vh;overflow:auto;background:var(--bg);color:var(--ink);border:1.5px solid var(--line);border-radius:14px;padding:10px;box-shadow:0 8px 24px #3c366a33}
+.calpop-box .cal2-moods{margin:0}
+
+.cal-art.moon .ca.t{font-size:3.7vw;font-size:3.9cqw}
+
+/* 未讀數字：貼在圖示的右上角 */
+/* 下拉選單：字色、底色跟著主題，不會混成一色 */
+select{font:inherit;font-size:calc(15px*var(--fz,1));color:var(--ink);background-color:var(--card);border:1.5px solid var(--line);border-radius:13px;padding:9px 10px;outline:none;max-width:100%}
+select option{color:#3d3a5c;background:#fff}
+/* 自選字體（美化 → 統一更改） */
+html[data-ff] body,html[data-ff] button,html[data-ff] input,html[data-ff] textarea,html[data-ff] select{font-family:var(--ff)!important}
+.font-opt{display:block;width:100%;text-align:left;margin:0 0 8px;font-size:calc(15px*var(--fz,1))}
+.font-opt.on{border-color:var(--lav);box-shadow:0 0 0 1.5px var(--lav) inset}
+
+/* 像素、手帳（藍／綠）：設置與字卡的大分類陰影改白色 */
+[data-theme=glass][data-skin=pixel] .stab,[data-theme=glass][data-skin=journal]:not([data-tone=dark]) .stab{text-shadow:0 2px 5px #fff}
+
+/* 分類編輯：名稱直接在浮窗內修改 */
+.catedit-nm{flex:1;min-width:0;border:0;background:none;color:var(--ink);font:inherit;font-size:calc(15px*var(--fz,1));padding:0 4px;margin:0}
+/* 主題頁：每個主題右邊的字體 */
+.th-font{margin-left:auto;margin-right:8px;font-size:calc(12px*var(--fz,1));color:var(--soft);padding:3px 8px;border:1.2px solid var(--line);border-radius:999px;white-space:nowrap;cursor:pointer}
+
+/* 分類編輯：標題與「完成」固定，只有清單捲動 */
+.box.catedit-box{display:flex;flex-direction:column;overflow:hidden;max-height:80vh;padding-bottom:16px}
+.catedit-box>h2{flex:none}
+.catedit-list{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:2px 0}
+.catedit-box>.btn.catedit-done{flex:none;margin-top:10px;width:100%}
+.catedit-row .mv{width:30px;height:34px;display:grid;place-items:center;padding:0;border:0;background:none;color:var(--soft)}
+.catedit-row.holding{border-style:solid;border-color:var(--lav)}
+.catedit-row.drag{position:relative;z-index:5;background:var(--bg);border-style:solid;border-color:var(--lav);box-shadow:0 10px 24px #3c366a33}
+
+/* 常用大分類 */
+.cards-top.big-top .stabs{margin-bottom:0}
+.cards-top.big-top .seg{margin:0 0 2px;border-top-left-radius:0;border-top-right-radius:0;border-top:0}
+.big-list{margin-top:8px}
+.big-wrap:first-child{border-radius:16px 16px 0 0}
+.big-wrap:last-child{border-radius:0 0 16px 16px}
+.big-wrap:only-child{border-radius:16px}
+.big-wrap{border-bottom:1px var(--bs,dashed) var(--line)}
+.big-wrap:last-child{border-bottom:none}
+.big-wrap .big-row{border-bottom:none;padding:13px 12px;gap:6px}
+.big-nm{font-weight:400;font-size:calc(16px*var(--fz,1));min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.big-row .ib{width:32px;height:32px;display:grid;place-items:center;padding:0;border:0;background:none;color:var(--soft);flex:none}
+.big-chev{width:22px;text-align:center;color:var(--soft);flex:none}
+.big-ph{width:32px;flex:none}
+.big-body{padding:2px 12px 14px}
+.big-del{width:100%;margin-top:10px}
+.big-wrap.holding{background:#aca6e41f}
+.big-wrap.drag{position:relative;z-index:5;background:var(--bg);box-shadow:0 10px 24px #3c366a33}
+.big-list.bigdrag .big-body{display:none}
+
+.big-wrap{background:var(--bigtint,transparent)}
+.big-wrap.bt1{--bigtint:#aca6e433}
+.big-wrap.bt2{--bigtint:#aca6e414}
+.big-wrap.btu{--bigtint:#7f7a9a40}
+.big-stick{position:sticky;top:var(--bigtop,0px);z-index:7;margin:0;padding:0}
+.big-tintbox{background:var(--bigtint,transparent)}
+.big-tintbox .sbrow{padding:0 12px 8px}
+.big-list.bigdrag .big-stick{position:static}
+.big-list.bigdrag .big-tintbox>.sbrow{display:none}
+.big-newrow{display:flex;gap:8px;margin-top:10px}
+.big-newrow .btn{flex:1;width:auto;margin:0}
+.big-delrow{display:flex;align-items:center;gap:12px;justify-content:space-between;font-size:calc(14px*var(--fz,1));line-height:1.5}
+.big-delrow .sw{flex:none}
+
+/* 大分類左滑：停用／刪除 */
+.big-swipe{position:relative;overflow:hidden}
+.big-swipe .big-row{position:relative;z-index:1;touch-action:pan-y;transform:translateX(0)}
+.big-acts{position:absolute;top:0;bottom:0;right:0;width:var(--w);display:flex;align-items:center;justify-content:center;gap:6px;padding:0 6px;box-sizing:border-box;opacity:var(--p,0);transform:none;pointer-events:none}
+.big-swipe.sopen .big-acts{pointer-events:auto}
+.big-act{flex:1;height:38px;border:0;border-radius:10px;font:inherit;font-size:calc(13px*var(--fz,1));color:#fff;cursor:pointer;padding:0;transform:scale(calc(.15 + .85 * var(--p,0)));transform-origin:center}
+.big-act.off{background:#8d88a8}
+.big-act.del{background:#e5484d}
+.big-row.bigoff .big-nm{opacity:.5}
+.big-offtag{font-size:calc(11px*var(--fz,1));color:var(--soft);border:1px solid var(--line);border-radius:999px;padding:1px 7px;margin-left:4px;flex:none}
+.big-list.bigdrag .big-acts{display:none}
+/* 返回鍵不要陰影 */
+.ph2>.ib:first-child,[data-theme] .ph2>.ib:first-child,.kitchen-head .ib{box-shadow:none!important}
+/* 大分類列的圓角跟著外框（各主題外框圓角不同，避免四角露出底色） */
+.big-wrap:first-child{border-top-left-radius:inherit;border-top-right-radius:inherit}
+.big-wrap:last-child{border-bottom-left-radius:inherit;border-bottom-right-radius:inherit}
+.big-wrap:only-child{border-radius:inherit}
+
+/* ── 朋友圈：愛心、行內留言框、收起留言、吸頂分頁 ── */
+.mom-ic svg{fill:none}
+.mom-heart svg{width:22px;height:22px;transform-origin:center}
+.mom-ic.mom-heart.lk{color:var(--pk)}
+.mom-heart.lk svg{fill:currentColor}
+.mom-heart.pop svg{animation:momheart .55s cubic-bezier(.3,.7,.4,1) both}
+@keyframes momheart{0%{transform:scale(1)}25%{transform:scale(.45)}62%{transform:scale(1.4)}82%{transform:scale(.92)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.mom-heart.pop svg{animation:none}}
+.mom-lk{display:flex;align-items:center;gap:5px;color:var(--soft)}
+.mom-lk svg{flex:none;width:13px;height:13px;color:var(--pk);fill:currentColor}
+.mom-cx{display:block;width:fit-content;margin:4px 0 0 auto;padding:4px 2px;text-align:right;font-weight:500;color:color-mix(in srgb,var(--lav) 62%,var(--ink))}
+.mom-cbox{margin-top:8px}
+.mom-crow{display:flex;align-items:center;gap:6px}
+.mom-cin{flex:1;min-width:0;height:38px;margin:0;padding:0 14px;border-radius:19px;font-size:calc(14px*var(--fz,1))}
+.mom-cem,.mom-csend{flex:none;width:36px;height:36px;display:grid;place-items:center;padding:0;border:0;background:transparent;color:var(--soft);cursor:pointer}
+.mom-csend{color:color-mix(in srgb,var(--lav) 70%,var(--ink))}
+.mom-cem svg,.mom-csend svg{width:23px;height:23px}
+.mom-cto{display:flex;align-items:center;justify-content:space-between;margin:0 0 6px;padding:3px 10px;border-radius:10px;background:var(--bub);font-size:calc(12px*var(--fz,1));color:var(--soft)}
+.mom-cto button,.mom-cpv button{border:0;background:transparent;color:var(--soft);font-size:calc(16px*var(--fz,1));line-height:1;padding:0 2px;cursor:pointer}
+.mom-cpv{position:relative;display:inline-block;margin:0 0 6px}
+.mom-cpv img{display:block;max-width:72px;max-height:64px;border-radius:8px;border:1.2px solid var(--line)}
+.mom-cpv button{position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;font-size:calc(12px*var(--fz,1))}
+.mom-sticky{padding-left:54px}
+.mom-sticky .stabs{margin:0}
+.mom-pubrow{margin:0 0 12px}
+.mom-pubrow .btn{width:100%;margin:0}
+
+/* ── 聯絡人：左滑（免打擾／刪除）、資料圖示、免打擾圖示 ── */
+.con-wrap{position:relative;margin:-2px -2px 8px;padding:2px;border-radius:18px}
+.con-wrap>.row{margin-bottom:0}
+.con-wrap.holding>.row{border-style:solid;border-color:var(--lav)}
+.con-wrap.drag{overflow:visible;z-index:5}
+.con-wrap.drag>.row{background:var(--bg);border-style:solid;border-color:var(--lav);box-shadow:0 10px 24px #3c366a33}
+.con-wrap.drag .big-acts{display:none}
+.con-wrap .big-acts{top:2px;bottom:2px;right:2px}
+.con-wrap .big-act.off{background:#8d88a8}
+.con-wrap .row.dnd .nm,.con-wrap .row.dnd small{opacity:.6}
+.con-dnd{flex:none;display:grid;place-items:center;width:24px;height:24px;color:var(--soft)}
+.con-dnd svg{width:18px;height:18px}
+.row .cinfo{width:34px;height:34px;display:grid;place-items:center;padding:0;border:0;background:none;color:var(--soft);flex:none}
+.row .cinfo svg{width:21px;height:21px}
+/* 聯絡人資料浮窗 */
+#sh.coninfo{align-items:center;padding:0 14px}
+#sh.coninfo .box{max-width:420px;height:min(600px,84vh);max-height:84vh;border-radius:22px;border-bottom:1.5px var(--bs,dashed) var(--line);display:flex;flex-direction:column;padding:12px;overflow:hidden}
+#sh.coninfo .box h2:empty{display:none}
+.ci-head{position:relative;flex:none;margin:0 0 10px}
+.ci-cover{position:relative;height:118px;border-radius:16px;border:1.6px var(--bs,dashed) var(--line);background:var(--card) center/cover no-repeat;cursor:pointer}
+.ci-cx{position:absolute;top:6px;right:6px;width:24px;height:24px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--soft);font-size:calc(15px*var(--fz,1));line-height:1;display:grid;place-items:center;padding:0;cursor:pointer}
+.ci-head>.av.ci-av{position:absolute;left:12px;top:84px;width:64px!important;height:64px!important;border:3px solid #fff;box-shadow:0 2px 10px #3c366a2e;background-size:cover;background-position:center;z-index:2}
+.ci-who{margin:8px 0 0 84px;min-height:46px;display:flex;flex-direction:column;justify-content:center;gap:2px;min-width:0}
+.ci-who b{font-weight:500;font-size:calc(15px*var(--fz,1));color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ci-who small{font-size:calc(12.5px*var(--fz,1));color:var(--soft);line-height:1.4;word-break:break-word}
+.ci-body{flex:1;min-height:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ci-left,.ci-right{min-width:0;min-height:0;display:flex;flex-direction:column}
+.ci-left h3{flex:none;margin:0 0 6px;font-size:calc(13.5px*var(--fz,1));font-weight:500;color:var(--ink)}
+.ci-scroll{flex:1;min-height:0;overflow-y:auto;border:1.2px var(--bs,dashed) var(--line);border-radius:12px;background:var(--bub)}
+.ci-top{list-style:none;margin:0;padding:2px 0}
+.ci-top li{display:flex;align-items:baseline;gap:6px;padding:6px 8px;font-size:calc(12.5px*var(--fz,1));line-height:1.45;border-bottom:1px var(--bs,dashed) var(--line)}
+.ci-top li:last-child{border-bottom:0}
+.ci-top i{flex:none;min-width:18px;font-style:normal;color:var(--soft);font-size:calc(11px*var(--fz,1))}
+.ci-top span{flex:1;min-width:0;word-break:break-word;color:var(--ink)}
+.ci-top b{flex:none;font-weight:500;color:color-mix(in srgb,var(--lav) 65%,var(--ink));font-size:calc(12px*var(--fz,1))}
+.rem-leap input{margin:0}
+.pv-foot{display:flex;flex-direction:column;gap:8px;padding-top:18px}
+.pv-foot .btn{margin:0}
+
+/* 常用：共用／專屬往下移一點；捲到底不再回彈，大分類背景固定不透明 */
+.cards-top.big-top .seg{margin:8px 0 2px;border-radius:10px;border-top:1.2px solid var(--line)}
+#v.cards-view{overscroll-behavior-y:none;-webkit-overflow-scrolling:touch}
+.big-list{overflow:clip}
+.big-stick{background-color:var(--bg)}
+.th-moon{flex:none;display:grid;place-items:center;width:30px;height:30px;margin-left:4px;color:var(--soft);cursor:pointer}
+.th-moon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+:root:not([data-theme=glass]) .mom-sticky{background:#f6f2ff}
+.pun-t{font-size:calc(16px*var(--fz,1));color:var(--ink)}
+.pun-t small{margin-left:8px;font-size:calc(11px*var(--fz,1));color:var(--soft)}
+.btn.d.armed{background:#e5484d;color:#fff;border-color:#e5484d}
+.avc-wrap{display:flex;align-items:center;justify-content:center;gap:4px}
+.avc-wrap .avc{flex:none}
+.avc-arr{flex:none;width:34px;height:60px;border:0;background:transparent;color:var(--ink);font-size:calc(30px*var(--fz,1));line-height:1;cursor:pointer;padding:0}
+.avc-arr:disabled{opacity:.25;cursor:default}
+.qt.qti{max-height:none}
+.qt-img{display:block;max-width:72px;max-height:72px;border-radius:6px;margin:0 0 3px;object-fit:contain}
+.qt-bar{display:inline-block;vertical-align:middle;max-width:34px;max-height:34px;margin:0 6px 0 0}
+#v.art-wait .home-top,#v.art-wait .pager{visibility:hidden}
+
+/* 字體放大：全站文字乘上 --fz（1.1 倍）；備忘錄和主頁名字維持原本大小 */
+:root{--fz:1.1}
+.memo-card,.memo-card *,.couple .en,.couple .en *{--fz:1}
+.lp-meta{display:flex;flex-wrap:wrap;gap:4px 18px}
+.cset-note{margin:-2px 2px 10px;padding:7px 10px;border-radius:10px;background:var(--bub);color:var(--soft)}
+/* 聯絡人訊息的操作鍵（含引用）放在訊息靠右的上方 */
+.m:not(.me) .mact{left:auto;right:0}
+
+/* 聊天室可以點按的通知：不要外框 */
+html[data-theme] .sys.go,.sys.go{border:0!important;padding:3px 12px}
+/* 導航欄稍微加高、圖示加大 */
+.tabs{padding:5px 2px}
+.tab img{width:47px;height:47px}
+[data-theme=glass]:not([data-nav]) .tab .gt{width:47px;height:47px}
+.tab .gt svg{width:29px;height:29px}
+.lp-call{width:100%;margin:14px 0 8px}
+.dm-toggle.mute-toggle{right:44px}
+.lc-imgs{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 2px}
+.lc-imgs span{position:relative}
+.lc-imgs img{display:block;max-width:76px;max-height:76px;border-radius:8px;border:1.2px solid var(--line)}
+.lc-imgs button{position:absolute;top:-7px;right:-7px;width:20px;height:20px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--soft);font-size:13px;line-height:1;padding:0;display:grid;place-items:center;cursor:pointer}
+.lc-row{display:flex;align-items:center;gap:8px;margin:8px 0 2px}
+.lc-emo{width:38px;height:38px;display:grid;place-items:center;padding:0}
+.lc-emo svg{width:22px;height:22px}
+.lc-kao{display:flex;flex-wrap:wrap;gap:8px;max-height:46vh;overflow-y:auto;margin-bottom:6px}
+.lc-kao .btn{width:auto;margin:0;padding:8px 12px}
+/* 霧海／月眠：大分類的卡片若有 backdrop-filter，標題裡的 fixed 背景會變成相對於卡片而不是視窗，上拉後就會穿幫（變透明）→ 去掉卡片與大分類的模糊 */
+[data-theme=glass] .big-list,[data-theme=glass] .big-wrap{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+
+/* ── 朋友圈留言：一則一欄，回覆放在同一欄 ── */
+.mom-cols{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.mom-col{padding:7px 10px;border-radius:10px;background:var(--bub);font-size:calc(12.5px*var(--fz,1));line-height:1.65;color:var(--soft)}
+.mom-cl{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.mom-ct{min-width:0;flex:1;word-break:break-word}
+.mom-ct b{font-weight:500;color:var(--ink)}
+.mom-rpb{flex:none;margin-top:1px;border:1.1px solid var(--line);background:var(--card);color:var(--soft);border-radius:999px;padding:0 10px;height:22px;font-size:calc(11px*var(--fz,1));line-height:20px;cursor:pointer}
+.mom-reps{margin:5px 0 0 8px;padding-left:9px;border-left:2px solid var(--line);display:flex;flex-direction:column;gap:4px}
+.mom-reps .mom-rpb{height:20px;line-height:18px;padding:0 8px}
+.mom-col .mom-cx{margin:4px 0 0 8px;font-weight:500}
+.mom-cbox{margin-top:8px}
+
+/* 重複字卡 */
+.dup-g{display:flex;gap:6px;margin:0 0 8px}
+.dup-s{flex:1;min-width:0;text-align:left;border:1.2px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;padding:6px 8px;display:flex;flex-direction:column;gap:2px;font-size:calc(13px*var(--fz,1))}
+.dup-s .dup-k{font-size:calc(11px*var(--fz,1));color:var(--soft)}
+.dup-s .dup-t{word-break:break-word;line-height:1.5}
+.dup-s .dup-m{font-size:calc(11px*var(--fz,1));color:var(--soft)}
+.dup-s.del{border-color:#d98b9b;background:#d98b9b22}
+.dup-s.del .dup-t{text-decoration:line-through;color:#bf7181}
+.dup-s.del .dup-m{color:#bf7181}
+
+/* 表情浮窗：最近使用 */
+#sh.chat-pop.emo .chat-pop-cats button.emo-recent{flex:0 0 34px;width:34px;min-width:34px;height:34px;padding:0;display:grid;place-items:center;border-radius:8px}
+
+/* 聊天室搜尋浮窗（在搜尋鍵下方） */
+.chh{position:relative}
+.chs-pop{position:absolute;right:0;top:calc(100% - 2px);z-index:12;width:min(280px,calc(100vw - 40px));padding:10px;border-radius:14px;border:1.3px var(--bs,dashed) var(--line);background:var(--bg);box-shadow:0 8px 25px #3c366a22}
+.chs-pop input{width:100%;box-sizing:border-box;margin:0 0 8px}
+.chs-b{display:flex;gap:8px}.chs-b .btn{flex:1;margin:0}
+.chs-pop .hint{margin:8px 0 0}
+
+/* 資料卡：設定鈕、配色變數、表情包排行台 */
+.ci-gear{position:absolute;right:6px;top:86px;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--soft);display:grid;place-items:center;padding:0;cursor:pointer;z-index:3}
+#sh.coninfo .ci-scroll{background:var(--ci-topbg,var(--bub))}
+#sh.coninfo .ci-top span{color:var(--ci-topink,var(--ink))}
+.ci-frame{position:relative;overflow:hidden;margin:0 auto;border-radius:12px;border:1.5px var(--bs,dashed) var(--line);touch-action:none;background:var(--card)}
+.ci-frame img{position:absolute;left:0;top:0;max-width:none;user-select:none;-webkit-user-drag:none}
+.ci-right h3{flex:none;margin:0 0 6px;font-size:calc(13.5px*var(--fz,1));font-weight:500;color:var(--ink)}
+.ci-rbox{flex:1;min-height:0;overflow-y:auto;border:1.2px var(--bs,dashed) var(--line);border-radius:12px;background:var(--ci-rankbg,var(--bub));padding:8px 6px;display:flex;flex-direction:column;gap:10px}
+.ci-pod{display:flex;align-items:flex-end;justify-content:center;gap:3px}
+.ci-pod .pc{flex:1;min-width:0;display:flex;flex-direction:column;align-items:stretch}
+.ci-pod .pi,.ci-low .pi{display:flex;flex-direction:column;align-items:center;gap:1px;min-height:50px;justify-content:flex-end}
+.ci-pod img,.ci-low img{width:100%;max-width:46px;aspect-ratio:1;object-fit:contain;display:block}
+.ci-pod b,.ci-low b{font-weight:500;font-size:calc(11px*var(--fz,1));color:color-mix(in srgb,var(--lav) 65%,var(--ink))}
+.ci-no{font-size:calc(14px*var(--fz,1));color:var(--soft);padding:12px 0}
+.ci-pod .base{display:grid;place-items:center;border:1.2px solid var(--line);border-bottom:0;border-radius:7px 7px 0 0;background:var(--card);color:var(--soft);font-size:calc(13px*var(--fz,1));margin-top:2px}
+.ci-pod .p1 .base{height:44px}.ci-pod .p2 .base{height:32px}.ci-pod .p3 .base{height:22px}
+.ci-low{display:flex;gap:3px;border-top:1px var(--bs,dashed) var(--line);padding-top:8px}
+.ci-low .lc{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px}
+.ci-low i{font-style:normal;font-size:calc(11px*var(--fz,1));color:var(--soft)}
+
+.cal2-mo{position:absolute;left:2px;right:2px;bottom:11px;display:flex;justify-content:space-between;align-items:center;font-size:calc(10px*var(--fz,1));line-height:1;pointer-events:none}
+.cal2-mo b{font-weight:400;min-width:1em;text-align:center}
+.cal2-dots{bottom:2px}
+
+/* 表情浮窗：最近使用鍵跟旁邊的鍵同高；顏文字依長度排成一排排、高度減半；分頁鍵兩行置中 */
+#sh.chat-pop.emo .chat-pop-cats{align-items:stretch}
+#sh.chat-pop.emo .chat-pop-cats button.emo-recent{height:auto;align-self:stretch}
+#sh.chat-pop.emo .chat-pop-cats button{display:flex;align-items:center;justify-content:center;text-align:center}
+.chat-eg.kao,.chat-eg.mix{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chat-eg.kao button.ki,.chat-eg.mix button.ki{width:auto;max-width:100%;aspect-ratio:auto;height:34px;padding:0 12px;border:1.2px solid var(--line);border-radius:10px;background:var(--card);font-size:calc(15px*var(--fz,1));white-space:nowrap}
+.chat-eg.mix button:not(.ki){width:calc((100% - 18px)/4);flex:none}
+/* 資料卡：排行外框只到排名數字下方；資料卡設定切到非目前分類時開關不吃點擊 */
+.ci-rbox{flex:none}
+.ci-right{justify-content:flex-start}
+.seg button:not(.on) .sw{pointer-events:none}
+
+/* 朋友圈：頁面上直接發文 */
+.mom-new{padding:10px 12px;margin:0 0 12px}
+.mom-new .mh-in{width:100%;box-sizing:border-box;margin:0}
+.mom-new .mom-dr{margin-top:8px}
+.mom-ntools{display:flex;justify-content:flex-end;align-items:center;gap:6px;margin-top:6px}
+.mom-ntools .ib{width:36px;height:36px;display:grid;place-items:center;padding:0}
+.mom-ntools .mn-send{color:var(--lav)}
+
+/* 聊天室：圖片預覽、圖示按鈕 */
+.cpv{display:flex;flex-wrap:wrap;gap:8px;padding:0 4px}
+.cpv:not(:empty){padding:6px 4px 2px}
+.cpv-i{position:relative;width:62px;height:62px;border:1.2px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card)}
+.cpv-i img{width:100%;height:100%;object-fit:cover;display:block}
+.cpv-i b{position:absolute;top:0;right:0;width:20px;height:20px;display:grid;place-items:center;background:#0006;color:#fff;border-radius:0 0 0 8px;font-size:calc(13px*var(--fz,1));font-weight:400;cursor:pointer}
+#f .send-ib{color:var(--lav);flex:none}
+.b.pic img,.b.media-b.pic img{max-height:280px;max-width:min(240px,100%);border-radius:12px}
+
+/* 月曆：心情排在日期農曆下方（不再絕對定位而與其他文字重疊） */
+.cal2-mo{position:static;width:100%;box-sizing:border-box;padding:0 4px;margin-top:1px;font-size:calc(11px*var(--fz,1));left:auto;right:auto;bottom:auto}
+.cal2-dots{bottom:1px}
+.cal2-dots i{width:4px;height:4px}
+.cal2-kt{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.cal2-kt .cal2-tm{margin:0;font-size:calc(11px*var(--fz,1));color:var(--soft);font-weight:400}
+.daily-none{opacity:.6}
+
+/* 黏土主題：主頁圖示依內容面積統一視覺大小 */
+[data-theme=lav] .tile img.ti[src$="/inspiration.webp"]{width:53.7px;height:54.3px}
+[data-theme=lav] .tile img.ti[src$="/group-chat.webp"]{width:53.7px;height:54.3px}
+[data-theme=lav] .tile img.ti[src$="/friends.webp"]{width:55.0px;height:53.6px}
+[data-theme=lav] .tile img.ti[src$="/records.webp"]{width:58.3px;height:53.4px}
+[data-theme=lav] .tile img.ti[src$="/anniversary.webp"]{width:61.6px;height:53.2px}
+[data-theme=lav] .tile img.ti[src$="/study-progress.webp"]{width:57.5px;height:52.7px}
+[data-theme=lav] .tile img.ti[src$="/data.webp"]{width:53.6px;height:54.4px}
+[data-theme=lav] .tile img.ti[src$="/tomato-timer.webp"]{width:54.7px;height:53.3px}
+[data-theme=lav] .tile img.ti[src$="/plum-divination.webp"]{width:62.5px;height:52.4px}
+[data-theme=lav] .tile img.ti[src$="/answer-book.webp"]{width:54.9px;height:53.4px}
+[data-theme=lav] .tile img.ti[src$="/kitchen.webp"]{width:55.3px;height:53.9px}
+[data-theme=lav] .tile img.ti[src$="/doodle.webp"]{width:53.4px;height:54.9px}
+[data-theme=lav] .tile img.ti[src$="/tracking.webp"]{width:53.9px;height:55.3px}
+[data-theme=lav] .tile img.ti[src$="/mall.webp"]{width:53.0px;height:55.9px}
+[data-theme=lav] .tile img.ti[src$="/gift-cabinet.webp"]{width:52.0px;height:56.7px}
+[data-theme=lav] .tile img.ti[src$="/mailbox.webp"]{width:57.4px;height:50.8px}
+[data-theme=lav] .tile img.ti[src$="/files.webp"]{width:56.4px;height:51.7px}
+[data-theme=lav] .tile .ti{flex:none}
+
+/* 導覽行再高一些 */
+.tabs{padding:9px 2px}
+/* 備忘錄靠下（月眠主題用自己的位置，不受影響） */
+html:not([data-skin=moon]) .pgp:first-child{display:flex;flex-direction:column}
+html:not([data-skin=moon]) .pgp:first-child .memo-card{margin-top:auto;margin-bottom:6px}
+
+/* 朋友圈留言：點留言冒出刪除／編輯；回覆預覽換底色；表情包靠右 */
+.mom-cw{position:relative}
+.mom-cbar{display:flex;gap:6px;margin:0 0 3px}
+.mom-cbar button{border:1.1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;height:24px;padding:0 11px;font-size:calc(11.5px*var(--fz,1));line-height:22px;cursor:pointer}
+.mom-cbar button[data-a=momcdel]{color:#bf7181;border-color:#d98b9b}
+.mom-cl.sel .mom-ct{background:color-mix(in srgb,var(--lav) 14%,transparent);border-radius:8px}
+.mom-ct[data-a]{cursor:pointer}
+.mom-ct .mom-cimg{display:block;margin:4px 0 0 auto}
+.mom-cto{background:color-mix(in srgb,var(--lav) 22%,var(--card));border:1px solid color-mix(in srgb,var(--lav) 45%,var(--line));border-radius:9px;padding:4px 8px}
+.mom-cto span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
