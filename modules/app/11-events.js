@@ -114,8 +114,8 @@ document.addEventListener('click',e=>{
     case 'delok':{S.contacts=S.contacts.filter(c=>c.id!==i);if(S.cuse)delete S.cuse[i];if(S.cset)delete S.cset[i];delete S.msgs[i];delete S.rounds[i];(S.groups||[]).forEach(g=>{g.members=g.members.filter(x=>x!==i)});Object.keys(S.rounds).forEach(k=>{if(k.endsWith('|'+i))delete S.rounds[k]});S.letters=(S.letters||[]).filter(l=>l.cid!==i);delete S.lnext[i];if(S.lround)delete S.lround[i];delete S.remClock[i];delete S.un[i];if(S.dlog)delete S.dlog[i];{const dead=S.cats.filter(c=>c.own===i).map(c=>c.id);S.cats=S.cats.filter(c=>c.own!==i);S.cards=S.cards.filter(k=>!dead.includes(k.cat))}S.cats.forEach(c=>c.as=c.as.filter(x=>x!==i));S.ipend=(S.ipend||[]).filter(p=>p.cid!==i);['mem','ext','ev'].forEach(k=>{S.insp[k]=(S.insp[k]||[]).filter(r=>r.cid!==i)});if(!S.contacts.length)S.contacts.push({id:uid(),name:'名字'});if(S.cur===i)S.cur=S.contacts[0].id;save();closeSheet();render();break}
     case 'pat':closeSheet();ms(S.cur).push(patMsg(S.cur,true));save();paint();break;
     case 'poke':pokeSend();break;
-    case 'cimg':pick(fs=>{let n=0;const out=[];fs.forEach((f,j)=>rd(f,1400,u=>{out[j]=u;if(++n===fs.length){chImgsCid=S.cur;out.forEach(x=>x&&chImgs.push(x));chPvRefresh()}}))},'image/*',true);break;
-    case 'cimgx':chImgs.splice(+i,1);chPvRefresh();break;
+    case 'chpic':pick(fs=>{let n=0;const out=[];fs.forEach((f,j)=>rd(f,1400,u=>{out[j]=u;if(++n===fs.length){chImgsCid=S.cur;out.forEach(x=>x&&chImgs.push(x));chPvRefresh()}}))},'image/*',true);break;
+    case 'chpicx':chImgs.splice(+i,1);chPvRefresh();break;
     case 'avcard':{const id=i||S.cur;if(S.contacts.some(c=>c.id===id))conInfoSheet(id);break}
     case 'pokebtn':{const n=Date.now();if(pokeArm&&n-pokeArm<3000){pokeArm=0;A.classList.remove('rec-on');pokeSend()}else{pokeArm=n;A.classList.add('rec-on');toast('再點一次，讓對方主動發訊息',1800);setTimeout(()=>{if(pokeArm===n){pokeArm=0;A.classList.remove('rec-on')}},3000)}break}
     case 'avt':pick(f=>avCrop(f,i));break;
@@ -340,12 +340,16 @@ document.addEventListener('click',e=>{
       if(!x&&!d.items.length){toast('還沒有內容');break}S.moments.push({id:uid(),cid:'me',t:Date.now(),x,wall:d.items.length?{items:d.items,st:[]}:null});momDraft=null;momTab='me';save();closeSheet();render();break}
     case 'mompedit':{const p=S.moments.find(q=>q.id===i);if(!p)break;momDraft={x:p.x||'',items:(p.wall&&p.wall.items?p.wall.items.map(o=>Object.assign({},o)):[]),edit:p.id};momCompose();break}
     case 'momdelask':sheet('刪除貼文','<p class="hint" style="margin:0 0 10px">確定要刪除這則貼文嗎？刪除後無法復原。</p><button class="btn d" data-a="momdel" data-i="'+i+'">確認刪除</button><button class="btn" data-a="close">取消</button>',1);break;
+    case 'momcsel':{const[pid,mid]=i.split('|');momSel=(momSel&&momSel.mid===mid)?null:{pid,mid};momCSync();{const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}break}
+    case 'momcsx':{momSel=null;momCSync();{const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}break}
+    case 'momcedit':{const[pid,mid]=i.split('|'),p=S.moments.find(q=>q.id===pid),t=p&&(p.cmts||[]).find(q=>q.id===mid);if(!t)break;ask('編輯留言',t.x||'',v=>{v=(v||'').trim();if(!v&&!t.img){toast('留言不能是空的');return}t.x=v;momSel=null;save();render()});break}
+    case 'momcdel':{const[pid,mid]=i.split('|'),p=S.moments.find(q=>q.id===pid);if(!p||!p.cmts)break;const gone=new Set([mid]);let ch=true;while(ch){ch=false;p.cmts.forEach(c=>{if(c.rid&&gone.has(c.rid)&&!gone.has(c.id)){gone.add(c.id);ch=true}})}p.cmts=p.cmts.filter(c=>!gone.has(c.id));momSel=null;save();momCSync();{const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}toast('已刪除留言',1200);break}
     case 'momcx':{const[pid,rid]=i.split('|'),p=S.moments.find(q=>q.id===pid);if(!p)break;p.cxs=p.cxs&&typeof p.cxs==='object'?p.cxs:{};if(p.cxs[rid])delete p.cxs[rid];else p.cxs[rid]=1;save();momCSync();{const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}break}
     case 'momlike':{const p=S.moments.find(q=>q.id===i);if(!p)break;p.likes=Array.isArray(p.likes)?p.likes:[];if(p.liked){p.liked=0;const k=p.likes.indexOf(S.me);if(k>=0)p.likes.splice(k,1)}else{p.liked=1;p.likes.push(S.me);momPop=p.id;setTimeout(()=>{momPop=null},700)}save();{const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}break}
     case 'momfav':{const p=S.moments.find(q=>q.id===i);if(!p)break;p.fav=p.fav?0:1;save();render();break}
     case 'momcmt':{momFocusIn(i);break}
-    case 'momrep':{const[pid,mid]=i.split('|'),p=S.moments.find(q=>q.id===pid),t=p&&(p.cmts||[]).find(q=>q.id===mid);if(!t)break;const d=momDrOf(pid);momCSync();d.rid=mid;d.rt=t.n;d.rcid=t.cid||null;momCRender(pid);break}
-    case 'momcrx':{const d=momDrOf(i);momCSync();d.rid=null;d.rt=null;d.rcid=null;momCRender(i);break}
+    case 'momrep':{const[pid,mid]=i.split('|'),p=S.moments.find(q=>q.id===pid),t=p&&(p.cmts||[]).find(q=>q.id===mid);if(!t)break;const d=momDrOf(pid);momCSync();d.rid=mid;d.rt=t.n;d.rx=t.x||(t.img?'[表情包]':'');d.rcid=t.cid||null;momCRender(pid);break}
+    case 'momcrx':{const d=momDrOf(i);momCSync();d.rid=null;d.rt=null;d.rx='';d.rcid=null;momCRender(i);break}
     case 'momcimgx':{const d=momDrOf(i);momCSync();d.img='';momCRender(i);break}
     case 'momcemo':{momCSync();momEmoOpen('c',i);break}
     case 'momcsend':{momCSync();const p=S.moments.find(q=>q.id===i);if(!p)break;const d=momDrOf(i),x=(d.x||'').trim();if(!x&&!d.img){toast('還沒有內容');break}p.cmts=Array.isArray(p.cmts)?p.cmts:[];const m={id:uid(),n:S.me,x};if(d.img)m.img=d.img;if(d.rid){m.rt=d.rt;m.rid=d.rid;p.cmts.push(m);p.cxs=p.cxs&&typeof p.cxs==='object'?p.cxs:{};p.cxs[momRootId(p.cmts,m)]=1;if(d.rcid)mcmUser(p,m,d.rcid)}else{p.cmts.push(m);mcmUser(p,m,p.cid)}delete momDr[i];save();{const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}break}
@@ -428,7 +432,7 @@ document.addEventListener('click',e=>{
     case 'inspback':inspOpen=false;inspEdit=false;inspSel=[];render();break;
     case 'itab':inspTab=i;inspEdit=false;inspSel=[];render();break;
     case 'iedit':inspEdit=!inspEdit;inspSel=[];render();break;
-    case 'evsave':{const r=S.insp.ev.find(x=>x.id===i);if(!r||r.saved)break;inspSave(r.cid,r.text,{id:r.sid,x:r.src,mt:r.mt,t:r.t});r.saved=true;inspLog('ext',{id:uid(),cid:r.cid,text:r.text,src:r.src,sid:r.sid,mt:r.mt,t:Date.now()});save();{const st=$('#v').scrollTop;render();$('#v').scrollTop=st}toast('已保存到「我保存的」');break}
+    case 'insevsave':{const r=S.insp.ev.find(x=>x.id===i);if(!r||r.saved)break;inspSave(r.cid,r.text,{id:r.sid,x:r.src,mt:r.mt,t:r.t});r.saved=true;inspLog('ext',{id:uid(),cid:r.cid,text:r.text,src:r.src,sid:r.sid,mt:r.mt,t:Date.now()});save();{const st=$('#v').scrollTop;render();$('#v').scrollTop=st}toast('已保存到「我保存的」');break}
     case 'isel':inspSel=inspSel.includes(i)?inspSel.filter(x=>x!==i):inspSel.concat(i);{const st=$('#v').scrollTop;render();$('#v').scrollTop=st}break;
     case 'idel':if(!inspSel.length){toast('請先選擇紀錄');break}sheet('是否確認刪除？','<p class="hint" style="margin:0 0 4px">將刪除所選的 '+inspSel.length+' 筆紀錄。（只刪除紀錄，不會刪除字卡）</p><div class="confirm-btns"><button class="btn" data-a="close">取消</button><button class="btn d" data-a="idelok">確認刪除</button></div>',1);break;
     case 'idelok':S.insp[inspTab]=S.insp[inspTab].filter(r=>!inspSel.includes(r.id));inspSel=[];inspEdit=false;save();closeSheet();render();toast('已刪除');break;

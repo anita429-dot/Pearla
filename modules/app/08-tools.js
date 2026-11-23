@@ -5,8 +5,8 @@
 
 /* ── 音效（Web Audio 合成，不需音檔） ── */
 let AC=null;
-let acUnl=false;
-function acx(){try{if(!AC||AC.state==='closed'){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C();acUnl=false}
+let acUnl=false,micHold=false;
+function acx(){try{if(micHold)return null;if(!AC||AC.state==='closed'){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C();acUnl=false}
   try{if(navigator.audioSession&&navigator.audioSession.type!=='ambient')navigator.audioSession.type='ambient'}catch(e){}
   if(AC.state!=='running'){try{const p=AC.resume();if(p&&p.catch)p.catch(()=>{})}catch(e){}}
   return AC}catch(e){return null}}

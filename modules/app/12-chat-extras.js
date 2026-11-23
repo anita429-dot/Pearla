@@ -175,7 +175,7 @@ async function micTest(){
   out.push('瀏覽器回報的權限狀態：'+esc(perm)+'（僅供參考）');
   out.push('安全環境（https）：'+(window.isSecureContext?'是':'否'));
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){out.push('<b>結果：這個瀏覽器沒有 getUserMedia，無法錄音。</b>');show(out.join('<br>'),1);return}
-  micSession(1);try{st=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){micSession(0);out.push('<b>結果：實際無法取得麥克風</b><br>錯誤：'+esc(e&&e.name||'')+(e&&e.message?'（'+esc(String(e.message).slice(0,80))+'）':''));show(out.join('<br>'),1);return}
+  try{st=await micGet({audio:true})}catch(e){micSession(0);out.push('<b>結果：實際無法取得麥克風</b><br>錯誤：'+esc(e&&e.name||'')+(e&&e.message?'（'+esc(String(e.message).slice(0,80))+'）':''));show(out.join('<br>'),1);return}
   const tr=st.getAudioTracks()[0];out.push('<b>實際取得麥克風：成功</b>');
   if(tr){out.push('裝置：'+esc(tr.label||'（未提供名稱）'));out.push('狀態：'+esc(tr.readyState)+(tr.muted?'，目前被靜音':'')+(tr.enabled===false?'，已停用':''))}
   show(out.join('<br>')+'<br>正在偵測聲音，請對著手機說話 3 秒⋯⋯');
@@ -185,9 +185,12 @@ async function micTest(){
   out.push(peak>0.04?'<b>有收到聲音</b>（最大音量約 '+Math.round(peak*100)+'%）':'<b>沒有偵測到聲音</b>（最大音量 '+Math.round(peak*100)+'%）：權限正常，但可能沒說話、麥克風被遮住或被其他 App 佔用');
   show(out.join('<br>'),1)}
 /* iOS：只要 App 播過音效，音訊工作階段就是「播放」類別，之後 getUserMedia 會報 InvalidStateError（AudioSession category is not compatible with audio capture）→ 取麥克風前先切到可錄音的類別，用完還原 */
-function micSession(on){try{if(navigator.audioSession)navigator.audioSession.type=on?'play-and-record':'auto'}catch(e){}}
+function micSession(on){micHold=!!on;try{if(on&&typeof AC!=='undefined'&&AC){try{AC.close()}catch(e){}AC=null;acUnl=false}}catch(e){}try{if(navigator.audioSession)navigator.audioSession.type=on?'play-and-record':'auto'}catch(e){}}
+/* 取麥克風：先關掉音效用的 AudioContext 並切換音訊類別（音效會把類別設成 ambient，和錄音衝突），遇到 InvalidStateError 再重試一次 */
+async function micGet(c){micSession(1);await new Promise(r=>setTimeout(r,90));
+  try{return await navigator.mediaDevices.getUserMedia(c)}catch(e){if(e&&e.name==='InvalidStateError'){micSession(1);await new Promise(r=>setTimeout(r,350));return await navigator.mediaDevices.getUserMedia(c)}throw e}}
 async function micAsk(){if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){micExplain(null);return null}
-  micSession(1);let err=null;for(const c of [{audio:true},{audio:{channelCount:1}}]){try{return await navigator.mediaDevices.getUserMedia(c)}catch(e){err=e;if(e&&(e.name==='NotAllowedError'||e.name==='SecurityError'))break}}
+  micSession(1);let err=null;for(const c of [{audio:true},{audio:{channelCount:1}}]){try{return await micGet(c)}catch(e){err=e;if(e&&(e.name==='NotAllowedError'||e.name==='SecurityError'))break}}
   micSession(0);micExplain(err);return null}
 async function recStart(){
   if(recSt==='rec')return;

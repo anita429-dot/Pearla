@@ -20,7 +20,11 @@ const MI={edit:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
 /* ── 留言：一則一欄；回覆放在該留言下方、同一欄；每一欄、每條回覆都有「回覆」鍵 ── */
 const momRootId=(cm,m)=>{let c=m,g=0;while(c&&c.rid&&g++<60){const up=cm.find(x=>x.id===c.rid);if(!up)break;c=up}return c.id};
 function momThreads(cm){const roots=[],by={};cm.forEach(m=>{if(momRootId(cm,m)===m.id){roots.push(m);by[m.id]=[]}});cm.forEach(m=>{const r=momRootId(cm,m);if(r!==m.id&&by[r])by[r].push(m)});return roots.map(r=>({root:r,rep:by[r.id]}))}
-const momLine=(m,pid,isRep)=>'<div class="mom-cl'+(isRep?' rp':'')+'"><div class="mom-ct"><b>'+esc(m.n)+'</b>'+(isRep&&m.rt?' 回覆 <b>'+esc(m.rt)+'</b>':'')+'：'+esc(m.x||'')+(m.img?'<img class="mom-cimg" src="'+m.img+'" alt="">':'')+'</div>'+(m.id&&pid?'<button type="button" class="mom-rpb" data-a="momrep" data-i="'+pid+'|'+m.id+'">回覆</button>':'')+'</div>';
+let momSel=null;
+const momLine=(m,pid,isRep)=>{const sel=!!(momSel&&m.id&&momSel.mid===m.id&&momSel.pid===pid),k=pid+'|'+m.id,
+  bar=sel?'<div class="mom-cbar"><button type="button" data-a="momcdel" data-i="'+k+'">刪除</button><button type="button" data-a="momcedit" data-i="'+k+'">編輯</button><button type="button" data-a="momcsx" aria-label="取消">×</button></div>':'';
+  return '<div class="mom-cw">'+bar+'<div class="mom-cl'+(isRep?' rp':'')+(sel?' sel':'')+'"><div class="mom-ct"'+(m.id&&pid?' data-a="momcsel" data-i="'+k+'"':'')+'><b>'+esc(m.n)+'</b>'+(isRep&&m.rt?' 回覆 <b>'+esc(m.rt)+'</b>':'')+'：'+esc(m.x||'')+(m.img?'<img class="mom-cimg" src="'+m.img+'" alt="">':'')+'</div>'+(m.id&&pid?'<button type="button" class="mom-rpb" data-a="momrep" data-i="'+k+'">回覆</button>':'')+'</div></div>'};
+document.addEventListener('click',e=>{if(!momSel||e.target.closest('.mom-cw'))return;momSel=null;try{momCSync();const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}catch(x){}});
 function momCols(p){const cm=Array.isArray(p.cmts)?p.cmts:[];if(!cm.length)return '';p.cxs=p.cxs&&typeof p.cxs==='object'?p.cxs:{};
   return '<div class="mom-cols">'+momThreads(cm).map(t=>{const rid=t.root.id,open=!!p.cxs[rid],reps=t.rep,show=open?reps:reps.slice(0,1);
     return '<div class="mom-col">'+momLine(t.root,p.id,0)+(show.length?'<div class="mom-reps">'+show.map(m=>momLine(m,p.id,1)).join('')+'</div>':'')+(reps.length>1?'<button type="button" class="mom-cx" data-a="momcx" data-i="'+p.id+'|'+rid+'">'+(open?'收起留言':'展開留言（共 '+reps.length+' 條回覆）')+'</button>':'')+'</div>'}).join('')+'</div>'}
@@ -35,7 +39,7 @@ function momFocusIn(pid){const v=$('#v'),e=document.querySelector('.mom-cin[data
   const go=()=>{try{const box=e.closest('.mom-cbox')||e,r=box.getBoundingClientRect(),vr=v.getBoundingClientRect(),room=Math.min(vr.height*.45,260);if(r.bottom>vr.bottom-room||r.top<vr.top+8)v.scrollTop+=r.bottom-(vr.bottom-room)}catch(x){}};go();setTimeout(go,350)}
 function momCRender(pid){const v=$('#v'),y=v.scrollTop;momCSync();render();v.scrollTop=y;momFocusIn(pid)}
 function momCBox(p){const d=momDrOf(p.id);
-  return '<div class="mom-cbox">'+(d.rt?'<div class="mom-cto"><span>回覆 '+esc(d.rt)+'</span><button type="button" data-a="momcrx" data-i="'+p.id+'" aria-label="取消回覆">×</button></div>':'')+(d.img?'<div class="mom-cpv"><img src="'+d.img+'" alt=""><button type="button" data-a="momcimgx" data-i="'+p.id+'" aria-label="移除表情包">×</button></div>':'')+
+  return '<div class="mom-cbox">'+(d.rt?'<div class="mom-cto"><span>回覆 '+esc(d.rt)+'：'+esc(d.rx||'')+'</span><button type="button" data-a="momcrx" data-i="'+p.id+'" aria-label="取消回覆">×</button></div>':'')+(d.img?'<div class="mom-cpv"><img src="'+d.img+'" alt=""><button type="button" data-a="momcimgx" data-i="'+p.id+'" aria-label="移除表情包">×</button></div>':'')+
   '<div class="mom-crow"><button type="button" class="mom-cem" data-a="momcemo" data-i="'+p.id+'" aria-label="選擇表情包">'+MI.face+'</button><input class="mom-cin" data-pid="'+p.id+'" type="text" maxlength="100" enterkeyhint="send" placeholder="'+(d.rt?'回覆 '+esc(d.rt)+'…':'寫下留言…')+'" autocomplete="off" value="'+esc(d.x||'')+'"><button type="button" class="mom-csend" data-a="momcsend" data-i="'+p.id+'" aria-label="送出留言">'+MI_S+'</button></div></div>'}
 function momPost(p){const me=p.cid==='me',c=me?{id:'me',av:S.meAv,name:S.me}:S.contacts.find(x=>x.id===p.cid);if(!c)return '';const im=Array.isArray(p.imgs)?p.imgs.slice(0,9):[],likes=Array.isArray(p.likes)?p.likes:[],cm=Array.isArray(p.cmts)?p.cmts:[];
   const top='<button class="mom-top" data-a="'+(me?'mompedit':'momdelask')+'" data-i="'+p.id+'" aria-label="'+(me?'編輯貼文':'刪除貼文')+'">'+(me?MI.edit:MI.del)+'</button>';
@@ -115,7 +119,7 @@ function mcmPost(post){if(!post||post.cid==='me')return;S.mcm=S.mcm||[];const n=
 function mcmReply(post,cm){if(!post||!cm||!cm.cid)return;S.mcm=S.mcm||[];const n=Date.now();S.contacts.forEach(c=>{ctxSet(c.id);if(!S.set.crOn)return;if(c.id!==cm.cid)S.mcm.push({id:uid(),k:'r',cid:c.id,pid:post.id,mid:cm.id,to:cm.n,ph:'j',due:n+1000})})}
 /* 先排好本輪所有留言與送出時間：每條字卡後 emoji／顏文字各自等待選擇時間再判定；表情包每輪只判定一次，抽中當作一條留言插在隨機位置（與聊天室相同） */
 /* 你留言／回覆後，被回覆的聯絡人依回覆設置的機率判定是否回覆你；你再回覆，就再判定一次，直到判定失敗或你不再回覆 */
-function mcmUser(post,cm,tcid){if(!S.set.crOn||!post||post.cid==='me'||!cm||!cm.id||!S.contacts.some(c=>c.id===tcid))return;S.mcm=S.mcm||[];S.mcm.push({id:uid(),k:'u',cid:tcid,pid:post.id,mid:cm.id,to:S.me,ph:'j',due:Date.now()+1000})}
+function mcmUser(post,cm,tcid){if(!S.contacts.some(c=>c.id===tcid))return;const keep=S.cur;ctxSet(tcid);const on=S.set.crOn;ctxSet(keep);if(!on||!post||post.cid==='me'||!cm||!cm.id||!S.contacts.some(c=>c.id===tcid))return;S.mcm=S.mcm||[];S.mcm.push({id:uid(),k:'u',cid:tcid,pid:post.id,mid:cm.id,to:S.me,ph:'j',due:Date.now()+1000})}
 function mcmBuild(j,n){const cf=mcmCfg(j.k),cid=j.cid,pl=cardPool(cid);if(!pl.length)return[];
   const EJ=pool('emj',cid),KA=pool('kao',cid),cnt=(a,b)=>Math.max(1,momRange(a,b));let off=n;const out=[];
   for(let i=0,N=cnt(cf.nmin,cf.nmax);i<N;i++){
@@ -128,7 +132,8 @@ function momNote(cid,x){try{if(S.set.momNotify===0)return;ms(cid).push({id:uid()
 function mcmSend(j,o,post){const c=S.contacts.find(x=>x.id===j.cid);if(!c)return;post.cmts=Array.isArray(post.cmts)?post.cmts:[];const m={id:uid(),cid:j.cid,n:c.name,x:o.x||'',img:o.img||''};if(j.k!=='p'){m.rt=j.to;m.rid=j.mid;/* 回覆出現在該留言同一欄；有新回覆就讓該欄的展開鈕保持原狀 */}post.cmts.push(m);
   if(!j.nt){j.nt=1;const ow=post.cid==='me'?S.me:((S.contacts.find(z=>z.id===post.cid)||{}).name||'');let x;if(j.k==='p')x=c.name+' 在'+(post.cid==='me'?'你':ow)+'的朋友圈留言了';else x=j.to===S.me?c.name+' 回覆了你的留言':c.name+' 回覆了'+j.to+'的留言';momNote(j.cid,x)}
   try{save()}catch(e){}
-  if(j.k==='p')mcmReply(post,m)}
+  /* 聯絡人也會回覆「留言的回覆」：同一串最多 8 則，避免無限對話 */
+  {const cm=post.cmts,r=momRootId(cm,m);if(j.k==='p'||cm.filter(x=>momRootId(cm,x)===r).length<8)mcmReply(post,m)}}
 function mcmTick(){if(!S||!S.mcm||!S.mcm.length)return false;const n=Date.now(),s=S.set;let ch=false;const list=S.mcm;S.mcm=[];const keep=S.mcm;
   list.forEach(j=>{try{const post=S.moments.find(x=>x.id===j.pid);if(!post||!S.contacts.some(c=>c.id===j.cid)){ch=true;return}
     /* 用這個任務所屬聯絡人的設定判斷（以前用的是「目前選到的聯絡人」的設定，點到別的聯絡人時回覆就被丟掉） */
