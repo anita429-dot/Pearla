@@ -469,7 +469,7 @@ document.addEventListener('click',e=>{
       if(window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){const pr=new Promise(r=>setTimeout(()=>r(new Blob([mk()],{type:'text/plain'})),60));navigator.clipboard.write([new ClipboardItem({'text/plain':pr})]).then(ok,fb)}else{setTimeout(()=>{mk();try{navigator.clipboard.writeText(t).then(ok,fb)}catch(x){fb()}},60)}break}
     case 'imp':impText($('#im').value);break;
     case 'reset':sheet('重設全部資料','<p class="hint" style="margin:0">這會清除本機所有 Pearla 資料。</p><button class="btn d" data-a="resetok">確定重設</button><button class="btn" data-a="close">取消</button>');break;
-    case 'resetok':S=def();save();closeSheet();tab='home';render();break;
+    case 'resetok':allowWipe=true;S=def();save();allowWipe=false;closeSheet();tab='home';render();break;
   }
 });
 document.addEventListener('input',e=>{if(tab==='set'&&sTab===0&&sPage&&!NOLOCK.includes(sPage)&&S.locked){e.stopImmediatePropagation();render()}},true);

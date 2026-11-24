@@ -15,7 +15,12 @@ let S,db,tab='home',scope='e',kind='card',selCat=null,askCb=null,jump=null,catDi
 /* ── IndexedDB ── */
 const idb=()=>new Promise(r=>{try{const q=indexedDB.open('pearla',1);q.onupgradeneeded=()=>q.result.createObjectStore('kv');q.onsuccess=()=>{db=q.result;r()};q.onerror=()=>r()}catch(e){r()}});
 let myRev=0,saveWarnAt=0;
-const load=()=>new Promise(r=>{if(!db)return r(null);try{const tx=db.transaction('kv'),st=tx.objectStore('kv'),q=st.get('s'),g=st.get('rev');g.onsuccess=()=>{myRev=+g.result||0};q.onsuccess=()=>r(q.result||null);q.onerror=()=>r(null)}catch(e){r(null)}});
+let loadFail=false,noSave=false,lastBak=0,allowWipe=false;
+/* 資料份量：訊息數＋字卡數。用來防止「空白資料蓋掉有內容的資料」 */
+const wt=o=>{try{let n=0;if(o&&o.msgs&&typeof o.msgs==='object')for(const k in o.msgs)n+=(o.msgs[k]||[]).length;n+=((o&&o.cards)||[]).length;return n}catch(e){return 0}};
+/* 讀取：讀不到（資料庫沒連上／出錯）會標記 loadFail，和「本來就沒資料」分開處理 */
+const load=()=>new Promise(r=>{loadFail=false;if(!db){loadFail=true;return r(null)}try{const tx=db.transaction('kv'),st=tx.objectStore('kv'),q=st.get('s'),g=st.get('rev');g.onsuccess=()=>{myRev=+g.result||0};q.onsuccess=()=>r(q.result||null);q.onerror=()=>{loadFail=true;r(null)};tx.onerror=()=>{loadFail=true;r(null)};tx.onabort=()=>{loadFail=true;r(null)}}catch(e){loadFail=true;r(null)}});
+const loadBak=()=>new Promise(r=>{if(!db)return r(null);try{const q=db.transaction('kv').objectStore('kv').get('bak');q.onsuccess=()=>r(q.result||null);q.onerror=()=>r(null)}catch(e){r(null)}});
 /* 儲存：成功與否都會確認。背景中的視窗若發現別的視窗已存了較新的資料，不會覆蓋，改為重新讀取；儲存失敗會提醒 */
 let saveRetry=0;
 const isQuotaErr=e=>!!e&&(e.name==='QuotaExceededError'||e.code===22||e.code===1014||/quota|space|full/i.test(String(e.message||'')));
@@ -25,9 +30,15 @@ function saveFail(err){try{console.error('Pearla save failed',err)}catch(e){}
   const n=Date.now();if(n-saveWarnAt<20000)return;saveWarnAt=n;if(typeof toast==='function')toast('⚠ 儲存失敗：瀏覽器回報儲存空間不足。請先到「設置→數據」備份並清理',6000)}
 async function reloadFromDb(){try{const o=await load();if(!o||!Array.isArray(o.contacts)||!o.contacts.length)return;S=mig(Object.assign(def(),o,{tags:o.tags}));applyTheme();render();toast('已同步另一個視窗的最新資料',2500)}catch(e){}}
 function syncCheck(){if(!db)return;try{const q=db.transaction('kv').objectStore('kv').get('rev');q.onsuccess=()=>{if((+q.result||0)>myRev)reloadFromDb()}}catch(e){}}
-const save=()=>{try{if(!db||!S)return;const snap=JSON.parse(JSON.stringify(S)),tx=db.transaction('kv','readwrite'),st=tx.objectStore('kv'),g=st.get('rev');let conflict=false;
-  g.onsuccess=()=>{const r=+g.result||0;if(r>myRev&&document.hidden){conflict=true;tx.abort();return}const nr=Math.max(Date.now(),r+1,myRev+1);st.put(snap,'s');st.put(nr,'rev');myRev=nr};
-  tx.onabort=()=>{if(conflict)setTimeout(reloadFromDb,0);else saveFail(tx.error)};
+const save=()=>{try{if(!db||!S||noSave)return;const snap=JSON.parse(JSON.stringify(S)),tx=db.transaction('kv','readwrite'),st=tx.objectStore('kv'),g=st.get('rev');let conflict=false,blocked=false;
+  g.onsuccess=()=>{const r=+g.result||0;if(r>myRev&&document.hidden){conflict=true;tx.abort();return}
+    const q2=st.get('s');q2.onsuccess=()=>{const old=q2.result,ow=wt(old),nw=wt(snap);
+      /* 保護：資料庫裡有內容、這次要存的卻是空的（且不是使用者主動重置／還原）→ 不覆蓋，並把舊資料留成備份 */
+      if(ow>0&&nw===0&&!allowWipe){blocked=true;st.put(old,'bak');tx.abort();return}
+      /* 滾動備份：資料庫裡有內容時，每 5 分鐘把「存檔前的版本」留一份到 bak */
+      if(ow>0&&Date.now()-lastBak>300000){st.put(old,'bak');lastBak=Date.now()}
+      const nr=Math.max(Date.now(),r+1,myRev+1);st.put(snap,'s');st.put(nr,'rev');myRev=nr}};
+  tx.onabort=()=>{if(blocked){noSave=true;try{toast('⚠ 偵測到資料異常（內容變空），已停止存檔保護舊資料。請關閉程式重開；若仍是空的，會詢問是否從自動備份還原',8000)}catch(e){}return}if(conflict)setTimeout(reloadFromDb,0);else saveFail(tx.error)};
   tx.onerror=()=>{}}catch(e){saveFail(e)}};
 /* 關閉／切到背景前立刻存檔，流程進度（排程時間）不會因為 300ms 的延遲存檔而遺失；回到畫面時馬上補跑到期的流程 */
 ['pagehide','beforeunload'].forEach(ev=>addEventListener(ev,()=>{try{if(S)save()}catch(e){}}));
@@ -92,7 +103,7 @@ function impText(t){t=String(t||'').replace(/^\uFEFF/,'').trim();
   if(!t){toast('還沒有貼上任何內容');return}
   let o;try{const i=t.indexOf('{'),j=t.lastIndexOf('}');if(i<0||j<i)throw 0;o=JSON.parse(t.slice(i,j+1))}catch(x){toast(t.indexOf('{')<0?'貼上的內容不是備份格式，未做任何更動':/\}\s*$/.test(t)?'內容不是 Pearla 備份的格式，未做任何更動':'備份內容不完整（可能複製時被截斷），請改用「下載備份檔」');return}
   if(!o||!Array.isArray(o.contacts)||!o.contacts.length||!Array.isArray(o.cats)||!Array.isArray(o.cards)){toast('這不是 Pearla 的備份內容，未做任何更動');return}
-  try{S=mig(Object.assign(def(),o,{tags:o.tags}));save();closeSheet();tab='home';sPage=null;render();toast('已還原備份')}catch(x){toast('備份內容無法讀取：'+String(x&&x.message||x).slice(0,40))}}
+  try{S=mig(Object.assign(def(),o,{tags:o.tags}));allowWipe=true;save();allowWipe=false;closeSheet();tab='home';sPage=null;render();toast('已還原備份')}catch(x){toast('備份內容無法讀取：'+String(x&&x.message||x).slice(0,40))}}
  function rd(f,max,cb,fmt){const r=new FileReader();r.onload=()=>{if(!max)return cb(r.result);const im=new Image();im.onload=()=>{const s=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=im.width*s;c.height=im.height*s;c.getContext('2d').drawImage(im,0,0,c.width,c.height);{const q=S.set.imgc?.7:.85;let u=fmt==='webp'?c.toDataURL('image/webp',q):'';if(!u||u.indexOf('data:image/webp')!==0)u=c.toDataURL('image/jpeg',q);cb(u)}};im.src=r.result};r.readAsDataURL(f)}
 function rdSquare(f,max,cb){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const side=Math.min(im.width,im.height),sx=(im.width-side)/2,sy=(im.height-side)/2,scale=Math.min(1,(S.set.imgc?Math.min(max,720):max)/side),out=Math.round(side*scale),c=document.createElement('canvas');c.width=out;c.height=out;c.getContext('2d').drawImage(im,sx,sy,side,side,0,0,out,out);cb(c.toDataURL('image/jpeg',S.set.imgc?.78:.9))};im.src=r.result};r.readAsDataURL(f)}
 function paintTabs(){const p=curDef(),de=document.documentElement;if(p.nav)de.dataset.nav='1';else delete de.dataset.nav;document.querySelectorAll('.tab').forEach(b=>{const g=b.querySelector('.gt svg');if(g&&!g.firstChild)g.innerHTML=GTAB[b.dataset.t]||'';const im=b.querySelector('img');if(im&&p.nav){const u=p.dir+'nav-'+b.dataset.t+'.webp';if(im.getAttribute('src')!==u)im.setAttribute('src',u)}})}

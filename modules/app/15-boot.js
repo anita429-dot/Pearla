@@ -2,9 +2,13 @@
 /* ── 啟動 ── */
 (async()=>{
   await idb();
-  if(!db)setTimeout(()=>{try{toast('此瀏覽器無法儲存資料（可能是無痕模式），關閉後資料會消失',5000)}catch(e){}},1500);
-  const o=await load();
+  let o=await load();
+  /* 讀取失敗（不是「沒資料」）：重新連線再試最多 3 次；還是失敗就整個流程不存檔，避免空白資料蓋掉舊資料 */
+  for(let i=0;i<3&&(loadFail||!db);i++){await new Promise(r=>setTimeout(r,500));try{db&&db.close()}catch(e){}db=null;await idb();o=await load()}
+  if(loadFail||!db){noSave=true;setTimeout(()=>{try{toast('⚠ 讀不到儲存的資料（可能是無痕模式或瀏覽器暫時出錯）。本次不會存檔，請完全關閉程式後重開',8000)}catch(e){}},1500)}
   S=mig(o&&Array.isArray(o.contacts)&&o.contacts.length?Object.assign(def(),o,{tags:o.tags}):def());
+  /* 開啟時如果資料是空的，但有自動備份 → 問要不要還原 */
+  if(!noSave&&wt(S)===0){const bk=await loadBak();if(bk&&Array.isArray(bk.contacts)&&bk.contacts.length&&wt(bk)>0){let ok=false;try{ok=confirm('發現一份自動備份（約 '+wt(bk)+' 則訊息與字卡），要還原嗎？\n\n按「確定」還原；按「取消」維持目前空白狀態。')}catch(e){}if(ok){S=mig(Object.assign(def(),bk,{tags:bk.tags}));allowWipe=true}}}
   $('#fi').addEventListener('change',e=>{const fs=[...e.target.files];e.target.value='';if(fs.length&&fiCb)fiMul?fiCb(fs):fiCb(fs[0])});
   Object.keys(S.next).forEach(k=>{if(S.next[k]<Date.now())S.next[k]=0});
   applyTheme();if(window.PearlaSplash)window.PearlaSplash.finish();setTimeout(perBoot,800);
@@ -23,7 +27,7 @@
   document.addEventListener('touchmove',e=>{if(e.touches.length>1)e.preventDefault()},{passive:false});
   statusTick();
   dailyTick();
-  save();render();
+  save();allowWipe=false;render();
 })();
 
 document.addEventListener('input',e=>{const t=e.target;if(t&&t.dataset&&t.dataset.pw!=null){const l=ensurePunct(),v=parseFloat(t.value);if(l[+t.dataset.pw]&&!isNaN(v)){l[+t.dataset.pw].w=Math.max(0,v);saveSoon()}}});
