@@ -1,0 +1,95 @@
+/* ===== 修正與新增（最後載入） ===== */
+/* 聯絡人資料卡：設定鈕移到背景下方，去掉外框只留圖示 */
+.ci-gear{top:124px;right:8px;border:0!important;background:transparent!important;box-shadow:none!important;width:30px;height:30px}
+.ci-cx svg,.rec-x svg{display:block}
+.rec-x{display:grid;place-items:center;width:22px;height:22px;padding:0;line-height:1}
+.qt-bar-x,[data-a=qtx]{display:grid;place-items:center;line-height:1;padding:0}
+/* 黑色手帳／深色黑貓：小廚房底色與文字分開 */
+[data-theme=glass][data-skin=cat][data-tone=dark] .kitchen-intro,[data-theme=glass][data-skin=journal][data-tone=dark] .kitchen-intro{background:#25252a;color:#f0f0f4}
+[data-theme=glass][data-skin=cat][data-tone=dark] .kitchen-ingredient,[data-theme=glass][data-skin=journal][data-tone=dark] .kitchen-ingredient,[data-theme=glass][data-skin=cat][data-tone=dark] .kitchen-recipe,[data-theme=glass][data-skin=journal][data-tone=dark] .kitchen-recipe{background:#303037;color:#f0f0f4;border-color:#4a4a53}
+[data-theme=glass][data-skin=cat][data-tone=dark] .kitchen-ingredient.on,[data-theme=glass][data-skin=journal][data-tone=dark] .kitchen-ingredient.on{background:#4a4a58;border-color:#d8d8e4}
+[data-theme=glass][data-skin=cat][data-tone=dark] .kitchen-recipe b,[data-theme=glass][data-skin=journal][data-tone=dark] .kitchen-recipe b,[data-theme=glass][data-skin=cat][data-tone=dark] .kitchen-intro b,[data-theme=glass][data-skin=journal][data-tone=dark] .kitchen-intro b,[data-theme=glass][data-skin=cat][data-tone=dark] .kitchen-stat,[data-theme=glass][data-skin=journal][data-tone=dark] .kitchen-stat{color:#f0f0f4}
+[data-theme=glass][data-skin=cat][data-tone=dark] .kitchen-recipe small,[data-theme=glass][data-skin=journal][data-tone=dark] .kitchen-recipe small,[data-theme=glass][data-skin=cat][data-tone=dark] .kitchen-intro small,[data-theme=glass][data-skin=journal][data-tone=dark] .kitchen-intro small,[data-theme=glass][data-skin=cat][data-tone=dark] .kitchen-ingredient i,[data-theme=glass][data-skin=journal][data-tone=dark] .kitchen-ingredient i{color:#c4c4d0}
+/* 單行輸入框：內容超出時視覺換行（不是真的換行） */
+textarea.sl{resize:none;overflow:hidden;line-height:1.4;white-space:pre-wrap;word-break:break-all;overflow-wrap:anywhere;display:block;box-sizing:border-box;min-height:0}
+/* 鍵盤：浮窗跟著可視範圍，輸入框不被鍵盤蓋住 */
+html.kb-open #sh{inset:auto;left:0;right:0;top:var(--vvt,0px);height:var(--vvh,100%)}
+/* from styles/base.css */
+.card-add textarea.sl{box-sizing:border-box;padding:6px 10px;background:#fff;border:1.5px solid var(--line);overflow:hidden}
+#f textarea.sl{border-radius:999px;padding:7px 11px}
+.sbrow textarea.sl{flex:1 1 0;min-width:0;width:auto;margin:0!important;padding:6px 10px!important}
+.ask-set textarea.sl{width:76px;text-align:right;padding:6px 10px}
+.cp-prev textarea.sl{flex:1;min-width:0;text-align:center;font-family:monospace;letter-spacing:.05em}
+.mom-head .mom-sig textarea.sl{flex:1;min-width:0;width:100%;border:0!important;outline:0!important;background:transparent!important;box-shadow:none!important;font:inherit;font-size:calc(13.5px*var(--fz,1));color:var(--ink);padding:0;margin:0;height:22px;line-height:22px;border-radius:0}
+.an-f textarea.sl{width:100%;box-sizing:border-box;padding:9px 12px;font:inherit;font-size:calc(14px*var(--fz,1));border-style:solid}
+/* from styles/cat.css */
+[data-theme=glass][data-skin=cat] .card-add textarea.sl{background:#fffffff2;border:1px solid #dadada;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=cat] .card-add textarea.sl{border:1.5px solid var(--line)}
+[data-theme=glass][data-skin=cat][data-tone=dark] .card-add textarea.sl{background:#25252af2;border:1px solid #3a3a42}
+/* from styles/features.css */
+html[data-ff] textarea.sl{font-family:var(--ff)!important}
+.rem-leap textarea.sl{margin:0}
+.chs-pop textarea.sl{width:100%;box-sizing:border-box;margin:0 0 8px}
+/* from styles/glass.css */
+[data-theme=glass] .card-add textarea.sl{background:#ffffff66;border:1px solid #ffffffb3}
+[data-theme=glass] textarea.sl{color:var(--ink)}
+[data-theme=glass] .card-add textarea.sl{-webkit-appearance:none;appearance:none;background:#ffffff2e;-webkit-backdrop-filter:blur(14px) saturate(1.5);backdrop-filter:blur(14px) saturate(1.5)}
+/* from styles/journal.css */
+[data-theme=glass][data-skin=journal] .card-add textarea.sl{background:#fffffff2;border:1px solid #cfdcee;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=journal][data-tone=mint] .card-add textarea.sl{background:#fdfff6f2;border:1px solid #d7eea7;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=journal][data-tone=dark] .card-add textarea.sl{background:#25252af2;border:1px solid #3a3a42}
+/* from styles/moon.css */
+[data-theme=glass][data-skin=moon][data-theme=glass][data-skin=moon] .card textarea.sl,[data-theme=glass][data-skin=moon][data-theme=glass][data-skin=moon] .pf-list textarea.sl,[data-theme=glass][data-skin=moon][data-theme=glass][data-skin=moon] .cal2-box textarea.sl{box-shadow:none!important}
+/* from styles/pixel.css */
+[data-theme=glass][data-skin=pixel] .card-add textarea.sl{background:#fffffff2;border:1px solid #e1cdf0;-webkit-backdrop-filter:none;backdrop-filter:none}
+[data-theme=glass][data-skin=pixel] textarea.sl{font-family:inherit}
+/* from modules/profile.css */
+.pf-add textarea.sl{flex:1;min-width:0;box-sizing:border-box;padding:9px 12px}
+.pf-newtag textarea.sl{flex:1;min-width:0;box-sizing:border-box;padding:8px 12px}
+.pf-cl textarea.sl{width:100%}
+#cl .m.qt-flash .b{animation:qtflash 1.5s ease}
+@keyframes qtflash{0%,60%{box-shadow:0 0 0 3px var(--lav,#aca6e4)}100%{box-shadow:0 0 0 0 transparent}}
+#cl .qt{cursor:pointer}
+#f textarea.sl{border-radius:20px;padding:8px 13px;max-height:6.4em;overflow-y:auto;font-size:calc(15px*var(--fz,1))}
+
+/* 信箱：信件可收起 */
+.lth{display:flex;align-items:center;gap:6px;cursor:pointer;-webkit-user-select:none;user-select:none}
+.lth .tri{flex:none;transition:transform .15s;color:var(--soft)}
+.lth.col .tri{transform:rotate(-90deg)}
+
+/* 朋友圈：標題與貼紙開關吸頂，分頁籤接在它下面；留言字體加大並顯示時間 */
+.mom-stkh{z-index:10}
+.mom-stkh .ph2{margin-bottom:6px}
+.mom-sticky{top:var(--mhh,52px)!important;z-index:9}
+.mom-cols .mom-cl,.mom-cw .mom-cl{font-size:calc(14.5px*var(--fz,1))}
+.mom-cts{display:block;margin-top:2px;font-size:calc(11px*var(--fz,1));color:var(--soft);opacity:.85}
+.mom-cto{background:color-mix(in srgb,#e9a8c0 26%,var(--card))!important;border-color:color-mix(in srgb,#e9a8c0 55%,var(--line))!important;color:var(--ink)!important}
+#cl .qt{background:color-mix(in srgb,var(--lav,#aca6e4) 16%,transparent);border-radius:6px;padding:3px 7px 3px 8px}
+.qtb{background:color-mix(in srgb,var(--lav,#aca6e4) 20%,var(--card))}
+
+/* 黑貓／月眠：備忘錄圖片不再強制 visible（會穿過被隱藏的 .pager，造成備忘錄殘影停在背景上） */
+[data-theme=glass][data-skin=cat] .memo-card>img,[data-theme=glass][data-skin=moon] .memo-card>img{visibility:inherit}
+.pager{contain:paint}
+
+/* 占滿整個螢幕（含瀏海與底部橫條），版面位置維持原樣：用安全區內距把內容推回原本的位置 */
+html,body{height:100%;min-height:-webkit-fill-available}
+#app{height:100vh;height:100dvh;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+#splash{height:100vh;height:100dvh}
+
+/* 文字再放大一些（備忘錄在 features.css 已固定 --fz:1，不受影響）；主頁圖示放大 */
+:root{--fz:1.2}
+.memo-card,.memo-card *{--fz:1}
+.ti{width:64px;height:64px}
+.ti.sm{width:52px;height:52px}
+.tile-label{font-size:calc(12px*var(--fz,1))}
+.mom-stkh{margin-left:-16px!important;margin-right:-16px!important;padding-left:16px!important;padding-right:16px!important;background:color-mix(in srgb,#fdf9ff 94%,transparent)}
+[data-theme=glass] .mom-stkh{background:transparent}
+:root:not([data-theme=glass]) .mom-stkh,:root:not([data-theme=glass]) .mom-sticky{background:#f9f6ff!important}
+[data-theme=glass] .mom-stkh,[data-theme=glass] .mom-sticky{background:var(--bg)!important}
+/* 統一更改：開關不要被拉寬 */
+.bctl>.sw{width:42px!important;height:24px;justify-self:start}
+.bctl>.sw::after{top:3px;left:3px}
+.bctl>.sw.on::after{left:21px}
+/* 其他主題（霧海、手帳、像素）的主頁圖示也放大 */
+.gi{width:64px;height:64px}
+.gi svg{width:35px;height:35px}
