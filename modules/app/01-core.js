@@ -10,14 +10,19 @@ const tm=t=>{const d=new Date(t);return String(d.getHours()).padStart(2,'0')+':'
 const ini=n=>String(n||'').trim().slice(0,1)||'TA';
 const WAITS=[3,10,30,60,300,900,1800,3600,7200];
 const WL=s=>s<60?s+' 秒':s<3600?s/60+' 分鐘':s/3600+' 小時';
-let S,db,tab='home',scope='e',kind='card',selCat=null,askCb=null,jump=null,catDirty=false,emoScope='s',emoCat=null,notifBack=false,homeSnap=null,lastRenderedTab='';
+let S,db,tab='home',scope='e',kind='card',selCat=null,askCb=null,jump=null,catDirty=false,emoScope='e',emoCat=null,notifBack=false,homeSnap=null,lastRenderedTab='';
 
 /* ── IndexedDB ── */
 const idb=()=>new Promise(r=>{try{const q=indexedDB.open('pearla',1);q.onupgradeneeded=()=>q.result.createObjectStore('kv');q.onsuccess=()=>{db=q.result;r()};q.onerror=()=>r()}catch(e){r()}});
 let myRev=0,saveWarnAt=0;
 const load=()=>new Promise(r=>{if(!db)return r(null);try{const tx=db.transaction('kv'),st=tx.objectStore('kv'),q=st.get('s'),g=st.get('rev');g.onsuccess=()=>{myRev=+g.result||0};q.onsuccess=()=>r(q.result||null);q.onerror=()=>r(null)}catch(e){r(null)}});
 /* 儲存：成功與否都會確認。背景中的視窗若發現別的視窗已存了較新的資料，不會覆蓋，改為重新讀取；儲存失敗會提醒 */
-function saveFail(err){try{console.error('Pearla save failed',err)}catch(e){}const n=Date.now();if(n-saveWarnAt<20000)return;saveWarnAt=n;if(typeof toast==='function')toast('⚠ 儲存失敗（可能是儲存空間已滿）：請先到「設置→數據」備份並清理',6000)}
+let saveRetry=0;
+const isQuotaErr=e=>!!e&&(e.name==='QuotaExceededError'||e.code===22||e.code===1014||/quota|space|full/i.test(String(e.message||'')));
+function saveFail(err){try{console.error('Pearla save failed',err)}catch(e){}
+  /* 只有真的是「空間不足」才提醒；其他原因（資料庫連線被系統關閉、被背景暫停等）先靜默重新連線再存一次 */
+  if(!isQuotaErr(err)){if(saveRetry<2){saveRetry++;setTimeout(async()=>{try{try{db&&db.close()}catch(e){}db=null;await idb();save();setTimeout(()=>{saveRetry=0},4000)}catch(e){}},300)}return}
+  const n=Date.now();if(n-saveWarnAt<20000)return;saveWarnAt=n;if(typeof toast==='function')toast('⚠ 儲存失敗：瀏覽器回報儲存空間不足。請先到「設置→數據」備份並清理',6000)}
 async function reloadFromDb(){try{const o=await load();if(!o||!Array.isArray(o.contacts)||!o.contacts.length)return;S=mig(Object.assign(def(),o,{tags:o.tags}));applyTheme();render();toast('已同步另一個視窗的最新資料',2500)}catch(e){}}
 function syncCheck(){if(!db)return;try{const q=db.transaction('kv').objectStore('kv').get('rev');q.onsuccess=()=>{if((+q.result||0)>myRev)reloadFromDb()}}catch(e){}}
 const save=()=>{try{if(!db||!S)return;const snap=JSON.parse(JSON.stringify(S)),tx=db.transaction('kv','readwrite'),st=tx.objectStore('kv'),g=st.get('rev');let conflict=false;
@@ -57,7 +62,7 @@ function makeSet(raw,owner){if(raw&&raw.__raw)raw=raw.__raw;
     has(t,k){const o=typeof k==='string'&&!GLOBAL_SET.has(k)?ov(false):null;return (o&&k in o)||Reflect.has(t,k)}})}
 /* 免打擾：時間照樣跑，但判定、機率、功能都不會觸發 */
 /* 字卡使用次數：S.cuse[聯絡人][字卡id]；第一次升級時依聊天紀錄回推 */
-const cuse=(cid,k)=>{if(!S||!k||!k.id)return;const u=(S.cuse=S.cuse||{}),m=(u[cid]=u[cid]||{});m[k.id]=(m[k.id]||0)+1};
+const cuse=(cid,k)=>{if(!S||!k||!k.id)return;const u=(S.cuse=S.cuse||{}),m=(u[cid]=u[cid]||{});if(!m[k.id]){const f=(S.cfirst=S.cfirst||{}),fm=(f[cid]=f[cid]||{});fm[k.id]=Date.now()}m[k.id]=(m[k.id]||0)+1};
 function backfillUse(o){o.cuse={};const cats=o.cats||[],kd=id=>{const g=cats.find(c=>c.id===id);return g?(g.kind||'card'):null};
   (o.contacts||[]).forEach(c=>{const mine=(o.cards||[]).filter(k=>{if(!k||!k.text)return false;const g=cats.find(x=>x.id===k.cat);if(!g)return false;if(!['card','mem','ext'].includes(g.kind||'card'))return false;return g.sc==='s'||g.own===c.id||(!g.own&&(g.as||[]).includes(c.id))}).sort((a,b)=>b.text.length-a.text.length);
     if(!mine.length)return;const cnt={};((o.msgs||{})[c.id]||[]).forEach(m=>{if(!m||m.f!=='ta'||!m.x||m.img)return;let s=String(m.x);mine.forEach(k=>{let i;while((i=s.indexOf(k.text))>=0){cnt[k.id]=(cnt[k.id]||0)+1;s=s.slice(0,i)+'\u0001'+s.slice(i+k.text.length)}})});o.cuse[c.id]=cnt})}
@@ -160,7 +165,7 @@ let avScope='ta';
 function avSheet(){const me=avScope==='me',ct=cur(),list=me?(S.meAvs=S.meAvs||[]):(ct.avs=ct.avs||[]),now=me?S.meAv:ct.av;
   chatSheet('<div class="chat-pop-cats"><button class="'+(me?'':'on')+'" data-a="avsc" data-i="ta">他的頭像</button><button class="'+(me?'on':'')+'" data-a="avsc" data-i="me">我的頭像</button></div><div class="av-grid">'+list.map((u,n)=>'<div class="av-it'+(u===now?' on':'')+'"><button type="button" class="av-pick" data-a="avuse" data-i="'+n+'"><img src="'+u+'" alt=""></button><button type="button" class="av-x" data-a="avdel" data-i="'+n+'" aria-label="刪除">✕</button></div>').join('')+'<button type="button" class="av-add" data-a="avadd" aria-label="新增備用頭像">＋</button></div>'+(list.length?'':'<p class="hint" style="margin:8px 2px 0;text-align:center">按「＋」添加圖片作為備用頭像，點一下就能直接換。</p>'));$('#sh').classList.add('more')}
 const recEmoPush=id=>{if(!id)return;S.recEmo=[id].concat((S.recEmo||[]).filter(x=>x!==id)).slice(0,20)};
-function emoSheet(){const rec=emoScope==='recent',type=(emoScope==='kao'||emoScope==='kao-e')?'kao':'emoji',scopeKey=(emoScope==='e'||emoScope==='kao-e')?'e':'s',l=rec?(S.recEmo||[]).map(id=>S.cards.find(k=>k.id===id)).filter(Boolean).slice(0,20):pool(type,S.cur).filter(k=>{const g=S.cats.find(c=>c.id===k.cat);return g&&g.sc===scopeKey});const tabs=[['kao','顏文字'],['kao-e','他的專屬<br>顏文字'],['s','共用<br>表情包'],['e','他的專屬<br>表情包']];
+function emoSheet(){const rec=emoScope==='recent',type=(emoScope==='kao'||emoScope==='kao-e')?'kao':'emoji',scopeKey=(emoScope==='e'||emoScope==='kao-e')?'e':'s',l=rec?(S.recEmo||[]).map(id=>S.cards.find(k=>k.id===id)).filter(Boolean).slice(0,20):pool(type,S.cur).filter(k=>{const g=S.cats.find(c=>c.id===k.cat);return g&&g.sc===scopeKey});const tabs=[['s','共用<br>表情包'],['e','他的專屬<br>表情包'],['kao','共用<br>顏文字'],['kao-e','他的專屬<br>顏文字']];
   const cs=rec?[]:S.cats.filter(g=>l.some(k=>k.cat===g.id)),item=k=>'<button'+(k.img?'':' class="ki"')+' data-a="'+(k.img?'es':'ek')+'" data-i="'+k.id+'">'+(k.img?'<img src="'+k.img+'">':esc(k.text))+'</button>';
   const cur1=cs.find(g=>g.id===emoCat)||cs[0];emoCat=cur1?cur1.id:null;
   const chips=cs.length>1?'<div class="emo-cats">'+cs.map(g=>'<button type="button" class="'+(g.id===emoCat?'on':'')+'" data-a="ecsw" data-i="'+g.id+'">'+esc(g.name)+'</button>').join('')+'</div>':'';
