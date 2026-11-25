@@ -23,6 +23,9 @@ function fit(t){
   if(cs.boxSizing==='border-box')h+=bw;
   t.style.height=h+'px';
 }
+/* 程式把 value 清空／改掉時（例如送出後 i.value=''）也要重新量高度 */
+try{var vd=Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value');
+Object.defineProperty(HTMLTextAreaElement.prototype,'value',{configurable:true,enumerable:vd.enumerable,get:vd.get,set:function(v){vd.set.call(this,v);if(this.classList&&this.classList.contains('sl')){var s=this;fit(s);requestAnimationFrame(function(){fit(s)})}}})}catch(e){}
 var ro=window.ResizeObserver?new ResizeObserver(function(es){es.forEach(function(e){fit(e.target)})}):null;
 function conv(i){
   var t=document.createElement('textarea');
@@ -51,12 +54,12 @@ document.addEventListener('DOMContentLoaded',function(){sweep(document.body)});
 document.addEventListener('input',function(e){
   var t=e.target;
   if(!t||!t.classList||!t.classList.contains('sl'))return;
-  if(/[\r\n]/.test(t.value)){var p=t.selectionStart,v=t.value,n=v.replace(/[\r\n]+/g,'');t.value=n;try{t.setSelectionRange(Math.max(0,p-(v.length-n.length)),Math.max(0,p-(v.length-n.length)))}catch(x){}}
+  if(t.id!=='in'&&/[\r\n]/.test(t.value)){var p=t.selectionStart,v=t.value,n=v.replace(/[\r\n]+/g,'');t.value=n;try{t.setSelectionRange(Math.max(0,p-(v.length-n.length)),Math.max(0,p-(v.length-n.length)))}catch(x){}}
   fit(t);
 },true);
 document.addEventListener('keydown',function(e){
   var t=e.target;
-  if(e.key==='Enter'&&!e.isComposing&&t&&t.classList&&t.classList.contains('sl'))e.preventDefault();
+  if(e.key==='Enter'&&!e.isComposing&&t&&t.classList&&t.classList.contains('sl')&&t.id!=='in')e.preventDefault();
 });
 document.addEventListener('focusin',function(e){var t=e.target;if(t&&t.classList&&t.classList.contains('sl'))setTimeout(function(){fit(t)},0)});
 addEventListener('resize',function(){document.querySelectorAll('textarea.sl').forEach(fit)});
@@ -68,6 +71,7 @@ function kbVars(){
   var kb=Math.max(0,innerHeight-vv.height-vv.offsetTop);
   var open=kb>80;
   root.classList.toggle('kb-open',open);
+  var ae=document.activeElement;root.classList.toggle('kb-chat',open&&!!(ae&&ae.closest&&ae.closest('#f')));
   if(open){root.style.setProperty('--vvt',vv.offsetTop+'px');root.style.setProperty('--vvh',vv.height+'px');root.style.setProperty('--kb',kb+'px')}
   else{root.style.removeProperty('--vvt');root.style.removeProperty('--vvh');root.style.setProperty('--kb','0px')}
 }
