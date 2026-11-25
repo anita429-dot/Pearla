@@ -61,7 +61,7 @@ html[data-ff] textarea.sl{font-family:var(--ff)!important}
 .mom-stkh{z-index:10}
 .mom-stkh .ph2{margin-bottom:6px}
 .mom-sticky{top:var(--mhh,52px)!important;z-index:9}
-.mom-cols .mom-cl,.mom-cw .mom-cl{font-size:calc(14.5px*var(--fz,1))}
+.mom-cols .mom-cl,.mom-cw .mom-cl{font-size:calc(13.5px*var(--fz,1))}
 .mom-cts{display:block;margin-top:2px;font-size:calc(11px*var(--fz,1));color:var(--soft);opacity:.85}
 .mom-cto{background:color-mix(in srgb,#e9a8c0 26%,var(--card))!important;border-color:color-mix(in srgb,#e9a8c0 55%,var(--line))!important;color:var(--ink)!important}
 #cl .qt{background:color-mix(in srgb,var(--lav,#aca6e4) 16%,transparent);border-radius:6px;padding:3px 7px 3px 8px}
@@ -93,3 +93,53 @@ html,body{height:100%;min-height:-webkit-fill-available}
 /* 其他主題（霧海、手帳、像素）的主頁圖示也放大 */
 .gi{width:64px;height:64px}
 .gi svg{width:35px;height:35px}
+/* 引用訊息：內容多長，背景框就多大 */
+#cl .qt,.qt{max-height:none!important;overflow:visible!important;display:block;white-space:pre-wrap;word-break:break-word;overflow-wrap:anywhere}
+/* ⋯ 浮窗與拍一拍浮窗：分類字體、排版、浮窗大小與表情鍵一致 */
+#sh.chat-pop.more.emo .box{height:340px;min-height:340px;max-height:340px}
+/* 聊天室輸入時（鍵盤彈出）：導覽行先收起來，輸入框才會緊貼鍵盤上方 */
+html.kb-chat .tabs,html.kb-chat #dots{display:none!important}
+/* 訊息時間放在已讀旁邊（同一行） */
+.mt .mtl{display:flex;align-items:baseline;gap:4px;white-space:nowrap}
+.mt .mtl .rdt{margin-top:0}
+.mt .mtl .mtt{font-size:calc(9.5px*var(--fz,1))}
+/* 字卡頁「共用／專屬」框：不透明，顏色跟著主題背景 */
+.cards-view .seg,.cards-top .seg{background:var(--bg)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+[data-theme=glass]:not([data-skin]) .cards-view .seg,[data-theme=glass]:not([data-skin]) .cards-top .seg{background:#6b7f9c!important}
+[data-theme=glass][data-skin=moon] .cards-view .seg,[data-theme=glass][data-skin=moon] .cards-top .seg{background:#2a1f55!important}
+/* 主頁右上角聲音／深色模式鍵：不要外框與底色，只留圖示 */
+.dm-toggle,.dm-toggle.mute-toggle{border:0!important;background:transparent!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border-radius:0!important}
+/* 霧海：發出去的問卷／問問他，題目文字不要和背景融在一起 */
+[data-theme=glass]:not([data-skin]) .b.qa-b,[data-theme=glass]:not([data-skin]) .m.me .b.qa-b{background:#5d7497e6!important;border-color:#ffffff80}
+[data-theme=glass]:not([data-skin]) .qabox{border-color:#ffffffa6}
+[data-theme=glass]:not([data-skin]) .qabox .qaq{color:#fff;text-shadow:0 1px 2px #1f2f4a99}
+[data-theme=glass]:not([data-skin]) .qabox .qao{background:#ffffff26;color:#fff;border-color:#ffffff59;text-shadow:none}
+[data-theme=glass]:not([data-skin]) .qabox .qao.on{background:#a9c6ee;border-color:#d6e5f8;color:#27406a}
+[data-theme=glass]:not([data-skin]) .qabox .qas{color:#ffffffd9;text-shadow:none}
+
+/* 朋友圈：每則貼文各自一張卡片（像信箱） */
+.mom-one{margin-bottom:10px}
+[data-theme=glass]:not([data-skin]) .qabox{background:#4a6286!important}
+
+/* ── 霧海：其他字和背景融在一起的地方 ── */
+/* 浮窗裡被選中的分類：原本淺底白字 */
+[data-theme=glass]:not([data-skin]) .chat-pop-cats button.on,[data-theme=glass]:not([data-skin]) #sh.ask .chat-pop-cats button.on{background:#a9c6ee!important;border-color:#d6e5f8!important;color:#1f3558!important;text-shadow:none}
+/* 小廚房：料理熟練度卡片原本近白底配白字 */
+[data-theme=glass]:not([data-skin]) .kitchen-intro{background:linear-gradient(#2b40614d,#2b40614d),#ffffff29!important;border:1px solid #ffffffa6}
+/* 一般卡片（數據、梅花易數、經期、學習進度…）：加一層淡藍灰，亮的海面也看得清字 */
+[data-theme=glass]:not([data-skin]) .card:not(.couple){background:linear-gradient(#2b406133,#2b406133),#ffffff29}
+/* 輸入框提示字調亮 */
+[data-theme=glass]:not([data-skin]) ::placeholder{color:#ffffffb8;opacity:1}
+
+/* 設置 → 給聯絡人的說明 */
+.cx-doc{font-size:calc(14px*var(--fz,1));line-height:1.9;margin-bottom:10px}
+.cx-doc h4{margin:0 0 8px;padding-bottom:6px;border-bottom:1.2px var(--bs,dashed) var(--line);font-size:calc(15.5px*var(--fz,1));font-weight:600}
+.cx-doc .cx-i{margin:0 0 9px}
+.cx-doc .cx-i:last-child{margin-bottom:0}
+.cx-doc mark{background:#ffe27a;color:#3a3000;border-radius:3px;padding:0 1px}
+/* 會跟著設置變化的數字：框起來＋換顏色 */
+.cx-v{display:inline-block;padding:0 7px;margin:0 1px;border:1.4px solid #e58aa8;border-radius:8px;background:color-mix(in srgb,#e58aa8 20%,transparent);color:var(--ink);font-weight:600;line-height:1.55;white-space:nowrap}
+/* 設置分頁變多：標籤不換行、可左右滑 */
+#v>.stabs{scrollbar-width:none}
+#v>.stabs::-webkit-scrollbar{display:none}
+#v>.stabs .stab{flex:0 0 auto;white-space:nowrap}
