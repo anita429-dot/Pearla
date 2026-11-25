@@ -23,7 +23,7 @@ function momThreads(cm){const roots=[],by={};cm.forEach(m=>{if(momRootId(cm,m)==
 const momCTime=t=>{const d=new Date(t);return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
 let momSel=null;
 const momLine=(m,pid,isRep)=>{const sel=!!(momSel&&m.id&&momSel.mid===m.id&&momSel.pid===pid),k=pid+'|'+m.id,
-  bar=sel?'<div class="mom-cbar"><button type="button" data-a="momcdel" data-i="'+k+'">刪除</button><button type="button" data-a="momcedit" data-i="'+k+'">編輯</button><button type="button" data-a="momcsx" aria-label="取消">×</button></div>':'';
+  bar=sel?'<div class="mom-cbar"><button type="button" data-a="momcmdel" data-i="'+k+'">刪除</button><button type="button" data-a="momcedit" data-i="'+k+'">編輯</button><button type="button" data-a="momcsx" aria-label="取消">×</button></div>':'';
   return '<div class="mom-cw">'+bar+'<div class="mom-cl'+(isRep?' rp':'')+(sel?' sel':'')+'"><div class="mom-ct"'+(m.id&&pid?' data-a="momcsel" data-i="'+k+'"':'')+'><b>'+esc(m.n)+'</b>'+(isRep&&m.rt?' 回覆 <b>'+esc(m.rt)+'</b>':'')+'：'+esc(m.x||'')+(m.img?'<img class="mom-cimg" src="'+m.img+'" alt="">':'')+(m.t?'<span class="mom-cts">'+momCTime(m.t)+'</span>':'')+'</div>'+(m.id&&pid?'<button type="button" class="mom-rpb" data-a="momrep" data-i="'+k+'">回覆</button>':'')+'</div></div>'};
 document.addEventListener('click',e=>{if(!momSel||e.target.closest('.mom-cw'))return;momSel=null;try{momCSync();const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}catch(x){}});
 function momCols(p){const cm=Array.isArray(p.cmts)?p.cmts:[];if(!cm.length)return '';p.cxs=p.cxs&&typeof p.cxs==='object'?p.cxs:{};
@@ -62,8 +62,8 @@ function vMom(){
   const bar=momPlacing?'<div class="mom-bar"><span>點一下貼圖牆，把貼紙放在想要的位置</span><button class="btn" data-a="momcancel">取消</button></div>':'';
   const tabs='<div class="cards-top mom-sticky"><div class="stabs">'+[['me','我的空間'],['ct','聯絡人貼文']].map(([k,n])=>'<button class="stab '+(momTab===k?'on':'')+'" data-a="momtab" data-i="'+k+'">'+n+'</button>').join('')+'</div></div>';
   const all=[...(S.moments||[])].sort((x,y)=>y.t-x.t);let body;
-  if(momTab==='me'){const l=all.filter(p=>p.cid==='me');body=momNewHtml()+(l.length?'<div class="card" style="padding:4px 14px">'+l.map(momPost).join('')+'</div>':'<div class="empty">你還沒有發布過貼文。</div>')}
-  else{const l=all.filter(p=>p.cid!=='me'&&S.contacts.some(c=>c.id===p.cid));if(l.some(p=>!p.seen)){l.forEach(p=>{p.seen=1});saveSoon()}body=l.length?'<div class="card" style="padding:4px 14px">'+l.map(momPost).join('')+'</div>':'<div class="empty">還沒有朋友圈貼文。<br>聯絡人發布的貼文會顯示在這裡。</div>'}
+  if(momTab==='me'){const l=all.filter(p=>p.cid==='me');body=momNewHtml()+(l.length?l.map(p=>'<div class="card mom-one" style="padding:4px 14px">'+momPost(p)+'</div>').join(''):'<div class="empty">你還沒有發布過貼文。</div>')}
+  else{const l=all.filter(p=>p.cid!=='me'&&S.contacts.some(c=>c.id===p.cid));if(l.some(p=>!p.seen)){l.forEach(p=>{p.seen=1});saveSoon()}body=l.length?l.map(p=>'<div class="card mom-one" style="padding:4px 14px">'+momPost(p)+'</div>').join(''):'<div class="empty">還沒有朋友圈貼文。<br>聯絡人發布的貼文會顯示在這裡。</div>'}
   return head+bar+cover+tabs+body}
 /* 發布貼文（我的空間） */
 function momSync(){const e=$('#momtx');if(e&&momDraft)momDraft.x=e.value}
@@ -85,11 +85,11 @@ function momEmoSheet(){const E=momEmo;if(!E)return;const tabs=MEMO_TABS[E.ctx],t
 function momRefresh(){if(tab!=='home'||!momOpen||momPlacing||momEd||$('#sh').classList.contains('show')||(document.activeElement&&(document.activeElement.id==='momsigin'||document.activeElement.classList.contains('mom-cin'))))return;const v=$('#v'),y=v.scrollTop;momCSync();render();v.scrollTop=y}
 const momPos=()=>+(6+rnd()*88).toFixed(1),momHit=p=>rnd()*100<Math.max(0,Math.min(100,+p||0)),momRange=(a,b)=>{a=Math.max(0,Math.round(+a||0));b=Math.max(a,Math.round(+b||0));return a+ri(b-a+1)};
 /* ── 聯絡人發布朋友圈：字卡 → 表情包 → 貼紙，全部完成後一起發布 ── */
-function momNext(cid,n){const c=S.contacts.find(x=>x.id===cid);if(!c)return;const m=cmo(c),old=S.mst[cid],mx=Math.max(+m.tmin||0,+m.tmax||0,1)*1000,rs=old&&old.rs?Math.max(n,old.rs+mx):n;/* 一輪從 rs 開始；最長時間結束後（rs+最長）才開始下一輪 */S.mst[cid]={ph:'j',rs,due:rs+inspRand(m.tmin,m.tmax)}}
+function momNext(cid,n,ok){const c=S.contacts.find(x=>x.id===cid);if(!c)return;const m=cmo(c),old=S.mst[cid],lo=Math.min(+m.tmin||0,+m.tmax||0),hi=Math.max(+m.tmin||0,+m.tmax||0),mx=Math.max(ok?lo:hi,1)*1000,rs=old&&old.rs?Math.max(n,old.rs+mx):n;/* 一輪從 rs 開始；判定發布成功：最短時間結束後就開始下一輪；判定失敗：最長時間結束後才開始下一輪 */S.mst[cid]={ph:'j',rs,due:rs+inspRand(m.tmin,m.tmax)}}
 function momStartCard(cid,st,n){const pl=cardPool(cid);if(!pl.length){momNext(cid,n);return}const s=S.set;const _k=pk(pl);cuse(cid,_k);st.d.cur={t:_k.text};st.q=[['emj','mpemj'],['kao','mpkao']].filter(a=>(+s[a[1]]||0)>0).map(a=>a[0]);momNextQ(cid,st,n+STEP)}
 function momNextQ(cid,st,n){const s=S.set;if(st.q.length){const k=st.q[0];st.ph='s';st.due=n+Math.max(0,+s[k==='emj'?'mpemjT':'mpkaoT']||0)*1000+STEP;return}
   st.d.cards.push(st.d.cur.t);st.d.cur=null;if(st.d.cards.length<st.d.n)momStartCard(cid,st,n);else momAfterCards(cid,st,n)}
-function momFinish(cid,text,d,n){const np={id:uid(),cid,t:Date.now(),x:text,wall:((d.items&&d.items.length)||(d.st&&d.st.length))?{items:d.items||[],st:d.st||[]}:null};np.nt=1;S.moments.push(np);mcmPost(np);momNext(cid,n);try{updateMomBadge();const c=S.contacts.find(z=>z.id===cid);if(c&&S.set.momNotify!==0){const x=c.name+' 發布了朋友圈';ms(cid).push({id:uid(),f:'sys',x,t:Date.now(),go:'mom'});banner(x,6000,'mom');if(tab==='chat'&&S.cur===cid)paint()}}catch(e){}}
+function momFinish(cid,text,d,n){const np={id:uid(),cid,t:Date.now(),x:text,wall:((d.items&&d.items.length)||(d.st&&d.st.length))?{items:d.items||[],st:d.st||[]}:null};np.nt=1;S.moments.push(np);mcmPost(np);momNext(cid,n,true);try{updateMomBadge();const c=S.contacts.find(z=>z.id===cid);if(c&&S.set.momNotify!==0){const x=c.name+' 發布了朋友圈';ms(cid).push({id:uid(),f:'sys',x,t:Date.now(),go:'mom'});banner(x,6000,'mom');if(tab==='chat'&&S.cur===cid)paint()}}catch(e){}}
 function momAfterCards(cid,st,n){const c=S.contacts.find(x=>x.id===cid),text=st.d.cards.reduce(cjR,'');
   if(!cmo(c).wall||!stkPool(cid).length){momFinish(cid,text,{},n);return}
   st.d.text=text;st.d.items=[];st.d.st=[];st.ph='e';st.due=n+inspRand(S.set.mwEmin,S.set.mwEmax)+STEP}

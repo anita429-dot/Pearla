@@ -115,7 +115,7 @@ document.addEventListener('click',e=>{
     case 'addccancel':addContact=false;render();break;
     case 'del':{const c=S.contacts.find(x=>x.id===cid);sheet('刪除聯絡人','<p class="hint" style="margin:0">將刪除「'+esc(c.name)+'」與其聊天紀錄。建議先備份。</p><button class="btn" data-a="bak">先去備份</button><button class="btn d" data-a="delok" data-i="'+c.id+'">永久刪除</button><button class="btn" data-a="close">取消</button>',1);break}
     case 'delok':{S.contacts=S.contacts.filter(c=>c.id!==i);if(S.cuse)delete S.cuse[i];if(S.cset)delete S.cset[i];delete S.msgs[i];delete S.rounds[i];(S.groups||[]).forEach(g=>{g.members=g.members.filter(x=>x!==i)});Object.keys(S.rounds).forEach(k=>{if(k.endsWith('|'+i))delete S.rounds[k]});S.letters=(S.letters||[]).filter(l=>l.cid!==i);delete S.lnext[i];if(S.lround)delete S.lround[i];delete S.remClock[i];delete S.un[i];if(S.dlog)delete S.dlog[i];{const dead=S.cats.filter(c=>c.own===i).map(c=>c.id);S.cats=S.cats.filter(c=>c.own!==i);S.cards=S.cards.filter(k=>!dead.includes(k.cat))}S.cats.forEach(c=>c.as=c.as.filter(x=>x!==i));S.ipend=(S.ipend||[]).filter(p=>p.cid!==i);['mem','ext','ev'].forEach(k=>{S.insp[k]=(S.insp[k]||[]).filter(r=>r.cid!==i)});if(!S.contacts.length)S.contacts.push({id:uid(),name:'名字'});if(S.cur===i)S.cur=S.contacts[0].id;save();closeSheet();render();break}
-    case 'pat':closeSheet();ms(S.cur).push(patMsg(S.cur,true));save();paint();break;
+    case 'pat':closeSheet();myPat(patMsg(S.cur,true));break;
     case 'poke':pokeSend();break;
     case 'chpic':pick(fs=>{let n=0;const out=[];fs.forEach((f,j)=>rd(f,1400,u=>{out[j]=u;if(++n===fs.length){chImgsCid=S.cur;out.forEach(x=>x&&chImgs.push(x));chPvRefresh()}}))},'image/*',true);break;
     case 'chpicx':chImgs.splice(+i,1);chPvRefresh();break;
@@ -140,8 +140,8 @@ document.addEventListener('click',e=>{
     case 'mt':mTab=i;moreSheet();break;
     case 'patopen':pScope='s';patSheet();break;
     case 'psc':pScope=i;patSheet();break;
-    case 'pgo':{const k=S.cards.find(x=>x.id===i);if(k){ms(S.cur).push(patMsg(S.cur,true,k.text));save();closeSheet();paint()}break}
-    case 'psd':{const v=$('#pt').value.trim();if(v){ms(S.cur).push(patMsg(S.cur,true,v));save();closeSheet();paint()}break}
+    case 'pgo':{const k=S.cards.find(x=>x.id===i);if(k){closeSheet();myPat(patMsg(S.cur,true,k.text))}break}
+    case 'psd':{const v=$('#pt').value.trim();if(v){closeSheet();myPat(patMsg(S.cur,true,v))}break}
     case 'psv':{const v=(parseCardLines($('#pt').value)[0]||{}).text;if(!v)break;let g=S.cats.find(c=>kc(c)==='pat'&&c.sc===pScope);if(!g){g={id:uid(),sc:pScope,kind:'pat',name:'預設',on:1,as:pScope==='e'?[S.cur]:[]};S.cats.push(g)}S.cards.push({id:uid(),cat:g.id,text:v,on:1});save();patSheet();toast('已存入拍一拍');break}
     case 'mictest':micTest();break;
     case 'micretry':{closeSheet();micAsk().then(st=>{if(st){st.getTracks().forEach(t=>t.stop());window.__micOK=1;toast('已取得麥克風權限，可以錄音了',2200)}});break}
@@ -354,7 +354,7 @@ document.addEventListener('click',e=>{
     case 'momcsel':{const[pid,mid]=i.split('|');momSel=(momSel&&momSel.mid===mid)?null:{pid,mid};momCSync();{const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}break}
     case 'momcsx':{momSel=null;momCSync();{const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}break}
     case 'momcedit':{const[pid,mid]=i.split('|'),p=S.moments.find(q=>q.id===pid),t=p&&(p.cmts||[]).find(q=>q.id===mid);if(!t)break;ask('編輯留言',t.x||'',v=>{v=(v||'').trim();if(!v&&!t.img){toast('留言不能是空的');return}t.x=v;momSel=null;save();render()});break}
-    case 'momcdel':{const[pid,mid]=i.split('|'),p=S.moments.find(q=>q.id===pid);if(!p||!p.cmts)break;const gone=new Set([mid]);let ch=true;while(ch){ch=false;p.cmts.forEach(c=>{if(c.rid&&gone.has(c.rid)&&!gone.has(c.id)){gone.add(c.id);ch=true}})}p.cmts=p.cmts.filter(c=>!gone.has(c.id));momSel=null;save();momCSync();{const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}toast('已刪除留言',1200);break}
+    case 'momcmdel':{const[pid,mid]=i.split('|'),p=S.moments.find(q=>q.id===pid);if(!p||!p.cmts)break;const gone=new Set([mid]);let ch=true;while(ch){ch=false;p.cmts.forEach(c=>{if(c.rid&&gone.has(c.rid)&&!gone.has(c.id)){gone.add(c.id);ch=true}})}p.cmts=p.cmts.filter(c=>!gone.has(c.id));momSel=null;save();momCSync();{const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}toast('已刪除留言',1200);break}
     case 'momcx':{const[pid,rid]=i.split('|'),p=S.moments.find(q=>q.id===pid);if(!p)break;p.cxs=p.cxs&&typeof p.cxs==='object'?p.cxs:{};if(p.cxs[rid])delete p.cxs[rid];else p.cxs[rid]=1;save();momCSync();{const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}break}
     case 'momlike':{const p=S.moments.find(q=>q.id===i);if(!p)break;p.likes=Array.isArray(p.likes)?p.likes:[];if(p.liked){p.liked=0;const k=p.likes.indexOf(S.me);if(k>=0)p.likes.splice(k,1)}else{p.liked=1;p.likes.push(S.me);momPop=p.id;setTimeout(()=>{momPop=null},700)}save();{const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}break}
     case 'momfav':{const p=S.moments.find(q=>q.id===i);if(!p)break;p.fav=p.fav?0:1;save();render();break}

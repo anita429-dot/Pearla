@@ -25,7 +25,7 @@ function cjR(o,x,i){if(!i)return x;o=o.replace(/[，,、；;]$/,'');return o+(/[
 /* 表情包：每一輪只判定一次；成功則隨機抽一個，插在任一則回覆的前面或後面（各位置機率相同） */
 
 /* 引用消息：每一條回覆在選擇字卡「之前」先判定一次；成功則從我發出的最後 10 條訊息中隨機選一條掛在這條回覆上 */
-function qmPick(mid){const s=S.set;if(!s.qmOn||!(rnd()*100<(+s.qmProb||0)))return null;const mine=ms(mid).filter(m=>m.f==='me').slice(-10);if(!mine.length)return null;const p=mine[ri(mine.length)];return{x:p.x||(p.audio?'[語音]':(p.img?'':'[表情包]')),img:p.img||''}}
+function qmPick(mid){const s=S.set;if(!s.qmOn||!(rnd()*100<(+s.qmProb||0)))return null;const mine=ms(mid).filter(m=>m.f==='me').slice(-10);if(!mine.length)return null;const p=mine[ri(mine.length)];return{id:p.id,x:p.x||(p.audio?'[語音]':(p.img?'':'[表情包]')),img:p.img||''}}
 const STEP=500;
 function gen(cid,pr,off,ctx){pr=pr||'';const s=S.set,nc=()=>{const a=Math.round(Math.min(s[pr+'fmin'],s[pr+'fmax'])),b=Math.round(Math.max(s[pr+'fmin'],s[pr+'fmax']));return Math.max(1,a+ri(b-a+1))},hit=p=>rnd()*100<p,t=Date.now();
   const pl=cardPool(cid);if(!pl.length)return{id:uid(),f:'sys',x:'目前沒有可抽取的字卡',t};
@@ -42,7 +42,7 @@ function gen(cid,pr,off,ctx){pr=pr||'';const s=S.set,nc=()=>{const a=Math.round(
   if(timed&&tags.length)w+=inspRand(s.tagMin,s.tagMax);
   /* 4. 星標判定 */
   if(+s.star>0)stp();
-  const m={id:uid(),f:'ta',x,t,tags,star:hit(s.star)};if(qt){m.q=qt.x;if(qt.img)m.qi=qt.img}if(timed)m._rd=w;return m}
+  const m={id:uid(),f:'ta',x,t,tags,star:hit(s.star)};if(qt){m.q=qt.x;if(qt.img)m.qi=qt.img;if(qt.id)m.qid=qt.id}if(timed)m._rd=w;return m}
 function schedule(cid,text){if(isDnd(cid))return;const s=S.set,R=S.rounds[cid],now=Date.now();
   S.ghostUntil=S.ghostUntil||{};const lk=(S.ghostUntil[cid]||0)>now;
   /* 已讀不回鎖定時間內：訊息一發出就立刻顯示已讀、已讀不回，不再等待 */

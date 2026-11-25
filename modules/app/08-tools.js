@@ -55,7 +55,7 @@ function pmDone(){const p=S.pomo;pmToday();const was=p.ph;
   p.left=pmDur(p);if(p.snd)pmChime();toast(was==='foc'?'專注完成，休息一下吧':'休息結束，準備開始專注',2200);
   if(p.auto){p.run=1;p.end=Date.now()+p.left}else{p.run=0;p.end=0}save()}
 function pmPaint(){const p=S.pomo,t=document.getElementById('pmT'),a=document.getElementById('pmArc');if(!t&&!a)return;const l=pmLeft(),tot=pmDur(p)||1;if(t)t.textContent=pmFmt(l);if(a)a.style.strokeDashoffset=(2*Math.PI*96*(1-l/tot)).toFixed(2)}
-setInterval(()=>{try{const p=S&&S.pomo;if(!p||!p.run)return;if(p.end-Date.now()<=0){const open=pomoOpen&&tab==='home';pmDone();if(open&&!(document.activeElement&&document.activeElement.tagName==='INPUT'))render();else pmPaint()}else pmPaint()}catch(x){}},250);
+setInterval(()=>{try{const p=S&&S.pomo;if(!p||!p.run)return;if(p.end-Date.now()<=0){const open=pomoOpen&&tab==='home';pmDone();if(open&&!(document.activeElement&&/^(INPUT|TEXTAREA)$/.test(document.activeElement.tagName)))render();else pmPaint()}else pmPaint()}catch(x){}},250);
 function vPomo(){const p=S.pomo;pmToday();const R=96,C=2*Math.PI*R,tot=pmDur(p)||1,l=pmLeft(),cyc=Math.max(1,p.cyc),fill=p.ph==='lng'?cyc:p.idx%cyc;
   const dots=Array.from({length:cyc},(_,i)=>'<span class="pm-dot'+(i<fill?' on':'')+'"></span>').join('');
   const SW=(k,l2)=>'<div class="sr" style="align-items:center"><span>'+l2+'</span><button class="sw '+(p[k]?'on':'')+'" data-a="pomosw" data-i="'+k+'"></button></div>';

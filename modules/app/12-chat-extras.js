@@ -28,7 +28,7 @@ document.addEventListener('input',e=>{const a=avcS;if(!a||e.target.id!=='avz')re
 /* ── 已讀：我的訊息在該輪第一條發出 1 秒後顯示；他的訊息在我看到聊天室時顯示 ── */
 function updateReads(){if(tab!=='chat')return;const l=$('#cl');if(!l)return;tobotUpdate();let ch=0;
   ms(S.cur).forEach(m=>{if(m.qa||m.f==='sys')return;if(m.f==='ta'&&!m.rd&&!document.hidden){m.rd=1;ch=1}
-    if(!isRd(m))return;const mt=l.querySelector('#m-'+m.id+' .mt');if(mt&&!mt.querySelector('.rdt'))mt.insertAdjacentHTML('beforeend','<span class="rdt">已讀</span>')});if(ch)save()}
+    if(!isRd(m))return;const mt=l.querySelector('#m-'+m.id+' .mt');const ml=mt&&mt.querySelector('.mtl');if(ml&&!ml.querySelector('.rdt'))ml.insertAdjacentHTML('afterbegin','<span class="rdt">已讀</span>')});if(ch)save()}
 setInterval(updateReads,250);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateReads()});
 ['wheel','touchmove','pointerdown'].forEach(ev=>document.addEventListener(ev,e=>{const l=e.target.closest&&e.target.closest('#cl');if(l)l._stick=false},{passive:true,capture:true}));
@@ -44,7 +44,7 @@ function memoLines(text){const cv=memoLines.cv||(memoLines.cv=document.createEle
   while(out.length&&out[out.length-1]==='')out.pop();
   const n=memoM().lines.length;if(out.length>n){out=out.slice(0,n);let t=out[n-1];while(t&&m(t+'⋯⋯')>maxW)t=[...t].slice(0,-1).join('');out[n-1]=t+'⋯⋯'}
   return out}
-function memoSlots(){const L=memoLines(S.memo),ev=memoEvents(),sh=ev.length?1:0;return memoM().lines.map((y,i)=>sh&&i===0?'<div class="ml ml-ev" style="top:'+(y-memoM().h)+'%">'+'提醒：'+ev.map(o=>'<span>'+esc(o.n)+'</span>距離'+o.d+'天').join('　')+'</div>':'<div class="ml" style="top:'+(y-memoM().h)+'%">'+esc(L[i-sh]||'')+'</div>').join('')}
+function memoSlots(){const L=memoLines(S.memo),ev=memoEvents(),sh=ev.length?1:0;return memoM().lines.map((y,i)=>sh&&i===0?'<div class="ml ml-ev" style="top:'+(y-memoM().h)+'%">'+'提醒：'+ev.map(o=>'<span>'+esc(o.n)+'</span>'+(+o.d===0?'就在今天':'距離'+o.d+'天')).join('　')+'</div>':'<div class="ml" style="top:'+(y-memoM().h)+'%">'+esc(L[i-sh]||'')+'</div>').join('')}
 function qaRecBody(x){if(x.t==='survey'&&x.qs)return x.qs.map((q,i)=>'<div class="ltx" style="margin-top:4px;font-weight:500">'+(i+1)+'. '+esc(q.q)+(q.multi?'（多選）':'')+'</div><div class="ltx" style="color:var(--soft);font-size:calc(12.5px*var(--fz,1))">'+q.o.map(esc).join(' ／ ')+'</div><div class="ltx">他的答案：'+(x.ans&&x.ans[i]?(x.ans[i].length?esc(x.ans[i].join(' ／ ')):'（沒有選擇答案）'):'等待回答中⋯')+'</div>').join('');
   return '<div class="ltx" style="font-weight:500">'+esc(x.q)+'</div>'+(x.t!=='text'&&x.o.length?'<div class="ltx" style="color:var(--soft);font-size:calc(12.5px*var(--fz,1))">'+x.o.map(esc).join(' ／ ')+'</div>':'')+'<div class="ltx">他的答案：'+(x.ans?(x.ans.length?esc(x.ans.join(' ／ ')):'（沒有選擇答案）'):'等待回答中⋯')+'</div>'}
 /* ── 紀錄 ── */
@@ -69,7 +69,7 @@ function vRec(){const pg=recPage||'qa',head='<div class="stickh"><div class="ph2
   const key=recFav==='m'?'fav':'tfav',it=[],seen=recSeen[key]=recSeen[key]||{};S.contacts.forEach(c=>ms(c.id).forEach(m=>{if(m[key]&&!m.qa)seen[c.id+':'+m.id]=1}));S.contacts.forEach(c=>ms(c.id).forEach(m=>{if(!m.qa&&(m[key]||seen[c.id+':'+m.id]))it.push([c,m])}));it.sort((a,b)=>b[1].t-a[1].t);recAllKeys=it.map(([c,m])=>c.id+':'+m.id+':'+key);
   const seg='<div class="seg"><button class="'+(recFav==='h'?'on':'')+'" data-a="rfs" data-i="h">他的收藏</button><button class="'+(recFav==='m'?'on':'')+'" data-a="rfs" data-i="m">我的收藏</button></div>';
   const fbar=recEdit?'<div class="selbar">'+selAllHtml('fav',recAllKeys,recSel)+'<button class="btn s" data-a="funsel">取消收藏所選（'+recSel.length+'）</button></div>':'';
-  const itemHtml=([c,m])=>{const k=c.id+':'+m.id+':'+key,sel=recSel.includes(k),body='<div class="grow" style="white-space:pre-wrap;word-break:break-word">'+qtHtml(m)+(m.img?'<img src="'+m.img+'" style="max-width:90px;max-height:90px;border-radius:8px;display:block">':'')+esc(m.x)+'<small>'+esc(c.name)+' · '+ltime(m.t)+'</small></div>';
+  const itemHtml=([c,m])=>{const k=c.id+':'+m.id+':'+key,sel=recSel.includes(k),body='<div class="grow" style="white-space:pre-wrap;word-break:break-word">'+qtHtml(m)+(m.img?'<img src="'+m.img+'" style="max-width:90px;max-height:90px;border-radius:8px;display:block">':'')+esc(m.x)+'<small>'+(m.f==='me'?esc(S.me||'我')+' → '+esc(c.name):esc(c.name))+' · '+ltime(m.t)+'</small></div>';
     return recEdit?'<div class="ci pick'+(sel?' sel':'')+'" data-a="fsel" data-i="'+k+'" style="align-items:flex-start;padding:8px 10px;cursor:pointer"><span class="ck '+(sel?'on':'')+'"></span>'+body+'</div>':'<div class="ci" style="align-items:flex-start;padding:8px 10px">'+body+'<button class="ib" data-a="unf" data-i="'+k+'">'+(m[key]?'★':'☆')+'</button></div>'};
   return head+tabs+seg+fbar+(it.length?it.map(itemHtml).join(''):'<div class="empty">'+(recFav==='m'?'還沒有收藏任何訊息。<br>在聊天室點訊息旁的 ☆ 即可收藏。':'他還沒有收藏任何你的訊息。')+'</div>');}
 
@@ -80,7 +80,11 @@ function parseSurvey(txt){const qs=[];let cur=null;String(txt||'').replace(/\r/g
   if(ln[0]==='/'||ln[0]==='／'){const parts=ln.slice(1).split(/[\/／]/).map(x=>x.trim()),q=parts[0];if(!q){cur=null;return}cur={q,o:[],multi:false,mx:0};const m=/^多選\s*(\d*)$/.exec(parts[1]||'');if(m){cur.multi=true;cur.mx=m[1]?parseInt(m[1],10):0}qs.push(cur)}
   else if(cur)cur.o.push(ln)});return qs}
 /* 單選：每個選項機率相同挑一個；多選：每個選項各 50%，超過上限就隨機剔除到上限，也可能一個都沒選（無保底） */
-function qaPick(multi,n,mx){if(!multi)return[ri(n)];const sl=[];for(let i=0;i<n;i++)if(rnd()<.5)sl.push(i);const cap=mx>0?Math.min(mx,n):n;while(sl.length>cap)sl.splice(ri(sl.length),1);return sl}
+function qaPick(multi,n,mx,o){if(!multi)return[ri(n)];
+  /* 多選也有「我在忙，沒有選」「我不想回答」：和單選一樣，各佔一個選項的機率；選到就只回這個，不再選其他 */
+  const esc2=[],real=[];(o||[]).forEach((t,i)=>{if(t===QA_BUSY||t===QA_NO)esc2.push(i);else real.push(i)});
+  if(esc2.length){const r=ri(real.length+esc2.length);if(r>=real.length)return[esc2[r-real.length]]}
+  const src=esc2.length?real:Array.from({length:n},(_,i)=>i),sl=[];src.forEach(i=>{if(rnd()<.5)sl.push(i)});const cap=mx>0?Math.min(mx,src.length):src.length;while(sl.length>cap)sl.splice(ri(sl.length),1);return sl}
 function askSheet(keep){const Q=S.qa,sh=$('#sh'),old=$('.ask-body'),st=keep&&old?old.scrollTop:0;
   const NS=(path,label,unit)=>{const [a,b]=path.split('.');return '<div class="ask-set"><span>'+label+'</span><span><input type="number" inputmode="numeric" data-qs="'+path+'" value="'+Q[a][b]+'"> '+unit+'</span></div>'};
   const TW=(k,rows,ph)=>'<div class="tw"><textarea rows="'+rows+'" data-qd="'+k+'" placeholder="'+ph+'">'+esc(qd[k])+'</textarea><button type="button" class="tx" data-a="qclr" data-i="'+k+'" aria-label="清除">×</button></div>';
@@ -103,17 +107,17 @@ function surveySheet(){const Q=S.qa.survey,sh=$('#sh'),NS=(k,l)=>'<div class="as
 /* 單選題固定多兩個選項：第一個「我在忙，沒有選」、最後一個「我不想回答」，機率和其他選項一樣 */
 const QA_BUSY='我在忙，沒有選',QA_NO='我不想回答';
 const qaFix=o=>{o=(o||[]).filter(x=>x!==QA_BUSY&&x!==QA_NO);return [QA_BUSY].concat(o,[QA_NO])};
-function qaSend(sp){sp=Object.assign({},sp);if(sp.t==='single')sp.o=qaFix(sp.o);else if(sp.t==='survey'&&Array.isArray(sp.qs))sp.qs=sp.qs.map(q=>q.multi?q:Object.assign({},q,{o:qaFix(q.o)}));const cid=S.cur,id=uid(),now=Date.now(),first=!ms(cid).some(m=>m.qa&&!m.qa.done),a={t:sp.t,src:sp.src||'',q:sp.q,o:sp.o||[],sel:null,done:false,tm:sp.time||0,mx:sp.mx||0};
+function qaSend(sp){sp=Object.assign({},sp);if(sp.t==='single')sp.o=qaFix(sp.o);else if(sp.t==='multi')sp.o=qaFix(sp.o);else if(sp.t==='survey'&&Array.isArray(sp.qs))sp.qs=sp.qs.map(q=>Object.assign({},q,{o:qaFix(q.o)}));const cid=S.cur,id=uid(),now=Date.now(),first=!ms(cid).some(m=>m.qa&&!m.qa.done),a={t:sp.t,src:sp.src||'',q:sp.q,o:sp.o||[],sel:null,done:false,tm:sp.time||0,mx:sp.mx||0};
   if(sp.t==='survey'){a.qs=sp.qs;a.qi=0;a.sel=[];a.tmin=sp.tmin;a.tmax=sp.tmax}
   a.due=first?now+(sp.t==='survey'?rnd2(a.tmin,a.tmax):a.tm)*1000:null;
   ms(cid).push({id,f:'me',x:sp.q,t:now,qa:a});S.qlog.push({id,cid,cn:cur().name,t:sp.t,src:a.src,q:sp.q,o:a.o,qs:sp.qs||null,ts:now,ans:null,ats:null});save();closeSheet();paint()}
-const qaBox=(m,c)=>{const a=m.qa,grp=(q,o,sel,i)=>'<div class="qaq">'+(i!=null?(i+1)+'. ':'')+esc(q)+'</div>'+o.map((t,k)=>'<div class="qao'+(sel&&sel.includes(k)?' on':'')+'">'+esc(t)+'</div>').join('');
+const qaBox=(m,c)=>{const a=m.qa,grp=(q,o,sel,i)=>'<div class="qaq">'+(i!=null?(i+1)+'. ':'')+esc(q)+'</div>'+o.map((t,k)=>(t===QA_BUSY||t===QA_NO)?'':'<div class="qao'+(sel&&sel.includes(k)?' on':'')+'">'+esc(t)+'</div>').join('');
   const body=a.t==='survey'?a.qs.map((q,i)=>'<div class="qg">'+grp(q.q+(q.multi?'（多選）':''),q.o,a.sel&&a.sel[i],i)+'</div>').join(''):a.t==='text'?'<div class="qaq">'+esc(a.q)+'</div>':grp(a.q,a.o,a.sel);
   const none=a.done&&a.t!=='text'&&(a.t==='survey'?(a.sel||[]).every(z=>!z.length):(a.sel&&!a.sel.length));
   const st=a.done?(a.t==='text'?'已回答':none?'他沒有選擇答案':''):esc(c.name)+'正在選擇答案⋯';
   return '<div class="qabox">'+body+'<div class="qas">'+st+'</div></div>'};
 function qaStep(cid,m){const a=m.qa,lg=S.qlog.find(x=>x.id===m.id),n=Date.now();let texts=[];
-  if(a.t==='survey'){const q=a.qs[a.qi];(a.sel=a.sel||[]).push(qaPick(q.multi,q.o.length,q.mx));a.qi++;
+  if(a.t==='survey'){const q=a.qs[a.qi];(a.sel=a.sel||[]).push(qaPick(q.multi,q.o.length,q.mx,q.o));a.qi++;
     if(a.qi<a.qs.length){a.due=n+rnd2(a.tmin,a.tmax)*1000;return}
     a.done=true;const ans=a.qs.map((qq,i)=>a.sel[i].slice().sort((x,y)=>x-y).map(j=>qq.o[j]));
     if(ans.some(x=>x.length)){const b=ms(cid).length;ms(cid).push({id:uid(),f:'ta',x:ans.map((x,i)=>(i+1)+'. '+(x.length?x.join('、'):'（沒有選擇）')).join('\n'),t:n});notify(cid,b)}
@@ -122,7 +126,7 @@ function qaStep(cid,m){const a=m.qa,lg=S.qlog.find(x=>x.id===m.id),n=Date.now();
   a.done=true;
   if(a.t==='text'){const pl=cardPool(cid),T=S.qa.text,lo=Math.round(Math.min(T.cmin,T.cmax)),hi=Math.round(Math.max(T.cmin,T.cmax)),k=a.cd||Math.max(1,lo+ri(hi-lo+1));
     if(pl.length){texts=Array.from({length:k},()=>{const _k=pk(pl);cuse(cid,_k);return _k.text});const b=ms(cid).length;ms(cid).push({id:uid(),f:'ta',x:texts.join('\n'),t:n});notify(cid,b)}else ms(cid).push({id:uid(),f:'sys',x:'目前沒有可抽取的字卡',t:n})}
-  else{a.sel=qaPick(a.t==='multi',a.o.length,a.mx);texts=a.sel.slice().sort((x,y)=>x-y).map(i=>a.o[i]);if(texts.length){const b=ms(cid).length;ms(cid).push({id:uid(),f:'ta',x:texts.join('\n'),t:n});notify(cid,b)}}
+  else{a.sel=qaPick(a.t==='multi',a.o.length,a.mx,a.o);texts=a.sel.slice().sort((x,y)=>x-y).map(i=>a.o[i]);if(texts.length){const b=ms(cid).length;ms(cid).push({id:uid(),f:'ta',x:texts.join('\n'),t:n});notify(cid,b)}}
   if(lg){lg.ans=texts;lg.ats=n}}
 function qaTick(){if(!S||!S.qa)return;const n=Date.now();let ch=0;
   S.contacts.forEach(c=>{ctxSet(c.id);if(c.dnd)return;const pend=ms(c.id).filter(m=>m.qa&&!m.qa.done);if(!pend.length)return;const m=pend[0],a=m.qa;
@@ -130,7 +134,7 @@ function qaTick(){if(!S||!S.qa)return;const n=Date.now();let ch=0;
     if(a.due>n)return;ch=1;qaStep(c.id,m)});
   if(ch){save();if(tab==='chat')paint();else if(tab==='contacts'&&!document.activeElement.isContentEditable)render();badge()}}
 setInterval(qaTick,1000);
-function qtBar(){const b=$('#qtb');if(!b)return;const on=qtDraft&&qtDraft.cid===S.cur;b.style.display=on?'flex':'none';b.innerHTML=on?'<span class="qtt">引用：'+(qtDraft.img?'<img class="qt-img qt-bar" src="'+qtDraft.img+'" alt="">':'')+esc(qtDraft.x)+'</span><button type="button" class="ib" data-a="qtx">✕</button>':''}
+function qtBar(){const b=$('#qtb');if(!b)return;const on=qtDraft&&qtDraft.cid===S.cur;b.style.display=on?'flex':'none';b.innerHTML=on?'<span class="qtt">引用：'+(qtDraft.img?'<img class="qt-img qt-bar" src="'+qtDraft.img+'" alt="">':'')+esc(qtDraft.x)+'</span><button type="button" class="ib" data-a="qtx"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l14 14M18 6L6 18"/></svg></button>':''}
 
 /* ── 錄音（語音訊息）：模式切換、錄音、試聽、發送 ── */
 let recMode=false,recSt='idle',recMR=null,recStream=null,recChunks=[],recT0=0,recTick=null,recData=null,recPrev=null,vAud=null,vAudId=null,rcState=null,recAC=null;
@@ -145,7 +149,7 @@ function recBox(){
   const live=recSt==='rec',ready=recSt==='ready'&&recData;
   let info;
   if(live)info='<span class="rec-dot"></span><span>錄音中</span><b id="rec-t">'+recFmt((Date.now()-recT0)/1000)+'</b>';
-  else if(ready)info=(recData.url?'<button type="button" class="rec-pl" data-a="recplay" aria-label="試聽錄音">'+(recPrev&&!recPrev.paused?PAUSE_SVG:PLAY_SVG)+'</button>':'')+'<span class="rec-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><b>'+recFmt(recData.dur)+'</b><button type="button" class="rec-x" data-a="recdel" aria-label="刪除錄音">✕</button>';
+  else if(ready)info=(recData.url?'<button type="button" class="rec-pl" data-a="recplay" aria-label="試聽錄音">'+(recPrev&&!recPrev.paused?PAUSE_SVG:PLAY_SVG)+'</button>':'')+'<span class="rec-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><b>'+recFmt(recData.dur)+'</b><button type="button" class="rec-x" data-a="recdel" aria-label="刪除錄音"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>';
   else info='<span class="rec-dot"></span><span>點右側麥克風開始錄音</span>';
   return '<div id="recbox" class="rec-box'+(live?' live':'')+'"><div class="rec-info">'+info+'</div><button type="button" class="rec-mic" data-a="'+(live?'recstop':'recgo')+'" aria-label="'+(live?'停止錄音':'開始錄音')+'">'+(live?STOP_SVG:MIC_SVG)+'</button></div>'}
 function recUI(){const o=$('#recbox');if(o)o.outerHTML=recBox()}
@@ -212,7 +216,7 @@ function recStop(){
   if(!recMR){recData={url:null,dataUrl:'',dur:Math.max(1,(Date.now()-recT0)/1000)};recSt='ready';recUI();return}
   recSt='saving';try{recMR.stop()}catch(_){recSt='idle'}recUI()}
 function recPreview(){if(!recData||!recData.url)return;if(recPrev&&!recPrev.paused){recPrev.pause();recUI();return}
-  if(!recPrev){recPrev=new Audio(recData.url);recPrev.onended=()=>{recUI()}}recPrev.muted=isMuted();recPrev.currentTime=0;recPrev.play().then(recUI).catch(()=>toast('無法播放錄音'))}
+  if(!recPrev){recPrev=new Audio(recData.dataUrl||recData.url);recPrev.onended=()=>{recUI()};recPrev.onerror=()=>{recPrev=null;recUI()}}recPrev.muted=isMuted();try{micSession(0)}catch(e){}try{recPrev.currentTime=0}catch(e){}const pp=recPrev.play();if(pp&&pp.then)pp.then(recUI).catch(()=>{recPrev=null;toast('無法播放錄音')});else recUI()}
 function recSend(){
   if(recSt==='rec'){toast('請先按停止錄音');return}
   if(recSt!=='ready'||!recData){toast(recSt==='saving'?'錄音處理中，請稍候':'請先錄音');return}
@@ -251,4 +255,6 @@ async function rcRun(){const st=rcState;if(!st||st.busy)return;const l=rcTargets
     try{const ab=await rcDecode(m.audio,recAC),nu=await rcEncode(ab,recAC);if(nu&&nu.length<m.audio.length*.9){saved+=m.audio.length-nu.length;m.audio=nu;done++}}catch(_){}}
   st.busy=false;save();dCalc();st.res='已壓縮 '+done+' 則，省下約 '+dFmt(Math.round(saved*.75))+'。';
   if(dataOpen)render();rcSheet()}
-function myMsg(m){sndMe();if(qtDraft&&qtDraft.cid===S.cur){m.q=qtDraft.x;if(qtDraft.img)m.qi=qtDraft.img;qtDraft=null}if(rnd()*100<Math.max(0,Math.min(100,+S.set.favProb||0)))m.tfav=1;ms(S.cur).push(m);memSchedule(S.cur,m);return m}
+function myMsg(m){sndMe();if(qtDraft&&qtDraft.cid===S.cur){m.q=qtDraft.x;if(qtDraft.img)m.qi=qtDraft.img;m.qid=qtDraft.id;qtDraft=null}if(rnd()*100<Math.max(0,Math.min(100,+S.set.favProb||0)))m.tfav=1;ms(S.cur).push(m);memSchedule(S.cur,m);return m}
+/* 使用者的拍一拍：和自己傳的訊息一樣，計入一輪訊息並觸發回覆 */
+function myPat(m){if(!m)return;sndMe();ms(S.cur).push(m);schedule(S.cur,m.x);save();paint()}
