@@ -14,19 +14,28 @@ function wanted(i){
   if(i.hasAttribute('data-nosl')||i.hasAttribute('list'))return false;
   return true;
 }
-function fit(t){
+function fit(t,full){
   if(!t||!t.isConnected)return;
+  var len=t.value.length,w=t.clientWidth;
+  /* 只是多打幾個字、而且還沒滿：不用重量（避免每個字都讓整個聊天室重排兩次） */
+  if(!full&&t._h&&t._w===w&&len>=(t._ll||0)&&t.scrollHeight<=t.clientHeight+1){t._ll=len;return}
+  if(!full&&t._h&&t._w===w&&len>=(t._ll||0)&&t.scrollHeight>t.clientHeight+1&&t._bw!=null){
+    var g=t.scrollHeight+t._bw;t.style.height=g+'px';t._h=g;t._ll=len;return}
   t.style.height='auto';
   var h=t.scrollHeight;
   if(!h)return;
   var cs=getComputedStyle(t),bw=(parseFloat(cs.borderTopWidth)||0)+(parseFloat(cs.borderBottomWidth)||0);
-  if(cs.boxSizing==='border-box')h+=bw;
+  t._bw=cs.boxSizing==='border-box'?bw:0;
+  h+=t._bw;
   t.style.height=h+'px';
+  t._h=h;t._w=t.clientWidth;t._ll=len;
 }
+var fq=null,fqs=[];
+function fitSoon(t){if(fqs.indexOf(t)<0)fqs.push(t);if(fq)return;fq=requestAnimationFrame(function(){fq=null;var l=fqs;fqs=[];l.forEach(function(x){fit(x)})})}
 /* 程式把 value 清空／改掉時（例如送出後 i.value=''）也要重新量高度 */
 try{var vd=Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value');
-Object.defineProperty(HTMLTextAreaElement.prototype,'value',{configurable:true,enumerable:vd.enumerable,get:vd.get,set:function(v){vd.set.call(this,v);if(this.classList&&this.classList.contains('sl')){var s=this;fit(s);requestAnimationFrame(function(){fit(s)})}}})}catch(e){}
-var ro=window.ResizeObserver?new ResizeObserver(function(es){es.forEach(function(e){fit(e.target)})}):null;
+Object.defineProperty(HTMLTextAreaElement.prototype,'value',{configurable:true,enumerable:vd.enumerable,get:vd.get,set:function(v){vd.set.call(this,v);if(this.classList&&this.classList.contains('sl')){var s=this;fit(s,1);requestAnimationFrame(function(){fit(s,1)})}}})}catch(e){}
+var ro=window.ResizeObserver?new ResizeObserver(function(es){es.forEach(function(e){var t=e.target;if(t._w!==t.clientWidth)fitSoon(t)})}):null;
 function conv(i){
   var t=document.createElement('textarea');
   COPY.forEach(function(a){if(i.hasAttribute(a))t.setAttribute(a,i.getAttribute(a))});
@@ -35,7 +44,7 @@ function conv(i){
   t.value=(i.getAttribute('value')!=null?i.getAttribute('value'):i.value)||'';
   i.replaceWith(t);
   if(ro)ro.observe(t);
-  requestAnimationFrame(function(){fit(t)});
+  requestAnimationFrame(function(){fit(t,1)});
 }
 function sweep(root){
   if(!root||!root.querySelectorAll)return;
@@ -55,23 +64,26 @@ document.addEventListener('input',function(e){
   var t=e.target;
   if(!t||!t.classList||!t.classList.contains('sl'))return;
   if(t.id!=='in'&&/[\r\n]/.test(t.value)){var p=t.selectionStart,v=t.value,n=v.replace(/[\r\n]+/g,'');t.value=n;try{t.setSelectionRange(Math.max(0,p-(v.length-n.length)),Math.max(0,p-(v.length-n.length)))}catch(x){}}
-  fit(t);
+  fitSoon(t);
 },true);
 document.addEventListener('keydown',function(e){
   var t=e.target;
   if(e.key==='Enter'&&!e.isComposing&&t&&t.classList&&t.classList.contains('sl')&&t.id!=='in')e.preventDefault();
 });
-document.addEventListener('focusin',function(e){var t=e.target;if(t&&t.classList&&t.classList.contains('sl'))setTimeout(function(){fit(t)},0)});
-addEventListener('resize',function(){document.querySelectorAll('textarea.sl').forEach(fit)});
+document.addEventListener('focusin',function(e){var t=e.target;if(t&&t.classList&&t.classList.contains('sl'))setTimeout(function(){fit(t,1)},0)});
+addEventListener('resize',function(){document.querySelectorAll('textarea.sl').forEach(function(t){fit(t,1)})});
 
 /* ── 2. 鍵盤避讓：輸入框在鍵盤下面時自動移到鍵盤上面 ── */
 var vv=window.visualViewport,root=document.documentElement;
 function kbVars(){
   if(!vv)return;
-  var kb=Math.max(0,innerHeight-vv.height-vv.offsetTop);
-  var open=kb>80;
-  root.classList.toggle('kb-open',open);
-  var ae=document.activeElement;root.classList.toggle('kb-chat',open&&!!(ae&&ae.closest&&ae.closest('#f')));
+  var full=Math.max(0,innerHeight-vv.height),kb=Math.max(0,full-vv.offsetTop);
+  var open=full>100&&(vv.scale||1)<1.05;
+  var ae=document.activeElement,kc=open&&!!(ae&&ae.closest&&ae.closest('#f'));
+  if(root.classList.contains('kb-open')!==open)root.classList.toggle('kb-open',open);
+  if(root.classList.contains('kb-chat')!==kc)root.classList.toggle('kb-chat',kc);
+  var key=open?Math.round(vv.offsetTop)+'|'+Math.round(vv.height)+'|'+Math.round(kb):'0';
+  if(key===kbVars._k)return;kbVars._k=key;
   if(open){root.style.setProperty('--vvt',vv.offsetTop+'px');root.style.setProperty('--vvh',vv.height+'px');root.style.setProperty('--kb',kb+'px')}
   else{root.style.removeProperty('--vvt');root.style.removeProperty('--vvh');root.style.setProperty('--kb','0px')}
 }
