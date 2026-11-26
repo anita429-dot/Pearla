@@ -23,22 +23,26 @@ function inspSave(cid,text,src){const g=inspSavedCat(cid),ids=new Set(S.cats.fil
 function inspAdd(cid,kd,text,src){const ids=new Set(S.cats.filter(c=>kc(c)===kd&&c.own===cid).map(c=>c.id));let k=S.cards.find(x=>ids.has(x.cat)&&(x.text===text||x.orig===text));if(!k){k={id:uid(),cat:inspCat(cid,kd).id,text,orig:text,on:1,srcs:[]};S.cards.push(k)}k.srcs=k.srcs||[];k.srcs.push(src);return k}
 const inspLog=(kd,r)=>{const a=S.insp[kd];a.push(r);if(a.length>1000)a.splice(0,a.length-1000)};
 const inspRand=(a,b)=>{a=Math.max(0,+a||0);b=Math.max(a,+b||0);return(a+rnd()*(b-a))*1000};
-function memSchedule(cid,m){if(!S.set||!S.set.inspOn||!S.set.memOn||m.img||m.qa||!m.x||[...String(m.x).trim()].length<2)return;S.ipend.push({id:uid(),k:'m1',cid,mid:m.id,x:m.x,mt:m.t||Date.now(),due:Date.now()+inspRand(S.set.memJmin,S.set.memJmax)})}
+function memSchedule(cid,m){if(!S.set||!S.set.inspOn||!S.set.memOn||m.img||m.qa||!m.x||[...String(m.x).trim()].length<2)return;S.ipend.push({id:uid(),k:'m1',cid,mid:m.id,x:m.x,mt:m.t||Date.now(),due:Date.now()+inspRand(S.set.memJmin,S.set.memJmax)});try{saveSoon()}catch(e){}}
 /* 提取字卡流程入口。a=1：主動發送用的設置（aext*）；r=1：被動回覆的回合，流程結束後要接著開始回覆流程。回傳是否真的啟動 */
 function extStart(cid,a,r){const s=S.set,P=a?'aext':'ext';if(!s.inspOn||!s[P+'On'])return false;S.ipend.push({id:uid(),k:'e1',cid,a:a?1:0,r:r?1:0,due:Date.now()+inspRand(s[P+'Wmin'],s[P+'Wmax'])});return true}
 /* 被動回覆：提取字卡流程結束（成功發出、判定失敗、無可提取內容、功能被關閉都算）→ 開始回覆流程（等待輸入時間 → 發送字卡） */
 function extDone(cid,n){const R=S.rounds[cid];if(!R||R.ph!==3)return;n=n||Date.now();const s=S.set,mn=Math.max(0,+s.rmin||0)*1000,mx=Math.max(mn,(+s.rmax||0)*1000);R.ph=2;R.due=n+mn+rnd()*(mx-mn);save()}
 
 function inspStep(p){const s=S.set,n=Date.now(),hit=x=>rnd()*100<x;if(!s.inspOn){if(p.r)extDone(p.cid,n);return}const X=k=>s[(p.a?'aext':'ext')+k];
-  if(p.k==='m1'){if(s.memOn&&hit(+s.memProb||0))S.ipend.push({...p,k:'m2',id:uid(),due:n+inspRand(s.memPmin,s.memPmax)})}
-  else if(p.k==='m2'){memPicks(p.x).forEach(t=>{inspAdd(p.cid,'mem',t,{id:p.mid,x:p.x,mt:p.mt,t:n});inspLog('mem',{id:uid(),cid:p.cid,text:t,src:p.x,sid:p.mid,mt:p.mt,t:n})})}
+  if(p.k==='m1'){if(s.memOn&&hit(+s.memProb||0))S.ipend.push({...p,k:'m2',id:uid(),due:Math.min(n,p.due||n)+inspRand(s.memPmin,s.memPmax)})}
+  else if(p.k==='m2'){const tt=Math.min(n,p.due||n);memPicks(p.x).forEach(t=>{inspAdd(p.cid,'mem',t,{id:p.mid,x:p.x,mt:p.mt,t:tt});inspLog('mem',{id:uid(),cid:p.cid,text:t,src:p.x,sid:p.mid,mt:p.mt,t:tt})})}
   else if(p.k==='e1'){if(X('On')&&hit(+X('Prob')||0))S.ipend.push({id:uid(),k:'e2',cid:p.cid,a:p.a,r:p.r,due:n+Math.max(0,+X('Delay')||0)*1000});else if(p.r)extDone(p.cid,n)}
   else if(p.k==='e2'){const h=ms(p.cid).filter(m=>m.f==='me'&&!m.qa&&!m.img&&m.x&&[...String(m.x).trim()].length>=2);if(!h.length){if(p.r)extDone(p.cid,n);return}const src=pk(h),t=extPick(src.x,p.a);if(!t){if(p.r)extDone(p.cid,n);return}
     const m={id:uid(),f:'ta',x:t,t:n,tags:['提取字卡'],ext:1};sendQ(p.cid,[m]);const ev={id:uid(),cid:p.cid,text:t,src:src.x,sid:src.id,mt:src.t,t:m.t,saved:false};
     if(hit(+X('Save')||0)){inspAdd(p.cid,'ext',t,{id:src.id,x:src.x,mt:src.t,t:m.t});ev.saved=true;inspLog('ext',{id:uid(),cid:p.cid,text:t,src:src.x,sid:src.id,mt:src.t,t:m.t})}inspLog('ev',ev);if(p.r)extDone(p.cid,n)}}
 const isExtracting=cid=>!!(S.ipend&&S.ipend.some(p=>p.k==='e2'&&p.cid===cid));
-function inspTick(){if(!S||!S.ipend||!S.ipend.length)return;const n=Date.now(),due=S.ipend.filter(p=>p.due<=n);if(!due.length)return;S.ipend=S.ipend.filter(p=>p.due>n);const isE=p=>p.k==='e1'||p.k==='e2',hasE=due.some(isE);due.filter(p=>hasE&&!isE(p)).forEach(p=>S.ipend.push({...p,due:n+STEP}));due.filter(p=>!hasE||isE(p)).forEach(p=>{if(S.contacts.some(c=>c.id===p.cid)&&!isDnd(p.cid))inspStep(p)});save();if(tab==='chat')paint();else if(tab==='home'&&inspOpen)render()}
+function inspTick(){let g=0;while(g++<40&&inspTick1());}
+function inspTick1(){if(!S||!S.ipend||!S.ipend.length)return false;const n=Date.now(),due=S.ipend.filter(p=>p.due<=n);if(!due.length)return false;S.ipend=S.ipend.filter(p=>p.due>n);const isE=p=>p.k==='e1'||p.k==='e2',hasE=due.some(isE);due.filter(p=>hasE&&!isE(p)).forEach(p=>S.ipend.push({...p,due:n+STEP}));due.filter(p=>!hasE||isE(p)).forEach(p=>{if(S.contacts.some(c=>c.id===p.cid)&&!isDnd(p.cid))inspStep(p)});save();if(tab==='chat')paint();else if(tab==='home'&&inspOpen)render();return true}
 setInterval(inspTick,1000);
+/* 程式在背景／剛重新打開時，立刻補算這段時間內到期的記憶字卡 */
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)try{inspTick()}catch(e){}});
+addEventListener('pageshow',()=>{try{inspTick()}catch(e){}});
 
 /* 功能流程順序（設置 → 關於）：每個箭頭＝間隔 0.5 秒；判定失敗就不會有後面的「選擇」 */
 function FLOWPAGE(){const B=(t,rows)=>'<div class="card" style="margin-bottom:12px"><h3 style="margin:0 0 8px;font-weight:500">'+t+'</h3>'+rows.map(([k,v])=>'<div style="margin:0 0 10px"><b style="font-weight:500">'+k+'</b><div style="font-size:calc(13px*var(--fz,1));line-height:1.9;color:var(--soft)">'+v+'</div></div>').join('')+'</div>',A=' → ';
@@ -57,7 +61,7 @@ function FLOWPAGE(){const B=(t,rows)=>'<div class="card" style="margin-bottom:12
    ['寄信與回信','每一張字卡：字卡抽取'+A+'emoji判定'+A+'選擇emoji'+A+'顏文字判定'+A+'選擇顏文字'+A+'表情包貼圖判定'+A+'選擇表情包貼圖'+A+'下一張字卡⋯⋯'+A+'全部抽完，信件才送達並通知。'],
    ['通知','信件送達時會通知（設置→信箱設置→信件通知）：主頁信箱出現未讀提示，點擊通知會跳到信箱；聊天室在對方有新信時也會收到提示。']])
   +B('塗鴉',[
-   ['流程','塗鴉功能還沒開放，開放後的流程會寫在這裡。']])
+   ['畫一張畫','塗鴉時間到'+A+'取消判定（沒取消才繼續）'+A+'選畫布（橫／豎／正方形）'+A+'決定放幾個圖形'+A+'每個圖形：（圖形選擇時間）選形狀'+A+'選顏色'+A+'選大小與位置'+A+'（圖形有幾個就重複）'+A+'全部選完，一個一個放上畫布（每個間隔 0.6 秒）。取消的話，要等到最長時間過了才會有下一次判定。']])
   +B('朋友圈',[
    ['發文','字卡抽取'+A+'emoji判定'+A+'選擇emoji'+A+'顏文字判定'+A+'選擇顏文字'+A+'下一張字卡（重複）'+A+'表情包判定'+A+'選擇表情包'+A+'貼圖牆貼紙判定'+A+'選擇貼紙'+A+'選擇位置'+A+'發布'],
    ['留言','字卡抽取'+A+'emoji判定'+A+'選擇emoji'+A+'顏文字判定'+A+'選擇顏文字'+A+'（多張字卡重複）'+A+'表情包判定'+A+'選擇表情包（排在最後）'+A+'發送留言'],

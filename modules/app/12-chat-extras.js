@@ -162,7 +162,8 @@ function recToggle(){
   const hb=$('.chh [data-a=vrec]');if(hb)hb.classList.toggle('rec-on',recMode);
   const f=$('#f'),cur0=f&&f.querySelector('#in,#recbox');if(cur0)cur0.outerHTML=recMode?recBox():'<input id="in" placeholder="說點什麼…" autocomplete="off">';
 }
-function recTickStart(){recTick=setInterval(()=>{const t=$('#rec-t');if(!t||!$('#recbox')){recClear();return}const sec=(Date.now()-recT0)/1000;t.textContent=recFmt(sec);if(sec>=60)recStop()},250)}
+function recTickStart(){clearInterval(recTick);let miss=0;recTick=setInterval(()=>{const sec=(Date.now()-recT0)/1000;if(sec>=60){recStop();return}const t=$('#rec-t');
+  if(!t||!$('#recbox')){/* 畫面剛好重畫：先把錄音框補回去；真的離開聊天室（或連續好幾次都找不到）才放棄 */if(tab!=='chat'||!recMode){recClear();return}if(++miss>=12){recClear();return}try{const o=$('#in');if(o&&!$('#recbox'))o.outerHTML=recBox()}catch(e){}return}miss=0;t.textContent=recFmt(sec)},250)}
 /* 麥克風權限：在使用者點擊時直接呼叫 getUserMedia，瀏覽器就會跳出「允許使用麥克風」的確認；被拒絕時顯示原因與開啟方式 */
 function micExplain(e){const n=e&&e.name||'',https=window.isSecureContext===false;let why;
   if(https||!navigator.mediaDevices)why='目前的網址不是 https（或瀏覽器不支援），瀏覽器會直接禁止錄音。請用 https 網址開啟（例如放到 GitHub Pages、Netlify），或用 localhost 測試。';
@@ -206,15 +207,21 @@ async function recStart(){
   const mt=recTypes();
   try{recMR=new MediaRecorder(recStream,Object.assign({audioBitsPerSecond:REC_BPS},mt?{mimeType:mt}:{}))}catch(_){recCleanup();toast('無法開始錄音');return}
   recChunks=[];const mr=recMR;mr.ondataavailable=e=>{if(e.data&&e.data.size)recChunks.push(e.data)};
-  mr.onstop=()=>{const dur=(Date.now()-recT0)/1000,type=mr.mimeType||mt||'audio/webm',blob=new Blob(recChunks,{type});recCleanup();
-    if(!recMode||!blob.size){recSt='idle';recUI();return}
-    const fr=new FileReader();fr.onload=()=>{recData={url:URL.createObjectURL(blob),dataUrl:fr.result,dur:Math.max(1,dur)};recSt='ready';recUI()};fr.readAsDataURL(blob)};
-  mr.start();recT0=Date.now();recSt='rec';recUI();recTickStart();
+  /* 有些瀏覽器（尤其 iPhone）停止後資料會晚一點才送到：先收一下再做成錄音，空的就多等幾次，不要直接當成沒錄 */
+  const finish=(tries)=>{const dur=(Date.now()-recT0)/1000,type=mr.mimeType||mt||'audio/webm',blob=new Blob(recChunks,{type});
+    if(!recMode||recMR!==mr&&recMR!=null){recCleanup();recSt='idle';recUI();return}
+    if(!blob.size){if(tries<6){setTimeout(()=>finish(tries+1),250);return}recCleanup();recSt='idle';recUI();toast('這次沒有錄到聲音，請再錄一次');return}
+    recCleanup();
+    const fr=new FileReader();fr.onload=()=>{recData={url:URL.createObjectURL(blob),dataUrl:fr.result,dur:Math.max(1,dur)};recSt='ready';recUI()};fr.onerror=()=>{recData={url:URL.createObjectURL(blob),dataUrl:'',dur:Math.max(1,dur)};recSt='ready';recUI()};fr.readAsDataURL(blob)};
+  mr.onstop=()=>{clearInterval(recTick);recTick=null;recSt='saving';recUI();setTimeout(()=>finish(0),120)};
+  mr.onerror=()=>{try{mr.stop()}catch(_){}};
+  mr.start(500);recT0=Date.now();recSt='rec';recUI();recTickStart();
 }
 function recStop(){
   if(recSt!=='rec')return;clearInterval(recTick);recTick=null;
   if(!recMR){recData={url:null,dataUrl:'',dur:Math.max(1,(Date.now()-recT0)/1000)};recSt='ready';recUI();return}
-  recSt='saving';try{recMR.stop()}catch(_){recSt='idle'}recUI()}
+  recSt='saving';recUI();
+  try{if(recMR.state==='inactive'){const mr=recMR;mr.onstop&&mr.onstop();return}try{recMR.requestData()}catch(_){}recMR.stop()}catch(_){const mr=recMR;if(mr&&mr.onstop)mr.onstop();else{recSt='idle';recUI()}}}
 function recPreview(){if(!recData||!recData.url)return;if(recPrev&&!recPrev.paused){recPrev.pause();recUI();return}
   if(!recPrev){recPrev=new Audio(recData.dataUrl||recData.url);recPrev.onended=()=>{recUI()};recPrev.onerror=()=>{recPrev=null;recUI()}}recPrev.muted=isMuted();try{micSession(0)}catch(e){}try{recPrev.currentTime=0}catch(e){}const pp=recPrev.play();if(pp&&pp.then)pp.then(recUI).catch(()=>{recPrev=null;toast('無法播放錄音')});else recUI()}
 function recSend(){

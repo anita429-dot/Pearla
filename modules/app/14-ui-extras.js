@@ -111,7 +111,7 @@ document.addEventListener('focusin',e=>{const el=e.target;if(isTxt(el)){el.datas
 const restoreEmpty=e=>{const el=e.target;if(isTxt(el)&&(el.type==='number'||el.id==='ai'||el.id==='today-mood-text')&&el.value.trim()===''&&el.dataset.orig){el.value=el.dataset.orig;el.dispatchEvent(new Event('input',{bubbles:true}))}};
 document.addEventListener('change',restoreEmpty,true);document.addEventListener('focusout',restoreEmpty,true);
 
-document.addEventListener('click',e=>{if(tab!=='chat')return;if(e.target.closest('.mact')){setTimeout(()=>{const o=$('#cl .mact');if(o)o.remove()},0);return}
+document.addEventListener('click',e=>{if(tab!=='chat'||xOn())return;if(e.target.closest('.mact')){setTimeout(()=>{const o=$('#cl .mact');if(o)o.remove()},0);return}
   const bub=e.target.closest('#cl .m .b'),old=$('#cl .mact');let same=false;if(old){same=!!bub&&old.parentNode===bub;old.remove()}
   if(!bub||same||bub.classList.contains('qa-b'))return;
   const id=bub.closest('.m').id.slice(2),m=ms(S.cur).find(x=>x.id===id);if(!m)return;

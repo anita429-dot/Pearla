@@ -25,6 +25,14 @@ document.addEventListener('click',e=>{
   const cat=S.cats.find(c=>c.id===selCat);
   switch(a){
     case 'close':closeSheet();break;
+    case 'xstart':xStart();break;
+    case 'xsel':xTap(i);break;
+    case 'xmode':xMode(i);break;
+    case 'xall':xAll();break;
+    case 'xexit':xExitAsk();break;
+    case 'xexitok':xExit();break;
+    case 'xgo':xBuild();break;
+    case 'xsave':xSave();break;
     case 'hidenote':S.hideNote=!S.hideNote;save();paint();moreSheet();toast(S.hideNote?'已隱藏聯絡人行為通知':'已顯示聯絡人行為通知',1500);break;
     case 'lcol':{const L=S.letters.find(x=>x.id===i);if(L){L.col=L.col?0:1;save();const v=$('#v'),y=v.scrollTop;render();v.scrollTop=y}break}
     case 'mail':mailRepEdit=null;mailOpen=true;mailTab='r';mailEdit=false;mailSel=[];mailReplyId=null;mailKeep={};render();$('#v').scrollTop=0;break;
