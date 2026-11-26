@@ -105,12 +105,12 @@ html.kb-chat .tabs,html.kb-chat #dots{display:none!important}
 .mt .mtl .mtt{font-size:calc(9.5px*var(--fz,1))}
 /* 字卡頁「共用／專屬」框：不透明，顏色跟著主題背景 */
 .cards-view .seg,.cards-top .seg{background:var(--bg)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
-[data-theme=glass]:not([data-skin]) .cards-view .seg,[data-theme=glass]:not([data-skin]) .cards-top .seg{background:#6b7f9c!important}
+[data-theme=glass]:not([data-skin]) .cards-view .seg,[data-theme=glass]:not([data-skin]) .cards-top .seg{background:#6b7f9cbf!important;-webkit-backdrop-filter:blur(12px) saturate(1.3)!important;backdrop-filter:blur(12px) saturate(1.3)!important}
 [data-theme=glass][data-skin=moon] .cards-view .seg,[data-theme=glass][data-skin=moon] .cards-top .seg{background:#2a1f55!important}
 /* 主頁右上角聲音／深色模式鍵：不要外框與底色，只留圖示 */
 .dm-toggle,.dm-toggle.mute-toggle{border:0!important;background:transparent!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border-radius:0!important}
 /* 霧海：發出去的問卷／問問他，題目文字不要和背景融在一起 */
-[data-theme=glass]:not([data-skin]) .b.qa-b,[data-theme=glass]:not([data-skin]) .m.me .b.qa-b{background:#5d7497e6!important;border-color:#ffffff80}
+[data-theme=glass]:not([data-skin]) .b.qa-b,[data-theme=glass]:not([data-skin]) .m.me .b.qa-b{background:#5d7497b8!important;border-color:#ffffff80;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 [data-theme=glass]:not([data-skin]) .qabox{border-color:#ffffffa6}
 [data-theme=glass]:not([data-skin]) .qabox .qaq{color:#fff;text-shadow:0 1px 2px #1f2f4a99}
 [data-theme=glass]:not([data-skin]) .qabox .qao{background:#ffffff26;color:#fff;border-color:#ffffff59;text-shadow:none}
@@ -119,7 +119,7 @@ html.kb-chat .tabs,html.kb-chat #dots{display:none!important}
 
 /* 朋友圈：每則貼文各自一張卡片（像信箱） */
 .mom-one{margin-bottom:10px}
-[data-theme=glass]:not([data-skin]) .qabox{background:#4a6286!important}
+[data-theme=glass]:not([data-skin]) .qabox{background:#4a6286a6!important}
 
 /* ── 霧海：其他字和背景融在一起的地方 ── */
 /* 浮窗裡被選中的分類：原本淺底白字 */
@@ -131,7 +131,7 @@ html.kb-chat .tabs,html.kb-chat #dots{display:none!important}
 /* 輸入框提示字調亮 */
 [data-theme=glass]:not([data-skin]) ::placeholder{color:#ffffffb8;opacity:1}
 
-/* 設置 → 給聯絡人的說明 */
+/* 設置 → 使用說明 */
 .cx-doc{font-size:calc(14px*var(--fz,1));line-height:1.9;margin-bottom:10px}
 .cx-doc h4{margin:0 0 8px;padding-bottom:6px;border-bottom:1.2px var(--bs,dashed) var(--line);font-size:calc(15.5px*var(--fz,1));font-weight:600}
 .cx-doc .cx-i{margin:0 0 9px}
@@ -143,3 +143,59 @@ html.kb-chat .tabs,html.kb-chat #dots{display:none!important}
 #v>.stabs{scrollbar-width:none}
 #v>.stabs::-webkit-scrollbar{display:none}
 #v>.stabs .stab{flex:0 0 auto;white-space:nowrap}
+
+/* ── 導出聊天紀錄（多選訊息模式）── 每個主題各有選中配色：--xsel 訊息底色、--xring 圓框、--xdot 實心圓 */
+:root{--xsel:#e4defa;--xring:var(--lav);--xdot:var(--lav)}
+:root[data-theme=glass]{--xsel:#6f93c2b8;--xring:#fff;--xdot:#fff}
+:root[data-theme=glass][data-skin=moon]{--xsel:#b79cf59e;--xring:#fff;--xdot:#fff}
+:root[data-theme=glass][data-skin=journal]{--xsel:#c3d7f3;--xring:#6f93c2;--xdot:#6f93c2}
+:root[data-theme=glass][data-skin=journal][data-tone=mint]{--xsel:#d8efa0;--xring:#86a363;--xdot:#86a363}
+:root[data-theme=glass][data-skin=journal][data-tone=dark]{--xsel:#505068;--xring:#d9d9e0;--xdot:#d9d9e0}
+:root[data-theme=glass][data-skin=pixel]{--xsel:#cfe0fa;--xring:#2a1f5c;--xdot:#f00f2d}
+:root[data-theme=glass][data-skin=cat]{--xsel:#d4d0c8;--xring:#2d2d32;--xdot:#2d2d32}
+:root[data-theme=glass][data-skin=cat][data-tone=dark]{--xsel:#585870;--xring:#d9d9e0;--xdot:#f08aa0}
+
+.chh.xh{gap:8px;padding-bottom:10px}
+.xm{flex:none;border:1.4px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 14px;font:inherit;font-size:calc(13px*var(--fz,1));cursor:pointer;text-shadow:var(--tsh,none)}
+.xm.on{background:var(--xsel);border-color:var(--xring)}
+.xm.xexit{margin-left:auto}
+.xbar{display:flex;align-items:center;gap:8px;padding:8px 2px 4px}
+.xbar .xcnt{flex:1;min-width:0;font-size:calc(13px*var(--fz,1));color:var(--soft);text-shadow:var(--tsh,none)}
+.xb{flex:none;border:1.4px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 16px;font:inherit;font-size:calc(13px*var(--fz,1));cursor:pointer;text-shadow:none}
+.xb.xgo{background:var(--lav);border-color:var(--lav);color:#fff}
+.xb:disabled{opacity:.4;pointer-events:none}
+.xmode #qtb,.xmode #cpv{display:none!important}
+.xmode .mt button{display:none}
+.xmode .m .msgav{pointer-events:none}
+
+.xc{flex:none;width:34px;height:34px;display:grid;place-items:center;align-self:center;background:none;border:0;padding:0;margin:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.xc i{width:20px;height:20px;border-radius:50%;border:2px solid var(--xring);box-sizing:border-box;display:grid;place-items:center;background:transparent}
+.xs>.xc i::after,.xs .xc i::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--xdot)}
+.m.xs .b,.m.xs .b:has(>img){background:var(--xsel)!important}
+.m.xs .b:has(>img){padding:4px!important;border-radius:12px!important}
+.xrow.xs .sys{background:var(--xsel)}
+.m.xa .b{outline:2px dashed var(--xring);outline-offset:2px}
+.m.xa .xc i,.xrow.xa .xc i{box-shadow:0 0 0 3px var(--xsel)}
+.xrow{position:relative;display:flex;justify-content:center;align-items:center;min-height:34px}
+.xrow .xc{position:absolute;left:0;top:0}
+.xdim{opacity:.4}
+
+/* 聊天室：收藏星號貼近訊息（對方訊息星號靠左、我的訊息星號靠右，不再置中飄在時間欄中間） */
+.m.ta .mt{align-items:flex-start}
+.m.me .mt{align-items:flex-end}
+.m .mt button{line-height:1}
+/* 聊天室：日期分隔（每天第一則訊息上方，和拍一拍一樣置中） */
+.sys.dt{letter-spacing:.02em}
+
+/* 鍵盤彈出（點聊天室輸入框）：導覽行、頁面點、底部安全區都收起，輸入框直接貼在鍵盤上；#app 對齊可視範圍 */
+html.kb-chat #app{position:fixed;top:var(--vvt,0px);left:0;right:0;height:var(--vvh,100dvh);margin:0 auto;padding-bottom:0}
+
+/* 打字卡頓：鍵盤開著、正在輸入時，暫停聊天室的毛玻璃模糊（每打一個字都要重畫整片模糊很吃力） */
+html.kb-chat #cl .b,html.kb-chat #cl .sys,html.kb-chat #cl .qt,html.kb-chat #cl .qabox{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+html.kb-chat #f textarea.sl,html.kb-chat #f input{will-change:auto}
+
+/* 拍一拍浮窗：輸入框、存入、發送固定在小窗口最下方，上面的清單自己捲動 */
+#sh.chat-pop.pat .box{display:flex!important;flex-direction:column;overflow:hidden!important}
+#sh.chat-pop.pat .emo-sticky{position:static;flex:none;margin:0;padding:0;background:transparent}
+#sh.chat-pop.pat .pat-list{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#sh.chat-pop.pat .add{flex:none;margin:8px 0 0;padding-top:8px;border-top:1.2px var(--bs,dashed) var(--line)}
