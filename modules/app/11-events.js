@@ -1874,6 +1874,9 @@ document.addEventListener('click', e => {
             }
             break;
         }
+        case 'chmore':
+            chMore();
+            break;
         case 'sgo': {
             const d = $('#sd').value, k = $('#sk').value.trim();
             const m = ms(S.cur).find(x => (!d || new Date(x.t).toLocaleDateString('sv') === d) && (!k || (x.x || '').includes(k)));
@@ -3354,8 +3357,24 @@ document.addEventListener('click', e => {
             $('#v').scrollTop = st;
             break;
         }
+        case 'mhline':
+        case 'mhmv':
+        case 'mhsw': {
+            if (a === 'mhline')
+                mhLines[+i] = mhLines[+i] ? 0 : 1;
+            else if (a === 'mhmv')
+                mhMv = +i;
+            else if (i === 'time')
+                mhUseTime = !mhUseTime;
+            else
+                mhUseSeason = !mhUseSeason;
+            const st = $('#v').scrollTop;
+            render();
+            $('#v').scrollTop = st;
+            break;
+        }
         case 'mhreset': {
-            const had = mhN1 || mhN2 || mhQ || mhNote || mhRes, u = had ? mhSnap() : null;
+            const had = mhN1 || mhN2 || mhQ || mhNote || mhRes || mhMv || mhLines.some(x => !x), u = had ? mhSnap() : null;
             mhClear();
             mhUndo = u;
             render();
@@ -3374,6 +3393,10 @@ document.addEventListener('click', e => {
             mhQ = u.q;
             mhNote = u.note;
             mhSeason = u.se;
+            mhLines = u.pl;
+            mhMv = u.mv;
+            mhUseTime = u.ut;
+            mhUseSeason = u.us;
             mhRes = u.res;
             mhResBy = u.by;
             render();

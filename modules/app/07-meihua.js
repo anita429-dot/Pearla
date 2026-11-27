@@ -418,8 +418,13 @@ const mhNow = () => { const d = new Date(), p = n => String(n).padStart(2, '0');
 const MH_ZHI = '子丑寅卯辰巳午未申酉戌亥', MH_GAN = '甲乙丙丁戊己庚辛壬癸', MH_YAO = ['初爻', '二爻', '三爻', '四爻', '五爻', '上爻'];
 let mhOpen = false, mhTab = 'num', mhN1 = '', mhN2 = '', mhT = '', mhQ = '', mhNote = '', mhSeason = 'auto', mhRes = null, mhResBy = {};
 let mhUndo = null;
-const mhSnap = () => ({ n1: mhN1, n2: mhN2, t: mhT, q: mhQ, note: mhNote, se: mhSeason, res: mhRes, by: Object.assign({}, mhResBy) });
-function mhClear() { mhUndo = null; mhN1 = ''; mhN2 = ''; mhT = mhNow(); mhQ = ''; mhNote = ''; mhSeason = 'auto'; mhRes = null; mhResBy = {}; }
+/* 指定排盤：六爻由下往上（1 陽、0 陰）、動爻（1–6，0＝還沒選）、兩個開關 */
+let mhLines = [1, 1, 1, 1, 1, 1], mhMv = 0, mhUseTime = true, mhUseSeason = true;
+const mhSnap = () => ({ n1: mhN1, n2: mhN2, t: mhT, q: mhQ, note: mhNote, se: mhSeason, res: mhRes, by: Object.assign({}, mhResBy), pl: mhLines.slice(), mv: mhMv, ut: mhUseTime, us: mhUseSeason });
+function mhClear() { mhUndo = null; mhN1 = ''; mhN2 = ''; mhT = mhNow(); mhQ = ''; mhNote = ''; mhSeason = 'auto'; mhRes = null; mhResBy = {}; mhLines = [1, 1, 1, 1, 1, 1]; mhMv = 0; mhUseTime = true; mhUseSeason = true; }
+const mhTriNo = ls => Number(Object.keys(MH.TRIGRAMS).find(k => MH.TRIGRAMS[k].lines.join('') === ls.join('')));
+const mhModeName = m => m.mode === 'num' ? '報數排盤' : m.mode === 'pick' ? '指定排盤' : '時間排盤';
+const mhModeInfo = m => m.mode === 'num' ? '數字 ' + m.n1 + '、' + m.n2 : m.mode === 'pick' ? (m.time || '自選六爻') : m.time;
 function mhLunar(d) { try {
     const p = new Intl.DateTimeFormat('en-u-ca-chinese', { year: 'numeric', month: 'numeric', day: 'numeric' }).formatToParts(d), g = t => (p.find(x => x.type === t) || {}).value || '', m = g('month'), mo = parseInt(m, 10), da = parseInt(g('day'), 10), y = parseInt(g('relatedYear'), 10);
     if (!(mo >= 1 && mo <= 12 && da >= 1 && y))
@@ -449,6 +454,15 @@ function mhGo() {
             const now = new Date(), L = mhLunar(now), season = sel === 'auto' ? (L ? mhSeasonOf(L.m) : null) : sel;
             r = MH.castHexagram(n1, n2, { season });
             meta = { mode: 'num', n1, n2, t: now.getTime(), season, auto: sel === 'auto', lm: L ? L.m : null };
+        }
+        else if (mhTab === 'pick') {
+            if (!mhMv) {
+                toast('請先點選動爻（每條右邊的圓圈）');
+                return;
+            }
+            const now = new Date(), L = mhLunar(now), season = !mhUseSeason ? null : sel === 'auto' ? (L ? mhSeasonOf(L.m) : null) : sel;
+            r = MH.castHexagram(mhTriNo(mhLines.slice(3)), mhTriNo(mhLines.slice(0, 3)), { season, movingTotal: mhMv });
+            meta = { mode: 'pick', t: now.getTime(), season, auto: sel === 'auto', lm: L ? L.m : null, seOff: !mhUseSeason, time: mhUseTime ? mhFmt(now) : '', lunar: (mhUseTime && L) ? '農曆' + MH_GAN[((L.y - 4) % 10 + 10) % 10] + MH_ZHI[((L.y - 4) % 12 + 12) % 12] + '年' + (L.leap ? '閏' : '') + L.m + '月' + L.d + '日' : '', mv: mhMv, pl: mhLines.slice() };
         }
         else {
             const t = mhT ? new Date(mhT) : new Date();
@@ -501,10 +515,10 @@ function mhResultHtml(rec) {
     const rem = n => '餘 ' + n + (n === 0 ? '（取 8）' : ''), rem6 = n => '餘 ' + n + (n === 0 ? '（取 6）' : '');
     const c = r.calculation;
     const qline = (rec.q ? '<div style="margin:0 0 10px;font-size:calc(14px*var(--fz,1))"><span style="color:var(--soft)">所問之事</span>　' + esc(rec.q) + '</div>' : '') + (rec.note ? '<div style="margin:0 0 10px;font-size:calc(14px*var(--fz,1))"><span style="color:var(--soft)">備注</span>　' + esc(rec.note) + '</div>' : '');
-    const head = m.mode === 'num' ? '報數排盤：數字一 ' + m.n1 + '、數字二 ' + m.n2 : '時間排盤：' + m.time + '（農曆' + m.ly + '年' + m.lmon + '月' + m.ld + '日 ' + m.zh + '時）';
-    const how = m.mode === 'num' ? ('數字一 ' + m.n1 + ' ÷ 8 ' + rem(c.upperRemainder) + ' → 上卦「' + r.upperGua + '」；數字二 ' + m.n2 + ' ÷ 8 ' + rem(c.lowerRemainder) + ' → 下卦「' + r.lowerGua + '」；兩數之和 ' + c.sum + ' ÷ 6 ' + rem6(c.movingLineRemainder) + ' → 動爻在' + MH_YAO[mv - 1] + '。')
+    const head = m.mode === 'pick' ? '指定排盤' + (m.time ? '：' + m.time + (m.lunar ? '（' + m.lunar + '）' : '') : '') : m.mode === 'num' ? '報數排盤：數字一 ' + m.n1 + '、數字二 ' + m.n2 : '時間排盤：' + m.time + '（農曆' + m.ly + '年' + m.lmon + '月' + m.ld + '日 ' + m.zh + '時）';
+    const how = m.mode === 'pick' ? ('自選六爻（由下往上：' + (m.pl || r.originalLines).map(x => x ? '陽' : '陰').join('、') + '）→ 下卦「' + r.lowerGua + '」、上卦「' + r.upperGua + '」；動爻在' + MH_YAO[mv - 1] + '。') : m.mode === 'num' ? ('數字一 ' + m.n1 + ' ÷ 8 ' + rem(c.upperRemainder) + ' → 上卦「' + r.upperGua + '」；數字二 ' + m.n2 + ' ÷ 8 ' + rem(c.lowerRemainder) + ' → 下卦「' + r.lowerGua + '」；兩數之和 ' + c.sum + ' ÷ 6 ' + rem6(c.movingLineRemainder) + ' → 動爻在' + MH_YAO[mv - 1] + '。')
         : ('年支 ' + m.zy + '（' + m.yz + '）＋農曆月 ' + (m.lmon.replace('閏', '')) + '＋農曆日 ' + m.ld + ' ＝ ' + m.sum + '，÷ 8 ' + rem(c.upperRemainder) + ' → 上卦「' + r.upperGua + '」；再加時支 ' + m.zh + '（' + m.hz + '）＝ ' + c.movingTotal + '，÷ 8 ' + rem(c.lowerRemainder) + ' → 下卦「' + r.lowerGua + '」；' + c.movingTotal + ' ÷ 6 ' + rem6(c.movingLineRemainder) + ' → 動爻在' + MH_YAO[mv - 1] + '。');
-    const seasonTxt = m.season ? (m.season + '季（' + (m.auto ? '自動，依農曆' + m.lm + '月推算' : '手動選擇') + '）') : '未提供（無法取得農曆月份，不判斷旺衰）';
+    const seasonTxt = m.seOff ? '已關閉（不判斷旺衰）' : m.season ? (m.season + '季（' + (m.auto ? '自動，依農曆' + m.lm + '月推算' : '手動選擇') + '）') : '未提供（無法取得農曆月份，不判斷旺衰）';
     const strength = m.season ? (r.bodyStrength.description + ' ' + r.useStrength.description + '<br>' + r.strengthAdjustment.description) : '未提供季節，不做旺衰調整。';
     const sc = r.score;
     return qline + '<div class="hint" style="margin:0 0 10px">' + esc(head) + '</div>'
@@ -525,18 +539,37 @@ function mhResultHtml(rec) {
 function mhRecHtml() {
     const l = [...(S.plum || [])].sort((a, b) => b.t - a.t), sm = t => t.length > 30 ? t.slice(0, 30) + '⋯' : t, bar = recEdit ? '<div class="selbar">' + selAllHtml('pl', l.map(x => x.id), recSel) + '<button class="btn d" data-a="pdelsel" style="border-style:solid">刪除所選（' + recSel.length + '）</button></div>' : '';
     const row = x => {
-        const r = x.r, m = x.meta, inner = '<div class="ltt">' + ltime(x.t) + ' · ' + (m.mode === 'num' ? '報數排盤' : '時間排盤') + '</div>' + (x.q ? '<div class="ltx" style="color:var(--soft);font-size:calc(12.5px*var(--fz,1))">所問：' + esc(sm(x.q)) + '</div>' : '') + (x.note ? '<div class="ltx" style="color:var(--soft);font-size:calc(12.5px*var(--fz,1))">備注：' + esc(sm(x.note)) + '</div>' : '') + '<div class="ltx" style="font-weight:500">' + esc(r.benGua) + ' → ' + esc(r.bianGua) + '（互：' + esc(r.huGua) + '）</div><div class="ltx" style="color:var(--soft);font-size:calc(12.5px*var(--fz,1))">' + (m.mode === 'num' ? '數字 ' + m.n1 + '、' + m.n2 : m.time) + ' · 動爻' + MH_YAO[r.movingLine - 1] + ' · ' + esc(r.overall.level) + '</div>';
+        const r = x.r, m = x.meta, inner = '<div class="ltt">' + ltime(x.t) + ' · ' + mhModeName(m) + '</div>' + (x.q ? '<div class="ltx" style="color:var(--soft);font-size:calc(12.5px*var(--fz,1))">所問：' + esc(sm(x.q)) + '</div>' : '') + (x.note ? '<div class="ltx" style="color:var(--soft);font-size:calc(12.5px*var(--fz,1))">備注：' + esc(sm(x.note)) + '</div>' : '') + '<div class="ltx" style="font-weight:500">' + esc(r.benGua) + ' → ' + esc(r.bianGua) + '（互：' + esc(r.huGua) + '）</div><div class="ltx" style="color:var(--soft);font-size:calc(12.5px*var(--fz,1))">' + mhModeInfo(m) + ' · 動爻' + MH_YAO[r.movingLine - 1] + ' · ' + esc(r.overall.level) + '</div>';
         return recEdit ? '<div class="lt pick' + (recSel.includes(x.id) ? ' sel' : '') + '" data-a="psel" data-i="' + x.id + '"><span class="ck ' + (recSel.includes(x.id) ? 'on' : '') + '"></span>' + inner + '</div>' : '<div class="lt" data-a="pview" data-i="' + x.id + '" style="cursor:pointer">' + inner + '</div>';
     };
     return bar + (l.length ? l.map(row).join('') : '<div class="empty">還沒有梅花易數紀錄。<br>排盤後按「保存紀錄」，結果會記錄在這裡。</div>');
 }
+/* 指定排盤：上爻在上、初爻在下；點爻條切換陰陽，右邊「動」選動爻（只能一爻）；底下即時顯示「本卦 之 變卦」 */
+function mhPickHtml() {
+    const rows = [5, 4, 3, 2, 1, 0].map(i => {
+        const y = mhLines[i], mv = mhMv === i + 1, nm = (mv ? '老' : '少') + (y ? '陽' : '陰');
+        return '<div class="mhp-r' + (mv ? ' mv' : '') + '"><span class="mhp-l">' + MH_YAO[i] + '（' + nm + '）</span><button type="button" class="mhp-b" data-a="mhline" data-i="' + i + '" aria-label="' + MH_YAO[i] + nm + '，點擊切換陰陽">' + (y ? '<i></i>' : '<i></i><i></i>') + '</button><button type="button" class="mhp-m' + (mv ? ' on' : '') + '" data-a="mhmv" data-i="' + (i + 1) + '" role="radio" aria-checked="' + (mv ? 'true' : 'false') + '" aria-label="' + MH_YAO[i] + '設為動爻">動</button></div>';
+    }).join('');
+    let nm = '';
+    try {
+        const g = MH.castHexagram(mhTriNo(mhLines.slice(3)), mhTriNo(mhLines.slice(0, 3)), { movingTotal: mhMv || 1 });
+        nm = g.benGua + ' 之 ' + (mhMv ? g.bianGua : g.benGua);
+    }
+    catch (e) { }
+    return rows + '<div class="mhp-n">' + esc(nm) + '</div><p class="hint" style="margin:4px 2px 0;text-align:center">點爻條切換陰陽；點右邊「動」選動爻。</p>';
+}
 function vMh() {
     const head = '<div class="ph2"><button class="ib" data-a="mhback">‹</button><h1>梅花易數</h1>' + (mhTab === 'rec' ? '<span class="grow"></span><button class="btn" data-a="redit" style="width:auto;padding:6px 14px">' + (recEdit ? '完成' : '編輯') + '</button>' : '') + '</div>';
-    const tabs = '<div class="stabs" style="margin:-4px 0 10px">' + [['num', '報數排盤'], ['time', '時間排盤'], ['rec', '紀錄']].map(([k, n]) => '<button class="stab ' + (mhTab === k ? 'on' : '') + '" style="flex:1" data-a="mhtab" data-i="' + k + '">' + n + '</button>').join('') + '</div>';
-    const seg = '<div class="sr" style="margin-top:16px"><span>季節</span></div><div class="seg" style="margin-top:6px">' + [['auto', '自動'], ['春', '春'], ['夏', '夏'], ['秋', '秋'], ['冬', '冬']].map(([k, n]) => '<button class="' + (mhSeason === k ? 'on' : '') + '" data-a="mhs" data-i="' + k + '">' + n + '</button>').join('') + '</div><p class="hint" style="margin:6px 2px 0">如沒選擇季節則自動依農曆月份推算（1–3 春、4–6 夏、7–9 秋、10–12 冬）</p>';
+    const tabs = '<div class="stabs" style="margin:-4px 0 10px">' + [['num', '報數排盤'], ['time', '時間排盤'], ['pick', '指定排盤'], ['rec', '紀錄']].map(([k, n]) => '<button class="stab ' + (mhTab === k ? 'on' : '') + '" style="flex:1" data-a="mhtab" data-i="' + k + '">' + n + '</button>').join('') + '</div>';
+    const sw = (k, on, n) => '<div class="sr" style="margin-top:14px"><span>' + n + '</span><button class="sw ' + (on ? 'on' : '') + '" data-a="mhsw" data-i="' + k + '" role="switch" aria-checked="' + (on ? 'true' : 'false') + '" aria-label="' + n + '"></button></div>';
+    const segHead = mhTab === 'pick' ? sw('season', mhUseSeason, '季節') : '<div class="sr" style="margin-top:16px"><span>季節</span></div>';
+    const seg0 = '<div class="seg" style="margin-top:6px">' + [['auto', '自動'], ['春', '春'], ['夏', '夏'], ['秋', '秋'], ['冬', '冬']].map(([k, n]) => '<button class="' + (mhSeason === k ? 'on' : '') + '" data-a="mhs" data-i="' + k + '">' + n + '</button>').join('') + '</div><p class="hint" style="margin:6px 2px 0">如沒選擇季節則自動依農曆月份推算（1–3 春、4–6 夏、7–9 秋、10–12 冬）</p>';
+    const seg = mhTab === 'pick' ? (segHead + (mhUseSeason ? seg0 : '')) : segHead + seg0;
     const btns = '<div style="display:flex;gap:10px;margin-top:8px"><div style="flex:1;display:flex;gap:6px"><button class="btn" style="flex:1;margin:0;padding-left:4px;padding-right:4px;white-space:nowrap' + (mhUndo ? '' : ';opacity:.45') + '" data-a="mhundo">退回重置</button><button class="btn" style="flex:1;margin:0;padding-left:4px;padding-right:4px" data-a="mhreset">重置</button></div><button class="btn s" style="flex:1;margin:0" data-a="mhgo">立即排盤</button></div><textarea class="mh-in" id="mhq" rows="1" placeholder="所問之事（選填）" style="margin-top:14px;resize:none;line-height:1.6;height:48px;min-height:48px;overflow:hidden;display:block">' + esc(mhQ) + '</textarea><textarea class="mh-in" id="mhnote" rows="2" placeholder="備注（選填）" style="margin-top:10px;resize:none;line-height:1.6;height:76px;min-height:76px;overflow:auto;display:block">' + esc(mhNote) + '</textarea><div style="display:flex;gap:10px;margin-top:10px"><button class="btn" style="flex:1;margin:0" data-a="mhcopy">複製問題與答案</button><button class="btn" style="flex:1;margin:0" data-a="mhsave">保存紀錄</button></div>';
     if (mhTab === 'rec')
         return head + tabs + mhRecHtml();
+    if (mhTab === 'pick')
+        return head + tabs + '<div class="card" style="margin-top:12px">' + mhPickHtml() + sw('time', mhUseTime, '當前時間配合起卦') + '<p class="hint" style="margin:6px 2px 0">開啟時，會記錄按下「立即排盤」當下的時間（含農曆）；關閉則不記錄時間。</p>' + seg + btns + '</div>' + (mhRes ? '<div class="card" id="mhres" style="margin-top:12px">' + mhResultHtml(mhRes) + '</div>' : '');
     const body = mhTab === 'num'
         ? '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><input class="mh-in" id="mh1" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="數字一" value="' + esc(mhN1) + '"><input class="mh-in" id="mh2" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off" placeholder="數字二" value="' + esc(mhN2) + '"></div><p class="hint" style="margin:6px 2px 0">輸入兩個正整數：數字一起上卦、數字二起下卦，兩數之和定動爻。每組最多 15 位數。</p>'
         : '<div class="sr"><span>起卦時間</span></div><input class="mh-in" id="mht" type="datetime-local" value="' + esc(mhT) + '" style="margin-top:6px"><p class="hint" style="margin:6px 2px 0">預設為進入此頁時的時間，可自行修改；清空則使用按下「立即排盤」當下的時間。以年支＋農曆月＋農曆日起上卦，再加時支起下卦與動爻；23 點起算子時，農曆日期以次日計。</p>';

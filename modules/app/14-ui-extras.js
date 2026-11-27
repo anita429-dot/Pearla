@@ -524,6 +524,12 @@ function conTopCards(cid, n) {
         return fm[k.id]; const m = msgs.find(x => x && x.f === 'ta' && x.x && String(x.x).indexOf(k.text) > -1); return m ? m.t : Infinity; };
     return S.cards.filter(k => k.text && u[k.id] > 0).map(k => [k, u[k.id], first(k)]).sort((a, b) => b[1] - a[1] || a[2] - b[2]).slice(0, n).map(o => [o[0], o[1]]);
 }
+/* 不常用字卡：次數最少的字卡。沒用過的（×0）也算，只收他目前抽得到的字卡；次數一樣時，新用的排前面，沒用過的照字卡原本順序 */
+function conLowCards(cid, n) {
+    const u = (S.cuse || {})[cid] || {}, fm = ((S.cfirst || {})[cid]) || {};
+    const used = S.cards.filter(k => k.text && u[k.id] > 0), unused = cardPool(cid).filter(k => k.text && !(u[k.id] > 0));
+    return used.concat(unused).map(k => [k, u[k.id] || 0, fm[k.id] || 0]).sort((a, b) => a[1] - b[1] || b[2] - a[2]).slice(0, n).map(o => [o[0], o[1]]);
+}
 /* ── 聯絡人資料卡：背景可裁剪、右下角設定（配色／排名清除）、常用字卡＋表情包排行台 ── */
 const CI_DEF = { bg: '#fdfcff', ink: '#5f5b8d', line: '#cbc7ee', topInk: '#5f5b8d', topBg: '#f6f2ff', rankBg: '#f6f2ff' };
 const CI_LBL = [['bg', '整張卡的顏色'], ['ink', '字體顏色'], ['line', '方框顏色'], ['topInk', '常用字卡的字體顏色'], ['topBg', '常用字卡的區塊背景'], ['rankBg', '表情包排行的區塊背景']];
@@ -534,7 +540,8 @@ function ciRankHtml(c) {
     const r = conTopEmoji(c, 6), cell = (o, i) => o ? '<img src="' + o[0] + '" alt=""><b>×' + o[1] + '</b>' : '<span class="ci-no">—</span>';
     const pod = [[2, 'p3'], [0, 'p1'], [1, 'p2']].map(([ix, cl]) => '<div class="pc ' + cl + '"><div class="pi">' + cell(r[ix]) + '</div><div class="base">' + (ix + 1) + '</div></div>').join('');
     const low = [3, 4, 5].map(ix => '<div class="lc"><div class="pi">' + cell(r[ix]) + '</div><i>' + (ix + 1) + '</i></div>').join('');
-    return '<h3>表情包排行</h3><div class="ci-rbox"><div class="ci-pod">' + pod + '</div><div class="ci-low">' + low + '</div></div>';
+    const lo = conLowCards(c.id, 50), lowHtml = '<h3 class="ci-lh">不常用字卡</h3><div class="ci-lbox">' + (lo.length ? '<ol class="ci-top">' + lo.map(([k, n], ix) => '<li><i>' + (ix + 1) + '</i><span>' + esc(k.text) + '</span><b>×' + n + '</b></li>').join('') + '</ol>' : '<div class="ci-lno">還沒有資料</div>') + '</div>';
+    return '<h3>表情包排行</h3><div class="ci-rbox"><div class="ci-pod">' + pod + '</div><div class="ci-low">' + low + '</div></div>' + lowHtml;
 }
 function conInfoSheet(cid) {
     const c = S.contacts.find(x => x.id === cid);

@@ -109,12 +109,44 @@ function syncCheck() { if (!db)
         reloadFromDb(); };
 }
 catch (e) { } }
-const save = () => {
+/* 存檔：同一瞬間的多次 save() 合併成一次（傳訊息時會連續觸發好幾次）。
+   每次存檔只在「第一次、要存的內容是空的、距離上次備份超過 5 分鐘」才把資料庫裡的舊資料讀回來比對，平常不再整份讀回（省一份記憶體） */
+let saveQ = 0, saveWipe = false, dbWarm = false;
+const save = () => { if (allowWipe)
+    saveWipe = true; if (saveQ)
+    return; saveQ = setTimeout(saveNow, 0); };
+const saveFlush = () => { if (saveQ) {
+    clearTimeout(saveQ);
+    saveQ = 0;
+} saveNow(); };
+function saveNow() {
+    saveQ = 0;
+    const wipeOk = saveWipe;
+    saveWipe = false;
     try {
         if (!db || !S || noSave)
             return;
-        const snap = JSON.parse(JSON.stringify(S)), tx = db.transaction('kv', 'readwrite'), st = tx.objectStore('kv'), g = st.get('rev');
+        const snap = JSON.parse(JSON.stringify(S)), nw = wt(snap), tx = db.transaction('kv', 'readwrite'), st = tx.objectStore('kv'), g = st.get('rev');
         let conflict = false, blocked = false;
+        const put = (old, hasOld) => {
+            const ow = hasOld ? wt(old) : 0;
+            /* 保護：資料庫裡有內容、這次要存的卻是空的（且不是使用者主動重置／還原）→ 不覆蓋，並把舊資料留成備份 */
+            if (ow > 0 && nw === 0 && !wipeOk) {
+                blocked = true;
+                st.put(old, 'bak');
+                tx.abort();
+                return;
+            }
+            /* 滾動備份：資料庫裡有內容時，每 5 分鐘把「存檔前的版本」留一份到 bak */
+            if (ow > 0 && Date.now() - lastBak > 300000) {
+                st.put(old, 'bak');
+                lastBak = Date.now();
+            }
+            const nr = Math.max(Date.now(), (+g.result || 0) + 1, myRev + 1);
+            st.put(snap, 's');
+            st.put(nr, 'rev');
+            myRev = nr;
+        };
         g.onsuccess = () => {
             const r = +g.result || 0;
             if (r > myRev && document.hidden) {
@@ -122,27 +154,14 @@ const save = () => {
                 tx.abort();
                 return;
             }
-            const q2 = st.get('s');
-            q2.onsuccess = () => {
-                const old = q2.result, ow = wt(old), nw = wt(snap);
-                /* 保護：資料庫裡有內容、這次要存的卻是空的（且不是使用者主動重置／還原）→ 不覆蓋，並把舊資料留成備份 */
-                if (ow > 0 && nw === 0 && !allowWipe) {
-                    blocked = true;
-                    st.put(old, 'bak');
-                    tx.abort();
-                    return;
-                }
-                /* 滾動備份：資料庫裡有內容時，每 5 分鐘把「存檔前的版本」留一份到 bak */
-                if (ow > 0 && Date.now() - lastBak > 300000) {
-                    st.put(old, 'bak');
-                    lastBak = Date.now();
-                }
-                const nr = Math.max(Date.now(), r + 1, myRev + 1);
-                st.put(snap, 's');
-                st.put(nr, 'rev');
-                myRev = nr;
-            };
+            if (!dbWarm || nw === 0 || Date.now() - lastBak > 300000) {
+                const q2 = st.get('s');
+                q2.onsuccess = () => put(q2.result, true);
+            }
+            else
+                put(null, false);
         };
+        tx.oncomplete = () => { dbWarm = true; };
         tx.onabort = () => { if (blocked) {
             noSave = true;
             try {
@@ -159,18 +178,18 @@ const save = () => {
     catch (e) {
         saveFail(e);
     }
-};
+}
 /* 關閉／切到背景前立刻存檔，流程進度（排程時間）不會因為 300ms 的延遲存檔而遺失；回到畫面時馬上補跑到期的流程 */
 ['pagehide', 'beforeunload'].forEach(ev => addEventListener(ev, () => { try {
     if (S)
-        save();
+        saveFlush();
 }
 catch (e) { } }));
 document.addEventListener('visibilitychange', () => { try {
     if (!S)
         return;
     if (document.hidden)
-        save();
+        saveFlush();
     else {
         syncCheck();
         resumeTick();
@@ -301,7 +320,35 @@ const MK = { star: mkS('<path d="m12 4.2 2.6 5.3 5.8.8-4.2 4 1 5.7-5.2-2.8-5.2 2
 const MKN = { star: '星星', fish: '小魚', pal: '調色盤', heart: '愛心', moon: '月亮', flower: '小花' };
 const KN = { card: '字卡', emoji: '表情包', pat: '拍一拍', kao: '顏文字', other: '項目', mem: '記憶字卡', ext: '提取字卡' };
 let pScope = 's', mTab = 'interact', fiCb = null, fiMul = false;
-const avh = (c, cl) => { const id = c.id || 'me', edit = cl.includes('msgav') ? '' : `data-a="avt" data-i="${id}"`; return c.av ? `<div class="av ph ${cl}" ${edit} style="background-image:url(${c.av})"></div>` : `<div class="av ${id === 'me' ? 'me' : 'pl'} ${cl}" ${edit}>${id === 'me' ? esc(ini(c.name)) : '+'}</div>`; };
+/* 訊息旁的小頭像：圖片只放進一次 CSS 變數，每則訊息只引用變數（原本每則訊息都內嵌一份完整圖片資料） */
+const avVar = {};
+const avh = (c, cl) => { const id = c.id || 'me', edit = cl.includes('msgav') ? '' : `data-a="avt" data-i="${id}"`; if (!c.av)
+    return `<div class="av ${id === 'me' ? 'me' : 'pl'} ${cl}" ${edit}>${id === 'me' ? esc(ini(c.name)) : '+'}</div>`; let bg = 'url(' + c.av + ')'; if (cl.includes('msgav') && String(c.av).length > 2000) {
+    const k = '--av-' + String(id).replace(/[^\w-]/g, '_');
+    if (avVar[k] !== c.av) {
+        document.documentElement.style.setProperty(k, bg);
+        avVar[k] = c.av;
+    }
+    bg = 'var(' + k + ')';
+} return `<div class="av ph ${cl}" ${edit} style="background-image:${bg}"></div>`; };
+/* 聊天室圖片：大張的內嵌圖片轉成暫存連結，同一張表情包重複出現時不再重複塞進畫面 */
+const IMGU = new Map();
+function imgU(u) { if (typeof u !== 'string' || u.length < 4000 || u.slice(0, 11) !== 'data:image/')
+    return u; let b = IMGU.get(u); if (b)
+    return b; try {
+    const i = u.indexOf(','), head = u.slice(5, i);
+    if (head.indexOf(';base64') < 0)
+        return u;
+    const bin = atob(u.slice(i + 1)), a = new Uint8Array(bin.length);
+    for (let k = 0; k < bin.length; k++)
+        a[k] = bin.charCodeAt(k);
+    b = URL.createObjectURL(new Blob([a], { type: head.split(';')[0] }));
+    IMGU.set(u, b);
+    return b;
+}
+catch (e) {
+    return u;
+} }
 function pick(cb, ac, mul) { const f = $('#fi'); f.accept = ac || 'image/*'; f.multiple = !!mul; fiMul = !!mul; fiCb = cb; f.click(); }
 function impText(t) {
     t = String(t || '').replace(/^\uFEFF/, '').trim();

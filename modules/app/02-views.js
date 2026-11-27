@@ -191,7 +191,8 @@ else if (t.id === 'sk')
     chS.k = t.value; });
 document.addEventListener('change', e => { const t = e.target; if (t.id === 'sd')
     chS.d = t.value; });
-const vChat = () => { const c = cur(); if (xp && (xp.cid !== S.cur || lastRenderedTab !== 'chat'))
+const vChat = () => { const c = cur(); if (lastRenderedTab !== 'chat')
+    chWin = { cid: null, n: CH_WIN }; if (xp && (xp.cid !== S.cur || lastRenderedTab !== 'chat'))
     xp = null; const xm = !!xp, hd = () => `<div class="chh"><b class="av ${c.av ? 'ph' : 'pl'}" data-a="avcard" data-i="${c.id}" ${c.av ? `style="background-image:url(${c.av})"` : ''}>${c.av ? '' : '+'}</b><div class="grow"><b style="font-weight:500">${esc(c.name)}</b><small class="chat-status">${esc(c.status || '尚未抽取狀態')}</small></div><button class="ib${chS.open ? ' rec-on' : ''}" data-a="srch" aria-label="搜尋聊天記錄"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg></button><button class="ib${recMode ? ' rec-on' : ''}" data-a="vrec" aria-label="錄音"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></svg></button><button class="ib" data-a="pokebtn" aria-label="連點兩次讓對方發訊息"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-6.5L8 20.5v-3H5a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z"/><path d="M8.5 11h7"/></svg></button>${chSrchHtml()}</div>`, fm = () => `<form id="f"><button type="button" class="ib" data-a="more">⋯</button><button type="button" class="ib" data-a="emo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="9.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="9.5" r="1" fill="currentColor" stroke="none"/><path d="M8 14.5c1 1.6 2.4 2.4 4 2.4s3-.8 4-2.4"/></svg></button>${recMode ? recBox() : '<input id="in" placeholder="說點什麼…" autocomplete="off">'}<button type="button" class="ib" data-a="chpic" aria-label="傳送圖片">${CH_IMG}</button><button class="ib send-ib" aria-label="送出">${CH_SEND}</button></form>`; return `<div class="ch${xm ? ' xmode' : ''}">${xm ? xHead() : hd()}<div class="clw"><div id="cl" class="cl"></div><button id="tobot" class="tobot" type="button" data-a="tobot" aria-label="回到最新消息"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></button></div><div id="qtb" class="qtb"></div><div id="cpv" class="cpv">${chPvHtml()}</div>${xm ? xBar() : fm()}</div>`; };
 const tqOn = v => !!v && (v === 1 || v > Date.now());
 const isTyping = cid => !!((S.rounds[cid] && S.rounds[cid].ph === 2) || pokeBusy[cid] || tqOn(typingQ[cid]));
@@ -200,6 +201,27 @@ const rdHtml = m => isRd(m) ? '<span class="rdt">已讀</span>' : '';
 const dtKey = t => { const d = new Date(t); return d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(); };
 const dtLabel = t => { const d = new Date(t), md = (d.getMonth() + 1) + '/' + d.getDate(); return d.getFullYear() === new Date().getFullYear() ? md : d.getFullYear() + '/' + md; };
 const dtHtml = (p, m) => (m.t && (!p || !p.t || dtKey(p.t) !== dtKey(m.t))) ? '<div class="sys dt">' + dtLabel(m.t) + '</div>' : '';
+/* 聊天室只畫最近的訊息：預設 80 則，往上滑到頂或按「載入更早的訊息」每次多 80 則。匯出選取模式、跳到舊訊息時會自動展開 */
+const CH_WIN = 80;
+let chWin = { cid: null, n: CH_WIN }, chAnc = null, chMoreAt = 0;
+const chTotal = () => { const a = ms(S.cur); return S.hideNote ? a.filter(m => !(m.f === 'sys' && (m.go || m.lp))).length : a.length; };
+function chMore() {
+    const l = $('#cl');
+    if (!l || chWin.cid !== S.cur || chWin.n >= chTotal())
+        return;
+    chWin.n += CH_WIN;
+    chAnc = { h: l.scrollHeight, t: l.scrollTop };
+    paint();
+}
+/* 把某則訊息顯示出來（例如點引用跳回很久以前的訊息）；回傳是否有重畫 */
+function chReveal(id) {
+    const a = ms(S.cur), vis = S.hideNote ? a.filter(m => !(m.f === 'sys' && (m.go || m.lp))) : a, i = vis.findIndex(m => m.id === id);
+    if (i < 0 || $('#m-' + id))
+        return false;
+    jump = id;
+    paint();
+    return true;
+}
 function paint() {
     const l = $('#cl');
     if (!l)
@@ -226,11 +248,26 @@ function paint() {
         if (ch)
             save();
     }
-    l.innerHTML = vis.length ? vis.map((m, mi) => dtHtml(vis[mi - 1], m) + (m.f === 'sys' ? (xm ? (m.pat ? `<div class="xrow${xCls(m.id)}" id="m-${m.id}" data-xid="${m.id}">${xCirc(m.id)}<div class="sys pat">${esc(m.x)}</div></div>` : `<div class="sys${m.go ? ' go' : ''} xdim" id="m-${m.id}">${esc(m.x)}</div>`) : `<div class="sys${m.pat ? ' pat' : ''}${m.go ? ' go' : ''}${m.sn ? ' seen' : ''}" id="m-${m.id}"${m.go ? ` data-a="gonotice" data-i="${m.go}" role="button"` : ''}>${esc(m.x)}</div>`) : `<div class="m ${m.f}${m.id === jump ? ' hl' : ''}${xm ? xCls(m.id) : ''}" id="m-${m.id}"${xm ? ` data-xid="${m.id}"` : ''}>${xm ? xCirc(m.id) : ''}${m.f === 'me' ? avh({ id: 'me', av: S.meAv, name: S.me }, 'msgav') : avh(c, 'msgav').replace('class="av', 'data-a="avcard" data-i="' + c.id + '" class="av')}<div class="b${m.img ? ' media-b' : ''}${m.pic ? ' pic' : ''}${m.audio ? ' vm-b' : ''}${m.qa ? ' qa-b' : ''}">${m.qa ? qaBox(m, c) : qtHtml(m) + (m.img ? '<img src="' + m.img + '">' : '') + (m.audio ? vmHtml(m) : '') + esc(m.x)}${(m.star || (m.tags && m.tags.length)) ? '<div class="msg-tags">' + (m.star ? '<span class="mk" style="--mark:' + esc(S.set.starColor || S.ink || '#5f5b8d') + '">' + MK[S.set.mk || 'star'] + '</span>' : '') + (m.tags || []).map(t => `<span class="tg">${esc(t)}</span>`).join('') + '</div>' : ''}</div><div class="mt">${m.qa ? '' : `<button class="${m.fav ? 'f' : ''}" data-a="fv" data-i="${m.id}">${m.fav ? '★' : '☆'}</button>`}<div class="mtl">${m.qa ? (m.qa.done ? '<span class="rdt">已回答</span>' : '') : rdHtml(m)}<span class="mtt">${tm(m.t)}</span></div></div></div>`)).join('') : '<div class="empty">還沒有訊息。<br>說點什麼，對方會依字卡隨機回覆。</div>';
+    if (chWin.cid !== S.cur)
+        chWin = { cid: S.cur, n: CH_WIN };
+    let from = xm ? 0 : Math.max(0, vis.length - chWin.n);
+    if (jump) {
+        const ji = vis.findIndex(m => m.id === jump);
+        if (ji >= 0 && ji < from) {
+            chWin.n = vis.length - ji + 20;
+            from = Math.max(0, vis.length - chWin.n);
+        }
+    }
+    const moreHtml = from > 0 ? '<div class="sys chmore" data-a="chmore" role="button">↑ 載入更早的訊息（還有 ' + from + ' 則）</div>' : '';
+    l.innerHTML = vis.length ? moreHtml + vis.map((m, mi) => mi < from ? '' : dtHtml(vis[mi - 1], m) + (m.f === 'sys' ? (xm ? (m.pat ? `<div class="xrow${xCls(m.id)}" id="m-${m.id}" data-xid="${m.id}">${xCirc(m.id)}<div class="sys pat">${esc(m.x)}</div></div>` : `<div class="sys${m.go ? ' go' : ''} xdim" id="m-${m.id}">${esc(m.x)}</div>`) : `<div class="sys${m.pat ? ' pat' : ''}${m.go ? ' go' : ''}${m.sn ? ' seen' : ''}" id="m-${m.id}"${m.go ? ` data-a="gonotice" data-i="${m.go}" role="button"` : ''}>${esc(m.x)}</div>`) : `<div class="m ${m.f}${m.id === jump ? ' hl' : ''}${xm ? xCls(m.id) : ''}" id="m-${m.id}"${xm ? ` data-xid="${m.id}"` : ''}>${xm ? xCirc(m.id) : ''}${m.f === 'me' ? avh({ id: 'me', av: S.meAv, name: S.me }, 'msgav') : avh(c, 'msgav').replace('class="av', 'data-a="avcard" data-i="' + c.id + '" class="av')}<div class="b${m.img ? ' media-b' : ''}${m.pic ? ' pic' : ''}${m.audio ? ' vm-b' : ''}${m.qa ? ' qa-b' : ''}">${m.qa ? qaBox(m, c) : qtHtml(m) + (m.img ? '<img src="' + imgU(m.img) + '">' : '') + (m.audio ? vmHtml(m) : '') + esc(m.x)}${(m.star || (m.tags && m.tags.length)) ? '<div class="msg-tags">' + (m.star ? '<span class="mk" style="--mark:' + esc(S.set.starColor || S.ink || '#5f5b8d') + '">' + MK[S.set.mk || 'star'] + '</span>' : '') + (m.tags || []).map(t => `<span class="tg">${esc(t)}</span>`).join('') + '</div>' : ''}</div><div class="mt">${m.qa ? '' : `<button class="${m.fav ? 'f' : ''}" data-a="fv" data-i="${m.id}">${m.fav ? '★' : '☆'}</button>`}<div class="mtl">${m.qa ? (m.qa.done ? '<span class="rdt">已回答</span>' : '') : rdHtml(m)}<span class="mtt">${tm(m.t)}</span></div></div></div>`)).join('') : '<div class="empty">還沒有訊息。<br>說點什麼，對方會依字卡隨機回覆。</div>';
     if (isTyping(S.cur))
         l.insertAdjacentHTML('beforeend', '<div class="sys typing" id="typing"><span>' + esc(c.name) + '正在輸入</span><span class="td">⋯</span></div>');
     else if (isExtracting(S.cur))
         l.insertAdjacentHTML('beforeend', '<div class="sys typing" id="typing"><span>' + esc(c.name) + '正在提取字卡</span><span class="td">⋯</span></div>');
+    if (chAnc) {
+        keep = l.scrollHeight - chAnc.h + chAnc.t;
+        chAnc = null;
+    }
     const j = jump && $('#m-' + jump);
     if (j) {
         j.scrollIntoView({ block: 'start' });

@@ -96,6 +96,10 @@ function updateReads() {
         save();
 }
 setInterval(updateReads, 250);
+document.addEventListener('scroll', e => { const l = e.target; if (l && l.id === 'cl' && l.scrollTop < 40 && Date.now() - chMoreAt > 600) {
+    chMoreAt = Date.now();
+    chMore();
+} }, true);
 document.addEventListener('visibilitychange', () => { if (!document.hidden)
     updateReads(); });
 ['wheel', 'touchmove', 'pointerdown'].forEach(ev => document.addEventListener(ev, e => { const l = e.target.closest && e.target.closest('#cl'); if (l)
@@ -159,7 +163,7 @@ function vRec() {
     if (pg === 'plum') {
         const l = [...(S.plum || [])].sort((a, b) => b.t - a.t), bar = recEdit ? '<div class="selbar">' + selAllHtml('pl', l.map(x => x.id), recSel) + '<button class="btn d" data-a="pdelsel" style="border-style:solid">刪除所選（' + recSel.length + '）</button></div>' : '';
         const row = x => {
-            const r = x.r, m = x.meta, inner = '<div class="ltt">' + ltime(x.t) + ' · ' + (m.mode === 'num' ? '報數排盤' : '時間排盤') + '</div>' + (x.q ? '<div class="ltx" style="color:var(--soft);font-size:calc(12.5px*var(--fz,1))">所問：' + esc(x.q.length > 30 ? x.q.slice(0, 30) + '⋯' : x.q) + '</div>' : '') + '<div class="ltx" style="font-weight:500">' + esc(r.benGua) + ' → ' + esc(r.bianGua) + '（互：' + esc(r.huGua) + '）</div><div class="ltx" style="color:var(--soft);font-size:calc(12.5px*var(--fz,1))">' + (m.mode === 'num' ? '數字 ' + m.n1 + '、' + m.n2 : m.time) + ' · 動爻' + MH_YAO[r.movingLine - 1] + ' · ' + esc(r.overall.level) + '</div>';
+            const r = x.r, m = x.meta, inner = '<div class="ltt">' + ltime(x.t) + ' · ' + mhModeName(m) + '</div>' + (x.q ? '<div class="ltx" style="color:var(--soft);font-size:calc(12.5px*var(--fz,1))">所問：' + esc(x.q.length > 30 ? x.q.slice(0, 30) + '⋯' : x.q) + '</div>' : '') + '<div class="ltx" style="font-weight:500">' + esc(r.benGua) + ' → ' + esc(r.bianGua) + '（互：' + esc(r.huGua) + '）</div><div class="ltx" style="color:var(--soft);font-size:calc(12.5px*var(--fz,1))">' + (m.mode === 'num' ? '數字 ' + m.n1 + '、' + m.n2 : m.time) + ' · 動爻' + MH_YAO[r.movingLine - 1] + ' · ' + esc(r.overall.level) + '</div>';
             return recEdit ? '<div class="lt pick' + (recSel.includes(x.id) ? ' sel' : '') + '" data-a="psel" data-i="' + x.id + '"><span class="ck ' + (recSel.includes(x.id) ? 'on' : '') + '"></span>' + inner + '</div>' : '<div class="lt" data-a="pview" data-i="' + x.id + '" style="cursor:pointer">' + inner + '</div>';
         };
         return head + tabs + bar + (l.length ? l.map(row).join('') : '<div class="empty">還沒有梅花易數紀錄。<br>在主頁「梅花易數」排盤後，結果會記錄在這裡。</div>');
