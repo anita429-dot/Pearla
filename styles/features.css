@@ -410,3 +410,21 @@ html:not([data-skin=moon]) .pgp:first-child .memo-card{margin-top:auto;margin-bo
 .mom-ct .mom-cimg{display:block;margin:4px 0 0 auto}
 .mom-cto{background:color-mix(in srgb,var(--lav) 22%,var(--card));border:1px solid color-mix(in srgb,var(--lav) 45%,var(--line));border-radius:9px;padding:4px 8px}
 .mom-cto span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+
+/* 資料卡：表情包排行下方的「不常用字卡」小區塊 */
+.ci-right .ci-lh{margin:8px 0 4px;font-size:calc(12px*var(--fz,1))}
+.ci-lbox{flex:1;min-height:56px;overflow-y:auto;border:1.2px var(--bs,dashed) var(--line);border-radius:12px;background:var(--ci-rankbg,var(--bub))}
+.ci-lbox .ci-top li{padding:4px 7px;font-size:calc(11.5px*var(--fz,1))}
+.ci-lbox .ci-top span{color:var(--ci-topink,var(--ink))}
+.ci-lno{padding:12px 6px;text-align:center;font-size:calc(11.5px*var(--fz,1));color:var(--soft)}
+.mom-hd [data-a=avcard]{cursor:pointer}
+
+/* 梅花易數：指定排盤（上爻在上；點爻條切換陰陽，右邊「動」選動爻） */
+.mhp-r{display:flex;align-items:center;gap:10px;margin:10px 0}
+.mhp-l{width:calc(86px*var(--fz,1));flex:none;font-size:calc(13px*var(--fz,1));color:var(--ink);white-space:nowrap}
+.mhp-b{flex:1;height:32px;display:flex;gap:12%;padding:0;background:none;border:none;cursor:pointer;color:var(--ink);-webkit-tap-highlight-color:transparent}
+.mhp-b i{flex:1;height:100%;border-radius:10px;background:currentColor}
+.mhp-r.mv .mhp-b{color:#d98faa}
+.mhp-m{flex:none;width:32px;height:32px;border-radius:8px;border:none;background:var(--line);color:#fff;font-size:calc(14px*var(--fz,1));padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mhp-m.on{background:#d98faa}
+.mhp-n{text-align:center;margin-top:10px;font-size:calc(15px*var(--fz,1));color:var(--ink)}

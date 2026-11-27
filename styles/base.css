@@ -860,3 +860,4 @@ mark{background:#aca6e455;color:inherit;border-radius:3px;padding:0 1px}
 .rec-wave i:nth-child(1){height:6px}.rec-wave i:nth-child(2){height:12px}.rec-wave i:nth-child(3){height:16px}.rec-wave i:nth-child(4){height:9px}.rec-wave i:nth-child(5){height:14px}.rec-wave i:nth-child(6){height:7px}.rec-wave i:nth-child(7){height:11px}
 .vm{display:flex;align-items:center;gap:8px;min-width:120px}
 .vm b{font-weight:400;font-size:calc(12px*var(--fz,1))}
+.sys.chmore{cursor:pointer;border-style:solid;color:var(--ink);-webkit-tap-highlight-color:transparent}
