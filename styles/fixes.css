@@ -199,3 +199,39 @@ html.kb-chat #f textarea.sl,html.kb-chat #f input{will-change:auto}
 #sh.chat-pop.pat .emo-sticky{position:static;flex:none;margin:0;padding:0;background:transparent}
 #sh.chat-pop.pat .pat-list{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
 #sh.chat-pop.pat .add{flex:none;margin:8px 0 0;padding-top:8px;border-top:1.2px var(--bs,dashed) var(--line)}
+
+/* 機率條：左邊減、右邊加 */
+.prr{display:flex;align-items:center;gap:10px;margin:4px 0 12px}
+.prr input[type=range]{flex:1;min-width:0;margin:0}
+.prr .pm{flex:none;width:30px;height:30px;padding:0;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--soft);display:grid;place-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.prr .pm svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
+.prr .pm:active{transform:scale(.92);background:color-mix(in srgb,var(--lav) 22%,transparent)}
+
+/* 朋友圈：回覆裡的表情包靠左，和留言文字並齊 */
+.mom-ct .mom-cimg,.mom-cl .mom-cimg{margin:4px 0 0 0!important}
+/* 朋友圈：「我的空間／聯絡人貼文」各占一半，左邊不留空 */
+.mom-sticky{padding-left:0!important}
+.mom-sticky .stabs{width:100%}
+.mom-sticky .stabs .stab{flex:1 1 50%!important;text-align:center}
+/* 我的空間發文：三個按鍵一樣大、沒有外框、表情與發送線條細一點 */
+.mom-ntools{gap:4px}
+.mom-ntools .ib{width:40px!important;height:40px!important;min-width:0;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important;border-radius:12px;color:var(--soft);display:grid;place-items:center}
+.mom-ntools .ib svg{width:22px!important;height:22px!important;display:block}
+.mom-ntools .mn-send{color:var(--lav)}
+.mom-ntools .ib[data-a=mnemo] svg,.mom-ntools .ib[data-a=mnsend] svg{stroke-width:1.25!important}
+.mom-ntools .ib:active{background:color-mix(in srgb,var(--lav) 16%,transparent)!important}
+
+/* 朋友圈分頁上的未讀小紅點 */
+.stab{position:relative}
+.stab .mom-dot{position:absolute;top:7px;right:calc(50% - 3.2em);width:7px;height:7px;border-radius:50%;background:#e5677f;display:block}
+/* 聊天室通知：已經看過的就變淡（顏色照主題，只調淡） */
+.sys.go.seen{opacity:.5}
+
+/* 表情浮窗（表情包／顏文字）：外框不捲動，只有下方內容區自己捲動
+   （避免 iPhone 上「外框 overflow + 吸頂 + 毛玻璃」造成只能點、不能滑） */
+#sh.chat-pop.emox .box{display:flex!important;flex-direction:column;overflow:hidden!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+#sh.chat-pop.emox .emo-sticky{position:static;flex:none;margin:0;padding:0}
+#sh.chat-pop.emox .emo-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y}
+
+/* 主頁每日留言：聯絡人與我的之間用淡淡的細線分開（左右留空，不碰到外框） */
+#daily-pop .daily-sep{height:0;margin:11px 10px 10px;border:0;border-top:1px solid color-mix(in srgb,var(--line) 55%,transparent);opacity:.7}
