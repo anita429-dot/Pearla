@@ -3,7 +3,7 @@
    - 圖片、字體等其他檔案：用到時存起來，之後離線也看得到
    - 有網路時，網頁與程式優先拿最新版（拿到就更新快取）；沒網路才用快取
    更新網站後請把 VERSION 改一個數字，舊快取才會被清掉 */
-const VERSION = 'pearla-v2';
+const VERSION = 'pearla-v7';
 const CORE = [
   './', 'index.html', 'manifest.webmanifest', 'favicon.png', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png',
   'styles/base.css', 'styles/features.css', 'styles/glass.css', 'styles/journal.css', 'styles/moon.css',
