@@ -139,3 +139,11 @@ html[data-theme] .pf-pop .pf-ta,html[data-theme] .pf-pop .pf-note{background:var
 html[data-theme] .pf-pop .pf-note::placeholder{color:var(--soft)}
 html[data-theme] .pf-pop .pf-fix,html[data-theme] .pf-pop .pf-plus{background:var(--bub);color:var(--ink);border:1px solid var(--line);-webkit-backdrop-filter:none;backdrop-filter:none}
 html[data-theme] .pf-pop.box::before,html[data-theme] .pf-pop.box::after{display:none}
+
+/* 時間可點擊修改（我的發現、一起經歷的事情） */
+.pf-fdate,.pf-idate{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pf-fdate{text-decoration:underline dotted;text-underline-offset:3px}
+.pf-idate{margin-top:6px;font-size:calc(12px*var(--fz,1));color:var(--soft);text-decoration:underline dotted;text-underline-offset:3px;align-self:flex-start}
+.pf-add input[type=datetime-local],.pf-tmbox input[type=datetime-local]{width:100%;box-sizing:border-box;margin:0;min-height:42px}
+.pf-tmbox{max-width:320px}
+.pf-tmbox .pf-acts{margin-top:12px}
