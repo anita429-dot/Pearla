@@ -236,6 +236,13 @@
         if (old)
             old.remove();
         var tid = findTarget(msg), tg = tid && document.getElementById('m-' + tid);
+        if (!tg && tid && window.chReveal) {
+            try {
+                chReveal(tid);
+            }
+            catch (x) { }
+            tg = document.getElementById('m-' + tid);
+        }
         if (!tg) {
             try {
                 toast('找不到原本的訊息，可能已被刪除');
@@ -269,4 +276,64 @@
             navigator.storage.persist();
     }
     catch (e) { }
+})();
+
+/* ── 聊天室：輸入框上方是哪一條訊息，點輸入框（鍵盤升起）或收起鍵盤時，都停在同一條訊息的位置 ──
+   原理：隨時記住「貼著輸入框上緣的那條訊息」和它離上緣的距離；版面一變（鍵盤、導覽列收放），
+   就在動畫期間每一幀把捲動位置補回去，讓那條訊息維持在輸入框上方原本的位置。 */
+(function () {
+  var anc = null, until = 0, looping = false;
+  function box() { return document.getElementById('cl'); }
+  function capture() {
+    var c = box(); if (!c || !c.children.length) { anc = null; return; }
+    var cr = c.getBoundingClientRect(), k = c.children, i, r;
+    for (i = k.length - 1; i >= 0; i--) {
+      r = k[i].getBoundingClientRect();
+      if (r.height > 0 && r.top < cr.bottom - 1) { anc = { el: k[i], id: k[i].id, off: cr.bottom - r.bottom }; return; }
+    }
+    anc = null;
+  }
+  function restore() {
+    var c = box(); if (!c || !anc) return;
+    if (!anc.el.isConnected || !c.contains(anc.el)) {
+      /* 畫面被重畫過：用 id 找回同一條訊息 */
+      var again = anc.id ? document.getElementById(anc.id) : null;
+      if (!again || !c.contains(again)) return;
+      anc.el = again;
+    }
+    var cr = c.getBoundingClientRect(), r = anc.el.getBoundingClientRect(), d = r.bottom - (cr.bottom - anc.off);
+    if (Math.abs(d) > 0.5) c.scrollTop += d;
+  }
+  function loop() {
+    restore();
+    if (Date.now() < until) requestAnimationFrame(loop);
+    else { looping = false; capture(); }
+  }
+  function run(ms) {
+    if (!box()) return;
+    if (!looping) { if (Date.now() >= until) capture(); looping = true; until = Date.now() + ms; requestAnimationFrame(loop); }
+    else until = Math.max(until, Date.now() + ms);
+  }
+  document.addEventListener('scroll', function (e) {
+    if (e.target && e.target.id === 'cl' && !looping) capture();
+  }, true);
+  /* 手指碰訊息列：馬上停止補償，不跟使用者搶捲動 */
+  document.addEventListener('touchstart', function (e) {
+    if (e.target.closest && e.target.closest('#cl')) { until = 0; }
+  }, { capture: true, passive: true });
+  /* 碰輸入框那一刻（鍵盤還沒出來）先記下位置 */
+  ['pointerdown', 'touchstart', 'mousedown'].forEach(function (t) {
+    document.addEventListener(t, function (e) {
+      if (e.target.closest && e.target.closest('#f') && !looping) { capture(); }
+    }, { capture: true, passive: true });
+  });
+  document.addEventListener('focusin', function (e) { if (e.target.closest && e.target.closest('#f')) run(1100); });
+  document.addEventListener('focusout', function (e) { if (e.target.closest && e.target.closest('#f')) { if (!looping) capture(); run(1100); } });
+  if (window.visualViewport) {
+    visualViewport.addEventListener('resize', function () { if (box()) run(700); });
+  }
+  new MutationObserver(function () { if (box()) run(700); }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  window.addEventListener('resize', function () { if (box()) run(700); });
+  /* 平常也定期更新，確保記的是最新位置 */
+  setInterval(function () { if (!looping && box()) capture(); }, 1500);
 })();
