@@ -18,11 +18,15 @@
         ['gift', '禮物櫃', '']
     ];
     const FREQ = ['未使用', '偶爾', '常用', '很常用'], RATE = ['困難', '有點難', '一般', '好上手', '簡單'];
-    const LP = window.LP = { open: false, rows: ROWS, rate: RATE, view: vLp, set: setRow, data: data };
-    function data(id) { const d = (S.lp && S.lp[id]) || {}; return { on: d.on !== false, p: d.p == null ? 30 : Math.max(0, Math.min(100, +d.p || 0)), f: Number.isInteger(d.f) ? Math.max(0, Math.min(3, d.f)) : -1, r: Number.isInteger(d.r) ? Math.max(0, Math.min(4, d.r)) : -1 }; }
+    const LP = window.LP = { open: false, cid: '', rows: ROWS, rate: RATE, view: vLp, set: setRow, data: data };
+    /* 每位聯絡人各有一份學習進度：S.lpc[聯絡人id][欄位id]。第一次用到時，先從舊版共用的 S.lp 複製一份當起點 */
+    const cidNow = () => LP.cid || (S && S.cur);
+    function lpOf(cid) { cid = cid || cidNow(); if (!S.lpc || typeof S.lpc !== 'object')
+        S.lpc = {}; if (!S.lpc[cid])
+        S.lpc[cid] = (S.lp && typeof S.lp === 'object') ? JSON.parse(JSON.stringify(S.lp)) : {}; return S.lpc[cid]; }
+    function data(id, cid) { const d = lpOf(cid)[id] || {}; return { on: d.on !== false, p: d.p == null ? 30 : Math.max(0, Math.min(100, +d.p || 0)), f: Number.isInteger(d.f) ? Math.max(0, Math.min(3, d.f)) : -1, r: Number.isInteger(d.r) ? Math.max(0, Math.min(4, d.r)) : -1 }; }
     /* 之後各功能要回報進度時呼叫：LP.set('chat',{p:35,f:2}) */
-    function setRow(id, v) { if (!S.lp || typeof S.lp !== 'object')
-        S.lp = {}; S.lp[id] = Object.assign(S.lp[id] || {}, v); try {
+    function setRow(id, v, cid) { const m = lpOf(cid); m[id] = Object.assign(m[id] || {}, v); try {
         save();
     }
     catch (e) { } }
@@ -33,7 +37,7 @@
             + '<div class="lp-meta"><span>使用頻率　<b>' + (d.f < 0 ? '—' : FREQ[d.f]) + '</b></span><span>評價　<b>' + (d.r < 0 ? '—' : RATE[d.r]) + '</b></span></div></div>';
     }
     function vLp() {
-        return '<div class="ph2"><button class="ib" data-a="lp:back">‹</button><h1>學習進度</h1></div>' + ROWS.map(row).join('') + '<button class="btn s lp-call" data-a="lp:call">喊他來</button>';
+        return '<div class="ph2"><button class="ib" data-a="lp:back">‹</button><h1>學習進度</h1></div><p class="hint" style="margin:0 0 8px;text-align:center">' + esc((cur() && cur().name) || '') + ' 的學習進度</p>' + ROWS.map(row).join('') + '<button class="btn s lp-call" data-a="lp:call">喊他來</button>';
     }
     /* 只處理「進入」與「返回」；欄列本身沒有任何點擊反應 */
     document.addEventListener('click', e => {
@@ -78,10 +82,14 @@
 })();
 /* 學習進度引擎：禮拜日 0 點後 → 等判定時間 → 依機率判定 → 逐欄修改熟練度；整個流程結束後，當天的每日留言才開始 */
 (function () {
-    const LSt = () => { if (!S.lps || typeof S.lps !== 'object')
-        S.lps = {}; const L = S.lps; if (L.ph == null) {
-        Object.assign(L, { ph: '', due: 0, week: '', from: '', cid: '', idx: 0, mid: '', list: [] });
-    } return L; };
+    /* 引擎狀態：S.lpst[聯絡人id]。處理哪位聯絡人由 LP.cid 決定；舊版共用的 S.lps 會在第一次用到時帶過來 */
+    const LSt = () => { const cid = LP.cid; if (!S.lpst || typeof S.lpst !== 'object')
+        S.lpst = {}; let L = S.lpst[cid]; if (!L) {
+        const o = S.lps && typeof S.lps === 'object' ? S.lps : null;
+        L = S.lpst[cid] = { ph: '', due: 0, week: o && o.week || '', from: o && o.from || '', cid, idx: 0, mid: '', list: [] };
+        if (o && o.ph && o.cid === cid)
+            Object.assign(L, o);
+    } L.cid = cid; return L; };
     const dk = () => localDayKey(new Date());
     const nextSun = () => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() + ((7 - d.getDay()) % 7 || 7)); return localDayKey(d); };
     const sec = (k, def) => { const v = +S.set[k]; return (isFinite(v) && v >= 0 ? v : def) * 1000; };
@@ -173,7 +181,7 @@
             L.ph = 'rate';
             L.due = now + 10000;
             notice('已更改 ' + rowName(id) + ' 熟練度 ' + d.p + '%→' + np + '%，正在選擇評價', true, now);
-            if (LP.open)
+            if (LP.open && S.cur === LP.cid)
                 render();
             save();
             return;
@@ -192,7 +200,7 @@
         L.last = txt;
         L.rid = '';
         L.ph = 'rows';
-        if (LP.open)
+        if (LP.open && S.cur === LP.cid)
             render();
         afterRow(now, txt);
     }
@@ -220,6 +228,18 @@
         try {
             if (!S || !S.set || !S.contacts)
                 return;
+            (S.contacts || []).slice().forEach(c => { const prev = LP.cid; LP.cid = c.id; try {
+                tickOne(c);
+            }
+            catch (e) { }
+            finally {
+                LP.cid = prev;
+            } });
+        }
+        catch (e) { }
+    }
+    function tickOne(c) {
+        {
             const L = LSt(), now = Date.now();
             if (!S.set.lpOn) {
                 if (L.ph) {
@@ -235,8 +255,7 @@
             }
             const tk = dk(), sun = new Date().getDay() === 0;
             if (!L.ph && sun && L.week !== tk && (!L.from || tk >= L.from)) {
-                const c = cur();
-                if (c) {
+                if (c && !c.dnd) {
                     const mid = new Date();
                     mid.setHours(0, 0, 0, 0);
                     const base = mid.getTime();
@@ -274,25 +293,33 @@
                     break;
             }
         }
-        catch (e) { }
     }
-    /* 今天是禮拜日、學習進度開著，且今天的流程還沒開始或還沒結束 → 每日留言先等 */
-    function busy() {
+    /* 這位聯絡人今天是禮拜日、學習進度開著，且今天的流程還沒開始或還沒結束 → 他的每日留言先等（不帶聯絡人時：只要有任何一位在忙就算） */
+    function busy(cid) {
         try {
             if (!S || !S.set || !S.set.lpOn || !S.contacts || !S.contacts.length)
                 return false;
-            const L = LSt();
-            if (L.ph && L.ph !== 'dwait')
-                return L.week === dk(); // 跨過午夜才結束的流程，不再擋隔天的每日留言
-            const tk = dk();
-            return new Date().getDay() === 0 && L.week !== tk && (!L.from || tk >= L.from);
+            if (!cid)
+                return S.contacts.some(c => busy(c.id));
+            const prev = LP.cid;
+            LP.cid = cid;
+            try {
+                const L = LSt();
+                if (L.ph && L.ph !== 'dwait')
+                    return L.week === dk(); // 跨過午夜才結束的流程，不再擋隔天的每日留言
+                const tk = dk();
+                return new Date().getDay() === 0 && L.week !== tk && (!L.from || tk >= L.from);
+            }
+            finally {
+                LP.cid = prev;
+            }
         }
         catch (e) {
             return false;
         }
     }
     function callIn() {
-        const L = LSt(), c = cur();
+        const c = cur();
         if (!S.set.lpOn) {
             toast('學習進度還沒開啟（設置→學習進度）');
             return;
@@ -303,24 +330,42 @@
             toast(c.name + ' 免打擾中');
             return;
         }
-        if (L.ph) {
-            toast('他正在處理學習進度了');
-            return;
+        const prev = LP.cid;
+        LP.cid = c.id;
+        try {
+            const L = LSt();
+            if (L.ph) {
+                toast('他正在處理學習進度了');
+                return;
+            }
+            const now = Date.now();
+            L.ph = 'w1';
+            L.cid = c.id;
+            L.idx = 0;
+            L.mid = '';
+            L.list = [];
+            L.due = now + sec('lpT1', 600);
+            notice('正在選擇要不要更改學習進度', false, now);
+            save();
+            toast('已喊 ' + c.name + ' 來看學習進度', 2200);
         }
-        const now = Date.now();
-        L.ph = 'w1';
-        L.cid = c.id;
-        L.idx = 0;
+        finally {
+            LP.cid = prev;
+        }
+    }
+    window.LPE = { call: callIn, tick, busy, toggled(on) { (S.contacts || []).forEach(c => { const prev = LP.cid; LP.cid = c.id; try {
+        const L = LSt();
+        if (L.ph === 'rows' || L.ph === 'rate')
+            dropNotice();
+        L.ph = '';
         L.mid = '';
         L.list = [];
-        L.due = now + sec('lpT1', 600);
-        notice('正在選擇要不要更改學習進度', false, now);
-        save();
-        toast('已喊 ' + c.name + ' 來看學習進度', 2200);
+        if (on)
+            L.from = nextSun();
     }
-    window.LPE = { call: callIn, tick, busy, toggled(on) { const L = LSt(); if (L.ph === 'rows' || L.ph === 'rate')
-            dropNotice(); L.ph = ''; L.mid = ''; L.list = []; if (on)
-            L.from = nextSun(); save(); } };
+    finally {
+        LP.cid = prev;
+    } }); save(); } };
     setInterval(tick, 3000);
     document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible')
         setTimeout(tick, 300); });
