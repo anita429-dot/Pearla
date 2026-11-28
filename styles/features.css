@@ -22,7 +22,9 @@
 .cal2-re{color:var(--soft)}
 .cal2-in{width:100%;box-sizing:border-box;margin-top:4px;font:inherit;font-size:calc(14px*var(--fz,1));padding:8px 10px;border-radius:12px;resize:vertical}
 /* 長按不選取、不出現儲存圖片選單 */
-img,svg,.av,.ti,.cal-big,.daily-message-trigger,[style*="url("]{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+img,svg,.av,.ti,.cal-big,.daily-message-trigger,[style*="url("]:not(#app):not(#v):not(html):not(body){-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+#cl .b,#cl .b *{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+#cl .b img,#cl .b .av{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
 img{-webkit-user-drag:none;user-drag:none}
 /* 可點擊的聊天室通知 */
 .sys.go{cursor:pointer;text-decoration:underline;text-underline-offset:3px}

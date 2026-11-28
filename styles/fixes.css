@@ -256,3 +256,5 @@ html.kb-chat #f textarea.sl,html.kb-chat #f input{will-change:auto}
 .dg-bar{height:6px;border-radius:3px;background:rgba(127,127,160,.2);margin-top:10px;overflow:hidden}
 .dg-bar i{display:block;height:100%;background:currentColor;opacity:.55;transition:width .25s}
 .dg-empty{margin:12px 4px}
+
+html,body{overscroll-behavior:none}
