@@ -235,3 +235,24 @@ html.kb-chat #f textarea.sl,html.kb-chat #f input{will-change:auto}
 
 /* 主頁每日留言：聯絡人與我的之間用淡淡的細線分開（左右留空，不碰到外框） */
 #daily-pop .daily-sep{height:0;margin:11px 10px 10px;border:0;border-top:1px solid color-mix(in srgb,var(--line) 55%,transparent);opacity:.7}
+
+/* ── 設置→工具→問題診斷 ── */
+.dg-btns{display:flex;gap:8px;flex-wrap:wrap}
+.dg-btns .btn{margin:0;flex:0 0 auto}
+.dg-btns .btn[disabled]{opacity:.55;pointer-events:none}
+.dg-ic{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font:700 12px/1 system-ui,sans-serif;flex:0 0 20px;color:#fff}
+.dg-ic.ok{background:#3a9d6b}.dg-ic.warn{background:#d9912b}.dg-ic.bad{background:#d8454f}.dg-ic.info{background:#8d8aa8}
+.dg-sec h3{margin-bottom:4px}
+.dg-it{display:flex;gap:10px;padding:9px 0;border-top:1px dashed var(--line,#ddd)}
+.dg-sec h3 + .dg-it{border-top:0}
+.dg-tx{min-width:0;flex:1}
+.dg-tx b{font-weight:600;font-size:calc(14px*var(--fz,1))}
+.dg-d{font-size:calc(13px*var(--fz,1));line-height:1.6;opacity:.82;word-break:break-all;margin-top:2px}
+.dg-h{font-size:calc(12.5px*var(--fz,1));line-height:1.6;margin-top:5px;padding:6px 9px;border-radius:9px;background:rgba(217,145,43,.14)}
+.dg-it.bad .dg-h{background:rgba(216,69,79,.14)}
+.dg-sum-t{display:flex;align-items:center;gap:8px;font-weight:600;font-size:calc(16px*var(--fz,1))}
+.dg-probs{list-style:none;margin:10px 0 0;padding:0}
+.dg-probs li{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:calc(13.5px*var(--fz,1))}
+.dg-bar{height:6px;border-radius:3px;background:rgba(127,127,160,.2);margin-top:10px;overflow:hidden}
+.dg-bar i{display:block;height:100%;background:currentColor;opacity:.55;transition:width .25s}
+.dg-empty{margin:12px 4px}
