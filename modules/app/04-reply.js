@@ -493,6 +493,13 @@ function schedule(cid, text) {
             paint();
         return;
     }
+    /* 聯絡人上一輪回覆還在抽取／發送（正在輸入）時：不開下一輪，也不會判定已讀不回；訊息直接算已讀 */
+    if (!R && tqOn(typingQ[cid])) {
+        const lm1 = ms(cid)[ms(cid).length - 1];
+        if (lm1 && lm1.f === 'me' && !lm1.qa && lm1.rt == null)
+            lm1.rt = now;
+        return;
+    }
     const rt = R ? (R.readAt != null ? R.readAt : now) : now + 1000, lm = ms(cid)[ms(cid).length - 1];
     if (lm && lm.f === 'me' && !lm.qa && lm.rt == null)
         lm.rt = rt;

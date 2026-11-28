@@ -90,7 +90,9 @@ function gSend(v) {
         R.ext += add;
         R.qx = v;
         return;
-    } S.rounds[key] = { due: now + PRE, ext: 0, ph: 1, qx: v, lock: 0, readAt: now + 1000 }; });
+    } if (tqOn(typingQ[key]))
+        return; /* 這位成員上一輪還在抽取／發送：不開下一輪 */
+    S.rounds[key] = { due: now + PRE, ext: 0, ph: 1, qx: v, lock: 0, readAt: now + 1000 }; });
     save();
     paintG();
 }

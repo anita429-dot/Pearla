@@ -1,7 +1,7 @@
 /* 預設值只在這裡定義一次（資料升級時也用同一份） */
 const LWMAX_DEF = 28800, MOM_TMAX_DEF = 21600;
 const $ = s => document.querySelector(s);
-const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const uid = () => Math.random().toString(36).slice(2, 9);
 const rnd = () => crypto.getRandomValues(new Uint32Array(1))[0] / 4294967296;
 const ri = n => Math.floor(rnd() * n);
@@ -20,7 +20,7 @@ const idb = () => new Promise(r => { try {
 catch (e) {
     r();
 } });
-let myRev = 0, saveWarnAt = 0;
+let myRev = 0, saveWarnAt = 0, lastSaveErr = null;
 let loadFail = false, noSave = false, lastBak = 0, allowWipe = false;
 /* 資料份量：訊息數＋字卡數。用來防止「空白資料蓋掉有內容的資料」 */
 const wt = o => { try {
@@ -35,13 +35,21 @@ catch (e) {
     return 0;
 } };
 /* 讀取：讀不到（資料庫沒連上／出錯）會標記 loadFail，和「本來就沒資料」分開處理 */
+/* 資料庫裡的存檔現在是一整串 JSON 文字（省掉一份完整的物件複本、存得比較快）；舊版存的是物件，兩種都讀得懂 */
+const dbObj = v => { if (typeof v !== 'string')
+    return v || null; try {
+    return JSON.parse(v);
+}
+catch (e) {
+    return null;
+} };
 const load = () => new Promise(r => { loadFail = false; if (!db) {
     loadFail = true;
     return r(null);
 } try {
     const tx = db.transaction('kv'), st = tx.objectStore('kv'), q = st.get('s'), g = st.get('rev');
     g.onsuccess = () => { myRev = +g.result || 0; };
-    q.onsuccess = () => r(q.result || null);
+    q.onsuccess = () => r(dbObj(q.result));
     q.onerror = () => { loadFail = true; r(null); };
     tx.onerror = () => { loadFail = true; r(null); };
     tx.onabort = () => { loadFail = true; r(null); };
@@ -53,7 +61,7 @@ catch (e) {
 const loadBak = () => new Promise(r => { if (!db)
     return r(null); try {
     const q = db.transaction('kv').objectStore('kv').get('bak');
-    q.onsuccess = () => r(q.result || null);
+    q.onsuccess = () => r(dbObj(q.result));
     q.onerror = () => r(null);
 }
 catch (e) {
@@ -65,6 +73,11 @@ const isQuotaErr = e => !!e && (e.name === 'QuotaExceededError' || e.code === 22
 function saveFail(err) {
     try {
         console.error('Pearla save failed', err);
+    }
+    catch (e) { }
+    /* 記下最近一次失敗，給「設置→工具→問題診斷」顯示 */
+    try {
+        lastSaveErr = { t: Date.now(), name: (err && err.name) || '未知錯誤', msg: String((err && err.message) || '').slice(0, 120) };
     }
     catch (e) { }
     /* 只有真的是「空間不足」才提醒；其他原因（資料庫連線被系統關閉、被背景暫停等）先靜默重新連線再存一次 */
@@ -82,7 +95,15 @@ function saveFail(err) {
                 setTimeout(() => { saveRetry = 0; }, 4000);
             }
             catch (e) { } }, 300);
+            return;
         }
+        /* 重試兩次仍失敗：不能再靜默，提醒一次（20 秒內不重複） */
+        const n2 = Date.now();
+        if (n2 - saveWarnAt < 20000)
+            return;
+        saveWarnAt = n2;
+        if (typeof toast === 'function')
+            toast('⚠ 儲存失敗，最近的修改可能沒存到。請先到「設置→數據」備份，再完全關閉程式重開；可到「設置→工具→問題診斷」查看原因', 8000);
         return;
     }
     const n = Date.now();
@@ -126,10 +147,10 @@ function saveNow() {
     try {
         if (!db || !S || noSave)
             return;
-        const snap = JSON.parse(JSON.stringify(S)), nw = wt(snap), tx = db.transaction('kv', 'readwrite'), st = tx.objectStore('kv'), g = st.get('rev');
+        const snap = JSON.stringify(S), nw = wt(S), tx = db.transaction('kv', 'readwrite'), st = tx.objectStore('kv'), g = st.get('rev');
         let conflict = false, blocked = false;
         const put = (old, hasOld) => {
-            const ow = hasOld ? wt(old) : 0;
+            const ow = hasOld ? wt(dbObj(old)) : 0;
             /* 保護：資料庫裡有內容、這次要存的卻是空的（且不是使用者主動重置／還原）→ 不覆蓋，並把舊資料留成備份 */
             if (ow > 0 && nw === 0 && !wipeOk) {
                 blocked = true;

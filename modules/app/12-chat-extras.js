@@ -87,7 +87,7 @@ function updateReads() {
         }
         if (!isRd(m))
             return;
-        const mt = l.querySelector('#m-' + m.id + ' .mt');
+        const me = document.getElementById('m-' + m.id), mt = me && me.querySelector('.mt');
         const ml = mt && mt.querySelector('.mtl');
         if (ml && !ml.querySelector('.rdt'))
             ml.insertAdjacentHTML('afterbegin', '<span class="rdt">已讀</span>');
