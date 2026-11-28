@@ -715,12 +715,12 @@ function dlogSync() { const day = localDayKey(new Date()); (S.contacts || []).fo
 } }); }
 function dly(cid) { S.dailies = S.dailies || {}; return S.dailies[cid] || (S.dailies[cid] = { day: '', base: 0, next: 0, done: false, items: [] }); }
 function dailyTick() { if (!S || !S.set)
-    return; const now = Date.now(), day = localDayKey(new Date(now)), hold = !!(window.LPE && LPE.busy && LPE.busy()); let ch = 0; (S.contacts || []).forEach(c => { ctxSet(c.id); const D = dly(c.id); if (D.day !== day) {
+    return; const now = Date.now(), day = localDayKey(new Date(now)), holdOf = cid => !!(window.LPE && LPE.busy && LPE.busy(cid)); let ch = 0; (S.contacts || []).forEach(c => { ctxSet(c.id); const D = dly(c.id); if (D.day !== day) {
     if (D.day && D.done && Array.isArray(D.items) && D.items.length)
         dlogPut(c.id, D.day, D.items, null, D.at);
     Object.assign(D, { day, base: now, next: 0, done: false, items: [] });
     ch = 1;
-} if (D.done || hold || !S.set.dailyOn)
+} if (D.done || holdOf(c.id) || !S.set.dailyOn)
     return; const win = Math.max(1000, inspRand(S.set.dailyWmin == null ? 600 : S.set.dailyWmin, S.set.dailyWmax == null ? 10800 : S.set.dailyWmax)); if (D.next && now < D.next)
     return; ch = 1; if (!c.dnd && rnd() * 100 < Math.max(0, Math.min(100, +S.set.dailyProb || 0))) {
     const items = dailyPick(c.id);
