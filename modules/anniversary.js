@@ -272,7 +272,7 @@
         }
     });
 })();
-document.addEventListener('contextmenu', e => { if (e.target && e.target.closest && e.target.closest('img,svg,.av,.ti,.cal-big,.daily-message-trigger,[style*="url("]'))
+document.addEventListener('contextmenu', e => { if (e.target && e.target.closest && e.target.closest('img,svg,.av,.ti,.cal-big,.daily-message-trigger,[style*="url("]:not(#app):not(#v):not(html):not(body)'))
     e.preventDefault(); });
 document.addEventListener('dragstart', e => { if (e.target && e.target.tagName === 'IMG')
     e.preventDefault(); });

@@ -127,7 +127,7 @@
         var open = full > 100 && (vv.scale || 1) < 1.05;
         var ae = document.activeElement, inF = !!(ae && ae.closest && ae.closest('#f')), kc = inF && (open || chatFocus);
         if (kc && !open) {
-            root.style.setProperty('--vvt', (vv.offsetTop || 0) + 'px');
+            root.style.setProperty('--vvt', Math.max(0, vv.offsetTop || 0) + 'px');
             root.style.setProperty('--vvh', vv.height + 'px');
         }
         if (root.classList.contains('kb-open') !== open)
@@ -139,7 +139,7 @@
             return;
         kbVars._k = key;
         if (open) {
-            root.style.setProperty('--vvt', vv.offsetTop + 'px');
+            root.style.setProperty('--vvt', Math.max(0, vv.offsetTop) + 'px');
             root.style.setProperty('--vvh', vv.height + 'px');
             root.style.setProperty('--kb', kb + 'px');
         }
@@ -202,6 +202,32 @@
         kbVars._k = null;
         kbVars();
     } }, 200); });
+    /* 鍵盤開著時，在輸入列、標題列這類「本來就不用捲動」的地方往上滑，iOS 會把整個頁面頂走：直接擋掉 */
+    document.addEventListener('touchmove', function (e) {
+        if (!root.classList.contains('kb-open') && !root.classList.contains('kb-chat'))
+            return;
+        if (e.touches && e.touches.length > 1)
+            return;
+        var p = e.target;
+        while (p && p !== document.body && p !== root) {
+            if (p.nodeType === 1) {
+                var cs = getComputedStyle(p);
+                if (/(auto|scroll)/.test(cs.overflowY) && p.scrollHeight > p.clientHeight + 1)
+                    return;
+                if (/(auto|scroll)/.test(cs.overflowX) && p.scrollWidth > p.clientWidth + 1)
+                    return;
+                if (p.tagName === 'TEXTAREA' && p.scrollHeight > p.clientHeight + 1)
+                    return;
+            }
+            p = p.parentElement;
+        }
+        if (e.cancelable)
+            e.preventDefault();
+    }, { passive: false });
+    /* 頁面本身被拉動時（橡皮筋）立刻歸位 */
+    if (vv)
+        vv.addEventListener('scroll', function () { if (root.classList.contains('kb-chat') && (window.scrollY || document.body.scrollTop))
+            window.scrollTo(0, 0); });
     /* 表情浮窗：點分類前先記住分類列捲到哪裡，重繪後還原 */
     document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-a=ecsw],[data-a=mecsw],[data-a=lccsw]'); if (!b)
         return; var ec = b.closest('.emo-cats'); window.__catsLeft = ec ? ec.scrollLeft : 0; }, true);
@@ -286,15 +312,17 @@
   function box() { return document.getElementById('cl'); }
   function capture() {
     var c = box(); if (!c || !c.children.length) { anc = null; return; }
-    var cr = c.getBoundingClientRect(), k = c.children, i, r;
+    var cr = c.getBoundingClientRect(), k = c.children, i, r, bot = c.scrollHeight - c.scrollTop - c.clientHeight < 6;
     for (i = k.length - 1; i >= 0; i--) {
       r = k[i].getBoundingClientRect();
-      if (r.height > 0 && r.top < cr.bottom - 1) { anc = { el: k[i], id: k[i].id, off: cr.bottom - r.bottom }; return; }
+      if (r.height > 0 && r.top < cr.bottom - 1) { anc = { el: k[i], id: k[i].id, off: cr.bottom - r.bottom, bot: bot }; return; }
     }
     anc = null;
   }
   function restore() {
     var c = box(); if (!c || !anc) return;
+    /* 原本就停在最底：新訊息進來時照樣貼底，不要釘在舊訊息上 */
+    if (anc.bot) { var gap = c.scrollHeight - c.scrollTop - c.clientHeight; if (gap > 0.5) c.scrollTop += gap; return; }
     if (!anc.el.isConnected || !c.contains(anc.el)) {
       /* 畫面被重畫過：用 id 找回同一條訊息 */
       var again = anc.id ? document.getElementById(anc.id) : null;
